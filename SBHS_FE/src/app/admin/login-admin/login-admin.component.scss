@@ -2,7 +2,6 @@
   background-color: rgb(249, 250, 252);
 }
 
-.login {}
 
 .login-row {
   display: flex;
@@ -10,7 +9,7 @@
   align-items: center;
 }
 
-.login-col {}
+
 
 .login-card {
   background-color: white;
@@ -25,8 +24,7 @@
   margin-top: 16px;
 }
 
-.input-username,
-.input-password {}
+
 
 .login-card-body {
   display: flex;
@@ -47,6 +45,7 @@ input:-webkit-autofill:active {
   display: flex;
   justify-content: center;
   margin-top: 16px;
+
   button {
     height: 45px;
   }

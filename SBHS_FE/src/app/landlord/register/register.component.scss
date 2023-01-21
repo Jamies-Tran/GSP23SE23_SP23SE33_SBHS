@@ -6,8 +6,7 @@
   background-size: auto 100%;
 }
 
-.password,
-.username {
+.reg-input {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,10 +51,10 @@ input:-webkit-autofill:active {
   background: #fccb90;
 
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, #FDD835,  #FD9A01,  #FF2C05);
+  background: -webkit-linear-gradient(to right, #FEF001,  #FD9A01,  #FF2C05);
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, #FDD835,  #FD9A01,  #FF2C05);
+  background: linear-gradient(to right, #FEF001,  #FD9A01,  #FF2C05);
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

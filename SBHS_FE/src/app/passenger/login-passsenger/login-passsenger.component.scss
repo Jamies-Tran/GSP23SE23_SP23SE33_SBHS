@@ -1,0 +1,19 @@
+.el-agency-create__background {
+  background-repeat: no-repeat;
+  background-image: url('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/f5/5c/32/minions-village.jpg?w=700&h=-1&s=1');
+  background-size: cover;
+display: flex;
+position: sticky;
+top: 0;
+background-position: center;
+  }
+
+.el-container {
+  background-color: bisque;
+}
+
+.box{
+  width: 200px;
+  height: 150vh;
+  background-color: red;
+}
