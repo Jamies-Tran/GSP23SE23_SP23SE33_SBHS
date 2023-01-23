@@ -4,18 +4,23 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class SwmUserDto {
-    private Long Id;
+    private Long id;
     private String username;
     private String password;
     private String email;
-    private int phone;
+    private String gender;
+    private String phone;
+    private String idCardNumber;
+    private String dob;
     private String address;
-    private PassengerDto passengerProperty;
-    private List<SwmRoleDto> roles;
+    private String avatarUrl;
+    private List<Long> roleIds;
 }

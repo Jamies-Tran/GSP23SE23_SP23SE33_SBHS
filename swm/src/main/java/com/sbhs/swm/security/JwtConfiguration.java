@@ -4,7 +4,9 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
@@ -22,12 +24,14 @@ public class JwtConfiguration {
     @Value("${jwt.config.duration}")
     private int duration;
 
-    private Date generateExpireDate() {
+    @Bean
+    @Qualifier("date")
+    public Date expireDate() {
         return Date.from(new Date().toInstant().plusMillis(duration));
     }
 
     public String generateJwtString(String username) {
-        return Jwts.builder().setIssuedAt(new Date()).setSubject(username).setExpiration(generateExpireDate())
+        return Jwts.builder().setIssuedAt(new Date()).setSubject(username).setExpiration(expireDate())
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes())).compact();
     }
 

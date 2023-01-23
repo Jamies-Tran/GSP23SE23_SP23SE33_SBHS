@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,11 +27,6 @@ public class AppSecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http,
             UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
 
@@ -44,10 +38,11 @@ public class AppSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .cors().disable().csrf().disable().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authz) -> {
-                    authz.anyRequest().authenticated();
+                    authz.anyRequest().permitAll();
                 });
 
         return http.build();
@@ -55,7 +50,9 @@ public class AppSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/swagger-ui/*", "/swagger-ui/*", "/v3/api-docs",
-                "/v3/api-docs/swagger-config", "/favicon.icon");
+        return (web) -> web.ignoring().antMatchers("/swagger-resources/configuration/ui", "/favicon.ico",
+                "/swagger-ui.html/", "/swagger-ui.html/**", "/swm/swagger-ui/",
+                "/webjars/springfox-swagger-ui/*",
+                "/webjars/springfox-swagger-ui/springfox.css?v=2.9.2");
     }
 }

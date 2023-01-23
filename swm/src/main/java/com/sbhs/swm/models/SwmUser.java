@@ -16,11 +16,13 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class SwmUser {
     @Id
@@ -33,20 +35,35 @@ public class SwmUser {
     @Column
     private @Setter String password;
 
-    @Column
+    @Column(unique = true)
     private @Setter String email;
 
     @Column(length = 10, unique = true)
-    private @Setter int phone;
+    private @Setter String phone;
 
     @Column(columnDefinition = "nvarchar(500)")
     private @Setter String address;
 
+    @Column(length = 15)
+    private @Setter String idCardNumber;
+
+    @Column
+    private @Setter String avatarUrl;
+
+    @Column
+    private @Setter String dob;
+
     @Column
     private @Setter String gender;
 
-    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
+    @Column
+    private @Setter boolean changePassword = false;
+
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
     private @Setter Passenger passengerProperty;
+
+    @OneToOne(cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE })
+    private @Setter PasswordModificationOtp otpToken;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "Id"))
