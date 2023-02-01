@@ -9,7 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerDto {
+public class BalanceWalletDto {
     private Long id;
-    private BalanceWalletDto passengerWallet;
+    private double totalBalance;
+    private double availableBalance;
 }

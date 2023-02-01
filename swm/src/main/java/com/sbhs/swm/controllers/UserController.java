@@ -1,5 +1,6 @@
 package com.sbhs.swm.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbhs.swm.dto.LandlordDto;
 import com.sbhs.swm.dto.LoginRequestDto;
 import com.sbhs.swm.dto.LoginResponseDto;
+import com.sbhs.swm.dto.PassengerDto;
 import com.sbhs.swm.dto.SwmUserDto;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.security.JwtConfiguration;
@@ -38,14 +41,45 @@ public class UserController {
     private ModelMapper modelMapper;
 
     @Autowired
-    private String formatDateToString;
+    private SimpleDateFormat simpleDateFormat;
 
     @PostMapping("/registeration")
     public ResponseEntity<?> registerPassengerAccount(@RequestBody SwmUserDto userDto) {
         SwmUser user = modelMapper.map(userDto, SwmUser.class);
         SwmUser savedUser = userService.registerPassengerAccount(user);
         SwmUserDto responseUser = modelMapper.map(savedUser, SwmUserDto.class);
-        return new ResponseEntity<>(responseUser, HttpStatus.CREATED);
+        responseUser.setRoleIds(savedUser.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
+        responseUser.setPassword("");
+
+        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registration-landlord")
+    public ResponseEntity<?> registerLandlordAccount(@RequestBody SwmUserDto userDto) {
+        SwmUser user = modelMapper.map(userDto, SwmUser.class);
+        SwmUser savedUser = userService.registerLandlordAccount(user);
+        SwmUserDto responseUser = modelMapper.map(savedUser, SwmUserDto.class);
+        responseUser.setRoleIds(savedUser.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
+        responseUser.setPassword("");
+
+        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/info-username")
+    public ResponseEntity<?> getUserInfo(@RequestParam String username) {
+        SwmUser user = userService.findUserByUsername(username);
+        SwmUserDto responseUser = modelMapper.map(user, SwmUserDto.class);
+        user.getRoles().forEach(r -> {
+            if (r.getName().equalsIgnoreCase("passenger")) {
+                responseUser.setPassengerProperty(modelMapper.map(user.getPassengerProperty(), PassengerDto.class));
+            } else if (r.getName().equalsIgnoreCase("landlord")) {
+                responseUser.setLandlordProperty(modelMapper.map(user.getLandlordProperty(), LandlordDto.class));
+            }
+        });
+        responseUser.setRoleIds(user.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
+        responseUser.setPassword("");
+
+        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.OK);
     }
 
     @GetMapping("/email-validation")
@@ -64,7 +98,8 @@ public class UserController {
         String token = jwtConfig.generateJwtString(user.getUsername());
 
         List<String> roles = user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList());
-        LoginResponseDto response = new LoginResponseDto(user.getUsername(), user.getEmail(), token, formatDateToString,
+        LoginResponseDto response = new LoginResponseDto(user.getUsername(), user.getEmail(), token,
+                simpleDateFormat.format(jwtConfig.expireDate()),
                 roles);
         return new ResponseEntity<LoginResponseDto>(response, HttpStatus.OK);
     }
@@ -74,7 +109,8 @@ public class UserController {
         SwmUser user = userService.loginByGoogle(email);
         String token = jwtConfig.generateJwtString(user.getUsername());
         LoginResponseDto loginResponseDto = new LoginResponseDto(user.getUsername(), user.getEmail(), token,
-                formatDateToString, user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()));
+                simpleDateFormat.format(jwtConfig.expireDate()),
+                user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()));
         return new ResponseEntity<>(loginResponseDto, HttpStatus.OK);
     }
 

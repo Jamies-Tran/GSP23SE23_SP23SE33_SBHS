@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.sbhs.swm.handlers.exceptions.EmailDuplicateException;
@@ -17,6 +19,8 @@ import com.sbhs.swm.handlers.exceptions.PhoneDuplicateException;
 import com.sbhs.swm.handlers.exceptions.UsernameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.handlers.exceptions.VerifyPassModificationFailException;
+import com.sbhs.swm.models.BalanceWallet;
+import com.sbhs.swm.models.Landlord;
 import com.sbhs.swm.models.Passenger;
 import com.sbhs.swm.models.PasswordModificationOtp;
 import com.sbhs.swm.models.SwmRole;
@@ -60,10 +64,37 @@ public class UserService implements IUserService {
             throw new PhoneDuplicateException();
         }
         Passenger passenger = new Passenger();
-        SwmRole passengerRole = roleService.findRoleById(1);
+        BalanceWallet balanceWallet = new BalanceWallet();
+        balanceWallet.setPassenger(passenger);
+        passenger.setPassengerWallet(balanceWallet);
+
+        SwmRole passengerRole = roleService.findRoleByName("passenger");
         user.setRoles(List.of(passengerRole));
         user.setPassengerProperty(passenger);
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        SwmUser savedUser = userRepo.save(user);
+        return savedUser;
+    }
+
+    @Override
+    public SwmUser registerLandlordAccount(SwmUser user) {
+        if (userRepo.findByUsername(user.getUsername()).isPresent()) {
+            throw new UsernameDuplicateException();
+        } else if (userRepo.findByEmail(user.getEmail()).isPresent()) {
+            throw new EmailDuplicateException();
+        } else if (userRepo.findByPhone(user.getPhone()).isPresent()) {
+            throw new PhoneDuplicateException();
+        }
+        Landlord landlord = new Landlord();
+        BalanceWallet balanceWallet = new BalanceWallet();
+        balanceWallet.setLandlord(landlord);
+        landlord.setLandlordWallet(balanceWallet);
+        SwmRole landlordRole = roleService.findRoleByName("landlord");
+        user.setRoles(List.of(landlordRole));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setLandlordProperty(landlord);
+        landlord.setUser(user);
         SwmUser savedUser = userRepo.save(user);
         return savedUser;
     }
@@ -152,6 +183,14 @@ public class UserService implements IUserService {
         SwmUser user = userRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
 
         return user;
+    }
+
+    @Override
+    public SwmUser authenticatedUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return userRepo.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException(userDetails.getUsername()));
     }
 
 }

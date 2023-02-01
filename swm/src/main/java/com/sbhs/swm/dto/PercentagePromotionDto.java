@@ -9,7 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerDto {
+public class PercentagePromotionDto {
     private Long id;
-    private BalanceWalletDto passengerWallet;
+    private String code;
+    private String createdDate;
+    private String expiredDate;
+    private Double discountPercentage;
 }

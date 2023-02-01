@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerDto {
+public class LandlordDto {
     private Long id;
-    private BalanceWalletDto passengerWallet;
+    private BalanceWalletDto landlordWallet;
 }

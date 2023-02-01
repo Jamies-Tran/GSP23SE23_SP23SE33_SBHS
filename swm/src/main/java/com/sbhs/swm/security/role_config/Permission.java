@@ -1,15 +1,26 @@
 package com.sbhs.swm.security.role_config;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
 public enum Permission {
-    HOMESTAY_CREATE,
-    HOMESTAY_MODIFY,
-    HOMESTAY_REMOVE,
-    HOMESTAY_BAN,
-    BOOKING_CREATE,
-    BOOKING_MODIFY,
-    BOOKING_REMOVE,
-    BOOKING_CANCEL;
+    HOMESTAY_CREATE("homestay:create"),
+    HOMESTAY_MODIFY("homestay:modify"),
+    HOMESTAY_REMOVE("homestay:remove"),
+    HOMESTAY_BAN("homestay:ban"),
+    BOOKING_CREATE("booking:create"),
+    BOOKING_MODIFY("booking:modify"),
+    BOOKING_REMOVE("booking:remove"),
+    BOOKING_CANCEL("booking:cancel"),
+    PROMOTION_CREATE("promotion:create"),
+    PROMOTION_MODIFY("promotion:modify"),
+    PROMOTION_REMOVE("promotion:remove"),
+    PROMOTION_ADD("promotion:add"),
+    PROMOTION_USAGE("promotion:usage");
+
+    @Getter
+    @Setter
+    private String permission;
 }

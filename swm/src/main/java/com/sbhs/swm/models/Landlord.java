@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,28 +16,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class Passenger {
+public class Landlord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter BalanceWallet passengerWallet;
+    private @Setter BalanceWallet landlordWallet;
 
-    @OneToMany(mappedBy = "passenger")
-    private @Setter List<Booking> bookings;
+    @OneToMany(mappedBy = "landlord")
+    private @Setter List<PercentagePromotion> percentagePromotions;
 
-    @OneToMany(mappedBy = "passenger")
-    private @Setter List<PercentagePromotion> percentagePromotionWallet;
+    @OneToMany(mappedBy = "landlord")
+    private @Setter List<PriceValuePromotion> priceValuePromotions;
 
-    @OneToMany(mappedBy = "passenger")
-    private @Setter List<PriceValuePromotion> priceValuePromotionWallet;
-
-    @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
+    @OneToOne(mappedBy = "landlordProperty")
     private @Setter SwmUser user;
-
 }

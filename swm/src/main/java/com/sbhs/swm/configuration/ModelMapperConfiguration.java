@@ -1,4 +1,4 @@
-package com.sbhs.swm.helper;
+package com.sbhs.swm.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;

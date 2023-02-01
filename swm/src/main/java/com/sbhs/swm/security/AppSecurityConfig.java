@@ -41,8 +41,8 @@ public class AppSecurityConfig {
                 .cors().disable().csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests((authz) -> {
-                    authz.anyRequest().permitAll();
+                .authorizeHttpRequests((auth) -> {
+                    auth.anyRequest().authenticated();
                 });
 
         return http.build();
@@ -50,9 +50,8 @@ public class AppSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/swagger-resources/configuration/ui", "/favicon.ico",
-                "/swagger-ui.html/", "/swagger-ui.html/**", "/swm/swagger-ui/",
-                "/webjars/springfox-swagger-ui/*",
-                "/webjars/springfox-swagger-ui/springfox.css?v=2.9.2");
+        return (web) -> web.ignoring().antMatchers("/swagger-ui.html/**", "/webjars/springfox-swagger-ui/**",
+                "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/swagger-ui.html",
+                "/swagger-ui.html/**", "/api/user/*");
     }
 }

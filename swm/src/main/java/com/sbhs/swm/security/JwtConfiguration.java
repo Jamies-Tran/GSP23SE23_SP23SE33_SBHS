@@ -4,9 +4,8 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
@@ -24,8 +23,6 @@ public class JwtConfiguration {
     @Value("${jwt.config.duration}")
     private int duration;
 
-    @Bean
-    @Qualifier("date")
     public Date expireDate() {
         return Date.from(new Date().toInstant().plusMillis(duration));
     }

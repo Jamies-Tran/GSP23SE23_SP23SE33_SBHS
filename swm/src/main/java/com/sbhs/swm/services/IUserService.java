@@ -6,7 +6,11 @@ import com.sbhs.swm.models.SwmUser;
 public interface IUserService {
     public SwmUser findUserByUsername(String username);
 
+    public SwmUser authenticatedUser();
+
     public SwmUser registerPassengerAccount(SwmUser user);
+
+    public SwmUser registerLandlordAccount(SwmUser user);
 
     public SwmUser login(String username, String password);
 

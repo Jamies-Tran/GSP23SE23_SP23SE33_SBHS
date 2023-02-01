@@ -15,10 +15,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public enum Role {
     PASSENGER(Sets.newHashSet(Permission.BOOKING_CREATE, Permission.BOOKING_MODIFY, Permission.BOOKING_REMOVE,
-            Permission.BOOKING_CANCEL)),
+            Permission.BOOKING_CANCEL, Permission.PROMOTION_ADD, Permission.PROMOTION_MODIFY,
+            Permission.PROMOTION_REMOVE)),
     LANDLORD(Sets.newHashSet(Permission.HOMESTAY_CREATE, Permission.HOMESTAY_MODIFY, Permission.HOMESTAY_REMOVE,
-            Permission.BOOKING_CANCEL)),
-    ADMIN(Sets.newHashSet(Permission.HOMESTAY_BAN));
+            Permission.BOOKING_CANCEL, Permission.PROMOTION_CREATE, Permission.PROMOTION_USAGE)),
+    ADMIN(Sets.newHashSet(Permission.HOMESTAY_BAN, Permission.PROMOTION_CREATE, Permission.PROMOTION_MODIFY,
+            Permission.PROMOTION_REMOVE));
 
     @Getter
     @Setter
@@ -28,7 +30,7 @@ public enum Role {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_".concat(this.name())));
         this.permissions.stream().forEach(p -> {
-            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(p.name()));
+            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(p.getPermission()));
         });
         return simpleGrantedAuthorities;
     }

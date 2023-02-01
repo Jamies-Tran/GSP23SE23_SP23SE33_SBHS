@@ -22,5 +22,7 @@ public class SwmUserDto {
     private String dob;
     private String address;
     private String avatarUrl;
+    private PassengerDto passengerProperty;
+    private LandlordDto landlordProperty;
     private List<Long> roleIds;
 }

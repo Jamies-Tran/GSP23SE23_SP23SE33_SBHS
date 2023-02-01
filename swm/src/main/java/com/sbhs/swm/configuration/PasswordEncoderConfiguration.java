@@ -1,4 +1,4 @@
-package com.sbhs.swm.helper;
+package com.sbhs.swm.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
