@@ -1,8 +1,8 @@
 package com.sbhs.swm.handlers.exceptions;
 
-public class InvalidPromotionException extends InvalidException {
+public class InvalidPromotionDateException extends InvalidException {
 
-    public InvalidPromotionException() {
+    public InvalidPromotionDateException() {
         super("Invalid promotion(check started date and expired date again)");
 
     }

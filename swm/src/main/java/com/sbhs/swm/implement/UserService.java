@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.sbhs.swm.handlers.exceptions.EmailDuplicateException;
 import com.sbhs.swm.handlers.exceptions.EmailNotFoundException;
+import com.sbhs.swm.handlers.exceptions.InvalidUserStatusException;
 import com.sbhs.swm.handlers.exceptions.LoginFailException;
 import com.sbhs.swm.handlers.exceptions.PasswordDuplicateException;
 import com.sbhs.swm.handlers.exceptions.PasswordModificationException;
@@ -25,6 +26,7 @@ import com.sbhs.swm.models.Passenger;
 import com.sbhs.swm.models.PasswordModificationOtp;
 import com.sbhs.swm.models.SwmRole;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.PasswordModificationOtpRepo;
 import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IMailService;
@@ -69,6 +71,7 @@ public class UserService implements IUserService {
         passenger.setPassengerWallet(balanceWallet);
 
         SwmRole passengerRole = roleService.findRoleByName("passenger");
+        passengerRole.setUsers(List.of(user));
         user.setRoles(List.of(passengerRole));
         user.setPassengerProperty(passenger);
 
@@ -91,6 +94,7 @@ public class UserService implements IUserService {
         balanceWallet.setLandlord(landlord);
         landlord.setLandlordWallet(balanceWallet);
         SwmRole landlordRole = roleService.findRoleByName("landlord");
+        landlordRole.setUsers(List.of(user));
         user.setRoles(List.of(landlordRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setLandlordProperty(landlord);
@@ -111,10 +115,15 @@ public class UserService implements IUserService {
         Optional<SwmUser> checkUsername = userRepo.findByUsername(username);
         if (checkUsername.isPresent()) {
             SwmUser user = checkUsername.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return user;
+            if (user.getLandlordProperty() != null
+                    && !user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATED.name())) {
+                throw new InvalidUserStatusException();
             } else {
-                throw new LoginFailException();
+                if (passwordEncoder.matches(password, user.getPassword())) {
+                    return user;
+                } else {
+                    throw new LoginFailException();
+                }
             }
 
         } else {
@@ -192,5 +201,4 @@ public class UserService implements IUserService {
         return userRepo.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(userDetails.getUsername()));
     }
-
 }

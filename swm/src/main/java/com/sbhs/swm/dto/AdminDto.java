@@ -9,8 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandlordDto {
+public class AdminDto {
     private Long id;
-    private String status;
-    private BalanceWalletDto landlordWallet;
 }

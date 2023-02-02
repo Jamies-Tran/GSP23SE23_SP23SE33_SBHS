@@ -9,10 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PercentagePromotionDto {
+public class PromotionDto {
     private Long id;
     private String code;
     private String createdDate;
     private String expiredDate;
-    private Double discountPercentage;
+    private String status;
+    private Double percentageDiscount;
+    private Long priceDiscount;
+    private String type;
 }

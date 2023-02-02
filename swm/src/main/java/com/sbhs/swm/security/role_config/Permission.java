@@ -17,8 +17,10 @@ public enum Permission {
     PROMOTION_CREATE("promotion:create"),
     PROMOTION_MODIFY("promotion:modify"),
     PROMOTION_REMOVE("promotion:remove"),
+    PROMOTION_VIEW("promotion:view"),
     PROMOTION_ADD("promotion:add"),
-    PROMOTION_USAGE("promotion:usage");
+    PROMOTION_USAGE("promotion:usage"),
+    ADMIN_CREATE("admin:create");
 
     @Getter
     @Setter

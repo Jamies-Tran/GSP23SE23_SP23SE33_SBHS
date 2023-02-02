@@ -4,9 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-
-import com.sbhs.swm.models.status.PromotionStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +31,15 @@ public class Promotion {
     private @Setter String expiredDate;
 
     @Column
-    private @Setter PromotionStatus status;
+    private @Setter String status;
+
+    @ManyToOne
+    private @Setter Passenger passenger;
+
+    @ManyToOne
+    private @Setter Landlord landlord;
+
+    @ManyToOne
+    private @Setter Admin admin;
 
 }

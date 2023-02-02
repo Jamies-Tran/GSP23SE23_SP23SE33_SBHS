@@ -1,7 +1,6 @@
 package com.sbhs.swm.models;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +15,4 @@ public class PriceValuePromotion extends Promotion {
     private @Setter Long priceDiscount;
 
     private String type = "Price_Discount";
-
-    @ManyToOne
-    private @Setter Passenger passenger;
-
-    @ManyToOne
-    private @Setter Landlord landlord;
-
-    @ManyToOne
-    private @Setter Admin admin;
 }
