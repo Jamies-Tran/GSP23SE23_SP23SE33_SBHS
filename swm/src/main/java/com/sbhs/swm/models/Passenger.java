@@ -33,10 +33,7 @@ public class Passenger {
     private @Setter List<Booking> bookings;
 
     @OneToMany(mappedBy = "passenger")
-    private @Setter List<PercentagePromotion> percentagePromotionWallet;
-
-    @OneToMany(mappedBy = "passenger")
-    private @Setter List<PriceValuePromotion> priceValuePromotionWallet;
+    private @Setter List<Promotion> promotionWallet;
 
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;

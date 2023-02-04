@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbhs.swm.dto.PromotionDto;
-import com.sbhs.swm.models.PercentagePromotion;
-import com.sbhs.swm.models.PriceValuePromotion;
 import com.sbhs.swm.models.Promotion;
+import com.sbhs.swm.models.type.PromotionType;
 import com.sbhs.swm.services.IPromotionService;
 
 @RestController
@@ -32,22 +31,10 @@ public class PromotionController {
     private ModelMapper modelMapper;
 
     @PreAuthorize("hasAuthority('promotion:create')")
-    @PostMapping("/new")
-    public ResponseEntity<?> createPercentagePromotion(@RequestBody PromotionDto promotionDto,
-            @RequestParam String creator) {
-
-        Promotion savedPromotion = new Promotion();
-        switch (promotionDto.getType().toUpperCase()) {
-            case "PERCENTAGE":
-                PercentagePromotion percentagePromotion = modelMapper.map(promotionDto, PercentagePromotion.class);
-                savedPromotion = promotionService.createPercentagePromotion(percentagePromotion, creator.toUpperCase());
-                break;
-            case "PRICE":
-                PriceValuePromotion priceValuePromotion = modelMapper.map(promotionDto, PriceValuePromotion.class);
-                savedPromotion = promotionService.createPriceValuePromotion(priceValuePromotion, creator.toUpperCase());
-                break;
-        }
-
+    @PostMapping("/new-group")
+    public ResponseEntity<?> createGroupHomestayPromotion(@RequestBody PromotionDto promotionDto) {
+        Promotion promotion = modelMapper.map(promotionDto, Promotion.class);
+        Promotion savedPromotion = promotionService.createPromotion(promotion, PromotionType.GROUP.name(), null, null);
         PromotionDto responsePromtion = modelMapper.map(savedPromotion, PromotionDto.class);
 
         return new ResponseEntity<PromotionDto>(responsePromtion, HttpStatus.CREATED);

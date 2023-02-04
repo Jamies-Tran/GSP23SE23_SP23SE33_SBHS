@@ -54,6 +54,41 @@
             "name": "admin.avatarUrl",
             "type": "java.lang.String",
             "description": "A description for 'admin.avatarUrl'"
+        },
+        {
+            "name": "momo.partnerCode",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.partnerCode'"
+        },
+        {
+            "name": "momo.accessKey",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.accessKey'"
+        },
+        {
+            "name": "momo.secretKey",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.secretKey'"
+        },
+        {
+            "name": "momo.requestType",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.requestType'"
+        },
+        {
+            "name": "momo.createOrderUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.createOrderUrl'"
+        },
+        {
+            "name": "momo.redirectUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.redirectUrl'"
+        },
+        {
+            "name": "momo.ipnUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.ipnUrl'"
         }
     ]
 }

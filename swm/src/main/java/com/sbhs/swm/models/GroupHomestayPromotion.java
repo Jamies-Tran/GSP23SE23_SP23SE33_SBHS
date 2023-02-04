@@ -1,12 +1,9 @@
 package com.sbhs.swm.models;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -18,14 +15,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Admin {
+public class GroupHomestayPromotion {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "admin")
-    private @Setter List<Promotion> promotions;
+    @OneToOne(mappedBy = "groupHomestayPromotion")
+    private @Setter Promotion promotion;
 
-    @OneToOne(mappedBy = "adminProperty")
-    private @Setter SwmUser user;
+    @OneToOne(mappedBy = "availableGroupHomestayPromotion")
+    private @Setter Landlord groupHomestayOwner;
 }

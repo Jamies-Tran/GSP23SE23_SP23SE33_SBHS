@@ -34,10 +34,10 @@ public class Landlord {
     private @Setter BalanceWallet landlordWallet;
 
     @OneToMany(mappedBy = "landlord")
-    private @Setter List<PercentagePromotion> percentagePromotions;
+    private @Setter List<Promotion> promotions;
 
-    @OneToMany(mappedBy = "landlord")
-    private @Setter List<PriceValuePromotion> priceValuePromotions;
+    @OneToOne
+    private @Setter GroupHomestayPromotion availableGroupHomestayPromotion;
 
     @OneToOne(mappedBy = "landlordProperty")
     private @Setter SwmUser user;
