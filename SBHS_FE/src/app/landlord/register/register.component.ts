@@ -36,6 +36,57 @@ export class RegisterComponent {
       ? 'Not a valid <strong>email</strong>'
       : '';
   }
+
+  // hide
+
+  showDiv = {
+    font : true,
+    back : true,
+  }
+
+  // File image
+  fontCitizenIDfiles: File[] = [];
+  backCitizenIDfiles: File[] = [];
+
+  onSelectFontCitizenID(files: any) {
+    console.log(event);
+    this.fontCitizenIDfiles.push(...files.addedFiles);
+    if(this.fontCitizenIDfiles.length >=1 ){
+      this.showDiv.font = false;
+    }
+  }
+
+  onRemoveFontCitizenID(event: File) {
+    console.log(event);
+    this.fontCitizenIDfiles.splice(this.fontCitizenIDfiles.indexOf(event), 1);
+    console.log("files lenght: " , this.fontCitizenIDfiles.length);
+    if(this.fontCitizenIDfiles.length >=1 ){
+      this.showDiv.font = false;
+    } else {
+      this.showDiv.font = true;
+    }
+  }
+
+  onSelectBackCitizenID(files: any) {
+    console.log(event);
+    this.backCitizenIDfiles.push(...files.addedFiles);
+    if(this.backCitizenIDfiles.length >=1 ){
+      this.showDiv.back = false;
+    }
+  }
+
+  onRemoveBackCitizenID(event: File) {
+    console.log(event);
+    this.backCitizenIDfiles.splice(this.backCitizenIDfiles.indexOf(event), 1);
+    console.log("files lenght: " , this.backCitizenIDfiles.length);
+    if(this.backCitizenIDfiles.length >=1 ){
+      this.showDiv.back = false;
+    } else {
+      this.showDiv.back = true;
+    }
+  }
+
+
 }
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {

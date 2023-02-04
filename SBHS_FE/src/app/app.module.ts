@@ -11,7 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { NgxDropzoneModule } from 'ngx-dropzone';
 // Component
 import { AppComponent } from './app.component';
 import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
@@ -45,6 +45,8 @@ import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxDropzoneModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],

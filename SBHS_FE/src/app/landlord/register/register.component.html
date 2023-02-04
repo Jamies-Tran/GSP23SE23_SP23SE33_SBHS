@@ -125,8 +125,8 @@
                     <div class="reg-input">
                       <mat-form-field class="input-username w-100" appearance="outline">
                         <mat-label>Day of Birth</mat-label>
-                        <input matInput   [formControl]="dobFormControl"
-                          [errorStateMatcher]="matcher" name="txtDob" id="date" [matDatepicker]="picker">
+                        <input matInput [formControl]="dobFormControl" [errorStateMatcher]="matcher" name="txtDob"
+                          id="date" [matDatepicker]="picker">
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                         <mat-icon matPrefix><i class="fa-solid fa-calendar-days"></i></mat-icon>
@@ -147,7 +147,7 @@
                         <mat-label>Phone</mat-label>
                         <input matInput pattern="^[0]\d{9,12}$" type="tel" [formControl]="phoneFormControl"
                           [errorStateMatcher]="matcher" name="txtPhone">
-                          <mat-icon matPrefix><i class="fa-solid fa-phone"></i></mat-icon>
+                        <mat-icon matPrefix><i class="fa-solid fa-phone"></i></mat-icon>
                         <mat-error *ngIf="phoneFormControl.hasError('required')">
                           Phone is <strong>required</strong>
                         </mat-error>
@@ -175,10 +175,45 @@
                   <div class="col-left col-12 col-md-6">
 
                     <h6>Upload font your Citizen ID</h6>
+
+                    <div  ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
+                      (change)="onSelectFontCitizenID($event)" *ngIf="showDiv.font">
+                      <ngx-dropzone-label>
+                        <div>
+                          <i class="fas fa-cloud-upload-alt icon-upload"></i>
+                          <header>Drop files here or click to upload *</header>
+                        </div>
+                      </ngx-dropzone-label>
+                    </div>
+                    <div class="wrapper" *ngFor="let f of fontCitizenIDfiles">
+                      <ngx-dropzone-image-preview class="image-preview" ngProjectAs="ngx-dropzone-preview" [file]="f"
+                        [removable]="true" (removed)="onRemoveFontCitizenID(f)">
+                      </ngx-dropzone-image-preview>
+                      <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" *ngFor="let f of fontCitizenIDfiles"
+                        (removed)="onRemoveFontCitizenID(f)">{{
+                        f.name }}</ngx-dropzone-label>
+                    </div>
                   </div>
                   <!-- col right -->
                   <div class="col-right col-12 col-md-6">
                     <h6>Upload back your Citizen ID</h6>
+                    <div  ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
+                      (change)="onSelectBackCitizenID($event)" *ngIf="showDiv.back">
+                      <ngx-dropzone-label>
+                        <div>
+                          <i class="fas fa-cloud-upload-alt icon-upload"></i>
+                          <header>Drop files here or click to upload *</header>
+                        </div>
+                      </ngx-dropzone-label>
+                    </div>
+                    <div class="wrapper" *ngFor="let f of backCitizenIDfiles">
+                      <ngx-dropzone-image-preview class="image-preview" ngProjectAs="ngx-dropzone-preview" [file]="f"
+                        [removable]="true" (removed)="onRemoveBackCitizenID(f)">
+                      </ngx-dropzone-image-preview>
+                      <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" *ngFor="let f of backCitizenIDfiles"
+                        (removed)="onRemoveBackCitizenID(f)">{{
+                        f.name }}</ngx-dropzone-label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -189,7 +224,8 @@
                   Register</button>
               </div>
             </form>
-            <p>Having an account? <a routerLink="/Landlord" routerLinkActive="active" class="link-info gradient-text-1 fw-bold font-monospace fs-5">Login here</a></p>
+            <p>Having an account? <a routerLink="/Landlord" routerLinkActive="active"
+                class="link-info gradient-text-1 fw-bold font-monospace fs-5">Login here</a></p>
           </div>
         </div>
       </div>
