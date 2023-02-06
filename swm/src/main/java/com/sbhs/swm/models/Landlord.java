@@ -2,7 +2,6 @@ package com.sbhs.swm.models;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,9 +28,6 @@ public class Landlord {
 
     @Column
     private @Setter String status = LandlordStatus.NOT_ACTIVATED.name();
-
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter BalanceWallet landlordWallet;
 
     @OneToMany(mappedBy = "landlord")
     private @Setter List<Promotion> promotions;

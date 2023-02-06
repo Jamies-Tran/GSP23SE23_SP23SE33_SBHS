@@ -2,11 +2,13 @@ package com.sbhs.swm.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,14 +19,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Homestay {
+public class PassengerWallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "homestay")
-    private @Setter List<HomestayPromotion> availableHomestayPromotions;
+    @OneToMany(mappedBy = "depositForPassengerWallet")
+    private @Setter List<PassengerDeposit> depositForHomestays;
 
-    @OneToMany(mappedBy = "homestay")
-    private @Setter List<PassengerDeposit> passengerDeposits;
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private @Setter BalanceWallet passengerBalanceWallet;
+
+    @OneToOne(mappedBy = "passengerWallet")
+    private @Setter Passenger passenger;
+
 }

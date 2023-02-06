@@ -23,6 +23,7 @@ import com.sbhs.swm.handlers.exceptions.VerifyPassModificationFailException;
 import com.sbhs.swm.models.BalanceWallet;
 import com.sbhs.swm.models.Landlord;
 import com.sbhs.swm.models.Passenger;
+import com.sbhs.swm.models.PassengerWallet;
 import com.sbhs.swm.models.PasswordModificationOtp;
 import com.sbhs.swm.models.SwmRole;
 import com.sbhs.swm.models.SwmUser;
@@ -66,9 +67,12 @@ public class UserService implements IUserService {
             throw new PhoneDuplicateException();
         }
         Passenger passenger = new Passenger();
+        PassengerWallet passengerWallet = new PassengerWallet();
         BalanceWallet balanceWallet = new BalanceWallet();
-        balanceWallet.setPassenger(passenger);
-        passenger.setPassengerWallet(balanceWallet);
+        balanceWallet.setPassengerWallet(passengerWallet);
+        passengerWallet.setPassengerBalanceWallet(balanceWallet);
+        passengerWallet.setPassenger(passenger);
+        passenger.setPassengerWallet(passengerWallet);
 
         SwmRole passengerRole = roleService.findRoleByName("passenger");
         passengerRole.setUsers(List.of(user));
@@ -90,9 +94,9 @@ public class UserService implements IUserService {
             throw new PhoneDuplicateException();
         }
         Landlord landlord = new Landlord();
-        BalanceWallet balanceWallet = new BalanceWallet();
-        balanceWallet.setLandlord(landlord);
-        landlord.setLandlordWallet(balanceWallet);
+        // BalanceWallet balanceWallet = new BalanceWallet();
+        // balanceWallet.setLandlord(landlord);
+        // landlord.setLandlordWallet(balanceWallet);
         SwmRole landlordRole = roleService.findRoleByName("landlord");
         landlordRole.setUsers(List.of(user));
         user.setRoles(List.of(landlordRole));

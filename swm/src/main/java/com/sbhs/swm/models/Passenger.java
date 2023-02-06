@@ -26,14 +26,14 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter BalanceWallet passengerWallet;
-
     @OneToMany(mappedBy = "passenger")
     private @Setter List<Booking> bookings;
 
     @OneToMany(mappedBy = "passenger")
     private @Setter List<Promotion> promotionWallet;
+
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private @Setter PassengerWallet passengerWallet;
 
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;

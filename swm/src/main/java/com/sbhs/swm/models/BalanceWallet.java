@@ -22,14 +22,9 @@ public class BalanceWallet {
     private Long id;
 
     @Column
-    private double totalBalance;
+    private @Setter long totalBalance = 0;
 
-    @Column
-    private double availableBalance;
+    @OneToOne(mappedBy = "passengerBalanceWallet")
+    private @Setter PassengerWallet passengerWallet;
 
-    @OneToOne(mappedBy = "passengerWallet")
-    private @Setter Passenger passenger;
-
-    @OneToOne(mappedBy = "landlordWallet")
-    private @Setter Landlord landlord;
 }
