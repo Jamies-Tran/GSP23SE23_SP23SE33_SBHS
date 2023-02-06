@@ -20,18 +20,20 @@ export class LoginLandlordComponent {
   matcher = new MyErrorStateMatcher();
   username = this.usernameFormControl.value +"";
   password = this.passwordFormControl.value +"";
+  
   public getProfile() {
-    console.log(localStorage.getItem('registerSuccess'));
+    console.log(this.username)
     this.http.login(this.username,this.password).subscribe(
       (data) => {
         localStorage.setItem('userToken', data['token']);
         localStorage.setItem('username', data['username']);
-        if (data['roles'][0]['authority'] === 'ROLE_LANDLORD') {
-          this.router.navigate(['/Landlord/Dashboard'], {
-            relativeTo: this.route,
-          });
-        } else
-          this.router.navigate(['/Admin/Request'], { relativeTo: this.route });
+        console.log(data)
+        // if (data['roles'][0]['authority'] === 'ROLE_LANDLORD') {
+        //   this.router.navigate(['/Landlord/Dashboard'], {
+        //     relativeTo: this.route,
+        //   });
+        // } else
+        //   this.router.navigate(['/Admin/Request'], { relativeTo: this.route });
       }
     );
   }

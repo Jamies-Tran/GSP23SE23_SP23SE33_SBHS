@@ -16,13 +16,13 @@ export class ServerHttpService {
   };
 
   public model:any = {};
-  private REST_API_SERVER = 'http://localhost:8080';
+  private REST_API_SERVER = 'http://localhost:8081';
 
   constructor(private httpClient: HttpClient) { }
 
   public login(userInfo : string, password:string) {
     var value = {
-      userInfo,password
+      password,userInfo
     }
     const url =`${this.REST_API_SERVER}/api/user/login`;
     return this.httpClient

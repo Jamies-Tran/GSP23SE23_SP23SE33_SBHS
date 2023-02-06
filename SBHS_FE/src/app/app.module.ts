@@ -17,10 +17,11 @@ import { AppComponent } from './app.component';
 import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
 import { LoginLandlordComponent } from './landlord/login-landlord/login-landlord.component';
 import { LoginPasssengerComponent } from './passenger/login-passsenger/login-passsenger.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './landlord/register/register.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,8 @@ import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
@@ -46,7 +49,7 @@ import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
     MatDatepickerModule,
     MatNativeDateModule,
     NgxDropzoneModule,
-
+    
   ],
   providers: [],
   bootstrap: [AppComponent],
