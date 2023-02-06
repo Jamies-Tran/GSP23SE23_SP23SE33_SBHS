@@ -11,7 +11,7 @@ export class ServerHttpService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      //'Authorization': 'my-auth-token'
+      'Authorization': 'my-auth-token'
     })
   };
 
@@ -20,9 +20,9 @@ export class ServerHttpService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public login(userInfo : string, password:string) {
+  public login(username : string, password:string) {
     var value = {
-      password,userInfo
+      password,username
     }
     const url =`${this.REST_API_SERVER}/api/user/login`;
     return this.httpClient

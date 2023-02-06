@@ -18,8 +18,8 @@ export class LoginLandlordComponent {
   passwordFormControl = new FormControl('', [Validators.required]);
   usernameFormControl = new FormControl('', [Validators.required]);
   matcher = new MyErrorStateMatcher();
-  username = this.usernameFormControl.value +"";
-  password = this.passwordFormControl.value +"";
+  username = "";
+  password = "";
   
   public getProfile() {
     console.log(this.username)
