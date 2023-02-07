@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 
 import '../../bloc/complete_google_reg_bloc.dart';
 import '../../bloc/event/log_in_event.dart';
@@ -45,7 +44,7 @@ class _ChooseGoogleAccountScreenState extends State<ChooseGoogleAccountScreen> {
           future: googleSignIn.signIn(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              print(snapshot.error);
+              // print(snapshot.error);
               if (snapshot.error.toString().contains("PlatformException")) {
                 completeGoogleAuthBloc.eventController.sink
                     .add(BackwardToRegisterScreenEvent(context: context));
@@ -81,7 +80,7 @@ class _ChooseGoogleAccountScreenState extends State<ChooseGoogleAccountScreen> {
                               context: context, googleSignIn: googleSignIn));
                     }
                   } else {
-                    print("snapshot has data: ${snapshot.hasData}");
+                    // print("snapshot has data: ${snapshot.hasData}");
                     completeGoogleAuthBloc.eventController.sink.add(
                         BackwardToRegisterScreenEvent(
                             context: context, message: ""));

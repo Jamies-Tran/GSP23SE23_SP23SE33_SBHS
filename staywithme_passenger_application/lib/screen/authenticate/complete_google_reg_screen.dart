@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:staywithme_passenger_application/bloc/complete_google_reg_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/reg_google_event.dart';
 
-// TODO: update complete gg reg screen
 class CompleteGoogleRegisterScreen extends StatefulWidget {
   const CompleteGoogleRegisterScreen({super.key});
 
@@ -458,11 +457,11 @@ class _CompleteGoogleRegisterScreenState
                                     ),
                                     isExceptionOccured == true
                                         ? Container(
-                                            margin: EdgeInsets.only(
+                                            margin: const EdgeInsets.only(
                                                 top: 25, bottom: 25),
                                             child: Text(
                                               message,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.red,
                                                   fontWeight: FontWeight.bold),
                                             ),

@@ -1,13 +1,8 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:staywithme_passenger_application/bloc/event/log_in_event.dart';
 import 'package:staywithme_passenger_application/bloc/log_in_bloc.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 
 import '../../bloc/complete_google_reg_bloc.dart';
 import '../../bloc/event/reg_google_event.dart';

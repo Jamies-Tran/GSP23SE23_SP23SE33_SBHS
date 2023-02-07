@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
-import 'package:staywithme_passenger_application/bloc/complete_google_reg_bloc.dart';
-import 'package:staywithme_passenger_application/bloc/event/reg_google_event.dart';
 import 'package:staywithme_passenger_application/bloc/event/reg_event.dart';
 import 'package:staywithme_passenger_application/bloc/reg_bloc.dart';
-import 'package:staywithme_passenger_application/bloc/state/reg_google_state.dart';
 import 'package:staywithme_passenger_application/bloc/state/reg_state.dart';
-import 'package:staywithme_passenger_application/service/google_auth_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

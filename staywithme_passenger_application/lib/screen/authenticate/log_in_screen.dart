@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/log_in_event.dart';
 import 'package:staywithme_passenger_application/bloc/log_in_bloc.dart';
-import 'package:staywithme_passenger_application/service/google_auth_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final loginBloc = LoginBloc();
-  final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
+  //final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
 
   @override
   void dispose() {
@@ -381,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 NavigateToForgetPasswordScreenEvent(
                                                     context: context));
                                           },
-                                          child: Text("Forget password?"))
+                                          child: const Text("Forget password?"))
                                     ],
                                   ),
                                 )),

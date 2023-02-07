@@ -112,7 +112,7 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
 
   @override
   Future informLoginToFireAuth(String email, String password) async {
-    print(email.split("@").first);
+    //print(email.split("@").first);
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: email.split("@").first);
