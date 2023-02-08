@@ -45,6 +45,7 @@ dependencies:
   http: ^0.13.5
   flutter_dotenv: ^5.0.2
   cloud_firestore: ^4.3.1
+  flutter_advanced_avatar: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -40,7 +40,7 @@ class _GoogleAccountRegisterValidationScreenState
     final isGoogleRegister = routeArguments["isGoogleRegister"];
 
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.orangeAccent,
       body: FutureBuilder(
         future: authByGoogleService
             .validateGoogleAccount(googleSignIn.currentUser!),

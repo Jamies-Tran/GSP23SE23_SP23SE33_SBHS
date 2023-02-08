@@ -103,6 +103,8 @@ class AuthenticateService extends IAuthenticateService {
             .then((value) {
           if (value is TimeoutException || value is SocketException) {
             return value;
+          } else {
+            _firebaseService.saveLoginInfo(loginModel);
           }
         });
         return loginModel;

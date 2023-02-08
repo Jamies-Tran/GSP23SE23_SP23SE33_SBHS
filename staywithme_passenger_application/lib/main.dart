@@ -9,6 +9,7 @@ import 'package:staywithme_passenger_application/screen/authenticate/google_chos
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 void main() async {
@@ -60,7 +61,9 @@ class MyApp extends StatelessWidget {
         ChangePasswordScreen.changePasswordScreenRoute: (context) =>
             const ChangePasswordScreen(),
         AuthenticateWrapperScreen.authenticateWrapperScreenRoute: (context) =>
-            const AuthenticateWrapperScreen()
+            const AuthenticateWrapperScreen(),
+        PassengerInfoManagementScreen.passengerInfoManagementScreenRoute:
+            (context) => const PassengerInfoManagementScreen()
       },
     );
   }

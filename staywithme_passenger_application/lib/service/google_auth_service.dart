@@ -101,7 +101,7 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
               body: json.encode(passengerModel.toJson()))
           .timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 201) {
-        return true;
+        return PassengerModel.fromJson(json.decode(response.body));
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

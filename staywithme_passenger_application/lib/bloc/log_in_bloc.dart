@@ -2,29 +2,24 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:staywithme_passenger_application/bloc/event/log_in_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/log_in_state.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/login_model.dart';
+import 'package:staywithme_passenger_application/screen/authenticate/authenticate_wrapper.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/forget_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/google_chosen_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/service/auth_service.dart';
-import 'package:staywithme_passenger_application/service/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class LoginBloc {
   final eventController = StreamController<LogInEvent>();
   final stateController = StreamController<LoginState>();
 
-  final _googleSignIn = GoogleSignIn();
-
   final _authService = locator.get<IAuthenticateService>();
-
-  final _googleAuthService = locator.get<IAuthenticateByGoogleService>();
 
   bool _isShowPassword = true;
 
@@ -88,19 +83,19 @@ class LoginBloc {
         }
       });
     } else if (event is ChooseGoogleAccountEvent) {
-      _googleSignIn.isSignedIn().then((value) {
-        if (value == true) {
-          _googleAuthService.signOut().then((value) {
-            if (value is TimeoutException || value is SocketException) {
-              Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute,
-                  arguments: {
-                    "isExceptionOccured": true,
-                    "message": "Network error"
-                  });
-            }
-          });
-        }
-      });
+      // _googleSignIn.isSignedIn().then((value) {
+      //   if (value == true) {
+      //     _googleAuthService.signOut().then((value) {
+      //       if (value is TimeoutException || value is SocketException) {
+      //         Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute,
+      //             arguments: {
+      //               "isExceptionOccured": true,
+      //               "message": "Network error"
+      //             });
+      //       }
+      //     });
+      //   }
+      // });
       Navigator.pushNamed(event.context!,
           ChooseGoogleAccountScreen.chooseGoogleAccountScreenRoute,
           arguments: {"isGoogleRegister": false});
@@ -126,7 +121,8 @@ class LoginBloc {
             "message": "Network error"
           });
         } else {
-          Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute);
+          Navigator.pushNamed(event.context!,
+              AuthenticateWrapperScreen.authenticateWrapperScreenRoute);
         }
       });
     } else if (event is NavigateToForgetPasswordScreenEvent) {

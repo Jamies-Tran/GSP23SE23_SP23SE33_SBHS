@@ -7,6 +7,7 @@ import 'package:staywithme_passenger_application/bloc/state/reg_google_state.dar
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
+import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/service/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -80,12 +81,14 @@ class CompleteGoogleRegBloc {
           arguments: {"isExceptionOccured": true, "message": event.message});
     } else if (event is CancelCompleteGoogleAccountRegisterEvent) {
       if (event.isChangeGoogleAccount!) {
-        _cancelGoogleRegRoute =
-            ChooseGoogleAccountScreen.chooseGoogleAccountScreenRoute;
-      } else {
-        _cancelGoogleRegRoute = RegisterScreen.registerAccountRoute;
+        event.googleSignIn!.signOut().then((value) =>
+            Navigator.of(event.context!).pushReplacementNamed(
+                ChooseGoogleAccountScreen.chooseGoogleAccountScreenRoute,
+                arguments: {"isGoogleRegister": true}));
       }
-      Navigator.of(event.context!).pushReplacementNamed(_cancelGoogleRegRoute!);
+      Navigator.of(event.context!).pushReplacementNamed(
+          RegisterScreen.registerAccountRoute,
+          arguments: {"isGoogleRegister": true});
       // googleAuthService.signOut().then((value) => Navigator.of(event.context!)
       //     .pushReplacementNamed(_cancelGoogleRegRoute!));
     } else if (event is InputUsernameGoogleAuthEvent) {
@@ -129,7 +132,8 @@ class CompleteGoogleRegBloc {
         _focusBirthDayColor = Colors.white;
       }
     } else if (event is CancelChooseAnotherGoogleAccountEvent) {
-      Navigator.of(event.context!).pop();
+      Navigator.pushReplacementNamed(
+          event.context!, LoginScreen.loginScreenRoute);
     } else if (event is SubmitGoogleCompleteRegisterEvent) {
       PassengerModel passenger = PassengerModel(
           address: event.address,
@@ -142,7 +146,14 @@ class CompleteGoogleRegBloc {
           phone: event.phone,
           username: event.username);
       googleAuthService.registerGoogleAccount(passenger).then((value) {
-        if (value is ServerExceptionModel) {
+        if (value is PassengerModel) {
+          Navigator.pushReplacementNamed(
+              event.context!, LoginScreen.loginScreenRoute,
+              arguments: {
+                "isExceptionOccured": false,
+                "message": "Now you can login with ${value.username}"
+              });
+        } else if (value is ServerExceptionModel) {
           usernameTextEditingCtl.text =
               event.googleSignIn!.currentUser!.displayName!;
           emailTextEditingCtl.text = event.googleSignIn!.currentUser!.email;

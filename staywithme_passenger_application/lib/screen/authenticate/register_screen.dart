@@ -55,19 +55,17 @@ class _RegisterScreen extends State<RegisterScreen> {
             isFocusOnBirthday: false));
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: Stack(children: [
-        Image.asset(
-          "images/register_background_2.jpg",
-          width: MediaQuery.of(context).size.width,
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.white, Colors.orange])),
           height: MediaQuery.of(context).size.height,
-          fit: BoxFit.fill,
-        ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-              child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: SafeArea(
+            bottom: true,
+            child: SingleChildScrollView(
               child: StreamBuilder<RegisterState>(
                 stream: registerBloc.stateController.stream,
                 initialData: registerBloc.initData,
@@ -78,7 +76,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                         child: Column(
                           children: [
                             Container(
-                              color: Colors.white54,
                               padding: const EdgeInsets.only(
                                   top: 20, bottom: 20, left: 10, right: 10),
                               child: Column(children: [
@@ -87,7 +84,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   style: TextStyle(
                                       fontFamily: "Lobster",
                                       fontSize: 50,
-                                      color: Colors.black45),
+                                      color: Colors.black),
                                 ),
                                 isExcOccured == true
                                     ? Container(
@@ -740,7 +737,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blueAccent,
+                                    backgroundColor: Colors.green,
                                     minimumSize: const Size(300, 50),
                                     maximumSize: const Size(300, 50)),
                                 child: const Text(
@@ -800,9 +797,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                 },
               ),
             ),
-          )),
+          ),
         ),
-      ]),
+      ),
     );
   }
 }
