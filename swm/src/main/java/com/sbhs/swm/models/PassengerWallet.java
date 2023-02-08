@@ -2,7 +2,6 @@ package com.sbhs.swm.models;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,10 +26,6 @@ public class PassengerWallet {
     @OneToMany(mappedBy = "depositForPassengerWallet")
     private @Setter List<PassengerDeposit> depositForHomestays;
 
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter BalanceWallet passengerBalanceWallet;
-
     @OneToOne(mappedBy = "passengerWallet")
-    private @Setter Passenger passenger;
-
+    private @Setter BalanceWallet passengerBalanceWallet;
 }

@@ -1,5 +1,6 @@
 package com.sbhs.swm.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,9 @@ public class BalanceWallet {
     @Column
     private @Setter long totalBalance = 0;
 
-    @OneToOne(mappedBy = "passengerBalanceWallet")
-    private @Setter PassengerWallet passengerWallet;
+    @OneToOne(mappedBy = "passengerWallet")
+    private @Setter Passenger passenger;
 
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private @Setter PassengerWallet passengerWallet;
 }

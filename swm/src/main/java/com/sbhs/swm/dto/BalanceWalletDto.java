@@ -12,5 +12,5 @@ import lombok.Setter;
 public class BalanceWalletDto {
     private Long id;
     private Long totalBalance;
-    private PassengerDepositDto passengerWallet;
+    private PassengerWalletDto passengerWallet;
 }

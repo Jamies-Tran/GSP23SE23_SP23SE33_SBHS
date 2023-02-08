@@ -12,5 +12,5 @@ import lombok.Setter;
 public class LandlordDto {
     private Long id;
     private String status;
-    private BalanceWalletDto landlordWallet;
+    private BalanceWalletDto balanceWalletDto;
 }

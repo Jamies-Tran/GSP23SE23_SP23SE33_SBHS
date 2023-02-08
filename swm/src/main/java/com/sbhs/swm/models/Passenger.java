@@ -33,7 +33,7 @@ public class Passenger {
     private @Setter List<Promotion> promotionWallet;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter PassengerWallet passengerWallet;
+    private @Setter BalanceWallet passengerWallet;
 
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;

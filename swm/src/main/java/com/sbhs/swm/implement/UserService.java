@@ -70,9 +70,9 @@ public class UserService implements IUserService {
         PassengerWallet passengerWallet = new PassengerWallet();
         BalanceWallet balanceWallet = new BalanceWallet();
         balanceWallet.setPassengerWallet(passengerWallet);
+        balanceWallet.setPassenger(passenger);
         passengerWallet.setPassengerBalanceWallet(balanceWallet);
-        passengerWallet.setPassenger(passenger);
-        passenger.setPassengerWallet(passengerWallet);
+        passenger.setPassengerWallet(balanceWallet);
 
         SwmRole passengerRole = roleService.findRoleByName("passenger");
         passengerRole.setUsers(List.of(user));

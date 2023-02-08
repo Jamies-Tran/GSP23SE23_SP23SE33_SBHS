@@ -98,9 +98,9 @@ public class PaymentService implements IPaymentService {
         WalletType walletType = WalletType.valueOf(momoCaptureWalletDto.getOrderInfo());
         switch (walletType) {
             case PASSENGER_WALLET:
-                long currentBalance = user.getPassengerProperty().getPassengerWallet().getPassengerBalanceWallet()
+                long currentBalance = user.getPassengerProperty().getPassengerWallet()
                         .getTotalBalance();
-                user.getPassengerProperty().getPassengerWallet().getPassengerBalanceWallet()
+                user.getPassengerProperty().getPassengerWallet()
                         .setTotalBalance(currentBalance + momoCaptureWalletDto.getAmount());
                 break;
             default:

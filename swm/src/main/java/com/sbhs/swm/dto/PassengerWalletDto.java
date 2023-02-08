@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassnegerWalletDto {
+public class PassengerWalletDto {
     private Long id;
     private List<PassengerDepositDto> depositForHomestays;
-    private BalanceWalletDto passengerBalanceWallet;
+
 }
