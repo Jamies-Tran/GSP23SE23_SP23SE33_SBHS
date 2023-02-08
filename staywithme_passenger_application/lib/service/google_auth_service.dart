@@ -7,6 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
+import 'package:staywithme_passenger_application/service/firebase_service.dart';
+import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 import '../model/passenger_model.dart';
 
@@ -20,11 +22,13 @@ abstract class IAuthenticateByGoogleService {
 
   Future<dynamic> registerGoogleAccount(PassengerModel passengerModel);
 
-  Future<dynamic> informLoginToFireAuth(String email, String password);
+  Future<dynamic> informLoginToFireAuth(String email);
 }
 
 class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
   final _firebaseAuth = FirebaseAuth.instance;
+
+  final _firebase = locator.get<IFirebaseService>();
 
   GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -53,9 +57,9 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
           .signOut()
           .timeout(Duration(seconds: connectionTimeOut))
           .then((value) async {
-        await _firebaseAuth
-            .signOut()
-            .timeout(Duration(seconds: connectionTimeOut));
+        _firebase
+            .deleteLoginInfo(_firebaseAuth.currentUser!.email!)
+            .then((value) async => await _firebaseAuth.signOut());
       });
     } on TimeoutException catch (e) {
       return e;
@@ -111,15 +115,17 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
   }
 
   @override
-  Future informLoginToFireAuth(String email, String password) async {
-    //print(email.split("@").first);
+  Future informLoginToFireAuth(String email) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: email.split("@").first);
+      await _firebaseAuth
+          .createUserWithEmailAndPassword(
+              email: email, password: email.split("@").first)
+          .then((value) async => await _firebaseAuth.signInWithEmailAndPassword(
+              email: email, password: email.split("@").first));
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         await _firebaseAuth.signInWithEmailAndPassword(
-            email: email, password: password);
+            email: email, password: email.split("@").first);
       }
     }
   }

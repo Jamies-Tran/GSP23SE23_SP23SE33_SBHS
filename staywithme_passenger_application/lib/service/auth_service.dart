@@ -72,8 +72,8 @@ class AuthenticateService extends IAuthenticateService {
       if (response.statusCode == 200) {
         final loginModel = LoginModel.fromJson(json.decode(response.body));
         _firebaseService.saveLoginInfo(loginModel).then((value) async =>
-            await _authByGoogleService.informLoginToFireAuth(
-                loginModel.email!, loginModel.token!));
+            await _authByGoogleService
+                .informLoginToFireAuth(loginModel.email!));
 
         return loginModel;
       } else if (response.statusCode == 401) {
