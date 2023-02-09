@@ -12,6 +12,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 // Component
 import { AppComponent } from './app.component';
 import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
@@ -49,7 +50,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatDatepickerModule,
     MatNativeDateModule,
     NgxDropzoneModule,
-    
+    MdbCarouselModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],
