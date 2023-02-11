@@ -102,6 +102,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "SBHS_FE:build:production",
+            "firebaseProject": "stay-with-me-356017",
+            "firebaseHostingSite": "stay-with-me-356017"
+          }
         }
       }
     }

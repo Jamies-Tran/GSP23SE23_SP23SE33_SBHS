@@ -13,6 +13,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { AngularFireModule } from '@angular/fire/compat';
+// import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 // Component
 import { AppComponent } from './app.component';
 import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
@@ -23,6 +27,9 @@ import { RegisterComponent } from './landlord/register/register.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { HttpClientModule } from '@angular/common/http';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -50,7 +57,14 @@ import { HttpClientModule } from '@angular/common/http';
     MatDatepickerModule,
     MatNativeDateModule,
     NgxDropzoneModule,
-    MdbCarouselModule
+    MdbCarouselModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+    // AngularFirestoreModule,
 
   ],
   providers: [],
