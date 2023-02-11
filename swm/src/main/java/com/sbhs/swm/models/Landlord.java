@@ -39,7 +39,10 @@ public class Landlord {
     private @Setter GroupHomestayPromotion availableGroupHomestayPromotion;
 
     @Column
-    private @Setter String idCardImageUrl;
+    private @Setter String idCardImageUrlFront;
+
+    @Column
+    private @Setter String idCardImageUrlBack;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     @JoinColumn(name = "landlord_wallet_id", referencedColumnName = "id")
