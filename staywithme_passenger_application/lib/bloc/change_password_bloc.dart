@@ -7,7 +7,7 @@ import 'package:staywithme_passenger_application/bloc/state/change_password_stat
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/change_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
-import 'package:staywithme_passenger_application/service/auth_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class ChangePasswordBloc {

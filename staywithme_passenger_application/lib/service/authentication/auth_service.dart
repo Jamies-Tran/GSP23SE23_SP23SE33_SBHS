@@ -7,11 +7,11 @@ import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/login_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:staywithme_passenger_application/service/firebase_service.dart';
-import 'package:staywithme_passenger_application/service/google_auth_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
-import '../global_variable.dart';
+import '../../global_variable.dart';
 
 abstract class IAuthenticateService {
   Future<dynamic> registerAccount(PassengerModel passenger);

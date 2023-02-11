@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/forget_password_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/forget_password_state.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/service/auth_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 import '../../bloc/event/forget_password_event.dart';
@@ -46,141 +46,156 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             stream: forgetPasswordBloc.stateController.stream,
             initialData: forgetPasswordBloc.initData(),
             builder: (context, snapshot) {
-              return SingleChildScrollView(
-                child: Center(
-                    child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 250, bottom: 200),
-                      padding: const EdgeInsets.all(20),
-                      width: 300,
-                      height: 320,
-                      decoration:
-                          const BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey,
-                            blurStyle: BlurStyle.normal,
-                            blurRadius: 5.0,
-                            offset: Offset(5.0, 5.0))
-                      ]),
-                      child: Column(children: [
-                        Text(
-                          isForgetPassword == true
-                              ? "Enter your email"
-                              : "Enter otp",
-                          style: const TextStyle(
-                              fontFamily: "Lobster",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Form(
-                            key: formKey,
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller: emailTextEditingController,
-                                  decoration: InputDecoration(
-                                      hintText: isForgetPassword == true
-                                          ? "Email"
-                                          : "Otp",
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(2.0),
-                                          borderSide: const BorderSide(
-                                              color: Colors.grey, width: 1.0)),
-                                      focusedBorder: const UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black45,
-                                              width: 1.0)),
-                                      errorBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(2.0),
-                                          borderSide: const BorderSide(
-                                              color: Colors.red, width: 1.0))),
-                                  onChanged: (value) {
-                                    if (isForgetPassword) {
-                                      forgetPasswordBloc.eventController.sink
-                                          .add(InputEmailEvent(email: value));
-                                    } else {
-                                      forgetPasswordBloc.eventController.sink
-                                          .add(InputOtpEvent(otp: value));
-                                    }
-                                  },
-                                  validator: (value) {
-                                    if (isForgetPassword) {
-                                      return snapshot.data!.validateEmail();
-                                    } else {
-                                      return snapshot.data!.validateOtp();
-                                    }
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                isExceptionOccured == true
-                                    ? Text(
-                                        message,
-                                        style: const TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    : const SizedBox(),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        minimumSize: const Size(150, 50),
-                                        maximumSize: const Size(150, 50)),
-                                    onPressed: () {
-                                      if (formKey.currentState!.validate()) {
-                                        if (isForgetPassword) {
-                                          forgetPasswordBloc
-                                              .eventController.sink
-                                              .add(ForwardToSendMailScreenEvent(
-                                                  context: context,
-                                                  email:
-                                                      emailTextEditingController
-                                                          .text));
-                                        } else {
-                                          forgetPasswordBloc
-                                              .eventController.sink
-                                              .add(ForwardToValidateOtpScreenEvent(
-                                                  context: context,
-                                                  otp:
-                                                      emailTextEditingController
-                                                          .text,
-                                                  email: email));
-                                        }
+              return Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [Colors.white, Colors.orange])),
+                height: MediaQuery.of(context).size.height,
+                child: SingleChildScrollView(
+                  child: Center(
+                      child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 250, bottom: 200),
+                        padding: const EdgeInsets.all(20),
+                        width: 300,
+                        height: 320,
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurStyle: BlurStyle.normal,
+                                  blurRadius: 5.0,
+                                  offset: Offset(5.0, 5.0))
+                            ]),
+                        child: Column(children: [
+                          Text(
+                            isForgetPassword == true
+                                ? "Enter your email"
+                                : "Enter otp",
+                            style: const TextStyle(
+                                fontFamily: "Lobster",
+                                color: Colors.deepOrangeAccent,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: emailTextEditingController,
+                                    decoration: InputDecoration(
+                                        hintText: isForgetPassword == true
+                                            ? "Email"
+                                            : "Otp",
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(2.0),
+                                            borderSide: const BorderSide(
+                                                color: Colors.grey,
+                                                width: 1.0)),
+                                        focusedBorder:
+                                            const UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.black45,
+                                                    width: 1.0)),
+                                        errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(2.0),
+                                            borderSide: const BorderSide(
+                                                color: Colors.red,
+                                                width: 1.0))),
+                                    onChanged: (value) {
+                                      if (isForgetPassword) {
+                                        forgetPasswordBloc.eventController.sink
+                                            .add(InputEmailEvent(email: value));
+                                      } else {
+                                        forgetPasswordBloc.eventController.sink
+                                            .add(InputOtpEvent(otp: value));
                                       }
                                     },
-                                    child: Text(
-                                      isForgetPassword == true
-                                          ? "Send otp"
-                                          : "Validate",
-                                      style: const TextStyle(
-                                          fontFamily: "Lobster",
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                TextButton(
-                                    onPressed: () => forgetPasswordBloc
-                                        .eventController.sink
-                                        .add(BackwardToLoginScreenEvent(
-                                            context: context)),
-                                    child: const Text(
-                                      "Cancel",
-                                      style: TextStyle(color: Colors.red),
-                                    ))
-                              ],
-                            )),
-                      ]),
-                    ),
-                  ],
-                )),
+                                    validator: (value) {
+                                      if (isForgetPassword) {
+                                        return snapshot.data!.validateEmail();
+                                      } else {
+                                        return snapshot.data!.validateOtp();
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  isExceptionOccured == true
+                                      ? Text(
+                                          message,
+                                          style: const TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : const SizedBox(),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.deepOrangeAccent,
+                                          minimumSize: const Size(150, 50),
+                                          maximumSize: const Size(150, 50)),
+                                      onPressed: () {
+                                        if (formKey.currentState!.validate()) {
+                                          if (isForgetPassword) {
+                                            forgetPasswordBloc
+                                                .eventController.sink
+                                                .add(ForwardToSendMailScreenEvent(
+                                                    context: context,
+                                                    email:
+                                                        emailTextEditingController
+                                                            .text));
+                                          } else {
+                                            forgetPasswordBloc
+                                                .eventController.sink
+                                                .add(ForwardToValidateOtpScreenEvent(
+                                                    context: context,
+                                                    otp:
+                                                        emailTextEditingController
+                                                            .text,
+                                                    email: email));
+                                          }
+                                        }
+                                      },
+                                      child: Text(
+                                        isForgetPassword == true
+                                            ? "Send otp"
+                                            : "Validate",
+                                        style: const TextStyle(
+                                            fontFamily: "Lobster",
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextButton(
+                                      onPressed: () => forgetPasswordBloc
+                                          .eventController.sink
+                                          .add(BackwardToLoginScreenEvent(
+                                              context: context)),
+                                      child: const Text(
+                                        "Cancel",
+                                        style:
+                                            TextStyle(color: Colors.redAccent),
+                                      ))
+                                ],
+                              )),
+                        ]),
+                      ),
+                    ],
+                  )),
+                ),
               );
             }),
       ),

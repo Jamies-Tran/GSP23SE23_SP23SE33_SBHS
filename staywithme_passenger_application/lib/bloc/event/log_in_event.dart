@@ -54,12 +54,36 @@ class LogInByGoogleAccountEvent extends LogInEvent {
   GoogleSignIn? googleSignIn;
 }
 
-class SubmitLoginEvent extends LogInEvent {
-  SubmitLoginEvent({this.context, this.excCount});
+class LogInSuccessEvent extends LogInEvent {
+  LogInSuccessEvent({this.context, this.email, this.username});
+
+  String? email;
+  String? username;
+  BuildContext? context;
+}
+
+class InformLoginToFireAuthEvent extends LogInEvent {
+  InformLoginToFireAuthEvent({this.context, this.email, this.username});
+
+  BuildContext? context;
+  String? username;
+  String? email;
+}
+
+class LogInFailEvent extends LogInEvent {
+  LogInFailEvent({this.context, this.message, this.excCount});
 
   BuildContext? context;
   int? excCount;
+  String? message;
 }
+
+// class SubmitLoginEvent extends LogInEvent {
+//   SubmitLoginEvent({this.context, this.excCount});
+
+//   BuildContext? context;
+//   int? excCount;
+// }
 
 class BackwardToLoginScreenEvent extends LogInEvent {
   BackwardToLoginScreenEvent({this.context, this.message});

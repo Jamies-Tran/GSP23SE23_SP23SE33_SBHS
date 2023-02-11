@@ -63,7 +63,9 @@ class MyApp extends StatelessWidget {
         AuthenticateWrapperScreen.authenticateWrapperScreenRoute: (context) =>
             const AuthenticateWrapperScreen(),
         PassengerInfoManagementScreen.passengerInfoManagementScreenRoute:
-            (context) => const PassengerInfoManagementScreen()
+            (context) => const PassengerInfoManagementScreen(),
+        LoginLoadingScreen.loginLoadingScreenRoute: (context) =>
+            const LoginLoadingScreen()
       },
     );
   }

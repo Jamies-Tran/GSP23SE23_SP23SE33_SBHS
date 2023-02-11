@@ -7,10 +7,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/service/firebase_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
-import '../model/passenger_model.dart';
+import '../../model/passenger_model.dart';
 
 abstract class IAuthenticateByGoogleService {
   Future<dynamic> authenticateByGoogle(GoogleSignInAccount googleSignInAccount);
@@ -23,6 +23,8 @@ abstract class IAuthenticateByGoogleService {
   Future<dynamic> registerGoogleAccount(PassengerModel passengerModel);
 
   Future<dynamic> informLoginToFireAuth(String email);
+
+  Future<void> updateFirebaseUsername(String username);
 }
 
 class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
@@ -128,5 +130,10 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
             email: email, password: email.split("@").first);
       }
     }
+  }
+
+  @override
+  Future<void> updateFirebaseUsername(String username) async {
+    await _firebaseAuth.currentUser!.updateDisplayName(username);
   }
 }

@@ -737,7 +737,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: Colors.deepOrangeAccent,
                                     minimumSize: const Size(300, 50),
                                     maximumSize: const Size(300, 50)),
                                 child: const Text(
@@ -766,7 +766,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           context: context));
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.redAccent,
+                                    backgroundColor: Colors.red,
                                     minimumSize: const Size(300, 50),
                                     maximumSize: const Size(300, 50)),
                                 child: const Text(

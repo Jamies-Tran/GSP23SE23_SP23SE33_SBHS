@@ -1,6 +1,16 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/log_in_event.dart';
 import 'package:staywithme_passenger_application/bloc/log_in_bloc.dart';
+import 'package:staywithme_passenger_application/model/exc_model.dart';
+import 'package:staywithme_passenger_application/model/login_model.dart';
+import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
+import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +24,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final loginBloc = LoginBloc();
+  final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
+  final _firebase = locator.get<IFirebaseService>();
+  final _authService = locator.get<IAuthenticateService>();
   //final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
 
   @override
@@ -42,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 contextArguments["usernameTextEditingController"] != null
             ? contextArguments["usernameTextEditingController"]
             : TextEditingController();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -49,12 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
             isFocusUsername: false, isFocusPassword: false));
       },
       child: Stack(children: [
-        // Image.asset(
-        //   "images/login_background.jpg",
-        //   width: MediaQuery.of(context).size.width,
-        //   height: MediaQuery.of(context).size.height,
-        //   fit: BoxFit.cover,
-        // ),
         Scaffold(
           body: StreamBuilder(
             stream: loginBloc.stateController.stream,
@@ -316,16 +324,119 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     ),
                                                   );
                                                 } else {
-                                                  loginBloc.eventController.sink
-                                                      .add(SubmitLoginEvent(
-                                                          context: context,
-                                                          excCount: excCount));
+                                                  LoginModel loginModel =
+                                                      LoginModel(
+                                                          username: snapshot
+                                                              .data!.username,
+                                                          password: snapshot
+                                                              .data!.password);
+
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        Dialog(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .orangeAccent,
+                                                            child: Container(
+                                                              height: 70,
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 25,
+                                                                      bottom:
+                                                                          25),
+                                                              child: Center(
+                                                                child:
+                                                                    FutureBuilder(
+                                                                  future: _authService
+                                                                      .login(
+                                                                          loginModel),
+                                                                  builder: (context,
+                                                                      futureBuilderSnapshot) {
+                                                                    dynamic
+                                                                        data =
+                                                                        futureBuilderSnapshot
+                                                                            .data;
+                                                                    switch (futureBuilderSnapshot
+                                                                        .connectionState) {
+                                                                      case ConnectionState
+                                                                          .waiting:
+                                                                        return Column(
+                                                                          children: const [
+                                                                            SpinKitCircle(
+                                                                              color: Colors.deepOrangeAccent,
+                                                                            ),
+                                                                            Text(
+                                                                              "Checking your information...",
+                                                                              style: TextStyle(fontFamily: "Lobster", color: Colors.black),
+                                                                            )
+                                                                          ],
+                                                                        );
+                                                                      case ConnectionState
+                                                                          .done:
+                                                                        if (data
+                                                                            is LoginModel) {
+                                                                          return FutureBuilder(
+                                                                            future:
+                                                                                _firebase.saveLoginInfo(loginModel),
+                                                                            builder:
+                                                                                (context, snapshot) {
+                                                                              switch (snapshot.connectionState) {
+                                                                                case ConnectionState.waiting:
+                                                                                  return Column(
+                                                                                    children: const [
+                                                                                      SpinKitCircle(
+                                                                                        color: Colors.deepOrangeAccent,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        "Loging in...",
+                                                                                        style: TextStyle(fontFamily: "Lobster", color: Colors.black),
+                                                                                      )
+                                                                                    ],
+                                                                                  );
+                                                                                case ConnectionState.done:
+                                                                                  loginBloc.eventController.sink.add(LogInSuccessEvent(context: context, email: data.email, username: data.username));
+                                                                                  break;
+                                                                                default:
+                                                                                  break;
+                                                                              }
+                                                                              return const SizedBox();
+                                                                            },
+                                                                          );
+                                                                        } else if (data
+                                                                            is ServerExceptionModel) {
+                                                                          loginBloc.eventController.sink.add(LogInFailEvent(
+                                                                              context: context,
+                                                                              message: data.message,
+                                                                              excCount: 0));
+                                                                        } else if (data
+                                                                                is TimeoutException ||
+                                                                            data
+                                                                                is SocketException) {
+                                                                          loginBloc.eventController.sink.add(LogInFailEvent(
+                                                                              context: context,
+                                                                              message: data.message,
+                                                                              excCount: null));
+                                                                        }
+
+                                                                        break;
+                                                                      default:
+                                                                        return const Text(
+                                                                            "done");
+                                                                    }
+                                                                    return const SizedBox();
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            )),
+                                                  );
                                                 }
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:
-                                                    Colors.orangeAccent,
+                                                    Colors.deepOrangeAccent,
                                                 minimumSize:
                                                     const Size(300, 50),
                                                 maximumSize:
@@ -335,21 +446,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                               style: TextStyle(
                                                   fontFamily: "Lobster"),
                                             )),
-                                        // ElevatedButton(
-                                        //     onPressed: () {
-                                        //       _firebaseAuth
-                                        //           .signOut()
-                                        //           .then((value) => null);
-                                        //     },
-                                        //     style: ElevatedButton.styleFrom(
-                                        //         backgroundColor: Colors.green,
-                                        //         minimumSize: const Size(300, 50),
-                                        //         maximumSize: const Size(300, 50)),
-                                        //     child: const Text(
-                                        //       "Sign out",
-                                        //       style: TextStyle(
-                                        //           fontFamily: "Lobster"),
-                                        //     )),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -388,7 +484,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                     backgroundColor:
-                                                        Colors.blueAccent,
+                                                        Colors.greenAccent,
                                                     minimumSize:
                                                         const Size(140, 50),
                                                     maximumSize:
@@ -421,6 +517,93 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ]),
+    );
+  }
+}
+
+class LoginLoadingScreen extends StatefulWidget {
+  const LoginLoadingScreen({super.key});
+  static String loginLoadingScreenRoute = "/login-loading";
+
+  @override
+  State<LoginLoadingScreen> createState() => _LoginLoadingScreenState();
+}
+
+class _LoginLoadingScreenState extends State<LoginLoadingScreen> {
+  final loginBloc = LoginBloc();
+  final firebaseAuth = locator.get<IAuthenticateByGoogleService>();
+
+  @override
+  void dispose() {
+    loginBloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final contextArgurments = ModalRoute.of(context)!.settings.arguments as Map;
+    String email = contextArgurments["email"];
+    String username = contextArgurments["username"];
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.orange, Colors.white])),
+        child: FutureBuilder(
+          future: firebaseAuth.informLoginToFireAuth(email),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SpinKitCircle(
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Just a minutes...",
+                          style: TextStyle(fontFamily: "Lobster"),
+                        )
+                      ]),
+                );
+              case ConnectionState.done:
+                loginBloc.eventController.sink.add(InformLoginToFireAuthEvent(
+                    context: context, email: email, username: username));
+                break;
+              default:
+                break;
+            }
+
+            return Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.orange, Colors.white]),
+              ),
+              child: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.check_box_rounded,
+                        color: Colors.greenAccent,
+                        size: 50,
+                      ),
+                      Text(
+                        "Success",
+                        style: TextStyle(fontFamily: "Lobster"),
+                      )
+                    ]),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

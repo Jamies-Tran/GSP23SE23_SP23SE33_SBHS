@@ -7,7 +7,7 @@ import 'package:staywithme_passenger_application/bloc/log_in_bloc.dart';
 import '../../bloc/complete_google_reg_bloc.dart';
 import '../../bloc/event/reg_google_event.dart';
 
-import '../../service/google_auth_service.dart';
+import '../../service/authentication/google_auth_service.dart';
 import '../../service_locator/service_locator.dart';
 
 class GoogleAccountValidationScreen extends StatefulWidget {

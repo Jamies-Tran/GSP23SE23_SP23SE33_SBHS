@@ -20,3 +20,5 @@ final emailValidateUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["EMAIL_VALIDATE"]}";
 
 final registerUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["REGISTER"]}";
+
+final userInfoUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["USER_INFORMATION"]}";
