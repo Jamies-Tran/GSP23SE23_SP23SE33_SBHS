@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -42,9 +43,11 @@ public class Promotion {
     private @Setter String status;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(name = "group_promotion_id", referencedColumnName = "id")
     private @Setter GroupHomestayPromotion groupHomestayPromotion;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(name = "homestay_promotion_id", referencedColumnName = "id")
     private @Setter HomestayPromotion homestayPromotion;
 
     @ManyToOne

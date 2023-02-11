@@ -61,15 +61,19 @@ public class SwmUser {
     private @Setter boolean changePassword = false;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
+    @JoinColumn(name = "passenger_property_id", referencedColumnName = "id")
     private @Setter Passenger passengerProperty;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
+    @JoinColumn(name = "landlord_property_id", referencedColumnName = "id")
     private @Setter Landlord landlordProperty;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
+    @JoinColumn(name = "admin_property_id", referencedColumnName = "id")
     private @Setter Admin adminProperty;
 
     @OneToOne(cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE })
+    @JoinColumn(name = "otp_id", referencedColumnName = "id")
     private @Setter PasswordModificationOtp otpToken;
 
     @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE }, fetch = FetchType.EAGER)
