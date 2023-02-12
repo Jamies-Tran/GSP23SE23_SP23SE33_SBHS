@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class LandlordDto {
     private Long id;
+    private String idCardFrontImageUrl;
+    private String idCardBackImageUrl;
     private String status;
     private BalanceWalletDto balanceWalletDto;
 }
