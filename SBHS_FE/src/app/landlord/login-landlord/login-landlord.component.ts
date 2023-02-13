@@ -14,12 +14,19 @@ export class LoginLandlordComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {}
+  flag = 'false'
+  ngOnInit(): void {
+    if(localStorage.getItem("registerSucess") == 'true'){
+      this.flag = "true"
+    }
+  }
   hide = true;
   passwordFormControl = new FormControl('', [Validators.required]);
   usernameFormControl = new FormControl('', [Validators.required]);
   matcher = new MyErrorStateMatcher();
 
   public getProfile() {
+    this.flag = "false"
     this.http.login(this.usernameFormControl.value +"",this.passwordFormControl.value +"").subscribe(
       (data) => {
         localStorage.setItem('userToken', data['token']);
