@@ -24,7 +24,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final loginBloc = LoginBloc();
-  final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
   final _firebase = locator.get<IFirebaseService>();
   final _authService = locator.get<IAuthenticateService>();
   //final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
@@ -379,7 +378,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                             is LoginModel) {
                                                                           return FutureBuilder(
                                                                             future:
-                                                                                _firebase.saveLoginInfo(loginModel),
+                                                                                _firebase.saveLoginInfo(data),
                                                                             builder:
                                                                                 (context, snapshot) {
                                                                               switch (snapshot.connectionState) {

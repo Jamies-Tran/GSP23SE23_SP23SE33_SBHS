@@ -1,8 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 
-final connectionTimeOut = int.parse(dotenv.env["CONNECTION_TIMEOUT"]!);
-
-// AuthentcateService Api Url
+// api url
 final registerationUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["REGISTER"]}";
 
 final loginUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["LOGIN"]}";
@@ -22,3 +21,12 @@ final emailValidateUrl =
 final registerUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["REGISTER"]}";
 
 final userInfoUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["USER_INFORMATION"]}";
+
+final paymentUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT"]}";
+
+final paymentHistoryUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT_HISTORY"]}";
+
+// common variable
+final currencyFormat = NumberFormat("#,##0");
+final connectionTimeOut = int.parse(dotenv.env["CONNECTION_TIMEOUT"]!);

@@ -9,7 +9,9 @@ import 'package:staywithme_passenger_application/screen/authenticate/google_chos
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
+import 'package:staywithme_passenger_application/screen/personal/payment_history_screen.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 void main() async {
@@ -65,7 +67,11 @@ class MyApp extends StatelessWidget {
         PassengerInfoManagementScreen.passengerInfoManagementScreenRoute:
             (context) => const PassengerInfoManagementScreen(),
         LoginLoadingScreen.loginLoadingScreenRoute: (context) =>
-            const LoginLoadingScreen()
+            const LoginLoadingScreen(),
+        AddBalanceScreen.addBalanceScreenRoute: (context) =>
+            const AddBalanceScreen(),
+        PaymentHistoryScreen.paymentHistoryScreenRoute: (context) =>
+            const PaymentHistoryScreen()
       },
     );
   }

@@ -8,7 +8,8 @@ class PassengerModel {
       this.gender,
       this.idCardNumber,
       this.dob,
-      this.avatarUrl});
+      this.avatarUrl,
+      this.passengerPropertyModel});
 
   String? username;
   String? password;
@@ -19,6 +20,7 @@ class PassengerModel {
   String? idCardNumber;
   String? dob;
   String? avatarUrl;
+  PassengerPropertyModel? passengerPropertyModel;
 
   factory PassengerModel.fromJson(Map<String, dynamic> json) => PassengerModel(
       username: json["username"],
@@ -29,7 +31,9 @@ class PassengerModel {
       avatarUrl: json["avatarUrl"],
       idCardNumber: json["idCardNumber"],
       dob: json["dob"],
-      gender: json["gender"]);
+      gender: json["gender"],
+      passengerPropertyModel:
+          PassengerPropertyModel.fromJson(json["passengerProperty"]));
 
   Map<String, String?> toJson() => {
         "username": username,
@@ -44,22 +48,45 @@ class PassengerModel {
       };
 }
 
+class PassengerPropertyModel {
+  PassengerPropertyModel({this.id, this.balanceWalletModel});
+
+  int? id;
+  BalanceWalletModel? balanceWalletModel;
+
+  factory PassengerPropertyModel.fromJson(Map<String, dynamic> json) =>
+      PassengerPropertyModel(
+          id: json["id"],
+          balanceWalletModel:
+              BalanceWalletModel.fromJson(json["passengerWallet"]));
+
+  Map<String, dynamic> toJson() =>
+      {"id": id, "passengerWallet": balanceWalletModel};
+}
+
 class PassengerWalletModel {
-  PassengerWalletModel(
-      {this.id, this.depositForHomestays, this.passengerBalanceWallet});
+  PassengerWalletModel({this.id, this.depositForHomestays});
 
   int? id;
   List<PassengerDepositModel>? depositForHomestays;
-  BalanceWalletModel? passengerBalanceWallet;
 
   factory PassengerWalletModel.fromJson(Map<String, dynamic> json) =>
       PassengerWalletModel(
-          id: json["id"],
-          depositForHomestays: json["depositForHomestays"] ??
-              json["depositForHomestays"]
-                  .map((e) => PassengerDepositModel.fromJson(e)),
-          passengerBalanceWallet:
-              BalanceWalletModel.fromJson(json["passengerBalanceWallet"]));
+        id: json["id"],
+        depositForHomestays: List<PassengerDepositModel>.from(
+            json["depositForHomestays"]
+                .map((e) => PassengerDepositModel.fromJson(e))),
+      );
+
+  int totalDeposit() {
+    int total = 0;
+    depositForHomestays != null
+        ? depositForHomestays?.forEach((element) {
+            total = total + element.deposit!;
+          })
+        : total = 0;
+    return total;
+  }
 }
 
 class PassengerDepositModel {
@@ -71,7 +98,7 @@ class PassengerDepositModel {
   factory PassengerDepositModel.fromJson(Map<String, dynamic> json) =>
       PassengerDepositModel(id: json["id"], deposit: json["deposit"]);
 
-  Map<String, dynamic> toJason() => {"deposit": deposit};
+  Map<String, dynamic> toJson() => {"deposit": deposit};
 }
 
 class BalanceWalletModel {

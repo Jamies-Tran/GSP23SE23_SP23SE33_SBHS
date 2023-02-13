@@ -55,14 +55,17 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
   @override
   Future signOut() async {
     try {
-      googleSignIn
+      String? email = _firebaseAuth.currentUser!.email;
+      await googleSignIn.signOut().then((value) => _firebase
+          .deleteLoginInfo(email!)
+          .timeout(Duration(seconds: connectionTimeOut)));
+
+      await _firebaseAuth
           .signOut()
-          .timeout(Duration(seconds: connectionTimeOut))
-          .then((value) async {
-        _firebase
-            .deleteLoginInfo(_firebaseAuth.currentUser!.email!)
-            .then((value) async => await _firebaseAuth.signOut());
-      });
+          .then((value) => _firebase
+              .deleteLoginInfo(email!)
+              .timeout(Duration(seconds: connectionTimeOut)))
+          .timeout(Duration(seconds: connectionTimeOut));
     } on TimeoutException catch (e) {
       return e;
     } on SocketException catch (e) {
