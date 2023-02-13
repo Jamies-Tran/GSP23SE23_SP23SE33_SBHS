@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ServerHttpService } from 'src/app/services/register.service';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +15,11 @@ import { ErrorStateMatcher } from '@angular/material/core';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  constructor(
+    private http: ServerHttpService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
   hide = true;
   passwordFormControl = new FormControl('', [Validators.required]);
   confirmPasswordFormControl = new FormControl('', [Validators.required]);
@@ -25,6 +32,7 @@ export class RegisterComponent {
   idFormControl = new FormControl('', [Validators.required]);
   dobFormControl = new FormControl('', [Validators.required]);
   phoneFormControl = new FormControl('', [Validators.required]);
+  gender = "Male";
   matcher = new MyErrorStateMatcher();
 
   getEmailErrorMessage() {
@@ -86,6 +94,13 @@ export class RegisterComponent {
     }
   }
 
+  public register(){
+    this.http.registerLandlord(this.addressFormControl.value+"", this.dobFormControl.value+"", this.emailFormControl.value+"", this.gender,
+    this.idFormControl.value+"", this.passwordFormControl.value+"", this.phoneFormControl.value+"", this.usernameFormControl.value +"").subscribe((data) =>{
+      localStorage.setItem("registerSuccess",'true');
+      this.router.navigate(['/Landlord'],{relativeTo: this.route});
+    })
+  }
 
 }
 /** Error when invalid control is dirty, touched, or submitted. */

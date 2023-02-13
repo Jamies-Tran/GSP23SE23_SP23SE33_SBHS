@@ -21,7 +21,7 @@
                 <div class="username">
                   <mat-form-field class="input-username w-100" appearance="outline">
                     <mat-label>Username</mat-label>
-                    <input matInput type="text" required="Please Enter Username" [formControl]="usernameFormControl" [(ngModel)]="username"
+                    <input matInput type="text" required="Please Enter Username" [formControl]="usernameFormControl" 
                       [errorStateMatcher]="matcher" name="txtUsername">
                     <mat-icon matPrefix><i class="fa-solid fa-user"></i></mat-icon>
                     <mat-error *ngIf="usernameFormControl.hasError('required')">
@@ -32,7 +32,7 @@
                 <div class="password">
                   <mat-form-field class="input-password w-100" appearance="outline" >
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" name="txtPassword" [formControl]="passwordFormControl" [(ngModel)]="password"
+                    <input matInput type="password" name="txtPassword" [formControl]="passwordFormControl" 
                       [errorStateMatcher]="matcher" required="Please Enter PaformControlssword"
                       [type]="hide ? 'password' : 'text'">
                     <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>

@@ -18,12 +18,9 @@ export class LoginLandlordComponent {
   passwordFormControl = new FormControl('', [Validators.required]);
   usernameFormControl = new FormControl('', [Validators.required]);
   matcher = new MyErrorStateMatcher();
-  username = "";
-  password = "";
-  
+
   public getProfile() {
-    console.log(this.username)
-    this.http.login(this.username,this.password).subscribe(
+    this.http.login(this.usernameFormControl.value +"",this.passwordFormControl.value +"").subscribe(
       (data) => {
         localStorage.setItem('userToken', data['token']);
         localStorage.setItem('username', data['username']);

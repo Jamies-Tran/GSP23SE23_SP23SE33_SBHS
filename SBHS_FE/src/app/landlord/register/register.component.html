@@ -10,7 +10,7 @@
             <div>
               <h3 class="fw-normal mb-3 pb-3 align-items-center" style="letter-spacing: 1px;">Register</h3>
             </div>
-            <form method="POST">
+            <form (ngSubmit)="register()">
               <div class="register-input ">
                 <h5 class="text-start">Basic Information</h5>
 
@@ -161,7 +161,7 @@
                       <mat-form-field class="input-username w-100" appearance="outline">
                         <mat-label>Gender</mat-label>
                         <mat-icon matPrefix><i class="fa-solid fa-mars-and-venus"></i></mat-icon>
-                        <mat-select placeholder="Gender">
+                        <mat-select placeholder="Gender" (ngModel)="gender">
                           <mat-option value="Male">Male </mat-option>
                           <mat-option value="Female">Female </mat-option>
                         </mat-select>
