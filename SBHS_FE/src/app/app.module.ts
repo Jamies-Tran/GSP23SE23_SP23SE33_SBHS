@@ -1,3 +1,6 @@
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatRippleModule } from '@angular/material/core';
 // Module
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,9 +17,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { AngularFireModule } from '@angular/fire/compat';
-// import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import {MatDialogModule} from '@angular/material/dialog';
+
 // Component
 import { AppComponent } from './app.component';
 import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
@@ -30,6 +34,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +44,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     LoginPasssengerComponent,
     RegisterComponent,
     ForgotPassComponent,
+    WelcomePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +70,10 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    // AngularFirestoreModule,
+    MatRippleModule,
+    MatButtonToggleModule,
+    MatMenuModule,
+    MatDialogModule
 
   ],
   providers: [],
