@@ -1,3 +1,6 @@
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatRippleModule } from '@angular/material/core';
 // Module
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,6 +15,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import {MatDialogModule} from '@angular/material/dialog';
+
 // Component
 import { AppComponent } from './app.component';
 import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
@@ -22,6 +31,10 @@ import { RegisterComponent } from './landlord/register/register.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { HttpClientModule } from '@angular/common/http';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +44,7 @@ import { HttpClientModule } from '@angular/common/http';
     LoginPasssengerComponent,
     RegisterComponent,
     ForgotPassComponent,
+    WelcomePageComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +63,18 @@ import { HttpClientModule } from '@angular/common/http';
     MatDatepickerModule,
     MatNativeDateModule,
     NgxDropzoneModule,
-    
+    MdbCarouselModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
+    MatRippleModule,
+    MatButtonToggleModule,
+    MatMenuModule,
+    MatDialogModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],

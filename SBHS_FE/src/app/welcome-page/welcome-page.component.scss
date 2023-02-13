@@ -266,3 +266,13 @@
   padding-left: 6px !important;
   padding-right: 0 !important;
 }
+
+.footer{
+  background-image: url(/assets/images/bg.jpg);
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-size: cover;
+  .logo {
+    width: 80px;
+  }
+}
