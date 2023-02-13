@@ -1,5 +1,6 @@
 package com.sbhs.swm.implement;
 
+import java.util.List;
 import java.util.Random;
 
 import javax.transaction.Transactional;
@@ -11,17 +12,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.sbhs.swm.dto.MomoCaptureWalletDto;
+import com.sbhs.swm.models.PaymentHistory;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.type.PaymentType;
 import com.sbhs.swm.models.type.WalletType;
+import com.sbhs.swm.repositories.PaymentRepo;
 import com.sbhs.swm.services.IPaymentService;
 import com.sbhs.swm.services.IUserService;
+import com.sbhs.swm.util.DateFormatUtil;
 import com.sbhs.swm.util.MomoSignatureHashingUtil;
 
 @Service
 public class PaymentService implements IPaymentService {
 
     @Autowired
+    private PaymentRepo paymentRepo;
+
+    @Autowired
     private IUserService userService;
+
+    @Autowired
+    private DateFormatUtil dateFormatUtil;
 
     @Autowired
     private String getPartnerCode;
@@ -102,6 +113,14 @@ public class PaymentService implements IPaymentService {
                         .getTotalBalance();
                 user.getPassengerProperty().getPassengerWallet()
                         .setTotalBalance(currentBalance + momoCaptureWalletDto.getAmount());
+                PaymentHistory paymentHistory = new PaymentHistory();
+                paymentHistory.setAmount(momoCaptureWalletDto.getAmount());
+                paymentHistory.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+                paymentHistory
+                        .setPassengerWallet(user.getPassengerProperty().getPassengerWallet().getPassengerWallet());
+                paymentHistory.setPaymentMethod(PaymentType.MOMO.name());
+                PaymentHistory savedPaymentHistory = paymentRepo.save(paymentHistory);
+                user.getPassengerProperty().getPassengerWallet().getPassengerWallet().setPaymentHistories(List.of(savedPaymentHistory));
                 break;
             default:
                 break;

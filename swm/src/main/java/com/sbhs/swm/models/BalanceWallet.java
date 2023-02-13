@@ -36,4 +36,8 @@ public class BalanceWallet {
     @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
     private @Setter PassengerWallet passengerWallet;
 
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(name = "landlord_wallet_id", referencedColumnName = "id")
+    private @Setter LandlordWallet landlordWallet;
+
 }

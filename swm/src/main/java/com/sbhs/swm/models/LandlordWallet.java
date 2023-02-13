@@ -18,17 +18,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class PassengerWallet {
+public class LandlordWallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "depositForPassengerWallet")
-    private @Setter List<PassengerDeposit> depositForHomestays;
+    @OneToOne(mappedBy = "landlordWallet")
+    private @Setter BalanceWallet landlordBalanceWallet;
 
-    @OneToOne(mappedBy = "passengerWallet")
-    private @Setter BalanceWallet passengerBalanceWallet;
+    @OneToMany(mappedBy = "landlordWallet")
+    private @Setter List<LandlordCommission> landlordCommissions;
 
-    @OneToMany(mappedBy = "passengerWallet")
+    @OneToMany(mappedBy = "landlordWallet")
     private @Setter List<PaymentHistory> paymentHistories;
 }

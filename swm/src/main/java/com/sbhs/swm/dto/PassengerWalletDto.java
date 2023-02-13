@@ -14,5 +14,6 @@ import lombok.Setter;
 public class PassengerWalletDto {
     private Long id;
     private List<PassengerDepositDto> depositForHomestays;
+    private List<PaymentHistoryDto> paymentHistories;
 
 }

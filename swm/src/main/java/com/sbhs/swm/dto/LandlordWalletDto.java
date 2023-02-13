@@ -1,5 +1,7 @@
 package com.sbhs.swm.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BalanceWalletDto {
+public class LandlordWalletDto {
     private Long id;
-    private Long totalBalance;
-    private PassengerWalletDto passengerWallet;
-    private LandlordWalletDto landlordWallet;
-
+    private List<LandlordCommissionDto> landlordCommissions;
+    private List<PaymentHistoryDto> paymentHistories;
 }

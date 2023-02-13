@@ -30,4 +30,9 @@ public class DateFormatUtil {
             throw new InvalidDateException(date);
         }
     }
+
+    public String formatDateTimeNowToString() {
+        Date now = new Date();
+        return simpleDateFormat.format(now);
+    }
 }

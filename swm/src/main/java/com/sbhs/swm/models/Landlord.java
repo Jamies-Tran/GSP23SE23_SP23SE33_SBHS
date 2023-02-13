@@ -45,7 +45,7 @@ public class Landlord {
     private @Setter String idCardBackImageUrl;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    @JoinColumn(name = "landlord_wallet_id", referencedColumnName = "id")
+    @JoinColumn(name = "balance_wallet_id", referencedColumnName = "id")
     private @Setter BalanceWallet landlordWallet;
 
     @OneToOne(mappedBy = "landlordProperty")

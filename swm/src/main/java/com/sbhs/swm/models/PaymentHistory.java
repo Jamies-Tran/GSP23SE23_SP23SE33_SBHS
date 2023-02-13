@@ -1,10 +1,10 @@
 package com.sbhs.swm.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -16,17 +16,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class PassengerDeposit {
+public class PaymentHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private @Setter Long deposit;
+    @Column
+    private @Setter String createdDate;
+
+    @Column
+    private @Setter Long amount;
+
+    @Column
+    private @Setter String paymentMethod;
 
     @ManyToOne
-    private @Setter Homestay homestay;
+    private @Setter PassengerWallet passengerWallet;
 
     @ManyToOne
-    @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
-    private @Setter PassengerWallet depositForPassengerWallet;
+    private @Setter LandlordWallet landlordWallet;
 }
