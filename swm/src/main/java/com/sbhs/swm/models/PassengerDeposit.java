@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +26,6 @@ public class PassengerDeposit {
     private @Setter Homestay homestay;
 
     @ManyToOne
-    @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
     private @Setter PassengerWallet depositForPassengerWallet;
+
 }

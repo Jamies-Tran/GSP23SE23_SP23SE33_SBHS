@@ -6,6 +6,9 @@ import java.util.Random;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -120,12 +123,22 @@ public class PaymentService implements IPaymentService {
                         .setPassengerWallet(user.getPassengerProperty().getPassengerWallet().getPassengerWallet());
                 paymentHistory.setPaymentMethod(PaymentType.MOMO.name());
                 PaymentHistory savedPaymentHistory = paymentRepo.save(paymentHistory);
-                user.getPassengerProperty().getPassengerWallet().getPassengerWallet().setPaymentHistories(List.of(savedPaymentHistory));
+                user.getPassengerProperty().getPassengerWallet().getPassengerWallet()
+                        .setPaymentHistories(List.of(savedPaymentHistory));
                 break;
             default:
                 break;
         }
         return null;
+    }
+
+    @Override
+    public List<PaymentHistory> findPaymentHistoriesOfPassenger(int page, int size) {
+        String username = userService.authenticatedUser().getUsername();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PaymentHistory> paymentHistories = paymentRepo.findPaymentHistoriesByPassenger(pageable, username);
+
+        return paymentHistories.getContent();
     }
 
 }

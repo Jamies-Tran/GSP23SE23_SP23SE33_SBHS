@@ -1,10 +1,11 @@
 package com.sbhs.swm.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,15 +16,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class GroupHomestayPromotion {
-
+public class HomestayImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "groupHomestayPromotion")
-    private @Setter Promotion promotion;
+    @Column
+    private @Setter String imageUrl;
 
-    @OneToOne(mappedBy = "availableGroupHomestayPromotion")
-    private @Setter Landlord groupHomestayOwner;
+    @ManyToOne
+    private @Setter Homestay homestay;
 }

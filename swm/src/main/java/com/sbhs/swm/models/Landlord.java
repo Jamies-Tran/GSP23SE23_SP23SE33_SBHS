@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -34,10 +33,6 @@ public class Landlord {
     @OneToMany(mappedBy = "landlord")
     private @Setter List<Promotion> promotions;
 
-    @OneToOne
-    @JoinColumn(name = "group_promotion_id", referencedColumnName = "id")
-    private @Setter GroupHomestayPromotion availableGroupHomestayPromotion;
-
     @Column
     private @Setter String idCardFrontImageUrl;
 
@@ -45,8 +40,13 @@ public class Landlord {
     private @Setter String idCardBackImageUrl;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    @JoinColumn(name = "balance_wallet_id", referencedColumnName = "id")
     private @Setter BalanceWallet landlordWallet;
+
+    @OneToMany(mappedBy = "landlord")
+    private @Setter List<Homestay> homestays;
+
+    @OneToMany(mappedBy = "landlord")
+    private @Setter List<BlocHomestay> blocHomestays;
 
     @OneToOne(mappedBy = "landlordProperty")
     private @Setter SwmUser user;

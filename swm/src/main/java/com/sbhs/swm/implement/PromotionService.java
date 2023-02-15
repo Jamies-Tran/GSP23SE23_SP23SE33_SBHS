@@ -10,11 +10,11 @@ import com.sbhs.swm.handlers.exceptions.InvalidDiscountAmountException;
 import com.sbhs.swm.handlers.exceptions.InvalidPromotionDateException;
 import com.sbhs.swm.handlers.exceptions.PromotionNotFoundException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
-import com.sbhs.swm.models.GroupHomestayPromotion;
 import com.sbhs.swm.models.Promotion;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.PromotionStatus;
 import com.sbhs.swm.models.type.DiscountType;
+import com.sbhs.swm.models.type.PromotionType;
 import com.sbhs.swm.repositories.PromotionRepo;
 import com.sbhs.swm.services.IPromotionService;
 import com.sbhs.swm.services.IUserService;
@@ -73,11 +73,8 @@ public class PromotionService implements IPromotionService {
                 if (user.getLandlordProperty() == null) {
                     throw new UsernameNotFoundException(user.getUsername());
                 }
-                GroupHomestayPromotion groupHomestayPromotion = new GroupHomestayPromotion();
-                groupHomestayPromotion.setGroupHomestayOwner(user.getLandlordProperty());
-                groupHomestayPromotion.setPromotion(promotion);
-                user.getLandlordProperty().setAvailableGroupHomestayPromotion(groupHomestayPromotion);
-                promotion.setGroupHomestayPromotion(groupHomestayPromotion);
+                promotion.setPromotionType(PromotionType.GROUP.name());
+
                 break;
         }
 

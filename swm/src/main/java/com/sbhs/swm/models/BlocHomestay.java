@@ -20,16 +20,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Homestay {
+public class BlocHomestay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(columnDefinition = "nvarchar(500)")
     private @Setter String name;
-
-    @Column
-    private @Setter Long price;
 
     @Column(columnDefinition = "nvarchar(500)")
     private @Setter String address;
@@ -38,26 +35,14 @@ public class Homestay {
     private @Setter String businessLicense;
 
     @Column
-    private @Setter int availableRooms;
-
-    @Column
     private @Setter String status;
 
-    @OneToMany(mappedBy = "homestay", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter List<HomestayImage> homestayImages;
+    @OneToMany(mappedBy = "bloc", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private @Setter List<Homestay> homestays;
 
-    @OneToMany(mappedBy = "homestay", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter List<HomestayFacility> homestayFacilities;
-
-    @OneToMany(mappedBy = "homestay")
-    private @Setter List<Promotion> promotions;
-
-    @OneToMany(mappedBy = "homestay", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "bloc")
     private @Setter List<HomestayService> homestayServices;
 
     @ManyToOne
     private @Setter Landlord landlord;
-
-    @ManyToOne
-    private @Setter BlocHomestay bloc;
 }
