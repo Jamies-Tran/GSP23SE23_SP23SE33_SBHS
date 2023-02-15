@@ -22,7 +22,7 @@ export class RegisterComponent {
     private router: Router,
     private route: ActivatedRoute,
     private storage: AngularFireStorage,
-    private image: ImageService,
+    private image: ImageService
   ) {}
   hidePassword = true;
   hideConfirmPass = true;
@@ -37,7 +37,7 @@ export class RegisterComponent {
   idFormControl = new FormControl('', [Validators.required]);
   dobFormControl = new FormControl('', [Validators.required]);
   phoneFormControl = new FormControl('', [Validators.required]);
-  gender = "Male";
+  gender = 'Male';
   matcher = new MyErrorStateMatcher();
 
   getEmailErrorMessage() {
@@ -52,15 +52,22 @@ export class RegisterComponent {
 
   // hide
   showDiv = {
-    font : true,
-    back : true,
-  }
+    font: true,
+    back: true,
+  };
 
   // Right Image Url
   public loginRegisterImageUrl = '';
+  public logoImageUrl = '';
   async ngOnInit(): Promise<void> {
-      this.loginRegisterImageUrl =await this.image.getImage('homepage/login-register.jpg' );
-      console.log(this.loginRegisterImageUrl);
+    this.loginRegisterImageUrl = await this.image.getImage(
+      'homepage/login-register.jpg'
+    );
+    console.log(this.loginRegisterImageUrl);
+
+    // logo
+    this.logoImageUrl = await this.image.getImage('logo/logo-3.png');
+    console.log(this.logoImageUrl);
   }
 
   // File image
@@ -71,23 +78,23 @@ export class RegisterComponent {
   onSelectFontCitizenID(files: any) {
     console.log(event);
     this.fontCitizenIDfiles.push(...files.addedFiles);
-    if(this.fontCitizenIDfiles.length >=1 ){
+    if (this.fontCitizenIDfiles.length >= 1) {
       this.showDiv.font = false;
     }
 
     // test up imge firebase
-    for(this.file of this.fontCitizenIDfiles){
+    for (this.file of this.fontCitizenIDfiles) {
       const path = 'test/' + this.file.name;
       const fileRef = this.storage.ref(path);
-      this.storage.upload(path,this.file);
+      this.storage.upload(path, this.file);
     }
   }
 
   onRemoveFontCitizenID(event: File) {
     console.log(event);
     this.fontCitizenIDfiles.splice(this.fontCitizenIDfiles.indexOf(event), 1);
-    console.log("files lenght: " , this.fontCitizenIDfiles.length);
-    if(this.fontCitizenIDfiles.length >=1 ){
+    console.log('files lenght: ', this.fontCitizenIDfiles.length);
+    if (this.fontCitizenIDfiles.length >= 1) {
       this.showDiv.font = false;
     } else {
       this.showDiv.font = true;
@@ -97,7 +104,7 @@ export class RegisterComponent {
   onSelectBackCitizenID(files: any) {
     console.log(event);
     this.backCitizenIDfiles.push(...files.addedFiles);
-    if(this.backCitizenIDfiles.length >=1 ){
+    if (this.backCitizenIDfiles.length >= 1) {
       this.showDiv.back = false;
     }
   }
@@ -105,22 +112,31 @@ export class RegisterComponent {
   onRemoveBackCitizenID(event: File) {
     console.log(event);
     this.backCitizenIDfiles.splice(this.backCitizenIDfiles.indexOf(event), 1);
-    console.log("files lenght: " , this.backCitizenIDfiles.length);
-    if(this.backCitizenIDfiles.length >=1 ){
+    console.log('files lenght: ', this.backCitizenIDfiles.length);
+    if (this.backCitizenIDfiles.length >= 1) {
       this.showDiv.back = false;
     } else {
       this.showDiv.back = true;
     }
   }
 
-  public register(){
-    this.http.registerLandlord(this.addressFormControl.value+"", this.dobFormControl.value+"", this.emailFormControl.value+"", this.gender,
-    this.idFormControl.value+"", this.passwordFormControl.value+"", this.phoneFormControl.value+"", this.usernameFormControl.value +"").subscribe((data) =>{
-      localStorage.setItem("registerSuccess",'true');
-      this.router.navigate(['/Landlord'],{relativeTo: this.route});
-    })
+  public register() {
+    this.http
+      .registerLandlord(
+        this.addressFormControl.value + '',
+        this.dobFormControl.value + '',
+        this.emailFormControl.value + '',
+        this.gender,
+        this.idFormControl.value + '',
+        this.passwordFormControl.value + '',
+        this.phoneFormControl.value + '',
+        this.usernameFormControl.value + ''
+      )
+      .subscribe((data) => {
+        localStorage.setItem('registerSuccess', 'true');
+        this.router.navigate(['/Landlord'], { relativeTo: this.route });
+      });
   }
-
 }
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {

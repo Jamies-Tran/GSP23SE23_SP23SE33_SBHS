@@ -34,6 +34,13 @@ export class LoginLandlordComponent {
       this.flag = 'true';
     }
 
+    // logo
+    this.logoImageUrl = await this.image.getImage(
+      'logo/logo-3.png'
+    );
+    console.log(this.logoImageUrl);
+
+    // Image
     this.loginRegisterImageUrl = await this.image.getImage(
       'homepage/login-register.jpg'
     );
@@ -75,8 +82,10 @@ export class LoginLandlordComponent {
       });
   }
 
-  // Right Image Url
+  // Image Url
   public loginRegisterImageUrl = '';
+  public logoImageUrl = '';
+
 
 
 }

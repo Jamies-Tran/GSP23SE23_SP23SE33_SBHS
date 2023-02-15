@@ -8,7 +8,7 @@
               <H1>Register Success</H1>
             </div>
             <div class=" ms-xl-4">
-              <a routerLink="/Homepage"> <img class="logo" src="/assets/images/logo-3.png"></a>
+              <a routerLink="/Homepage"> <img class="logo" [src]="logoImageUrl"></a>
             </div>
             <div>
               <h3 class=" mb-3 pb-3 align-items-center gradient-text-2 fw-bold font-monospace fs-1"
@@ -74,7 +74,7 @@
 
       </div>
       <div class="col-sm-5 px-0 d-none d-sm-block">
-        <img [src]="loginRegisterImageUrl" alt="Login image" class="w-100 vh-100"
+        <img [src]="loginRegisterImageUrl" class="w-100 vh-100"
           style="object-fit: cover; object-position: left;">
 
       </div>
