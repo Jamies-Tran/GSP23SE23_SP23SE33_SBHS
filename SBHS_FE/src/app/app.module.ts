@@ -19,7 +19,15 @@ import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from '@abacritt/angularx-social-login';
+import {
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from '@abacritt/angularx-social-login';
 
 // Component
 import { AppComponent } from './app.component';
@@ -31,9 +39,9 @@ import { RegisterComponent } from './landlord/register/register.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
 import { HttpClientModule } from '@angular/common/http';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 @NgModule({
@@ -73,10 +81,28 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
     MatRippleModule,
     MatButtonToggleModule,
     MatMenuModule,
-    MatDialogModule
-
+    MatDialogModule,
+    SocialLoginModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '593303082715-id94ngomgp6rphoge2je8qakm1k0gco1.apps.googleusercontent.com'
+            ),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
