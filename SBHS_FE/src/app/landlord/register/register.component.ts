@@ -24,7 +24,8 @@ export class RegisterComponent {
     private storage: AngularFireStorage,
     private image: ImageService,
   ) {}
-  hide = true;
+  hidePassword = true;
+  hideConfirmPass = true;
   passwordFormControl = new FormControl('', [Validators.required]);
   confirmPasswordFormControl = new FormControl('', [Validators.required]);
   usernameFormControl = new FormControl('', [Validators.required]);

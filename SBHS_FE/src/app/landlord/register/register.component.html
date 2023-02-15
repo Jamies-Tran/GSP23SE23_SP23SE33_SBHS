@@ -1,18 +1,19 @@
 <section class="vh-100">
   <div class="container-fluid">
     <div class="row">
-      <div class="login col-12 col-lg-7 overflow-auto vh-100">
-        <div class="card border-0 pt-5">
+      <div class="login col-12 col-lg-7 overflow-auto vh-100 py-3 ">
+        <div class="card border-0 pt-3 login-card">
           <div class="login-body card-body text-center ">
             <div class="ms-xl-4">
-              <span class="h1 fw-bold mb-0 me-3 pt-5 mt-xl-4">STAYWITHME</span>
+              <a routerLink="/Homepage"> <img class="logo" src="/assets/images/logo-3.png"></a>
             </div>
             <div>
-              <h3 class="fw-normal mb-3 pb-3 align-items-center" style="letter-spacing: 1px;">Register</h3>
+              <h3 class=" mb-3 pb-3 align-items-center gradient-text-2 fw-bold font-monospace fs-1"
+                style="letter-spacing: 1px;">Register</h3>
             </div>
             <form (ngSubmit)="register()">
               <div class="register-input ">
-                <h5 class="text-start">Basic Information</h5>
+                <h5 class="text-start ">Basic Information</h5>
 
                 <div class="row">
                   <!-- col left -->
@@ -55,11 +56,11 @@
                         <mat-label>Password</mat-label>
                         <input matInput type="password" name="txtPassword" [formControl]="passwordFormControl"
                           [errorStateMatcher]="matcher" required="Please Enter Password"
-                          [type]="hide ? 'password' : 'text'">
+                          [type]="hidePassword ? 'password' : 'text'">
                         <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>
-                        <button type="button" class="border-0 bg-body " mat-icon-button matSuffix (click)="hide = !hide"
-                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                          <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <button type="button" class="border-0 " mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                         <mat-error *ngIf="passwordFormControl.hasError('required')">
                           Password is <strong>required</strong>
@@ -74,11 +75,11 @@
                         <mat-label>Confirm Password</mat-label>
                         <input matInput type="password" name="txtConfirmPassword"
                           [formControl]="confirmPasswordFormControl" [errorStateMatcher]="matcher"
-                          [type]="hide ? 'password' : 'text'">
+                          [type]="hideConfirmPass ? 'password' : 'text'">
                         <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>
-                        <button type="button" class="border-0 bg-body " mat-icon-button matSuffix (click)="hide = !hide"
-                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                          <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <button type="button" class="border-0 " mat-icon-button matSuffix (click)="hideConfirmPass = !hideConfirmPass"
+                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPass">
+                          <mat-icon matSuffix>{{hideConfirmPass ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
 
                         <mat-error *ngIf="confirmPasswordFormControl.hasError('required')">
@@ -169,6 +170,7 @@
                     </div>
                   </div>
                 </div>
+                <br>
                 <h5 class="text-start">Attachment</h5>
                 <div class="row">
                   <!-- col left -->
@@ -176,7 +178,7 @@
 
                     <h6>Upload font your Citizen ID</h6>
 
-                    <div  ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
+                    <div ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
                       (change)="onSelectFontCitizenID($event)" *ngIf="showDiv.font">
                       <ngx-dropzone-label>
                         <div>
@@ -186,8 +188,9 @@
                       </ngx-dropzone-label>
                     </div>
                     <div class="wrapper" *ngFor="let f of fontCitizenIDfiles">
-                      <ngx-dropzone-image-preview class="image-preview" ngProjectAs="ngx-dropzone-preview" [file]="f"
-                        [removable]="true" (removed)="onRemoveFontCitizenID(f)">
+                      <ngx-dropzone-image-preview class="image-preview overflow-hidden"
+                        ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                        (removed)="onRemoveFontCitizenID(f)">
                       </ngx-dropzone-image-preview>
                       <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" *ngFor="let f of fontCitizenIDfiles"
                         (removed)="onRemoveFontCitizenID(f)">{{
@@ -197,7 +200,7 @@
                   <!-- col right -->
                   <div class="col-right col-12 col-md-6">
                     <h6>Upload back your Citizen ID</h6>
-                    <div  ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
+                    <div ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
                       (change)="onSelectBackCitizenID($event)" *ngIf="showDiv.back">
                       <ngx-dropzone-label>
                         <div>
@@ -207,8 +210,9 @@
                       </ngx-dropzone-label>
                     </div>
                     <div class="wrapper" *ngFor="let f of backCitizenIDfiles">
-                      <ngx-dropzone-image-preview class="image-preview" ngProjectAs="ngx-dropzone-preview" [file]="f"
-                        [removable]="true" (removed)="onRemoveBackCitizenID(f)">
+                      <ngx-dropzone-image-preview class="image-preview overflow-hidden"
+                        ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                        (removed)="onRemoveBackCitizenID(f)">
                       </ngx-dropzone-image-preview>
                       <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" *ngFor="let f of backCitizenIDfiles"
                         (removed)="onRemoveBackCitizenID(f)">{{
@@ -219,7 +223,7 @@
               </div>
 
               <div class="text-center pt-1  pb-1 login-button-div">
-                <button class="login-button btn btn-primary btn-block w-100 fa-lg gradient-custom-2 mb-3"
+                <button class="login-button btn btn-primary btn-block w-100 fa-lg gradient-custom-2 mb-1"
                   mat-raised-button type="submit">
                   Register</button>
               </div>
@@ -230,9 +234,9 @@
         </div>
       </div>
       <div class="col-lg-5 px-0 d-none d-lg-block">
-        <img
-          [src]="loginRegisterImageUrl"
-          alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+        <img [src]="loginRegisterImageUrl" alt="Login image" class="w-100 vh-100"
+          style="object-fit: cover; object-position: left;">
+
       </div>
 
 

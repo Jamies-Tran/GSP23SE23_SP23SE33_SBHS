@@ -10,7 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+
 }
 
 input:-webkit-autofill,
@@ -23,7 +23,7 @@ input:-webkit-autofill:active {
 .login-button-div {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
 
   button {
     height: 45px;
@@ -48,13 +48,26 @@ input:-webkit-autofill:active {
 
 .gradient-text-1 {
   /* fallback for old browsers */
-  background: #fccb90;
+  background: #dc2743;
 
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, #FEF001,  #FD9A01,  #FF2C05);
+  background:-webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%);
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, #FEF001,  #FD9A01,  #FF2C05);
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-2 {
+  /* fallback for old browsers */
+  background: #dc2743;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background:-webkit-linear-gradient(90deg, #f09433 ,#e6683c ,#dc2743 ,#cc2366,#bc1888 );
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(90deg, #f09433 ,#e6683c ,#dc2743 ,#cc2366,#bc1888 );
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -69,4 +82,11 @@ input:-webkit-autofill:active {
 
 .gmail-button {
   color: white !important;
+}
+
+.login-card{
+  background: linear-gradient(150deg, #FFE753 , #FFE367,    #FFF7A7 , #FFAD5E  );
+}
+.logo{
+  width: 40%;
 }

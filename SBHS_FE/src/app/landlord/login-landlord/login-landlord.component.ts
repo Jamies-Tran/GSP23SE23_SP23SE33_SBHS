@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ImageService } from 'src/app/services/image.service';
 import { ServerHttpService } from 'src/app/services/login.service';
 @Component({
   selector: 'app-login-landlord',
@@ -12,13 +13,17 @@ export class LoginLandlordComponent {
   constructor(
     private http: ServerHttpService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private image: ImageService,
   ) {}
   flag = 'false'
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if(localStorage.getItem("registerSucess") == 'true'){
       this.flag = "true"
     }
+
+    this.loginRegisterImageUrl =await this.image.getImage('homepage/login-register.jpg' );
+        console.log(this.loginRegisterImageUrl);
   }
   hide = true;
   passwordFormControl = new FormControl('', [Validators.required]);
@@ -41,6 +46,10 @@ export class LoginLandlordComponent {
       }
     );
   }
+
+    // Right Image Url
+    public loginRegisterImageUrl = '';
+
 }
 
 
