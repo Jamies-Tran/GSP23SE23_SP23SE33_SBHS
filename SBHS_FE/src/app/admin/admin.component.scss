@@ -5,7 +5,7 @@
 
 .sidenav {
 
-  background-image: linear-gradient(to right, #FFCE03cc, #FD9A01cc, #FD6104cc, #FF2C05cc) , url("https://www.gstatic.com/mobilesdk/190424_mobilesdk/nav_nachos@2x.png");
+  background-image: linear-gradient(to right, #FFCE03cc, #FD9A01cc, #FD6104cc, #FF2C05cc), url("https://www.gstatic.com/mobilesdk/190424_mobilesdk/nav_nachos@2x.png");
   transition: all .5s ease;
   background-position: left 0 bottom 0;
   background-repeat: no-repeat;
@@ -14,7 +14,8 @@
   left: 0;
   width: 256px;
   min-height: 100vh;
-  background-size:contain;
+  background-size: contain;
+
   .hr-line {
     width: calc(100% - 30px);
     margin: 0 0 10px 15px;
@@ -238,7 +239,7 @@
     .sublevel-nav-item {
 
       .sublevel-nav-link {
-        background-color:  rgb(0 0 0 / 20%);
+        background-color: rgb(0 0 0 / 20%);
         display: flex;
         align-items: center;
         height: 3rem;
@@ -317,15 +318,18 @@
 
         }
       }
-      .collapse-avatar{
+
+      .collapse-avatar {
         padding-right: 0%;
-        .btn-collapse-avatar{
+
+        .btn-collapse-avatar {
           font-size: 20px;
 
         }
       }
-      .logout{
-        .btn-logout{
+
+      .logout {
+        .btn-logout {
 
           font-size: 20px;
           color: #9a9a9a;
@@ -427,8 +431,8 @@
 }
 
 input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-  }
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}

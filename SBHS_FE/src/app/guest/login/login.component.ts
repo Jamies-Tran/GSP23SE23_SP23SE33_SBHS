@@ -12,8 +12,8 @@ import { ServerHttpService } from 'src/app/services/login.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 @Component({
   selector: 'app-login-landlord',
-  templateUrl: './login-landlord.component.html',
-  styleUrls: ['./login-landlord.component.scss'],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginLandlordComponent {
   constructor(
@@ -24,10 +24,9 @@ export class LoginLandlordComponent {
     private authService: SocialAuthService
   ) {}
 
-
   flag = 'false';
-    user:any;
-    loggedIn:any;
+  user: any;
+  loggedIn: any;
 
   async ngOnInit(): Promise<void> {
     if (localStorage.getItem('registerSucess') == 'true') {
@@ -35,9 +34,7 @@ export class LoginLandlordComponent {
     }
 
     // logo
-    this.logoImageUrl = await this.image.getImage(
-      'logo/logo-3.png'
-    );
+    this.logoImageUrl = await this.image.getImage('logo/logo-3.png');
     console.log(this.logoImageUrl);
 
     // Image
@@ -46,15 +43,13 @@ export class LoginLandlordComponent {
     );
     console.log(this.loginRegisterImageUrl);
 
-     // Login with gmail
-    this.authService.authState.subscribe((user) =>{
+    // Login with gmail
+    this.authService.authState.subscribe((user) => {
       this.user = user;
-      this.loggedIn = (user != null);
+      this.loggedIn = user != null;
       console.log(this.user);
       console.log(this.user.name);
       console.log(this.user.email);
-
-
     });
   }
   hide = true;
@@ -85,9 +80,6 @@ export class LoginLandlordComponent {
   // Image Url
   public loginRegisterImageUrl = '';
   public logoImageUrl = '';
-
-
-
 }
 
 /** Error when invalid control is dirty, touched, or submitted. */

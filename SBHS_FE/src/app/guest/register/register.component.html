@@ -58,8 +58,9 @@
                           [errorStateMatcher]="matcher" required="Please Enter Password"
                           [type]="hidePassword ? 'password' : 'text'">
                         <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>
-                        <button type="button" class="border-0 " mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
-                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                        <button type="button" class="border-0 " mat-icon-button matSuffix
+                          (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+                          [attr.aria-pressed]="hidePassword">
                           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                         <mat-error *ngIf="passwordFormControl.hasError('required')">
@@ -77,8 +78,9 @@
                           [formControl]="confirmPasswordFormControl" [errorStateMatcher]="matcher"
                           [type]="hideConfirmPass ? 'password' : 'text'">
                         <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>
-                        <button type="button" class="border-0 " mat-icon-button matSuffix (click)="hideConfirmPass = !hideConfirmPass"
-                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPass">
+                        <button type="button" class="border-0 " mat-icon-button matSuffix
+                          (click)="hideConfirmPass = !hideConfirmPass" [attr.aria-label]="'Hide password'"
+                          [attr.aria-pressed]="hideConfirmPass">
                           <mat-icon matSuffix>{{hideConfirmPass ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
 

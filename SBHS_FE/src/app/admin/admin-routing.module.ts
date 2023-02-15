@@ -8,13 +8,16 @@ const routes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-      { path: 'RequestAccountLandlord', component: RequestAccountLandlordComponent },
-    ]
-  }
+      {
+        path: 'RequestAccountLandlord',
+        component: RequestAccountLandlordComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

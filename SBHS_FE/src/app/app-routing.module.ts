@@ -1,20 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
-import { LoginLandlordComponent } from './landlord/login-landlord/login-landlord.component';
-import { RegisterComponent } from './landlord/register/register.component';
-import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { LoginLandlordComponent } from './guest/login/login.component';
+import { RegisterComponent } from './guest/register/register.component';
+import { ForgotPassComponent } from './guest/forgot-pass/forgot-pass.component';
+import { WelcomePageComponent } from './guest/welcome-page/welcome-page.component';
 import { AdminComponent } from './admin/admin.component';
 
-
 const routes: Routes = [
-   { path: '', component: WelcomePageComponent },
-   { path: 'Homepage', component: WelcomePageComponent },
+  { path: '', component: WelcomePageComponent },
+  { path: 'Homepage', component: WelcomePageComponent },
   { path: 'Landlord', component: LoginLandlordComponent },
-  { path: 'Register' , component: RegisterComponent},
-  { path: 'ForgotPassword' , component: ForgotPassComponent},
-  {path: 'Admin', component: AdminComponent},
+  { path: 'Register', component: RegisterComponent },
+  { path: 'ForgotPassword', component: ForgotPassComponent },
+  { path: 'Admin', component: AdminComponent },
   {
     path: 'Admin',
     loadChildren: () =>

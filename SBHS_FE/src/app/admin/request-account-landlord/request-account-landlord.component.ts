@@ -5,9 +5,9 @@ import { ServerHttpService } from 'src/app/services/verify-landlord.service';
 @Component({
   selector: 'app-request-account-landlord',
   templateUrl: './request-account-landlord.component.html',
-  styleUrls: ['./request-account-landlord.component.scss']
+  styleUrls: ['./request-account-landlord.component.scss'],
 })
-export class RequestAccountLandlordComponent implements OnInit{
+export class RequestAccountLandlordComponent implements OnInit {
   values: data[] = [];
   message!: string;
   public status = 'All';
@@ -23,7 +23,7 @@ export class RequestAccountLandlordComponent implements OnInit{
         console.log('data', this.values);
       },
       (error) => {
-        console.log(error)
+        console.log(error);
       }
     );
   }

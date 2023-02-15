@@ -1,7 +1,7 @@
+// Module
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatRippleModule } from '@angular/material/core';
-// Module
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,28 +28,24 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider,
 } from '@abacritt/angularx-social-login';
+import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 // Component
 import { AppComponent } from './app.component';
-import { LoginAdminComponent } from './admin/login-admin/login-admin.component';
-import { LoginLandlordComponent } from './landlord/login-landlord/login-landlord.component';
-import { LoginPasssengerComponent } from './passenger/login-passsenger/login-passsenger.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RegisterComponent } from './landlord/register/register.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { ForgotPassComponent } from './forgot-pass/forgot-pass.component';
-import { HttpClientModule } from '@angular/common/http';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { LoginLandlordComponent } from './guest/login/login.component';
+import { RegisterComponent } from './guest/register/register.component';
+import { ForgotPassComponent } from './guest/forgot-pass/forgot-pass.component';
 import { environment } from '../environments/environment';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { WelcomePageComponent } from './guest/welcome-page/welcome-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginAdminComponent,
     LoginLandlordComponent,
-    LoginPasssengerComponent,
     RegisterComponent,
     ForgotPassComponent,
     WelcomePageComponent,
