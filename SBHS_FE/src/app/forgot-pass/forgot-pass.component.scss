@@ -1,0 +1,40 @@
+.sidebar-first-item {
+  position: relative;
+  background-color: aqua;
+}
+
+.sidebar-first-item::before {
+  content: "";
+  position: absolute;
+  width: 45%;
+  height: 5px;
+  background-color: blue;
+  top: 50%;
+  left: 0%;
+}
+.sidebar-first-item::after {
+  content: "";
+  position: absolute;
+  width: 45%;
+  height: 5px;
+  background-color: red;
+  top: 50%;
+  right: 0%;
+}
+.sidebar-first-item:before {
+  content: "";
+  position: absolute;
+  width: 45%;
+  height: 5px;
+  background-color: red;
+  top: 50%;
+  left: 0%;
+}.sidebar-first-item:before {
+  content: "";
+  position: absolute;
+  width: 45%;
+  height: 5px;
+  background-color: red;
+  top: 50%;
+  left: 0%;
+}

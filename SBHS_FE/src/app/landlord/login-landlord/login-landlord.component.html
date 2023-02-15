@@ -1,7 +1,7 @@
 <section class="vh-100">
   <div class="container-fluid">
     <div class="row">
-      <div class="login col-12 col-sm-7 overflow-auto vh-100 py-3">
+      <div class="login col-12 col-sm-7 overflow-auto vh-100 d-flex align-items-center justify-content-center">
         <div class="card border-0  login-card">
           <div class="login-body card-body text-center">
             <div class=" ms-xl-4" *ngIf="flag === 'true'">
@@ -46,13 +46,18 @@
                 </div>
               </div>
               <div class="text-center pt-1  pb-1 login-button-div">
+                <p class=""><a class="gradient-text-1 fs-6" routerLink="/ForgotPassword">Forgot
+                  password?</a></p>
                 <button class="login-button btn btn-primary btn-block w-100 fa-lg gradient-custom-2 mb-3"
                   mat-raised-button type="submit">
-                  Log in</button>
+                  Login</button>
               </div>
             </form>
-            <p class="small mb-3 pb-lg-2"><a class="gradient-text-1 fs-5" routerLink="/ForgotPassword">Forgot
-                password?</a></p>
+            <div class="login-gmail " >
+              <span class="font-monospace">Or</span>
+
+            </div>
+
             <p>Don't have an account? <a routerLink="/Register" routerLinkActive="active"
                 class="link-info gradient-text-1  fw-bold font-monospace fs-5">Register here</a></p>
 

@@ -1,17 +1,37 @@
-<div class="example-container bg-danger">
-  <mat-form-field appearance="outline">
-    <mat-label>Enter your password</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'">
-    <button mat-icon-button matSuffix (click)="hide = !hide"
-    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
-  </mat-form-field>
+<div class="text-center nav-items">
+  <ul>
 
-  <mat-form-field appearance="fill" floatLabel="always">
-    <mat-label>Amount</mat-label>
-    <input matInput type="number" class="example-right-align" placeholder="0">
-    <span matTextPrefix>$&nbsp;</span>
-    <span matTextSuffix>.00</span>
-  </mat-form-field>
+    <div class="pb-5">
+      <li>
+        <a href="#">
+          <h2>Our Work</h2>
+        </a>
+      </li>
+      <p>Take a look at our marvelous creations</p>
+    </div>
+    <div class="pb-5">
+      <li>
+        <a href="#">
+          <h2>Services</h2>
+        </a>
+      </li>
+      <p>Learn more about what we can do for you</p>
+    </div>
+    <div class="pb-5">
+      <li>
+        <a href="#">
+          <h2 class="sidebar-last-item">Contact</h2>
+        </a>
+      </li>
+      <p>Get in touch today. Let's make some magic</p>
+    </div>
+    <div class="pb-5">
+      <li>
+        <a href="#">
+          <h2 class="sidebar-first-item">About</h2>
+        </a>
+      </li>
+      <p>Behind the brand // Meet the team</p>
+    </div>
+  </ul>
 </div>
