@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.sbhs.swm.handlers.exceptions.EmailDuplicateException;
 import com.sbhs.swm.handlers.exceptions.EmailNotFoundException;
+import com.sbhs.swm.handlers.exceptions.InvalidBirthException;
 import com.sbhs.swm.handlers.exceptions.InvalidUserStatusException;
 import com.sbhs.swm.handlers.exceptions.LoginFailException;
 import com.sbhs.swm.handlers.exceptions.PasswordDuplicateException;
@@ -33,6 +34,7 @@ import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IRoleService;
 import com.sbhs.swm.services.IUserService;
+import com.sbhs.swm.util.DateFormatUtil;
 
 @Service
 public class UserService implements IUserService {
@@ -51,6 +53,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DateFormatUtil dateFormatUtil;
 
     @Override
     public SwmUser findUserByUsername(String username) {
@@ -92,11 +97,11 @@ public class UserService implements IUserService {
             throw new EmailDuplicateException();
         } else if (userRepo.findByPhone(user.getPhone()).isPresent()) {
             throw new PhoneDuplicateException();
+        } else if (dateFormatUtil.calculateAge(user.getDob()) < 18) {
+            throw new InvalidBirthException();
         }
         Landlord landlord = new Landlord();
-        // BalanceWallet balanceWallet = new BalanceWallet();
-        // balanceWallet.setLandlord(landlord);
-        // landlord.setLandlordWallet(balanceWallet);
+
         SwmRole landlordRole = roleService.findRoleByName("landlord");
         landlordRole.setUsers(List.of(user));
         user.setRoles(List.of(landlordRole));

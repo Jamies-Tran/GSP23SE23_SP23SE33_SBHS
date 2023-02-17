@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbhs.swm.dto.LandlordDto;
-import com.sbhs.swm.dto.LoginRequestDto;
-import com.sbhs.swm.dto.LoginResponseDto;
-import com.sbhs.swm.dto.PassengerDto;
-import com.sbhs.swm.dto.SwmUserDto;
+import com.sbhs.swm.dto.request.LoginRequestDto;
+import com.sbhs.swm.dto.request.SwmUserRequestDto;
+import com.sbhs.swm.dto.response.LandlordResponseDto;
+import com.sbhs.swm.dto.response.LoginResponseDto;
+import com.sbhs.swm.dto.response.PassengerResponseDto;
+import com.sbhs.swm.dto.response.SwmUserResponseDto;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.security.JwtConfiguration;
 import com.sbhs.swm.services.IUserService;
@@ -44,42 +45,44 @@ public class UserController {
     private SimpleDateFormat simpleDateFormat;
 
     @PostMapping("/registeration")
-    public ResponseEntity<?> registerPassengerAccount(@RequestBody SwmUserDto userDto) {
+    public ResponseEntity<?> registerPassengerAccount(@RequestBody SwmUserRequestDto userDto) {
         SwmUser user = modelMapper.map(userDto, SwmUser.class);
         SwmUser savedUser = userService.registerPassengerAccount(user);
-        SwmUserDto responseUser = modelMapper.map(savedUser, SwmUserDto.class);
+        SwmUserResponseDto responseUser = modelMapper.map(savedUser, SwmUserResponseDto.class);
         responseUser.setRoleIds(savedUser.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
         responseUser.setPassword("");
 
-        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.CREATED);
+        return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
 
     @PostMapping("/registration-landlord")
-    public ResponseEntity<?> registerLandlordAccount(@RequestBody SwmUserDto userDto) {
+    public ResponseEntity<?> registerLandlordAccount(@RequestBody SwmUserRequestDto userDto) {
         SwmUser user = modelMapper.map(userDto, SwmUser.class);
         SwmUser savedUser = userService.registerLandlordAccount(user);
-        SwmUserDto responseUser = modelMapper.map(savedUser, SwmUserDto.class);
+        SwmUserResponseDto responseUser = modelMapper.map(savedUser, SwmUserResponseDto.class);
         responseUser.setRoleIds(savedUser.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
         responseUser.setPassword("");
 
-        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.CREATED);
+        return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
 
     @GetMapping("/info-username")
     public ResponseEntity<?> getUserInfo(@RequestParam String username) {
         SwmUser user = userService.findUserByUsername(username);
-        SwmUserDto responseUser = modelMapper.map(user, SwmUserDto.class);
+        SwmUserResponseDto responseUser = modelMapper.map(user, SwmUserResponseDto.class);
         user.getRoles().forEach(r -> {
             if (r.getName().equalsIgnoreCase("passenger")) {
-                responseUser.setPassengerProperty(modelMapper.map(user.getPassengerProperty(), PassengerDto.class));
+                responseUser
+                        .setPassengerProperty(modelMapper.map(user.getPassengerProperty(), PassengerResponseDto.class));
             } else if (r.getName().equalsIgnoreCase("landlord")) {
-                responseUser.setLandlordProperty(modelMapper.map(user.getLandlordProperty(), LandlordDto.class));
+                responseUser
+                        .setLandlordProperty(modelMapper.map(user.getLandlordProperty(), LandlordResponseDto.class));
             }
         });
         responseUser.setRoleIds(user.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
         responseUser.setPassword("");
 
-        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.OK);
+        return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.OK);
     }
 
     @GetMapping("/email-validation")

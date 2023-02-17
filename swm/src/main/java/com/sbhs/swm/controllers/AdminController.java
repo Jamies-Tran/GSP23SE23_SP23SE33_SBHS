@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbhs.swm.dto.SwmUserDto;
+import com.sbhs.swm.dto.HomestayDto;
+import com.sbhs.swm.dto.paging.LandlordListPagingDto;
+import com.sbhs.swm.dto.request.SwmUserRequestDto;
+import com.sbhs.swm.dto.response.SwmUserResponseDto;
+import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.services.IAdminService;
 
@@ -32,39 +37,52 @@ public class AdminController {
 
     @PostMapping("/creation")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<?> createAdmin(@RequestBody SwmUserDto userDto) {
+    public ResponseEntity<?> createAdmin(@RequestBody SwmUserRequestDto userDto) {
         SwmUser user = modelMapper.map(userDto, SwmUser.class);
         SwmUser savedUser = adminService.createAdminAccount(user);
-        SwmUserDto responseUser = modelMapper.map(savedUser, SwmUserDto.class);
+        SwmUserResponseDto responseUser = modelMapper.map(savedUser, SwmUserResponseDto.class);
 
-        return new ResponseEntity<SwmUserDto>(responseUser, HttpStatus.CREATED);
+        return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
 
     @PostMapping("/first")
     public ResponseEntity<?> createFirstAdmin() {
         SwmUser admin = adminService.createFirstAdminAccount();
-        SwmUserDto responseAdmin = modelMapper.map(admin, SwmUserDto.class);
+        SwmUserResponseDto responseAdmin = modelMapper.map(admin, SwmUserResponseDto.class);
 
-        return new ResponseEntity<SwmUserDto>(responseAdmin, HttpStatus.CREATED);
+        return new ResponseEntity<SwmUserResponseDto>(responseAdmin, HttpStatus.CREATED);
     }
 
     @GetMapping("/landlord-list")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getLandlordListFilterByStatus(@RequestParam String status, @RequestParam int page,
-            @RequestParam int size) {
-        List<SwmUser> landlordList = adminService.findLandlordListFilterByStatus(status, page, size);
-        List<SwmUserDto> responseLandlordList = landlordList.stream().map(l -> modelMapper.map(l, SwmUserDto.class))
+            @RequestParam int size, @RequestParam boolean isNextPage, @RequestParam boolean isPreviousPage) {
+        Page<SwmUser> landlordList = adminService.findLandlordListFilterByStatus(status, page, size, isNextPage,
+                isPreviousPage);
+        List<SwmUserResponseDto> landlordDtoList = landlordList.stream()
+                .map(l -> modelMapper.map(l, SwmUserResponseDto.class))
                 .collect(Collectors.toList());
+        LandlordListPagingDto landlordListPagingDto = new LandlordListPagingDto(landlordDtoList,
+                landlordList.getNumber());
 
-        return new ResponseEntity<List<SwmUserDto>>(responseLandlordList, HttpStatus.OK);
+        return new ResponseEntity<LandlordListPagingDto>(landlordListPagingDto, HttpStatus.OK);
     }
 
     @PutMapping("/landlord-activate")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> activateLandlordAccount(@RequestParam String username) {
         SwmUser activatedLandlord = adminService.activateLandlordAccount(username);
-        SwmUserDto responseLandlord = modelMapper.map(activatedLandlord, SwmUserDto.class);
+        SwmUserResponseDto responseLandlord = modelMapper.map(activatedLandlord, SwmUserResponseDto.class);
 
-        return new ResponseEntity<SwmUserDto>(responseLandlord, HttpStatus.OK);
+        return new ResponseEntity<SwmUserResponseDto>(responseLandlord, HttpStatus.OK);
+    }
+
+    @PutMapping("/homestay-active")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> activeHomestay(@RequestParam String homestayName) {
+        Homestay homestay = adminService.activateHomestay(homestayName);
+        HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+
+        return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
     }
 }

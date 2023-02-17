@@ -133,12 +133,19 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public List<PaymentHistory> findPaymentHistoriesOfPassenger(int page, int size) {
+    public Page<PaymentHistory> findPaymentHistoriesOfPassenger(int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
         String username = userService.authenticatedUser().getUsername();
         Pageable pageable = PageRequest.of(page, size);
         Page<PaymentHistory> paymentHistories = paymentRepo.findPaymentHistoriesByPassenger(pageable, username);
+        if (paymentHistories.hasNext() && isNextPage == true && isPreviousPage == false) {
+            paymentHistories = paymentRepo.findPaymentHistoriesByPassenger(paymentHistories.nextPageable(), username);
+        } else if (paymentHistories.hasPrevious() && isPreviousPage == true && isNextPage == false) {
+            paymentHistories = paymentRepo.findPaymentHistoriesByPassenger(paymentHistories.previousPageable(),
+                    username);
+        }
 
-        return paymentHistories.getContent();
+        return paymentHistories;
     }
 
 }

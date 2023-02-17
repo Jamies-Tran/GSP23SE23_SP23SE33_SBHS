@@ -19,12 +19,15 @@ import com.sbhs.swm.handlers.exceptions.RoleNotFoundException;
 import com.sbhs.swm.handlers.exceptions.UsernameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.models.Admin;
+import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmRole;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.HomestayStatus;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.RoleRepo;
 import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IAdminService;
+import com.sbhs.swm.services.IHomestayService;
 
 @Service
 public class AdminService implements IAdminService {
@@ -58,6 +61,9 @@ public class AdminService implements IAdminService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private IHomestayService homestayService;
 
     @Autowired
     private RoleRepo roleRepo;
@@ -110,10 +116,16 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public List<SwmUser> findLandlordListFilterByStatus(String status, int page, int size) {
+    public Page<SwmUser> findLandlordListFilterByStatus(String status, int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
         Page<SwmUser> userPage = userRepo.findLandlordListFilterByStatus(PageRequest.of(page, size), status);
+        if (userPage.hasNext() && isNextPage == true && isPreviousPage == false) {
+            userPage = userRepo.findLandlordListFilterByStatus(userPage.nextPageable(), status);
+        } else if (userPage.hasPrevious() && isPreviousPage == true && isNextPage == false) {
+            userPage = userRepo.findLandlordListFilterByStatus(userPage.previousPageable(), status);
+        }
 
-        return userPage.getContent();
+        return userPage;
     }
 
     @Override
@@ -127,5 +139,14 @@ public class AdminService implements IAdminService {
         user.getLandlordProperty().setStatus(LandlordStatus.ACTIVATED.name());
 
         return user;
+    }
+
+    @Override
+    @Transactional
+    public Homestay activateHomestay(String name) {
+        Homestay homestay = homestayService.findHomestayByName(name);
+        homestay.setStatus(HomestayStatus.ACTIVE.name());
+
+        return homestay;
     }
 }

@@ -1,4 +1,4 @@
-package com.sbhs.swm.dto;
+package com.sbhs.swm.dto.response;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandlordWalletDto {
+public class LandlordWalletResponseDto {
     private Long id;
-    private List<LandlordCommissionDto> landlordCommissions;
-    private List<PaymentHistoryDto> paymentHistories;
+    private List<LandlordCommissionResponseDto> landlordCommissions;
+    private List<PaymentHistoryResponseDto> paymentHistories;
 }

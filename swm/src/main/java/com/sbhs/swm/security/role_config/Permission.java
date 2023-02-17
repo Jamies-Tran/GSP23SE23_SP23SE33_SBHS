@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 public enum Permission {
+    HOMESTAY_VIEW("homestay:view"),
     HOMESTAY_CREATE("homestay:create"),
     HOMESTAY_MODIFY("homestay:modify"),
     HOMESTAY_REMOVE("homestay:remove"),

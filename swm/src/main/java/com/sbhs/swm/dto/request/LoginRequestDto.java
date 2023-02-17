@@ -1,6 +1,4 @@
-package com.sbhs.swm.dto;
-
-import java.util.List;
+package com.sbhs.swm.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LoginResponseDto {
+public class LoginRequestDto {
     private String username;
-    private String email;
-    private String token;
-    private String expireDate;
-    private List<String> roles;
+    private String password;
 }

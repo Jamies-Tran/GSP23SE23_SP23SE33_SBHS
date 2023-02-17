@@ -1,6 +1,4 @@
-package com.sbhs.swm.dto;
-
-import java.util.List;
+package com.sbhs.swm.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SwmUserDto {
+public class SwmUserRequestDto {
     private Long id;
     private String username;
     private String password;
@@ -22,8 +20,4 @@ public class SwmUserDto {
     private String dob;
     private String address;
     private String avatarUrl;
-    private PassengerDto passengerProperty;
-    private LandlordDto landlordProperty;
-    private AdminDto adminProperty;
-    private List<Long> roleIds;
 }

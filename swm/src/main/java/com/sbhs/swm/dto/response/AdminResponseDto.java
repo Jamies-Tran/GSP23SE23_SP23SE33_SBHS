@@ -1,4 +1,4 @@
-package com.sbhs.swm.dto;
+package com.sbhs.swm.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LoginRequestDto {
-    private String username;
-    private String password;
+public class AdminResponseDto {
+    private Long id;
 }

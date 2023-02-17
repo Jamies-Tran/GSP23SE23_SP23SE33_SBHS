@@ -1,6 +1,6 @@
 package com.sbhs.swm.services;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.sbhs.swm.dto.MomoCaptureWalletDto;
 import com.sbhs.swm.models.PaymentHistory;
@@ -10,5 +10,6 @@ public interface IPaymentService {
 
     MomoCaptureWalletDto paymentResultHandling(MomoCaptureWalletDto momoCaptureWalletDto);
 
-    List<PaymentHistory> findPaymentHistoriesOfPassenger(int page, int size);
+    Page<PaymentHistory> findPaymentHistoriesOfPassenger(int page, int size, boolean isNextPage,
+            boolean isPreviousPage);
 }

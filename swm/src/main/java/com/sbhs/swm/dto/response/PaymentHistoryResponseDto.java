@@ -1,4 +1,4 @@
-package com.sbhs.swm.dto;
+package com.sbhs.swm.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandlordCommissionDto {
+public class PaymentHistoryResponseDto {
     private Long id;
-    private Long commission;
-    private String commissionType;
-
+    private Long amount;
+    private String createdDate;
+    private String paymentMethod;
 }

@@ -1,4 +1,4 @@
-package com.sbhs.swm.dto;
+package com.sbhs.swm.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BalanceWalletDto {
+public class PassengerResponseDto {
     private Long id;
-    private Long totalBalance;
-    private PassengerWalletDto passengerWallet;
-    private LandlordWalletDto landlordWallet;
-
+    private BalanceWalletResponseDto passengerWallet;
 }
