@@ -2,6 +2,8 @@ package com.sbhs.swm.dto;
 
 import java.util.List;
 
+import com.sbhs.swm.dto.response.PaymentHistoryResponseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,6 @@ import lombok.Setter;
 public class PassengerWalletDto {
     private Long id;
     private List<PassengerDepositDto> depositForHomestays;
-    private List<PaymentHistoryDto> paymentHistories;
+    private List<PaymentHistoryResponseDto> paymentHistories;
 
 }
