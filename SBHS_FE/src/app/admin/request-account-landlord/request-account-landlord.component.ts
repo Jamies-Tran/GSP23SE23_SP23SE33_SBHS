@@ -8,19 +8,33 @@ import { ServerHttpService } from 'src/app/services/verify-landlord.service';
   styleUrls: ['./request-account-landlord.component.scss'],
 })
 export class RequestAccountLandlordComponent implements OnInit {
-  values: data[] = [];
+  valuesFirst: data[] = [];
+  valuesSecond: data[] = [];
   message!: string;
-  public status = 'All';
+  public statusFirst = 'Pending';
+  public statusSecond = 'All';
   registerError: string = '';
   constructor(private http: ServerHttpService, public dialog: MatDialog) {}
   ngOnInit(): void {
-    this.getStatusLandlord();
+    this.getStatusLandlordFirst();
+    this.getStatusLandlordSecond();
   }
-  public getStatusLandlord() {
-    this.http.getLanlord(this.status).subscribe(
+  public getStatusLandlordFirst() {
+    this.http.getLanlord(this.statusFirst).subscribe(
       (data) => {
-        this.values = data;
-        console.log('data', this.values);
+        this.valuesFirst = data;
+        console.log('data', this.valuesFirst);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  public getStatusLandlordSecond() {
+    this.http.getLanlord(this.statusSecond).subscribe(
+      (data) => {
+        this.valuesSecond = data;
+        console.log('data', this.valuesSecond);
       },
       (error) => {
         console.log(error);
@@ -94,15 +108,26 @@ export class RequestAccountLandlordComponent implements OnInit {
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 20];
 
-  onTableDataChange(event: any) {
+  onTableDataChangeFirst(event: any) {
     this.page = event;
-    this.values;
+    this.valuesFirst;
   }
-  onTableSizeChange(event: any): void {
+  onTableSizeChangeFirst(event: any): void {
     this.tableSize = event.target.value;
     this.page = 1;
-    this.values;
+    this.valuesFirst;
   }
+
+  onTableDataChangeSecond(event: any) {
+    this.page = event;
+    this.valuesSecond;
+  }
+  onTableSizeChangeSecond(event: any): void {
+    this.tableSize = event.target.value;
+    this.page = 1;
+    this.valuesSecond;
+  }
+
   // dialog error
   openDialog() {
     // this.dialog.open(MessageComponent, {

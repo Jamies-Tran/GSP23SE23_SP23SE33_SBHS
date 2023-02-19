@@ -33,6 +33,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 // Component
 import { AppComponent } from './app.component';
@@ -41,6 +43,7 @@ import { RegisterComponent } from './guest/register/register.component';
 import { ForgotPassComponent } from './guest/forgot-pass/forgot-pass.component';
 import { environment } from '../environments/environment';
 import { WelcomePageComponent } from './guest/welcome-page/welcome-page.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -79,6 +82,8 @@ import { WelcomePageComponent } from './guest/welcome-page/welcome-page.componen
     MatMenuModule,
     MatDialogModule,
     SocialLoginModule,
+    MatTabsModule,
+    NgxPaginationModule
   ],
   providers: [
     {

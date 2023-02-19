@@ -10,6 +10,9 @@ import { AdminComponent } from './admin.component';
 import { RequestAccountLandlordComponent } from './request-account-landlord/request-account-landlord.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { matSelectAnimations, MatSelectModule } from '@angular/material/select';
+import { MatPaginatedTabHeader, MatTabsModule } from '@angular/material/tabs';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   declarations: [AdminComponent, RequestAccountLandlordComponent],
@@ -22,6 +25,8 @@ import { matSelectAnimations, MatSelectModule } from '@angular/material/select';
     MatRippleModule,
     MatDialogModule,
     MatSelectModule,
+    MatTabsModule,
+    NgxPaginationModule,
   ],
 })
 export class AdminModule {}
