@@ -35,6 +35,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatStepperModule } from '@angular/material/stepper';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 // Component
 import { AppComponent } from './app.component';
@@ -83,7 +85,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatDialogModule,
     SocialLoginModule,
     MatTabsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatStepperModule,
+    CdkStepperModule
   ],
   providers: [
     {
