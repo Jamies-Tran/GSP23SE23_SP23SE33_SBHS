@@ -12,7 +12,8 @@ import 'package:http/http.dart' as http;
 abstract class IPaymentService {
   Future<dynamic> requestPayment(String username, int amount);
 
-  Future<dynamic> getPaymentHistories(String username, int page, int size);
+  Future<dynamic> getPaymentHistories(String username, int page, int size,
+      bool isNextPage, bool isPreviousPage);
 }
 
 class PaymentService extends IPaymentService {
@@ -48,22 +49,23 @@ class PaymentService extends IPaymentService {
   }
 
   @override
-  Future getPaymentHistories(String username, int page, int size) async {
+  Future getPaymentHistories(String username, int page, int size,
+      bool isNextPage, bool isPreviousPage) async {
     final client = http.Client();
 
     try {
       final token = await _firebaseService.getUserTokenByUsername(username);
       if (token is String) {
-        Uri uri = Uri.parse("$paymentHistoryUrl?page=$page&size=$size");
+        Uri uri = Uri.parse(
+            "$paymentHistoryUrl?page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
         final response = await client.get(uri, headers: {
           "content-type": "application/json",
           "Authorization": "Bearer $token"
         });
         if (response.statusCode == 200) {
-          final responseData = json.decode(response.body);
-          final paymentHistories = List<PaymentHistoryModel>.from(
-              responseData.map((e) => PaymentHistoryModel.fromJson(e)));
-          return paymentHistories;
+          final paymentHistoryPagingModel =
+              PaymentHistoryPagingModel.fromJson(json.decode(response.body));
+          return paymentHistoryPagingModel;
         } else {
           ServerExceptionModel serverExceptionModel =
               ServerExceptionModel.fromJson(json.decode(response.body));

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
@@ -27,6 +28,10 @@ final paymentUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT"]}";
 final paymentHistoryUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT_HISTORY"]}";
 
+final autoCompleteUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["AUTOCOMPLETE"]}";
+
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final connectionTimeOut = int.parse(dotenv.env["CONNECTION_TIMEOUT"]!);
+const primaryColor = Colors.orange;
+const secondaryColor = Colors.deepOrangeAccent;

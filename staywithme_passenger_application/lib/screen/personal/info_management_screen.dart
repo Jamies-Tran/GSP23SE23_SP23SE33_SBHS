@@ -6,9 +6,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/info_mng_event.dart';
 import 'package:staywithme_passenger_application/bloc/info_mng_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
+import 'package:staywithme_passenger_application/model/auto_complete_model.dart';
 
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
+import 'package:staywithme_passenger_application/service/user/auto_complete_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -45,15 +47,28 @@ class _PassengerInfoManagementScreenState
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SpinKitCircle(
-                          color: Colors.amber,
-                        ),
-                        Text("Getting your information")
-                      ],
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                          primaryColor,
+                          Colors.white,
+                          secondaryColor
+                        ])),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          SpinKitCircle(
+                            color: Colors.amber,
+                          ),
+                          Text("Getting your information")
+                        ],
+                      ),
                     ),
                   );
                 case ConnectionState.done:
@@ -62,7 +77,18 @@ class _PassengerInfoManagementScreenState
                     totalBalanceTextEditingController.text =
                         "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.totalBalance)} VND";
                     return Container(
-                      margin: const EdgeInsets.only(top: 50),
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                            primaryColor,
+                            Colors.white,
+                            secondaryColor
+                          ])),
+                      // margin: const EdgeInsets.only(top: 50),
                       child: SingleChildScrollView(
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -124,9 +150,10 @@ class _PassengerInfoManagementScreenState
                               SizedBox(
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: const Divider(
-                                  color: Colors.grey,
+                                  color: Colors.orange,
+                                  thickness: 1.0,
                                   indent: 1,
-                                  endIndent: 0,
+                                  endIndent: 1,
                                 ),
                               ),
                               const SizedBox(
@@ -271,7 +298,7 @@ class _PassengerInfoManagementScreenState
                                                       MediaQuery.of(context)
                                                               .size
                                                               .width /
-                                                          3,
+                                                          2,
                                                       50),
                                                   minimumSize: Size(
                                                       MediaQuery.of(context)
@@ -288,8 +315,8 @@ class _PassengerInfoManagementScreenState
                                                             username:
                                                                 data.username));
                                               },
-                                              child:
-                                                  const Text("View history")),
+                                              child: const Text(
+                                                  "Payment history")),
                                           ElevatedButton(
                                               style: ElevatedButton.styleFrom(
                                                   backgroundColor: Colors.green,

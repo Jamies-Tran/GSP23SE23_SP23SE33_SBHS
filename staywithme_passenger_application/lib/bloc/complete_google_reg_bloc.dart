@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/reg_google_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/reg_google_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
@@ -35,7 +36,7 @@ class CompleteGoogleRegBloc {
 
   Color? _focusUsernameColor;
   Color? _focusPhoneColor;
-  Color? _focusCitizenIdentificationColor;
+  Color? _focusIdCardNumberColor;
   Color? _focusBirthDayColor;
   Color? _focusAddressColor;
 
@@ -58,7 +59,7 @@ class CompleteGoogleRegBloc {
       dob: null,
       focusAddressColor: Colors.white,
       focusBirthDayColor: Colors.white,
-      focusCitizenIdentificationColor: Colors.white,
+      focusIdCardNumberColor: Colors.white,
       focusPhoneColor: Colors.white,
       focusUsernameColor: Colors.white,
     );
@@ -86,9 +87,9 @@ class CompleteGoogleRegBloc {
                 ChooseGoogleAccountScreen.chooseGoogleAccountScreenRoute,
                 arguments: {"isGoogleRegister": true}));
       }
-      Navigator.of(event.context!).pushReplacementNamed(
-          RegisterScreen.registerAccountRoute,
-          arguments: {"isGoogleRegister": true});
+      event.googleSignIn!.signOut().then((value) => Navigator.of(event.context!)
+          .pushReplacementNamed(RegisterScreen.registerAccountRoute,
+              arguments: {"isGoogleRegister": true}));
       // googleAuthService.signOut().then((value) => Navigator.of(event.context!)
       //     .pushReplacementNamed(_cancelGoogleRegRoute!));
     } else if (event is InputUsernameGoogleAuthEvent) {
@@ -106,34 +107,21 @@ class CompleteGoogleRegBloc {
     } else if (event is InputDobGoogleAuthEvent) {
       _dob = event.dob;
     } else if (event is FocusTextFieldCompleteGoogleRegEvent) {
-      if (event.isFocusOnUsername == true) {
-        _focusUsernameColor = Colors.black45;
-      } else {
-        _focusUsernameColor = Colors.white;
-      }
-      if (event.isFocusOnPhone == true) {
-        _focusPhoneColor = Colors.black45;
-      } else {
-        _focusPhoneColor = Colors.white;
-      }
-      if (event.isFocusOnAddress == true) {
-        _focusAddressColor = Colors.black45;
-      } else {
-        _focusAddressColor = Colors.white;
-      }
-      if (event.isFocusOnCitizenIdentification == true) {
-        _focusCitizenIdentificationColor = Colors.black45;
-      } else {
-        _focusCitizenIdentificationColor = Colors.white;
-      }
-      if (event.isFocusOnBirthDay == true) {
-        _focusBirthDayColor = Colors.black45;
-      } else {
-        _focusBirthDayColor = Colors.white;
-      }
+      _focusUsernameColor =
+          event.isFocusOnUsername == true ? secondaryColor : Colors.white;
+      _focusPhoneColor =
+          event.isFocusOnPhone == true ? secondaryColor : Colors.white;
+      _focusAddressColor =
+          event.isFocusOnAddress == true ? secondaryColor : Colors.white;
+      _focusIdCardNumberColor =
+          event.isFocusOnIdCardNumber == true ? secondaryColor : Colors.white;
+      _focusBirthDayColor =
+          event.isFocusOnBirthDay == true ? secondaryColor : Colors.white;
     } else if (event is CancelChooseAnotherGoogleAccountEvent) {
-      Navigator.pushReplacementNamed(
-          event.context!, LoginScreen.loginScreenRoute);
+      event.googleSignIn!.signOut().then(
+            (value) => Navigator.pushReplacementNamed(
+                event.context!, LoginScreen.loginScreenRoute),
+          );
     } else if (event is SubmitGoogleCompleteRegisterEvent) {
       PassengerModel passenger = PassengerModel(
           address: event.address,
@@ -148,11 +136,9 @@ class CompleteGoogleRegBloc {
       googleAuthService.registerGoogleAccount(passenger).then((value) {
         if (value is PassengerModel) {
           Navigator.pushReplacementNamed(
-              event.context!, LoginScreen.loginScreenRoute,
-              arguments: {
-                "isExceptionOccured": false,
-                "message": "Now you can login with ${value.username}"
-              });
+              event.context!, LoginScreen.loginScreenRoute, arguments: {
+            "message": "Now you can login with ${value.username}"
+          });
         } else if (value is ServerExceptionModel) {
           usernameTextEditingCtl.text =
               event.googleSignIn!.currentUser!.displayName!;
@@ -190,7 +176,7 @@ class CompleteGoogleRegBloc {
       dob: _dob,
       focusAddressColor: _focusAddressColor,
       focusBirthDayColor: _focusBirthDayColor,
-      focusCitizenIdentificationColor: _focusCitizenIdentificationColor,
+      focusIdCardNumberColor: _focusIdCardNumberColor,
       focusPhoneColor: _focusPhoneColor,
       focusUsernameColor: _focusUsernameColor,
     ));

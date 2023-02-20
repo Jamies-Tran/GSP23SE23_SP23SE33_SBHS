@@ -30,8 +30,9 @@ class CancelCompleteGoogleAccountRegisterEvent
 
 class CancelChooseAnotherGoogleAccountEvent
     extends CompleteGoogleRegisterEvent {
-  CancelChooseAnotherGoogleAccountEvent({this.context});
+  CancelChooseAnotherGoogleAccountEvent({this.context, this.googleSignIn});
 
+  GoogleSignIn? googleSignIn;
   BuildContext? context;
 }
 
@@ -64,12 +65,12 @@ class FocusTextFieldCompleteGoogleRegEvent extends CompleteGoogleRegisterEvent {
       this.isFocusOnPhone,
       this.isFocusOnAddress,
       this.isFocusOnBirthDay,
-      this.isFocusOnCitizenIdentification});
+      this.isFocusOnIdCardNumber});
 
   bool? isFocusOnUsername;
   bool? isFocusOnPhone;
   bool? isFocusOnAddress;
-  bool? isFocusOnCitizenIdentification;
+  bool? isFocusOnIdCardNumber;
   bool? isFocusOnBirthDay;
 }
 

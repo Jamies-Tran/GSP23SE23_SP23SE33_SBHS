@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/log_in_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/log_in_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/login_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/authenticate_wrapper.dart';
@@ -27,12 +28,15 @@ class LoginBloc {
 
   bool _isShowPassword = true;
 
-  LoginState initData() => LoginState(
-      username: null,
-      password: null,
-      focusUsernameColor: Colors.white,
-      focusPasswordColor: Colors.white,
-      isShowPassword: true);
+  LoginState initData(String? username) {
+    _username = username;
+    return LoginState(
+        username: username,
+        password: null,
+        focusUsernameColor: Colors.white,
+        focusPasswordColor: Colors.white,
+        isShowPassword: true);
+  }
 
   String? _username;
   String? _password;
@@ -53,9 +57,9 @@ class LoginBloc {
       _password = event.password;
     } else if (event is FocusTextFieldLoginEvent) {
       _focusUsernameColor =
-          event.isFocusUsername == true ? Colors.black45 : Colors.white;
+          event.isFocusUsername == true ? secondaryColor : Colors.white;
       _focusPasswordColor =
-          event.isFocusPassword == true ? Colors.black45 : Colors.white;
+          event.isFocusPassword == true ? secondaryColor : Colors.white;
     } else if (event is ShowPasswordLoginEvent) {
       _isShowPassword = !_isShowPassword;
     } else if (event is BackwardToLoginScreenEvent) {
@@ -69,10 +73,9 @@ class LoginBloc {
           event.context!, LoginLoadingScreen.loginLoadingScreenRoute,
           arguments: {"email": event.email, "username": event.username});
     } else if (event is InformLoginToFireAuthEvent) {
-      _firebaseAuth.informLoginToFireAuth(event.email!).then((value) =>
-          _firebaseAuth.updateFirebaseUsername(event.username!).then((value) =>
-              Navigator.pushReplacementNamed(event.context!,
-                  AuthenticateWrapperScreen.authenticateWrapperScreenRoute)));
+      _firebaseAuth.updateFirebaseUsername(event.username!).then((value) =>
+          Navigator.pushReplacementNamed(event.context!,
+              AuthenticateWrapperScreen.authenticateWrapperScreenRoute));
     } else if (event is LogInFailEvent) {
       int? excCount = event.excCount;
       excCount = excCount != null ? excCount += 1 : null;

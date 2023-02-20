@@ -101,7 +101,8 @@ class _GoogleAccountRegisterValidationScreenState
                                   completeGoogleAuthBloc.eventController.sink
                                       .add(
                                           CancelChooseAnotherGoogleAccountEvent(
-                                              context: context));
+                                              context: context,
+                                              googleSignIn: googleSignIn));
                                 },
                                 child: const Text(
                                   "Cancel",
@@ -139,7 +140,8 @@ class _GoogleAccountRegisterValidationScreenState
                                   completeGoogleAuthBloc.eventController.sink
                                       .add(
                                           CancelChooseAnotherGoogleAccountEvent(
-                                              context: context));
+                                              context: context,
+                                              googleSignIn: googleSignIn));
                                 },
                                 child: const Text(
                                   "Cancel",

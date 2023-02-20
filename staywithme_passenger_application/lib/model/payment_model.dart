@@ -26,3 +26,17 @@ class PaymentHistoryModel {
           createdDate: json["createdDate"],
           paymentMethod: json["paymentMethod"]);
 }
+
+class PaymentHistoryPagingModel {
+  PaymentHistoryPagingModel({this.paymentHistoriesModel, this.pageNumber});
+
+  List<PaymentHistoryModel>? paymentHistoriesModel;
+  int? pageNumber;
+
+  factory PaymentHistoryPagingModel.fromJson(Map<String, dynamic> json) =>
+      PaymentHistoryPagingModel(
+          pageNumber: json["pageNumber"],
+          paymentHistoriesModel: List<PaymentHistoryModel>.from(
+              json["paymentHistories"]
+                  .map((e) => PaymentHistoryModel.fromJson(e))));
+}

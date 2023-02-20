@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/add_balance_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/add_balance_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/add_balance_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/payment_model.dart';
 import 'package:staywithme_passenger_application/service/user/payment_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -74,13 +75,13 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                                 "Amount",
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Colors.greenAccent,
+                                  color: secondaryColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               prefixIcon: Icon(
                                 Icons.attach_money,
-                                color: Colors.greenAccent,
+                                color: secondaryColor,
                               ),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -100,8 +101,8 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              maximumSize: const Size(125, 50),
-                              minimumSize: const Size(125, 50),
+                              maximumSize: const Size(200, 50),
+                              minimumSize: const Size(200, 50),
                               backgroundColor: Colors.orange),
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
@@ -109,15 +110,17 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                       content: Container(
-                                          height: 100,
-                                          width: 100,
+                                          height: 200,
+                                          width: 200,
                                           child: Center(
                                             child: FutureBuilder(
-                                                future: _paymentService
-                                                    .requestPayment(
-                                                        username!,
-                                                        snapshot
-                                                            .data!.balance!),
+                                                // future: _paymentService
+                                                //     .requestPayment(
+                                                //         username!,
+                                                //         snapshot
+                                                //             .data!.balance!),
+                                                future: Future.delayed(
+                                                    Duration(days: 1)),
                                                 builder:
                                                     (context, futureSnapshot) {
                                                   final data =
@@ -127,13 +130,32 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                                                     case ConnectionState
                                                         .waiting:
                                                       return Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: const [
-                                                          SpinKitChasingDots(
-                                                            color:
-                                                                Colors.orange,
+                                                          SpinKitFadingCircle(
+                                                            color: primaryColor,
+                                                            size: 25,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
                                                           ),
                                                           Text(
-                                                              "Navigating to momo...")
+                                                            "Just a minute...",
+                                                            style: TextStyle(
+                                                                fontSize: 25,
+                                                                fontFamily:
+                                                                    "Lobster",
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color:
+                                                                    primaryColor),
+                                                          )
                                                         ],
                                                       );
                                                     case ConnectionState.done:
@@ -156,7 +178,7 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                                           ))));
                             }
                           },
-                          child: const Text("Submit")),
+                          child: const Text("Pay with momo")),
                       TextButton(
                           onPressed: () {},
                           child: const Text(

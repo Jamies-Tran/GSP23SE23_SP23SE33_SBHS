@@ -73,9 +73,10 @@ class PassengerWalletModel {
   factory PassengerWalletModel.fromJson(Map<String, dynamic> json) =>
       PassengerWalletModel(
         id: json["id"],
-        depositForHomestays: List<PassengerDepositModel>.from(
-            json["depositForHomestays"]
-                .map((e) => PassengerDepositModel.fromJson(e))),
+        depositForHomestays: json["depositForHomestays"] != null
+            ? List<PassengerDepositModel>.from(json["depositForHomestays"]
+                .map((e) => PassengerDepositModel.fromJson(e)))
+            : null,
       );
 
   int totalDeposit() {

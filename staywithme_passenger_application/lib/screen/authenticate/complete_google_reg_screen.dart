@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:staywithme_passenger_application/bloc/complete_google_reg_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/reg_google_event.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
+
+import '../../model/auto_complete_model.dart';
+import '../../service/user/auto_complete_service.dart';
+import '../../service_locator/service_locator.dart';
 
 class CompleteGoogleRegisterScreen extends StatefulWidget {
   const CompleteGoogleRegisterScreen({super.key});
@@ -19,7 +26,13 @@ class _CompleteGoogleRegisterScreenState
   final completeGoogleRegisterBloc = CompleteGoogleRegBloc();
   final formState = GlobalKey<FormState>();
   final dobTextFieldController = TextEditingController();
+  final TextEditingController phoneTextFieldController =
+      TextEditingController();
+
   final dateFormat = DateFormat("yyyy-MM-dd");
+  String displayStringForOption(Prediction prediction) =>
+      utf8.decode(prediction.description!.runes.toList());
+  final autoCompleteService = locator.get<IAutoCompleteService>();
 
   @override
   void dispose() {
@@ -36,10 +49,6 @@ class _CompleteGoogleRegisterScreenState
         getArguments["usernameTextEditingCtl"];
     final TextEditingController emailTextFieldController =
         getArguments["emailTextEditingCtl"];
-    final TextEditingController phoneTextFieldController =
-        TextEditingController();
-    final TextEditingController addressTextFieldController =
-        TextEditingController();
 
     final GoogleSignIn googleSignIn = getArguments["googleSignIn"];
     dynamic isExceptionOccured = getArguments["isExceptionOccured"] ?? false;
@@ -51,7 +60,7 @@ class _CompleteGoogleRegisterScreenState
             FocusTextFieldCompleteGoogleRegEvent(
                 isFocusOnAddress: false,
                 isFocusOnBirthDay: false,
-                isFocusOnCitizenIdentification: false,
+                isFocusOnIdCardNumber: false,
                 isFocusOnPhone: false,
                 isFocusOnUsername: false));
         FocusScope.of(context).requestFocus(FocusNode());
@@ -62,7 +71,7 @@ class _CompleteGoogleRegisterScreenState
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [Colors.white, Colors.orange]),
+                colors: [secondaryColor, Colors.white, primaryColor]),
           ),
           height: MediaQuery.of(context).size.height,
           child: SafeArea(
@@ -88,7 +97,7 @@ class _CompleteGoogleRegisterScreenState
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green),
+                              color: primaryColor),
                         ),
                       ),
                       const SizedBox(
@@ -112,14 +121,14 @@ class _CompleteGoogleRegisterScreenState
                                       label: const Text(
                                         "Username",
                                         style: TextStyle(
-                                            fontFamily: "SourceCodePro",
-                                            color: Colors.black45,
+                                            fontFamily: "Lobster",
+                                            color: primaryColor,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5),
                                       ),
                                       prefixIcon: const Icon(
                                         Icons.account_circle,
-                                        color: Colors.black45,
+                                        color: primaryColor,
                                       ),
                                       suffixIcon: IconButton(
                                         icon: Icon(
@@ -140,9 +149,9 @@ class _CompleteGoogleRegisterScreenState
                                       enabledBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors.white, width: 1.0)),
-                                      focusedBorder: const OutlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Colors.black45,
+                                              color: secondaryColor,
                                               width: 1.0)),
                                       errorStyle: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -153,7 +162,7 @@ class _CompleteGoogleRegisterScreenState
                                           isFocusOnUsername: true,
                                           isFocusOnAddress: false,
                                           isFocusOnBirthDay: false,
-                                          isFocusOnCitizenIdentification: false,
+                                          isFocusOnIdCardNumber: false,
                                           isFocusOnPhone: false)),
                                   onChanged: (value) =>
                                       completeGoogleRegisterBloc
@@ -182,23 +191,24 @@ class _CompleteGoogleRegisterScreenState
                                       label: const Text(
                                         "Email",
                                         style: TextStyle(
-                                            fontFamily: "SourceCodePro",
-                                            color: Colors.black45,
+                                            fontFamily: "Lobster",
+                                            color: primaryColor,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5),
                                       ),
                                       prefixIcon: const Icon(
                                         Icons.mail,
-                                        color: Colors.black45,
+                                        color: Colors.orange,
                                       ),
                                       suffixIcon: IconButton(
                                           onPressed: () {
                                             showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
+                                                backgroundColor: primaryColor,
                                                 title: const Center(
                                                   child: Text(
-                                                    "Choose account",
+                                                    "Change account",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -209,8 +219,7 @@ class _CompleteGoogleRegisterScreenState
                                                   child: Text(
                                                     "Do you want to change google account?",
                                                     style: TextStyle(
-                                                        fontFamily:
-                                                            "SourceCodePro",
+                                                        fontFamily: "Lobster",
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -227,13 +236,15 @@ class _CompleteGoogleRegisterScreenState
                                                                 .sink
                                                                 .add(CancelChooseAnotherGoogleAccountEvent(
                                                                     context:
-                                                                        context));
+                                                                        context,
+                                                                    googleSignIn:
+                                                                        googleSignIn));
                                                           },
                                                           child: const Text(
                                                             "Cancel",
                                                             style: TextStyle(
                                                                 fontFamily:
-                                                                    "SourceCodePro",
+                                                                    "Lobster",
                                                                 color:
                                                                     Colors.red,
                                                                 fontWeight:
@@ -257,7 +268,7 @@ class _CompleteGoogleRegisterScreenState
                                                             "Change",
                                                             style: TextStyle(
                                                                 fontFamily:
-                                                                    "SourceCodePro",
+                                                                    "Lobster",
                                                                 color: Colors
                                                                     .green,
                                                                 fontWeight:
@@ -270,13 +281,16 @@ class _CompleteGoogleRegisterScreenState
                                               ),
                                             );
                                           },
-                                          icon: const Icon(Icons.restart_alt)),
+                                          icon: const Icon(
+                                            Icons.restart_alt,
+                                            color: secondaryColor,
+                                          )),
                                       enabledBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors.white, width: 1.0)),
-                                      focusedBorder: const OutlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Colors.black45,
+                                              color: secondaryColor,
                                               width: 1.0)),
                                       errorStyle: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -308,14 +322,14 @@ class _CompleteGoogleRegisterScreenState
                                       label: const Text(
                                         "Phone",
                                         style: TextStyle(
-                                            fontFamily: "SourceCodePro",
-                                            color: Colors.black45,
+                                            fontFamily: "Lobster",
+                                            color: primaryColor,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5),
                                       ),
                                       prefixIcon: const Icon(
                                         Icons.phone,
-                                        color: Colors.black45,
+                                        color: primaryColor,
                                       ),
                                       suffixIcon: IconButton(
                                         icon: Icon(
@@ -335,9 +349,9 @@ class _CompleteGoogleRegisterScreenState
                                       enabledBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors.white, width: 1.0)),
-                                      focusedBorder: const OutlineInputBorder(
+                                      focusedBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                              color: Colors.black45,
+                                              color: secondaryColor,
                                               width: 1.0)),
                                       errorStyle: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -348,7 +362,7 @@ class _CompleteGoogleRegisterScreenState
                                           isFocusOnPhone: true,
                                           isFocusOnAddress: false,
                                           isFocusOnBirthDay: false,
-                                          isFocusOnCitizenIdentification: false,
+                                          isFocusOnIdCardNumber: false,
                                           isFocusOnUsername: false)),
                                   onChanged: (value) =>
                                       completeGoogleRegisterBloc
@@ -362,72 +376,110 @@ class _CompleteGoogleRegisterScreenState
                               const SizedBox(
                                 height: 25,
                               ),
-                              SizedBox(
-                                width: 300,
-                                child: TextFormField(
-                                  controller: addressTextFieldController,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.5),
-                                  decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      label: const Text(
-                                        "Address",
-                                        style: TextStyle(
-                                            fontFamily: "SourceCodePro",
-                                            color: Colors.black45,
+                              Autocomplete<Prediction>(
+                                  displayStringForOption:
+                                      displayStringForOption,
+                                  fieldViewBuilder: (context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return SizedBox(
+                                      width: 300,
+                                      child: TextFormField(
+                                        controller: textEditingController,
+                                        focusNode: focusNode,
+                                        style: const TextStyle(
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1.5),
+                                        decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            label: const Text(
+                                              "Address",
+                                              style: TextStyle(
+                                                  fontFamily: "Lobster",
+                                                  color: primaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.5),
+                                            ),
+                                            prefixIcon: const Icon(
+                                              Icons.location_city,
+                                              color: primaryColor,
+                                            ),
+                                            suffixIcon: IconButton(
+                                              icon: Icon(
+                                                Icons.close,
+                                                color: snapshot
+                                                    .data!.focusAddressColor,
+                                              ),
+                                              onPressed: () {
+                                                textEditingController.clear();
+                                                completeGoogleRegisterBloc
+                                                    .eventController.sink
+                                                    .add(InputAddressGoogleAuthEvent(
+                                                        address:
+                                                            textEditingController
+                                                                .text));
+                                              },
+                                            ),
+                                            enabledBorder:
+                                                const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                        width: 1.0)),
+                                            focusedBorder:
+                                                const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: secondaryColor,
+                                                        width: 1.0)),
+                                            errorStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.redAccent)),
+                                        onTap: () => completeGoogleRegisterBloc
+                                            .eventController.sink
+                                            .add(
+                                                FocusTextFieldCompleteGoogleRegEvent(
+                                                    isFocusOnAddress: true,
+                                                    isFocusOnBirthDay: false,
+                                                    isFocusOnIdCardNumber:
+                                                        false,
+                                                    isFocusOnPhone: false,
+                                                    isFocusOnUsername: false)),
+                                        onChanged: (value) =>
+                                            completeGoogleRegisterBloc
+                                                .eventController.sink
+                                                .add(
+                                                    InputAddressGoogleAuthEvent(
+                                                        address: value)),
+                                        validator: (value) =>
+                                            snapshot.data!.validateAddress(),
                                       ),
-                                      prefixIcon: const Icon(
-                                        Icons.location_city,
-                                        color: Colors.black45,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          Icons.close,
-                                          color:
-                                              snapshot.data!.focusAddressColor,
-                                        ),
-                                        onPressed: () {
-                                          addressTextFieldController.clear();
-                                          completeGoogleRegisterBloc
-                                              .eventController.sink
-                                              .add(InputAddressGoogleAuthEvent(
-                                                  address:
-                                                      addressTextFieldController
-                                                          .text));
-                                        },
-                                      ),
-                                      enabledBorder: const UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.white, width: 1.0)),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.black45,
-                                              width: 1.0)),
-                                      errorStyle: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.redAccent)),
-                                  onTap: () => completeGoogleRegisterBloc
-                                      .eventController.sink
-                                      .add(FocusTextFieldCompleteGoogleRegEvent(
-                                          isFocusOnAddress: true,
-                                          isFocusOnBirthDay: false,
-                                          isFocusOnCitizenIdentification: false,
-                                          isFocusOnPhone: false,
-                                          isFocusOnUsername: false)),
-                                  onChanged: (value) =>
-                                      completeGoogleRegisterBloc
-                                          .eventController.sink
-                                          .add(InputAddressGoogleAuthEvent(
-                                              address: value)),
-                                  validator: (value) =>
-                                      snapshot.data!.validateAddress(),
-                                ),
-                              ),
+                                    );
+                                  },
+                                  optionsBuilder: (textEditingValue) {
+                                    if (textEditingValue.text.isEmpty ||
+                                        textEditingValue.text == '') {
+                                      return const Iterable.empty();
+                                    }
+
+                                    return autoCompleteService
+                                        .autoComplet(textEditingValue.text)
+                                        .then((value) {
+                                      if (value is PlacesResult) {
+                                        return value.predictions!.where(
+                                            (element) => utf8
+                                                .decode(element
+                                                    .description!.runes
+                                                    .toList())
+                                                .toLowerCase()
+                                                .contains(textEditingValue.text
+                                                    .toLowerCase()));
+                                      } else {
+                                        return const Iterable.empty();
+                                      }
+                                    });
+                                  }),
                               isExceptionOccured == true
                                   ? Container(
                                       margin: const EdgeInsets.only(
@@ -466,7 +518,7 @@ class _CompleteGoogleRegisterScreenState
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blueAccent,
+                                      backgroundColor: secondaryColor,
                                       minimumSize: const Size(300, 50),
                                       maximumSize: const Size(300, 50)),
                                   child: const Text(

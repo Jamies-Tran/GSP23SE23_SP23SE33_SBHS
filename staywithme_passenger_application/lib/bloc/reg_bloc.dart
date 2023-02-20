@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:staywithme_passenger_application/bloc/event/reg_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/reg_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
@@ -91,18 +92,18 @@ class RegisterBloc {
       _avatarUrl = event.avatarUrl;
     } else if (event is FocusTextFieldRegisterEvent) {
       _focusUsernameColor =
-          event.isFocusOnUsername == true ? Colors.black45 : Colors.white;
+          event.isFocusOnUsername == true ? secondaryColor : Colors.white;
       _focusPasswordColor =
-          event.isFocusOnPassword == true ? Colors.black45 : Colors.white;
+          event.isFocusOnPassword == true ? secondaryColor : Colors.white;
       _focusEmailColor =
-          event.isFocusOnEmail == true ? Colors.black45 : Colors.white;
+          event.isFocusOnEmail == true ? secondaryColor : Colors.white;
       _focusAddressColor =
-          event.isFocusOnAddress == true ? Colors.black45 : Colors.white;
+          event.isFocusOnAddress == true ? secondaryColor : Colors.white;
       _focusPhoneColor =
-          event.isFocusOnPhone == true ? Colors.black45 : Colors.white;
+          event.isFocusOnPhone == true ? secondaryColor : Colors.white;
       _focusCitizenIdentificationColor =
           event.isFocusOnCitizenIdentification == true
-              ? Colors.black45
+              ? secondaryColor
               : Colors.white;
       _focusBirthdayColor =
           event.isFocusOnBirthday == true ? Colors.black45 : Colors.white;
@@ -168,9 +169,11 @@ class RegisterBloc {
               TextEditingController();
           usernameTextEditingController.text = value.username!;
           Navigator.pushReplacementNamed(
-              event.context!, LoginScreen.loginScreenRoute, arguments: {
-            "usernameTextEditingController": usernameTextEditingController
-          });
+              event.context!, LoginScreen.loginScreenRoute,
+              arguments: {
+                "usernameTextEditingController": usernameTextEditingController,
+                "message": "account created"
+              });
         }
       });
     }

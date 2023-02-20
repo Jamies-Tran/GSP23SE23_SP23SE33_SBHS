@@ -12,7 +12,7 @@ class CompleteGoogleRegisterState {
       this.avatarUrl,
       this.focusAddressColor,
       this.focusBirthDayColor,
-      this.focusCitizenIdentificationColor,
+      this.focusIdCardNumberColor,
       this.focusPhoneColor,
       this.focusUsernameColor});
 
@@ -28,7 +28,7 @@ class CompleteGoogleRegisterState {
   Color? focusUsernameColor;
   Color? focusPhoneColor;
   Color? focusAddressColor;
-  Color? focusCitizenIdentificationColor;
+  Color? focusIdCardNumberColor;
   Color? focusBirthDayColor;
 
   String? validateUsername() {
