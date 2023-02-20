@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SwmUserResponseDto {
+public class SwmUserResponseDto extends BaseResponseDto {
     private Long id;
     private String username;
     private String email;

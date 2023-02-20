@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PaymentHistoryResponseDto {
+public class PaymentHistoryResponseDto extends BaseResponseDto {
     private Long id;
     private Long amount;
     private String createdDate;

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandlordWalletResponseDto {
+public class LandlordWalletResponseDto extends BaseResponseDto {
     private Long id;
     private List<LandlordCommissionResponseDto> landlordCommissions;
     private List<PaymentHistoryResponseDto> paymentHistories;

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BalanceWalletResponseDto {
+public class BalanceWalletResponseDto extends BaseResponseDto {
     private Long id;
     private Long totalBalance;
     private PassengerWalletDto passengerWallet;

@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandlordResponseDto {
+public class LandlordResponseDto extends BaseResponseDto {
     private Long id;
     private String idCardFrontImageUrl;
     private String idCardBackImageUrl;

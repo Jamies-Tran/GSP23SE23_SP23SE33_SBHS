@@ -30,6 +30,8 @@ import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IAdminService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IMailService;
+import com.sbhs.swm.services.IUserService;
+import com.sbhs.swm.util.DateFormatUtil;
 
 @Service
 public class AdminService implements IAdminService {
@@ -62,6 +64,12 @@ public class AdminService implements IAdminService {
     private String GENDER;
 
     @Autowired
+    private DateFormatUtil dateFormatUtil;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
     private UserRepo userRepo;
 
     @Autowired
@@ -78,6 +86,7 @@ public class AdminService implements IAdminService {
 
     @Override
     public SwmUser createAdminAccount(SwmUser user) {
+        SwmUser creator = userService.authenticatedUser();
         if (userRepo.findByUsername(user.getUsername()).isPresent()) {
             throw new UsernameDuplicateException();
         } else if (userRepo.findByEmail(user.getEmail()).isPresent()) {
@@ -89,8 +98,12 @@ public class AdminService implements IAdminService {
         adminRole.setUsers(List.of(user));
         user.setRoles(List.of(adminRole));
         Admin admin = new Admin();
+        admin.setCreatedBy(creator.getUsername());
+        admin.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         admin.setUser(user);
         user.setAdminProperty(admin);
+        user.setCreatedBy(creator.getUsername());
+        user.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         SwmUser savedUser = userRepo.save(user);
 
         return savedUser;
@@ -98,11 +111,14 @@ public class AdminService implements IAdminService {
 
     @Override
     public SwmUser createFirstAdminAccount() {
+
         SwmUser user = new SwmUser();
         SwmRole adminRole = roleRepo.findByName("admin").orElseThrow(() -> new RoleNotFoundException());
         adminRole.setUsers(List.of(user));
 
         Admin admin = new Admin();
+
+        admin.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         user.setUsername(USERNAME);
         user.setPassword(passwordEncoder.encode(PASSWORD));
         user.setEmail(EMAIL);
@@ -114,6 +130,8 @@ public class AdminService implements IAdminService {
         user.setAvatarUrl(AVATARURL);
         user.setRoles(List.of(adminRole));
         user.setAdminProperty(admin);
+
+        user.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         admin.setUser(user);
         SwmUser savedUser = userRepo.save(user);
 
@@ -136,12 +154,15 @@ public class AdminService implements IAdminService {
     @Override
     @Transactional
     public SwmUser activateLandlordAccount(String username) {
+        SwmUser updator = userService.authenticatedUser();
         SwmUser user = userRepo.findLandlordByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         if (user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATED.name())) {
             throw new InvalidException("Landlord account has already been activated");
         }
         user.getLandlordProperty().setStatus(LandlordStatus.ACTIVATED.name());
+        user.getLandlordProperty().setUpdatedBy(updator.getUsername());
+        user.getLandlordProperty().setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.approveLandlordAccount(user);
 
         return user;
@@ -150,11 +171,14 @@ public class AdminService implements IAdminService {
     @Override
     @Transactional
     public Homestay activateHomestay(String name) {
+        SwmUser updator = userService.authenticatedUser();
         Homestay homestay = homestayService.findHomestayByName(name);
         if (homestay.getBloc() != null) {
             throw new InvalidException("Homestay in bloc ".concat(homestay.getBloc().getName()));
         }
         homestay.setStatus(HomestayStatus.ACTIVE.name());
+        homestay.setUpdatedBy(updator.getUsername());
+        homestay.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.approveHomestay(homestay, null);
 
         return homestay;
@@ -163,6 +187,7 @@ public class AdminService implements IAdminService {
     @Override
     @Transactional
     public SwmUser rejectLandlordAccount(String username, String reason) {
+        SwmUser updator = userService.authenticatedUser();
         SwmUser user = userRepo.findLandlordByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         switch (reason.toUpperCase()) {
@@ -176,6 +201,8 @@ public class AdminService implements IAdminService {
                 user.getLandlordProperty().setStatus(LandlordStatus.REJECTED_ID_BACK_IMAGE.name());
                 break;
         }
+        user.getLandlordProperty().setUpdatedBy(updator.getUsername());
+        user.getLandlordProperty().setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.rejectLandlordAccount(user);
 
         return user;
@@ -184,9 +211,12 @@ public class AdminService implements IAdminService {
     @Override
     @Transactional
     public BlocHomestay activateBlocHomestay(String name) {
+        SwmUser updator = userService.authenticatedUser();
         BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
         bloc.setStatus(HomestayStatus.ACTIVE.name());
         bloc.getHomestays().forEach(h -> h.setStatus(HomestayStatus.ACTIVE.name()));
+        bloc.setUpdatedBy(updator.getUsername());
+        bloc.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.approveHomestay(null, bloc);
 
         return bloc;
@@ -195,11 +225,14 @@ public class AdminService implements IAdminService {
     @Override
     @Transactional
     public Homestay rejectHomestay(String name) {
+        SwmUser updator = userService.authenticatedUser();
         Homestay homestay = homestayService.findHomestayByName(name);
         if (homestay.getBloc() != null) {
             throw new InvalidException("Homestay in bloc ".concat(homestay.getBloc().getName()));
         }
         homestay.setStatus(HomestayStatus.REJECTED_LICENSE_NOT_MATCHED.name());
+        homestay.setUpdatedBy(updator.getUsername());
+        homestay.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.rejectHomestay(homestay, null);
 
         return homestay;
@@ -208,8 +241,11 @@ public class AdminService implements IAdminService {
     @Override
     @Transactional
     public BlocHomestay rejectBloc(String name) {
+        SwmUser updator = userService.authenticatedUser();
         BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
         bloc.setStatus(HomestayStatus.REJECTED_LICENSE_NOT_MATCHED.name());
+        bloc.setUpdatedBy(updator.getUsername());
+        bloc.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.rejectHomestay(null, bloc);
 
         return bloc;

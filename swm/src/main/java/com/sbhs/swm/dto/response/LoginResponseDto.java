@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LoginResponseDto {
+public class LoginResponseDto extends BaseResponseDto {
     private String username;
     private String email;
     private String token;

@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LandlordCommissionResponseDto extends BaseResponseDto {
-    private Long id;
-    private Long commission;
-    private String commissionType;
-
+public class BaseResponseDto {
+    private String createdDate;
+    private String createdBy;
+    private String updatedDate;
+    private String updatedBy;
 }

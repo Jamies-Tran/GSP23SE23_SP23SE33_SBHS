@@ -79,13 +79,18 @@ public class UserService implements IUserService {
         BalanceWallet balanceWallet = new BalanceWallet();
         balanceWallet.setPassengerWallet(passengerWallet);
         balanceWallet.setPassenger(passenger);
+        balanceWallet.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        balanceWallet.setCreatedBy(user.getUsername());
         passengerWallet.setPassengerBalanceWallet(balanceWallet);
+        passengerWallet.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        passengerWallet.setCreatedBy(user.getUsername());
         passenger.setPassengerWallet(balanceWallet);
 
         SwmRole passengerRole = roleService.findRoleByName("passenger");
         passengerRole.setUsers(List.of(user));
         user.setRoles(List.of(passengerRole));
         user.setPassengerProperty(passenger);
+        user.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         SwmUser savedUser = userRepo.save(user);
@@ -115,10 +120,13 @@ public class UserService implements IUserService {
         landlord.setIdCardFrontImageUrl(idCardFrontImageUrl);
         landlord.setIdCardBackImageUrl(idCardBackImageUrl);
         landlord.setLandlordWallet(balanceWallet);
+        landlord.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        landlord.setCreatedBy(user.getUsername());
         landlordRole.setUsers(List.of(user));
         user.setRoles(List.of(landlordRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setLandlordProperty(landlord);
+        user.setCreatedBy(dateFormatUtil.formatDateTimeNowToString());
         landlord.setUser(user);
         SwmUser savedUser = userRepo.save(user);
         return savedUser;
@@ -161,6 +169,8 @@ public class UserService implements IUserService {
         user.setOtpToken(passwordModificationOtp);
         passwordModificationOtp.setOtpToken(otp);
         passwordModificationOtp.setUser(user);
+        passwordModificationOtp.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        passwordModificationOtp.setCreatedBy(user.getUsername());
         return passwordModificationOtpRepo.save(passwordModificationOtp);
     }
 
@@ -182,6 +192,8 @@ public class UserService implements IUserService {
         SwmUser user = passwordOtp.getUser();
 
         user.setChangePassword(true);
+        user.setUpdatedBy(user.getUsername());
+        user.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         this.deletePasswordOtp(otp);
     }
 
@@ -195,6 +207,8 @@ public class UserService implements IUserService {
             }
             user.setPassword(passwordEncoder.encode(newPassword));
             user.setChangePassword(false);
+            user.setUpdatedBy(user.getUsername());
+            user.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         } else {
             throw new PasswordModificationException();
         }
@@ -222,4 +236,5 @@ public class UserService implements IUserService {
         return userRepo.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(userDetails.getUsername()));
     }
+
 }
