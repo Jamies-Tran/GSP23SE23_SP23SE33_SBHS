@@ -10,7 +10,7 @@ public interface IUserService {
 
     public SwmUser registerPassengerAccount(SwmUser user);
 
-    public SwmUser registerLandlordAccount(SwmUser user);
+    public SwmUser registerLandlordAccount(SwmUser user, String idCardFrontImageUrl, String idCardBackImageUrl);
 
     public SwmUser login(String username, String password);
 

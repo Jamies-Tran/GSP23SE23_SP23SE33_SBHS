@@ -14,5 +14,5 @@ public class LandlordResponseDto {
     private String idCardFrontImageUrl;
     private String idCardBackImageUrl;
     private String status;
-    private BalanceWalletResponseDto balanceWalletDto;
+    private BalanceWalletResponseDto landlordWallet;
 }

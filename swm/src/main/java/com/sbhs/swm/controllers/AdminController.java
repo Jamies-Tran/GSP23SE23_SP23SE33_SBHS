@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbhs.swm.dto.BlocHomestayDto;
 import com.sbhs.swm.dto.HomestayDto;
 import com.sbhs.swm.dto.paging.LandlordListPagingDto;
 import com.sbhs.swm.dto.request.SwmUserRequestDto;
 import com.sbhs.swm.dto.response.SwmUserResponseDto;
+import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.services.IAdminService;
@@ -77,12 +79,60 @@ public class AdminController {
         return new ResponseEntity<SwmUserResponseDto>(responseLandlord, HttpStatus.OK);
     }
 
-    @PutMapping("/homestay-active")
+    @PutMapping("/landlord-reject")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> activeHomestay(@RequestParam String homestayName) {
-        Homestay homestay = adminService.activateHomestay(homestayName);
-        HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+    public ResponseEntity<?> rejectLandlordAccount(@RequestParam String username, @RequestParam String reason) {
+        SwmUser rejectedLandlord = adminService.rejectLandlordAccount(username, reason);
+        SwmUserResponseDto responseLandlord = modelMapper.map(rejectedLandlord, SwmUserResponseDto.class);
 
-        return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
+        return new ResponseEntity<SwmUserResponseDto>(responseLandlord, HttpStatus.OK);
     }
+
+    @PutMapping("/homestay-activate")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> activeHomestay(@RequestParam String name, @RequestParam String homestayStyle) {
+        switch (homestayStyle.toUpperCase()) {
+            case "HOMESTAY":
+                Homestay homestay = adminService.activateHomestay(name);
+                HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+
+                return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
+            case "BLOC":
+                BlocHomestay bloc = adminService.activateBlocHomestay(name);
+                BlocHomestayDto responseBloc = modelMapper.map(bloc, BlocHomestayDto.class);
+
+                return new ResponseEntity<BlocHomestayDto>(responseBloc, HttpStatus.OK);
+            default:
+                return new ResponseEntity<String>("Invalid homestay style(HOMESTAY or BLOC)", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PutMapping("/homestay-reject")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> rejectHomestay(@RequestParam String name, @RequestParam String homestayStyle) {
+        switch (homestayStyle.toUpperCase()) {
+            case "HOMESTAY":
+                Homestay homestay = adminService.rejectHomestay(name);
+                HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+
+                return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
+            case "BLOC":
+                BlocHomestay bloc = adminService.rejectBloc(name);
+                BlocHomestayDto responseBloc = modelMapper.map(bloc, BlocHomestayDto.class);
+
+                return new ResponseEntity<BlocHomestayDto>(responseBloc, HttpStatus.OK);
+            default:
+                return new ResponseEntity<String>("Invalid homestay style(HOMESTAY or BLOC)", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // @PutMapping("/bloc-active")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // public ResponseEntity<?> activeBlocHomestay(@RequestParam String blocName) {
+    // BlocHomestay bloc = adminService.activateBlocHomestay(blocName);
+    // BlocHomestayDto responseBloc = modelMapper.map(bloc, BlocHomestayDto.class);
+
+    // return new ResponseEntity<BlocHomestayDto>(responseBloc, HttpStatus.OK);
+    // }
 }

@@ -6,13 +6,18 @@ import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
 
 public interface IHomestayService {
-    public Homestay createHomestay(Homestay homestay);
+        public Homestay createHomestay(Homestay homestay);
 
-    public BlocHomestay createBlocHomestay(BlocHomestay blocHomestay);
+        public BlocHomestay createBlocHomestay(BlocHomestay blocHomestay);
 
-    public Homestay findHomestayByName(String name);
+        public Homestay findHomestayByName(String name);
 
-    public Page<Homestay> findHomestayList(String filter, String param, int page, int size, boolean isNextPage,
-            boolean isPreviousPage);
+        public BlocHomestay findBlocHomestayByName(String name);
+
+        public Page<Homestay> findHomestayList(String filter, String name, int page, int size, boolean isNextPage,
+                        boolean isPreviousPage);
+
+        public Page<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size, boolean isNextPage,
+                        boolean isPreviousPage);
 
 }

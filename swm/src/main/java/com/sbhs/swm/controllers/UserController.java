@@ -50,18 +50,17 @@ public class UserController {
         SwmUser savedUser = userService.registerPassengerAccount(user);
         SwmUserResponseDto responseUser = modelMapper.map(savedUser, SwmUserResponseDto.class);
         responseUser.setRoleIds(savedUser.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
-        responseUser.setPassword("");
 
         return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
 
     @PostMapping("/registration-landlord")
-    public ResponseEntity<?> registerLandlordAccount(@RequestBody SwmUserRequestDto userDto) {
+    public ResponseEntity<?> registerLandlordAccount(@RequestBody SwmUserRequestDto userDto, @RequestParam String front,
+            @RequestParam String back) {
         SwmUser user = modelMapper.map(userDto, SwmUser.class);
-        SwmUser savedUser = userService.registerLandlordAccount(user);
+        SwmUser savedUser = userService.registerLandlordAccount(user, front, back);
         SwmUserResponseDto responseUser = modelMapper.map(savedUser, SwmUserResponseDto.class);
         responseUser.setRoleIds(savedUser.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
-        responseUser.setPassword("");
 
         return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
@@ -80,7 +79,6 @@ public class UserController {
             }
         });
         responseUser.setRoleIds(user.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));
-        responseUser.setPassword("");
 
         return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.OK);
     }

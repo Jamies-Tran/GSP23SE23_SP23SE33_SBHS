@@ -58,7 +58,8 @@ public class PaymentService implements IPaymentService {
     @Autowired
     private String getIpnUrl;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     private Random random = new Random();
 

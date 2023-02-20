@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.handlers.exceptions.HomestayNameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.HomestayNotFoundException;
+import com.sbhs.swm.handlers.exceptions.InvalidAccountOperatorException;
 import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.HomestayStatus;
+import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.BlocHomestayRepo;
 import com.sbhs.swm.repositories.HomestayRepo;
 import com.sbhs.swm.services.IHomestayService;
@@ -38,6 +40,8 @@ public class HomestayService implements IHomestayService {
         SwmUser user = userService.authenticatedUser();
         if (user.getLandlordProperty() == null) {
             throw new UsernameNotFoundException(user.getUsername());
+        } else if (!user.getLandlordProperty().getStatus().equals(LandlordStatus.ACTIVATED.name())) {
+            throw new InvalidAccountOperatorException();
         } else if (homestayRepo.findHomestayByName(homestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
         }
@@ -58,6 +62,10 @@ public class HomestayService implements IHomestayService {
         SwmUser user = userService.authenticatedUser();
         if (user.getLandlordProperty() == null) {
             throw new UsernameNotFoundException(user.getUsername());
+        } else if (!user.getLandlordProperty().getStatus().equals(LandlordStatus.ACTIVATED.name())) {
+            throw new InvalidAccountOperatorException();
+        } else if (blocHomestayRepo.findBlocHomestayByName(blocHomestay.getName()).isPresent()) {
+            throw new HomestayNameDuplicateException();
         }
         blocHomestay.setLandlord(user.getLandlordProperty());
         blocHomestay.setStatus(HomestayStatus.PENDING.name());
@@ -83,42 +91,8 @@ public class HomestayService implements IHomestayService {
         return homestay;
     }
 
-    // @Override
-    // public List<Homestay> findHomestayByStatus(String status, int page, int size,
-    // boolean isNextPage) {
-    // Pageable pageable = PageRequest.of(page, size);
-    // Page<Homestay> homestays = homestayRepo.findHomestaysByStatus(pageable,
-    // status);
-    // if (isNextPage == true && homestays.hasNext()) {
-    // homestays = homestayRepo.findHomestaysByStatus(homestays.nextPageable(),
-    // status);
-    // }
-
-    // return homestays.getContent();
-    // }
-
-    // @Override
-    // public List<Homestay> findHomestaysByLandlordName(String name, int page, int
-    // size) {
-    // Pageable pageable = PageRequest.of(page, size);
-    // Page<Homestay> homestays = homestayRepo.findHomestaysByLandlordName(pageable,
-    // name);
-
-    // return homestays.getContent();
-    // }
-
-    // @Override
-    // public List<Homestay> findHomestaysByBlocName(String blocName, int page, int
-    // size) {
-    // Pageable pageable = PageRequest.of(page, size);
-    // Page<Homestay> homestays = homestayRepo.findHomestayByBlocName(pageable,
-    // blocName);
-
-    // return homestays.getContent();
-    // }
-
     @Override
-    public Page<Homestay> findHomestayList(String filter, String param, int page, int size, boolean isNextPage,
+    public Page<Homestay> findHomestayList(String filter, String name, int page, int size, boolean isNextPage,
             boolean isPreviousPage) {
 
         Pageable pageable = PageRequest.of(page, size);
@@ -127,34 +101,56 @@ public class HomestayService implements IHomestayService {
         // homestayPage = new PageImpl<>();
         switch (filter.toUpperCase()) {
             case "HOMESTAY_STATUS":
-                homestayPage = homestayRepo.findHomestaysByStatus(pageable, param);
+                homestayPage = homestayRepo.findHomestaysByStatus(pageable, name);
 
                 if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
-                    homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.nextPageable(), param);
+                    homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.nextPageable(), name);
                 } else if (isNextPage == false && isPreviousPage == true && homestayPage.hasPrevious()) {
-                    homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.previousPageable(), param);
+                    homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.previousPageable(), name);
                 }
                 break;
             case "Homestay_OWNER":
-                homestayPage = homestayRepo.findHomestaysByLandlordName(pageable, param);
+                homestayPage = homestayRepo.findHomestaysByLandlordName(pageable, name);
                 if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
-                    homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.nextPageable(), param);
+                    homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.nextPageable(), name);
                 } else if (isNextPage == false && isPreviousPage == true && homestayPage.hasPrevious()) {
-                    homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.previousPageable(), param);
+                    homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.previousPageable(), name);
                 }
                 break;
             case "HOMESTAY_BLOC":
-                homestayPage = homestayRepo.findHomestayByBlocName(pageable, param);
+                homestayPage = homestayRepo.findHomestayByBlocName(pageable, name);
                 if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
-                    homestayPage = homestayRepo.findHomestayByBlocName(homestayPage.nextPageable(), param);
+                    homestayPage = homestayRepo.findHomestayByBlocName(homestayPage.nextPageable(), name);
                 } else if (isNextPage == false && isPreviousPage == true && homestayPage.hasPrevious()) {
-                    homestayPage = homestayRepo.findHomestayByBlocName(homestayPage.previousPageable(), param);
+                    homestayPage = homestayRepo.findHomestayByBlocName(homestayPage.previousPageable(), name);
                 }
                 break;
             default:
                 throw new InvalidException("Invalid filter");
         }
         return homestayPage;
+    }
+
+    @Override
+    public BlocHomestay findBlocHomestayByName(String name) {
+        BlocHomestay bloc = blocHomestayRepo.findBlocHomestayByName(name)
+                .orElseThrow(() -> new HomestayNotFoundException());
+
+        return bloc;
+    }
+
+    @Override
+    public Page<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BlocHomestay> blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(pageable, status);
+        if (blocHomestays.hasNext() && isNextPage == true && isPreviousPage == false) {
+            blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(blocHomestays.nextPageable(), status);
+        } else if (blocHomestays.hasPrevious() && isPreviousPage == true && isNextPage == false) {
+            blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(blocHomestays.previousPageable(), status);
+        }
+
+        return blocHomestays;
     }
 
 }

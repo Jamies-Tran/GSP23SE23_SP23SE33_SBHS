@@ -23,6 +23,7 @@ import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.handlers.exceptions.VerifyPassModificationFailException;
 import com.sbhs.swm.models.BalanceWallet;
 import com.sbhs.swm.models.Landlord;
+import com.sbhs.swm.models.LandlordWallet;
 import com.sbhs.swm.models.Passenger;
 import com.sbhs.swm.models.PassengerWallet;
 import com.sbhs.swm.models.PasswordModificationOtp;
@@ -70,6 +71,8 @@ public class UserService implements IUserService {
             throw new EmailDuplicateException();
         } else if (userRepo.findByPhone(user.getPhone()).isPresent()) {
             throw new PhoneDuplicateException();
+        } else if (dateFormatUtil.calculateAge(user.getDob()) < 18) {
+            throw new InvalidBirthException();
         }
         Passenger passenger = new Passenger();
         PassengerWallet passengerWallet = new PassengerWallet();
@@ -90,7 +93,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public SwmUser registerLandlordAccount(SwmUser user) {
+    public SwmUser registerLandlordAccount(SwmUser user, String idCardFrontImageUrl, String idCardBackImageUrl) {
         if (userRepo.findByUsername(user.getUsername()).isPresent()) {
             throw new UsernameDuplicateException();
         } else if (userRepo.findByEmail(user.getEmail()).isPresent()) {
@@ -103,6 +106,15 @@ public class UserService implements IUserService {
         Landlord landlord = new Landlord();
 
         SwmRole landlordRole = roleService.findRoleByName("landlord");
+        BalanceWallet balanceWallet = new BalanceWallet();
+        LandlordWallet landlordWallet = new LandlordWallet();
+
+        balanceWallet.setLandlordWallet(landlordWallet);
+        balanceWallet.setLandlord(landlord);
+        landlordWallet.setLandlordBalanceWallet(balanceWallet);
+        landlord.setIdCardFrontImageUrl(idCardFrontImageUrl);
+        landlord.setIdCardBackImageUrl(idCardBackImageUrl);
+        landlord.setLandlordWallet(balanceWallet);
         landlordRole.setUsers(List.of(user));
         user.setRoles(List.of(landlordRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));

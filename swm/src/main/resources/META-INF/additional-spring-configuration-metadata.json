@@ -89,6 +89,11 @@
             "name": "momo.ipnUrl",
             "type": "java.lang.String",
             "description": "A description for 'momo.ipnUrl'"
+        },
+        {
+            "name": "goong.apiKey",
+            "type": "java.lang.String",
+            "description": "A description for 'goong.apiKey'"
         }
     ]
 }

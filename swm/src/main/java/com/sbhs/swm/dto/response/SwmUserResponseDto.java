@@ -14,7 +14,6 @@ import lombok.Setter;
 public class SwmUserResponseDto {
     private Long id;
     private String username;
-    private String password;
     private String email;
     private String gender;
     private String phone;
