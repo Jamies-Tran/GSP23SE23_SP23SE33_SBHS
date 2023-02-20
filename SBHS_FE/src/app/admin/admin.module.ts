@@ -12,10 +12,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { matSelectAnimations, MatSelectModule } from '@angular/material/select';
 import { MatPaginatedTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AccountLandlordDetailComponent } from './request-account-landlord/account-landlord-detail/account-landlord-detail.component';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
-  declarations: [AdminComponent, RequestAccountLandlordComponent],
+  declarations: [AdminComponent, RequestAccountLandlordComponent, AccountLandlordDetailComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -27,6 +29,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatSelectModule,
     MatTabsModule,
     NgxPaginationModule,
+    MatButtonModule
   ],
 })
 export class AdminModule {}
