@@ -68,12 +68,13 @@ export class LoginLandlordComponent {
         localStorage.setItem('userToken', data['token']);
         localStorage.setItem('username', data['username']);
         console.log(data);
-        // if (data['roles'][0]['authority'] === 'ROLE_LANDLORD') {
-        //   this.router.navigate(['/Landlord/Dashboard'], {
-        //     relativeTo: this.route,
-        //   });
-        // } else
-        //   this.router.navigate(['/Admin/Request'], { relativeTo: this.route });
+        if (data['roles'][0] === 'LANDLORD') {
+          this.router.navigate(['/Login'], {
+            relativeTo: this.route,
+          });
+        } else
+          this.router.navigate(['/Admin'], { relativeTo: this.route });
+        
       });
   }
 
