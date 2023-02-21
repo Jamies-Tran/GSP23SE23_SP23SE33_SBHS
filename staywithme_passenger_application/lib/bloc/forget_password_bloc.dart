@@ -6,6 +6,7 @@ import 'package:staywithme_passenger_application/bloc/state/forget_password_stat
 import 'package:staywithme_passenger_application/screen/authenticate/change_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/forget_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 
 class ForgetPasswordBloc {
   final eventController = StreamController<ForgetPasswordEvent>();
@@ -43,7 +44,8 @@ class ForgetPasswordBloc {
           event.context!, ChangePasswordScreen.changePasswordScreenRoute,
           arguments: {"email": event.email});
     } else if (event is BackwardToLoginScreenEvent) {
-      Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute);
+      Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
+          arguments: {"startingIndex": 1});
     } else if (event is BackwardToSendOtpByMailScreenEvent) {
       Navigator.pushReplacementNamed(
           event.context!, ForgetPasswordScreen.forgetPasswordRoute,

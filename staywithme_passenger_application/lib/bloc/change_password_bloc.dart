@@ -7,6 +7,7 @@ import 'package:staywithme_passenger_application/bloc/state/change_password_stat
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/change_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -41,7 +42,8 @@ class ChangePasswordBloc {
           .changePassword(event.newPassword!, event.email!)
           .then((value) {
         if (value is bool) {
-          Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute);
+          Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
+              arguments: {"startingIndex": 1});
         } else if (value is ServerExceptionModel) {
           Navigator.pushNamed(
               event.context!, ChangePasswordScreen.changePasswordScreenRoute,

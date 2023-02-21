@@ -96,6 +96,9 @@ class _PassengerInfoManagementScreenState
                         children: [
                           Center(
                             child: Column(children: [
+                              const SizedBox(
+                                height: 25,
+                              ),
                               const AdvancedAvatar(
                                 image:
                                     AssetImage("images/login_background.jpg"),
@@ -117,7 +120,7 @@ class _PassengerInfoManagementScreenState
                                   children: [
                                     const Icon(
                                       Icons.attach_money,
-                                      color: Colors.green,
+                                      color: secondaryColor,
                                       size: 20,
                                     ),
                                     Text(currencyFormat.format(data
@@ -125,46 +128,34 @@ class _PassengerInfoManagementScreenState
                                         .balanceWalletModel!
                                         .totalBalance)),
                                     const SizedBox(
-                                      width: 10,
+                                      width: 25,
                                     ),
                                     const Icon(
                                       Icons.house,
-                                      color: Colors.green,
+                                      color: secondaryColor,
                                       size: 20,
                                     ),
                                     const Text("0"),
                                     const SizedBox(
-                                      width: 10,
+                                      width: 25,
                                     ),
                                     const Icon(
                                       Icons.wallet_giftcard,
-                                      color: Colors.green,
+                                      color: secondaryColor,
+                                      size: 20,
                                     ),
                                     const Text("0")
                                   ],
                                 ),
                               ),
                               const SizedBox(
-                                height: 25,
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: const Divider(
-                                  color: Colors.orange,
-                                  thickness: 1.0,
-                                  indent: 1,
-                                  endIndent: 1,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 15,
+                                height: 50,
                               ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
                                           side: BorderSide(
                                               width: 1.0,
                                               color: Colors.black45)),
@@ -179,10 +170,18 @@ class _PassengerInfoManagementScreenState
                                               1.5,
                                           50)),
                                   onPressed: () {},
-                                  child: const Text("Booking")),
+                                  child: const Text(
+                                    "Booking",
+                                    style: TextStyle(fontFamily: "Lobster"),
+                                  )),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
                                           side: BorderSide(
                                               width: 1.0,
                                               color: Colors.black45)),
@@ -346,62 +345,92 @@ class _PassengerInfoManagementScreenState
                                       ),
                                     );
                                   },
-                                  child: const Text("Wallet")),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      shape: const RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              width: 1.0,
-                                              color: Colors.black45)),
-                                      backgroundColor: Colors.white,
-                                      foregroundColor: Colors.black45,
-                                      maximumSize: Size(
-                                          MediaQuery.of(context).size.width /
-                                              1.5,
-                                          50),
-                                      minimumSize: Size(
-                                          MediaQuery.of(context).size.width /
-                                              1.5,
-                                          50)),
-                                  onPressed: () {},
-                                  child: const Text("Promotions")),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          side: BorderSide(
-                                              width: 1.0,
-                                              color: Colors.black45)),
-                                      backgroundColor: Colors.white,
-                                      foregroundColor: Colors.black45,
-                                      maximumSize: Size(
-                                          MediaQuery.of(context).size.width /
-                                              1.5,
-                                          50),
-                                      minimumSize: Size(
-                                          MediaQuery.of(context).size.width /
-                                              1.5,
-                                          50)),
-                                  onPressed: () {},
-                                  child: const Text("Relatives")),
+                                  child: const Text(
+                                    "Wallet",
+                                    style: TextStyle(fontFamily: "Lobster"),
+                                  )),
                               const SizedBox(
-                                height: 100,
+                                height: 20,
                               ),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                      minimumSize: Size(
-                                          MediaQuery.of(context).size.width -
-                                              50,
-                                          70),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          side: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black45)),
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.black45,
                                       maximumSize: Size(
-                                          MediaQuery.of(context).size.width -
-                                              50,
-                                          70),
-                                      backgroundColor: Colors.redAccent),
+                                          MediaQuery.of(context).size.width /
+                                              1.5,
+                                          50),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width /
+                                              1.5,
+                                          50)),
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Promotions",
+                                    style: TextStyle(fontFamily: "Lobster"),
+                                  )),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                          side: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black45)),
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.black45,
+                                      maximumSize: Size(
+                                          MediaQuery.of(context).size.width /
+                                              1.5,
+                                          50),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width /
+                                              1.5,
+                                          50)),
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Relatives",
+                                    style: TextStyle(fontFamily: "Lobster"),
+                                  )),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              const Text(
+                                "Change account",
+                                style: TextStyle(
+                                    fontFamily: "Lobster",
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      maximumSize: Size(
+                                          MediaQuery.of(context).size.width /
+                                              1.5,
+                                          50),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width /
+                                              1.5,
+                                          50),
+                                      backgroundColor: secondaryColor),
                                   onPressed: () => fireAuthService.signOut(),
-                                  child: const Text("sign out"))
+                                  child: const Text(
+                                    "sign out",
+                                    style: TextStyle(
+                                        fontFamily: "Lobster",
+                                        fontWeight: FontWeight.bold),
+                                  ))
                             ]),
                           )
                         ],

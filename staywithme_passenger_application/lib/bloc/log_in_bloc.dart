@@ -14,6 +14,7 @@ import 'package:staywithme_passenger_application/screen/authenticate/google_chos
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
 import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
@@ -63,8 +64,12 @@ class LoginBloc {
     } else if (event is ShowPasswordLoginEvent) {
       _isShowPassword = !_isShowPassword;
     } else if (event is BackwardToLoginScreenEvent) {
-      Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute,
-          arguments: {"isExceptionOccured": true, "message": event.message});
+      Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
+          arguments: {
+            "isExceptionOccured": true,
+            "message": event.message,
+            "startingIndex": 1
+          });
     } else if (event is NavigateToRegScreenEvent) {
       Navigator.of(event.context!)
           .pushNamed(RegisterScreen.registerAccountRoute);
@@ -74,18 +79,20 @@ class LoginBloc {
           arguments: {"email": event.email, "username": event.username});
     } else if (event is InformLoginToFireAuthEvent) {
       _firebaseAuth.updateFirebaseUsername(event.username!).then((value) =>
-          Navigator.pushReplacementNamed(event.context!,
-              AuthenticateWrapperScreen.authenticateWrapperScreenRoute));
+          Navigator.pushReplacementNamed(
+              event.context!, MainScreen.mainScreenRoute,
+              arguments: {"startingIndex": 1}));
     } else if (event is LogInFailEvent) {
       int? excCount = event.excCount;
       excCount = excCount != null ? excCount += 1 : null;
 
-      Navigator.pushReplacementNamed(
-          event.context!, LoginScreen.loginScreenRoute, arguments: {
-        "isExceptionOccured": true,
-        "message": event.message,
-        "excCount": excCount
-      });
+      Navigator.pushReplacementNamed(event.context!, MainScreen.mainScreenRoute,
+          arguments: {
+            "isExceptionOccured": true,
+            "message": event.message,
+            "excCount": excCount,
+            "startingIndex": 1
+          });
     } else if (event is ChooseGoogleAccountEvent) {
       Navigator.pushNamed(event.context!,
           ChooseGoogleAccountScreen.chooseGoogleAccountScreenRoute,
@@ -100,22 +107,24 @@ class LoginBloc {
     } else if (event is LogInByGoogleAccountEvent) {
       _authService.googleLogin(event.googleSignIn!.currentUser!).then((value) {
         if (value is ServerExceptionModel) {
-          Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute,
+          Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
               arguments: {
                 "isExceptionOccured": true,
-                "message": value.message
+                "message": value.message,
+                "startingIndex": 1
               });
         } else if (value is TimeoutException || value is SocketException) {
           Navigator.pushReplacementNamed(
-              event.context!, LoginScreen.loginScreenRoute, arguments: {
+              event.context!, MainScreen.mainScreenRoute, arguments: {
             "isExceptionOccured": true,
-            "message": "Network error"
+            "message": "Network error",
+            "startingIndex": 1
           });
         } else {
-          Navigator.pushNamed(event.context!,
-              AuthenticateWrapperScreen.authenticateWrapperScreenRoute,
+          Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
               arguments: {
-                "username": event.googleSignIn!.currentUser!.displayName
+                "username": event.googleSignIn!.currentUser!.displayName,
+                "startingIndex": 1
               });
         }
       });

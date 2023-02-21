@@ -480,6 +480,90 @@ class _CompleteGoogleRegisterScreenState
                                       }
                                     });
                                   }),
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              SizedBox(
+                                width: 300,
+                                child: TextFormField(
+                                  readOnly: true,
+                                  controller: dobTextFieldController,
+                                  style: const TextStyle(
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.bold),
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    label: Text(
+                                      "Birthday",
+                                      style: TextStyle(
+                                        fontFamily: "Lobster",
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.calendar_month,
+                                      color: primaryColor,
+                                    ),
+                                    // suffixIcon: IconButton(
+                                    //     onPressed: () {
+                                    //       if (snapshot.data!.focusBirthdayColor ==
+                                    //           secondaryColor) {
+                                    //         dobTextFieldController.clear();
+                                    //         registerBloc.eventController.sink.add(
+                                    //             InputDobEvent(
+                                    //                 dob: dobTextFieldController
+                                    //                     .text));
+                                    //       }
+                                    //     },
+                                    //     icon: Icon(
+                                    //       Icons.close,
+                                    //       color:
+                                    //           snapshot.data!.focusBirthdayColor,
+                                    //     )),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 2.5)),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: secondaryColor, width: 3.0)),
+                                    errorStyle: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.redAccent),
+                                  ),
+                                  onTap: () {
+                                    showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime(1980),
+                                      firstDate: DateTime(1980),
+                                      lastDate: DateTime(2004),
+                                    ).then((value) {
+                                      dobTextFieldController.text =
+                                          dateFormat.format(value!);
+                                      completeGoogleRegisterBloc
+                                          .eventController.sink
+                                          .add(InputDobGoogleAuthEvent(
+                                              dob:
+                                                  dobTextFieldController.text));
+                                      completeGoogleRegisterBloc
+                                          .eventController.sink
+                                          .add(FocusTextFieldCompleteGoogleRegEvent(
+                                              //isFocusOnBirthday: true,
+                                              isFocusOnAddress: false,
+                                              //isFocusOnCitizenIdentification:
+                                              //false,
+                                              //isFocusOnEmail: false,
+                                              //isFocusOnPassword: false,
+                                              isFocusOnPhone: false,
+                                              isFocusOnUsername: false));
+                                    });
+                                  },
+                                  validator: (value) =>
+                                      snapshot.data!.validateDob(),
+                                ),
+                              ),
                               isExceptionOccured == true
                                   ? Container(
                                       margin: const EdgeInsets.only(

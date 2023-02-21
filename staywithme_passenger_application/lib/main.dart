@@ -9,6 +9,7 @@ import 'package:staywithme_passenger_application/screen/authenticate/google_chos
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/payment_history_screen.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: AuthenticateWrapperScreen.authenticateWrapperScreenRoute,
+      initialRoute: MainScreen.mainScreenRoute,
       routes: {
         LoginScreen.loginScreenRoute: (context) => const LoginScreen(),
         RegisterScreen.registerAccountRoute: (context) =>
@@ -71,7 +72,8 @@ class MyApp extends StatelessWidget {
         AddBalanceScreen.addBalanceScreenRoute: (context) =>
             const AddBalanceScreen(),
         PaymentHistoryScreen.paymentHistoryScreenRoute: (context) =>
-            const PaymentHistoryScreen()
+            const PaymentHistoryScreen(),
+        MainScreen.mainScreenRoute: (context) => const MainScreen()
       },
     );
   }

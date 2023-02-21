@@ -8,8 +8,8 @@ import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -112,10 +112,11 @@ class RegisterBloc {
         if (value == true) {
           _googleAuthService.signOut().then((value) {
             if (value is TimeoutException || value is SocketException) {
-              Navigator.pushNamed(event.context!, LoginScreen.loginScreenRoute,
+              Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
                   arguments: {
                     "isExceptionOccured": true,
-                    "message": "Network error"
+                    "message": "Network error",
+                    "startingIndex": 1
                   });
             }
           });
@@ -139,8 +140,9 @@ class RegisterBloc {
             "googleSignIn": event.googleSignIn
           });
     } else if (event is NaviageToLoginScreenEvent) {
-      Navigator.of(event.context!)
-          .pushReplacementNamed(LoginScreen.loginScreenRoute);
+      Navigator.of(event.context!).pushReplacementNamed(
+          MainScreen.mainScreenRoute,
+          arguments: {"startingIndex": 1});
     } else if (event is SubmitRegisterAccountEvent) {
       PassengerModel passenger = PassengerModel(
           username: event.username,
@@ -169,10 +171,11 @@ class RegisterBloc {
               TextEditingController();
           usernameTextEditingController.text = value.username!;
           Navigator.pushReplacementNamed(
-              event.context!, LoginScreen.loginScreenRoute,
+              event.context!, MainScreen.mainScreenRoute,
               arguments: {
                 "usernameTextEditingController": usernameTextEditingController,
-                "message": "account created"
+                "message": "account created",
+                "startingIndex": 1
               });
         }
       });

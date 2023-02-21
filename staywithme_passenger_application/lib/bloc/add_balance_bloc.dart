@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:staywithme_passenger_application/bloc/event/add_balance_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/add_balance_state.dart';
-import 'package:staywithme_passenger_application/service/user/payment_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddBalanceBloc {
   final eventController = StreamController<AddBalanceEvent>();
   final stateController = StreamController<AddBalanceState>();
-  final _paymentService = locator.get<IPaymentService>();
+  // final _paymentService = locator.get<IPaymentService>();
 
   int? _balance;
 

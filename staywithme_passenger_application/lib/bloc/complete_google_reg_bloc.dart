@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -120,7 +122,8 @@ class CompleteGoogleRegBloc {
     } else if (event is CancelChooseAnotherGoogleAccountEvent) {
       event.googleSignIn!.signOut().then(
             (value) => Navigator.pushReplacementNamed(
-                event.context!, LoginScreen.loginScreenRoute),
+                event.context!, MainScreen.mainScreenRoute,
+                arguments: {"startingIndex": 1}),
           );
     } else if (event is SubmitGoogleCompleteRegisterEvent) {
       PassengerModel passenger = PassengerModel(
@@ -136,9 +139,12 @@ class CompleteGoogleRegBloc {
       googleAuthService.registerGoogleAccount(passenger).then((value) {
         if (value is PassengerModel) {
           Navigator.pushReplacementNamed(
-              event.context!, LoginScreen.loginScreenRoute, arguments: {
-            "message": "Now you can login with ${value.username}"
-          });
+              event.context!, MainScreen.mainScreenRoute,
+              arguments: {
+                "message":
+                    "Now you can login with ${utf8.decode(value.username!.runes.toList())}.",
+                "startingIndex": 1
+              });
         } else if (value is ServerExceptionModel) {
           usernameTextEditingCtl.text =
               event.googleSignIn!.currentUser!.displayName!;
