@@ -21,11 +21,11 @@ export class ServerHttpService {
     }),
   };
   public model: any = {};
-  private REST_API_SERVER = 'http://localhost:8080';
+  private REST_API_SERVER = 'http://localhost:8081';
   constructor(private httpClient: HttpClient) {}
 
   public getLanlord(status: string) {
-    const url = `${this.REST_API_SERVER}/api/request/landlord/` + status + ``;
+    const url = `${this.REST_API_SERVER}/api/admin/landlord-list?isNextPage=true&isPreviousPage=true&page=0&size=1000&status=`+status+``;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));

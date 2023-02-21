@@ -39,7 +39,43 @@ export class RegisterComponent {
   phoneFormControl = new FormControl('', [Validators.required]);
   gender = 'Male';
   matcher = new MyErrorStateMatcher();
-
+  email = this.emailFormControl.value +"";
+  validMail: boolean = true;
+  filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  public valid() {
+    this.validMail = this.filter.test(this.emailFormControl.value+"");
+    if (this.usernameFormControl.value == '') {
+      return;
+    } else if (this.addressFormControl.value == '') {
+      return;
+    } else if (this.dobFormControl.value == '') {
+      return;
+    } else if (this.idFormControl.value == '') {
+      return;
+    } else if (this.phoneFormControl.value == '') {
+      return;
+    } 
+    // else if (this.citizenIdentificationUrlFront == '') {
+    //   console.log('font' ,this.validFont);
+    //   this.validFont == false;
+    //   this.message = 'Please choose image Citizen ID Front';
+    //   this.openDialog();
+    //   return;
+    // } else if (this.citizenIdentificationUrlBack == '') {
+    //   console.log('back' ,this.validBack);
+    //   this.validBack == false;
+    //   this.message = 'Please choose image Citizen ID Back';
+    //   this.openDialog();
+    //   return;
+    // } 
+     else if (this.passwordFormControl.value != this.confirmPasswordFormControl.value) {
+      return;
+    }else if(this.passwordFormControl.value == ''){
+      return;
+    } else if (this.validMail == false) {
+      return;
+    } else return true;
+  }
   getEmailErrorMessage() {
     if (this.emailFormControl.hasError('required')) {
       return 'You must enter a <strong> value </strong>';
@@ -121,6 +157,7 @@ export class RegisterComponent {
   }
 
   public register() {
+    if (this.valid() == true) {
     this.http
       .registerLandlord(
         this.addressFormControl.value + '',
@@ -136,7 +173,9 @@ export class RegisterComponent {
         localStorage.setItem('registerSuccess', 'true');
         this.router.navigate(['/Landlord'], { relativeTo: this.route });
       });
+    }
   }
+  
 }
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {

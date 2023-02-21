@@ -11,33 +11,26 @@ export class RequestAccountLandlordComponent implements OnInit {
   valuesFirst: data[] = [];
   valuesSecond: data[] = [];
   message!: string;
-  public statusFirst = 'Pending';
+  public statusFirst = 'Not_activated';
   public statusSecond = 'All';
   registerError: string = '';
   constructor(private http: ServerHttpService, public dialog: MatDialog) {}
   ngOnInit(): void {
-    this.getStatusLandlordFirst();
-    this.getStatusLandlordSecond();
+    this.getStatusLandlordFirst("Not_activated");
+    this.getStatusLandlordSecond("Accept");
   }
-  public getStatusLandlordFirst() {
-    this.http.getLanlord(this.statusFirst).subscribe(
-      (data) => {
-        this.valuesFirst = data;
-        console.log('data', this.valuesFirst);
-      },
-      (error) => {
-        console.log(error);
+  public getStatusLandlordFirst(status: string) {
+    this.http.getLanlord(this.statusFirst).subscribe((data) => {
+      this.valuesFirst = data['userList'];
+        console.log(data)
       }
     );
   }
-  public getStatusLandlordSecond() {
-    this.http.getLanlord(this.statusSecond).subscribe(
+  public getStatusLandlordSecond(status: string) {
+    this.http.getLanlord(this.statusFirst).subscribe(
       (data) => {
-        this.valuesSecond = data;
-        console.log('data', this.valuesSecond);
-      },
-      (error) => {
-        console.log(error);
+        this.valuesSecond = data['userList'];
+        console.log(data)
       }
     );
   }
@@ -142,7 +135,7 @@ export class RequestAccountLandlordComponent implements OnInit {
 }
 
 export interface data {
-  createdBy: string;
+  username: string;
   id: number;
   createdDate: string;
   type: string;
