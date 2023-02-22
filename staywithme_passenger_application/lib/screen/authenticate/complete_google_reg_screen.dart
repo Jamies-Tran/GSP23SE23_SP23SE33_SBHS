@@ -377,109 +377,108 @@ class _CompleteGoogleRegisterScreenState
                                 height: 25,
                               ),
                               Autocomplete<Prediction>(
-                                  displayStringForOption:
-                                      displayStringForOption,
-                                  fieldViewBuilder: (context,
-                                      textEditingController,
-                                      focusNode,
-                                      onFieldSubmitted) {
-                                    return SizedBox(
-                                      width: 300,
-                                      child: TextFormField(
-                                        controller: textEditingController,
-                                        focusNode: focusNode,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.5),
-                                        decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.white,
-                                            label: const Text(
-                                              "Address",
-                                              style: TextStyle(
-                                                  fontFamily: "Lobster",
-                                                  color: primaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 1.5),
-                                            ),
-                                            prefixIcon: const Icon(
-                                              Icons.location_city,
-                                              color: primaryColor,
-                                            ),
-                                            suffixIcon: IconButton(
-                                              icon: Icon(
-                                                Icons.close,
-                                                color: snapshot
-                                                    .data!.focusAddressColor,
-                                              ),
-                                              onPressed: () {
-                                                textEditingController.clear();
-                                                completeGoogleRegisterBloc
-                                                    .eventController.sink
-                                                    .add(InputAddressGoogleAuthEvent(
-                                                        address:
-                                                            textEditingController
-                                                                .text));
-                                              },
-                                            ),
-                                            enabledBorder:
-                                                const UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.white,
-                                                        width: 1.0)),
-                                            focusedBorder:
-                                                const UnderlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: secondaryColor,
-                                                        width: 1.0)),
-                                            errorStyle: const TextStyle(
+                                displayStringForOption: displayStringForOption,
+                                fieldViewBuilder: (context,
+                                    textEditingController,
+                                    focusNode,
+                                    onFieldSubmitted) {
+                                  return SizedBox(
+                                    width: 300,
+                                    child: TextFormField(
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5),
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          label: const Text(
+                                            "Address",
+                                            style: TextStyle(
+                                                fontFamily: "Lobster",
+                                                color: primaryColor,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.redAccent)),
-                                        onTap: () => completeGoogleRegisterBloc
-                                            .eventController.sink
-                                            .add(
-                                                FocusTextFieldCompleteGoogleRegEvent(
-                                                    isFocusOnAddress: true,
-                                                    isFocusOnBirthDay: false,
-                                                    isFocusOnIdCardNumber:
-                                                        false,
-                                                    isFocusOnPhone: false,
-                                                    isFocusOnUsername: false)),
-                                        onChanged: (value) =>
-                                            completeGoogleRegisterBloc
-                                                .eventController.sink
-                                                .add(
-                                                    InputAddressGoogleAuthEvent(
-                                                        address: value)),
-                                        validator: (value) =>
-                                            snapshot.data!.validateAddress(),
-                                      ),
-                                    );
-                                  },
-                                  optionsBuilder: (textEditingValue) {
-                                    if (textEditingValue.text.isEmpty ||
-                                        textEditingValue.text == '') {
+                                                letterSpacing: 1.5),
+                                          ),
+                                          prefixIcon: const Icon(
+                                            Icons.location_city,
+                                            color: primaryColor,
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              Icons.close,
+                                              color: snapshot
+                                                  .data!.focusAddressColor,
+                                            ),
+                                            onPressed: () {
+                                              textEditingController.clear();
+                                              completeGoogleRegisterBloc
+                                                  .eventController.sink
+                                                  .add(InputAddressGoogleAuthEvent(
+                                                      address:
+                                                          textEditingController
+                                                              .text));
+                                            },
+                                          ),
+                                          enabledBorder:
+                                              const UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 1.0)),
+                                          focusedBorder:
+                                              const UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: secondaryColor,
+                                                      width: 1.0)),
+                                          errorStyle: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.redAccent)),
+                                      onTap: () => completeGoogleRegisterBloc
+                                          .eventController.sink
+                                          .add(
+                                              FocusTextFieldCompleteGoogleRegEvent(
+                                                  isFocusOnAddress: true,
+                                                  isFocusOnBirthDay: false,
+                                                  isFocusOnIdCardNumber: false,
+                                                  isFocusOnPhone: false,
+                                                  isFocusOnUsername: false)),
+                                      validator: (value) =>
+                                          snapshot.data!.validateAddress(),
+                                    ),
+                                  );
+                                },
+                                optionsBuilder: (textEditingValue) {
+                                  if (textEditingValue.text.isEmpty ||
+                                      textEditingValue.text == '') {
+                                    return const Iterable.empty();
+                                  }
+
+                                  return autoCompleteService
+                                      .autoComplet(textEditingValue.text)
+                                      .then((value) {
+                                    if (value is PlacesResult) {
+                                      return value.predictions!.where(
+                                          (element) => utf8
+                                              .decode(element.description!.runes
+                                                  .toList())
+                                              .toLowerCase()
+                                              .contains(textEditingValue.text
+                                                  .toLowerCase()));
+                                    } else {
                                       return const Iterable.empty();
                                     }
-
-                                    return autoCompleteService
-                                        .autoComplet(textEditingValue.text)
-                                        .then((value) {
-                                      if (value is PlacesResult) {
-                                        return value.predictions!.where(
-                                            (element) => utf8
-                                                .decode(element
-                                                    .description!.runes
-                                                    .toList())
-                                                .toLowerCase()
-                                                .contains(textEditingValue.text
-                                                    .toLowerCase()));
-                                      } else {
-                                        return const Iterable.empty();
-                                      }
-                                    });
-                                  }),
+                                  });
+                                },
+                                onSelected: (option) =>
+                                    completeGoogleRegisterBloc
+                                        .eventController.sink
+                                        .add(InputAddressGoogleAuthEvent(
+                                            address: utf8.decode(option
+                                                .description!.runes
+                                                .toList()))),
+                              ),
                               const SizedBox(
                                 height: 25,
                               ),

@@ -89,12 +89,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                               padding: const EdgeInsets.only(
                                   top: 20, bottom: 20, left: 10, right: 10),
                               child: Column(children: [
-                                const Text(
-                                  "Register",
-                                  style: TextStyle(
-                                      fontFamily: "Lobster",
-                                      fontSize: 50,
-                                      color: Colors.black),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 2),
+                                  builder: (context, value, child) =>
+                                      Opacity(opacity: value, child: child),
+                                  child: const Text(
+                                    "Register",
+                                    style: TextStyle(
+                                        fontFamily: "Lobster",
+                                        fontSize: 50,
+                                        color: Colors.black),
+                                  ),
                                 ),
                                 isExcOccured == true
                                     ? Container(
@@ -111,604 +117,690 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     : const SizedBox(
                                         height: 20,
                                       ),
-                                TextFormField(
-                                  controller: usernameTextEditingController,
-                                  style: const TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    label: const Text(
-                                      "Username",
-                                      style: TextStyle(
-                                        fontFamily: "Lobster",
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    prefixIcon: const Icon(
-                                      Icons.account_box,
-                                      color: primaryColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                        onPressed: () {
-                                          if (snapshot
-                                                  .data!.focusUsernameColor ==
-                                              secondaryColor) {
-                                            usernameTextEditingController
-                                                .clear();
-                                            registerBloc.eventController.sink
-                                                .add(InputUsernameEvent(
-                                                    username:
-                                                        usernameTextEditingController
-                                                            .text));
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          color:
-                                              snapshot.data!.focusUsernameColor,
-                                        )),
-                                    enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 2.5)),
-                                    focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: secondaryColor, width: 3.0)),
-                                    errorStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 1),
+                                  builder: (context, value, child) => Opacity(
+                                    opacity: value,
+                                    child: child,
                                   ),
-                                  onTap: () => registerBloc.eventController.sink
-                                      .add(FocusTextFieldRegisterEvent(
-                                          isFocusOnUsername: true,
-                                          isFocusOnAddress: false,
-                                          isFocusOnBirthday: false,
-                                          isFocusOnCitizenIdentification: false,
-                                          isFocusOnPassword: false,
-                                          isFocusOnPhone: false)),
-                                  onChanged: (value) => registerBloc
-                                      .eventController.sink
-                                      .add(InputUsernameEvent(username: value)),
-                                  validator: (value) =>
-                                      snapshot.data!.validateUsername(),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  controller: passwordTextEditingController,
-                                  style: const TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    label: const Text(
-                                      "Password",
-                                      style: TextStyle(
-                                        fontFamily: "Lobster",
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    prefixIcon: const Icon(
-                                      Icons.lock,
-                                      color: primaryColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                        onPressed: () {
-                                          if (snapshot
-                                                  .data!.focusPasswordColor ==
-                                              secondaryColor) {
-                                            passwordTextEditingController
-                                                .clear();
-                                            registerBloc.eventController.sink
-                                                .add(InputPasswordEvent(
-                                                    password:
-                                                        passwordTextEditingController
-                                                            .text));
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          color:
-                                              snapshot.data!.focusPasswordColor,
-                                        )),
-                                    enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 2.5)),
-                                    focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: secondaryColor, width: 3.0)),
-                                    errorStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent),
-                                  ),
-                                  onTap: () => registerBloc.eventController.sink
-                                      .add(FocusTextFieldRegisterEvent(
-                                          isFocusOnPassword: true,
-                                          isFocusOnAddress: false,
-                                          isFocusOnBirthday: false,
-                                          isFocusOnCitizenIdentification: false,
-                                          isFocusOnPhone: false,
-                                          isFocusOnUsername: false)),
-                                  onChanged: (value) => registerBloc
-                                      .eventController.sink
-                                      .add(InputPasswordEvent(password: value)),
-                                  validator: (value) =>
-                                      snapshot.data!.validatePassword(),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  controller: emailTextEditingController,
-                                  style: const TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    label: const Text(
-                                      "Email",
-                                      style: TextStyle(
-                                        fontFamily: "Lobster",
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    prefixIcon: const Icon(
-                                      Icons.mail,
-                                      color: primaryColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                        onPressed: () {
-                                          if (snapshot.data!.focusEmailColor ==
-                                              secondaryColor) {
-                                            emailTextEditingController.clear();
-                                            registerBloc.eventController.sink
-                                                .add(InputEmailEvent(
-                                                    email:
-                                                        emailTextEditingController
-                                                            .text));
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: snapshot.data!.focusEmailColor,
-                                        )),
-                                    enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 2.5)),
-                                    focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: primaryColor, width: 3.0)),
-                                    errorStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent),
-                                  ),
-                                  onTap: () => registerBloc.eventController.sink
-                                      .add(FocusTextFieldRegisterEvent(
-                                          isFocusOnEmail: true,
-                                          isFocusOnAddress: false,
-                                          isFocusOnBirthday: false,
-                                          isFocusOnCitizenIdentification: false,
-                                          isFocusOnPassword: false,
-                                          isFocusOnPhone: false,
-                                          isFocusOnUsername: false)),
-                                  onChanged: (value) => registerBloc
-                                      .eventController.sink
-                                      .add(InputEmailEvent(email: value)),
-                                  validator: (value) =>
-                                      snapshot.data!.validateEmail(),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Autocomplete<Prediction>(
-                                    displayStringForOption:
-                                        displayStringForOption,
-                                    fieldViewBuilder: (context,
-                                        textEditingController,
-                                        focusNode,
-                                        onFieldSubmitted) {
-                                      return TextFormField(
-                                        controller: textEditingController,
-                                        focusNode: focusNode,
-                                        style: const TextStyle(
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.bold),
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          label: const Text(
-                                            "Address",
-                                            style: TextStyle(
-                                              fontFamily: "Lobster",
-                                              color: primaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          prefixIcon: const Icon(
-                                            Icons.location_city,
-                                            color: primaryColor,
-                                          ),
-                                          suffixIcon: IconButton(
-                                              onPressed: () {
-                                                if (snapshot.data!
-                                                        .focusAddressColor ==
-                                                    secondaryColor) {
-                                                  textEditingController.clear();
-                                                  registerBloc
-                                                      .eventController.sink
-                                                      .add(InputAddressEvent(
-                                                          address:
-                                                              textEditingController
-                                                                  .text));
-                                                }
-                                              },
-                                              icon: Icon(
-                                                Icons.close,
-                                                color: snapshot
-                                                    .data!.focusAddressColor,
-                                              )),
-                                          enabledBorder:
-                                              const UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 2.5)),
-                                          focusedBorder:
-                                              const UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: secondaryColor,
-                                                      width: 3.0)),
-                                          errorStyle: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.redAccent),
+                                  child: TextFormField(
+                                    controller: usernameTextEditingController,
+                                    style: const TextStyle(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      label: const Text(
+                                        "Username",
+                                        style: TextStyle(
+                                          fontFamily: "Lobster",
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        onTap: () => registerBloc
-                                            .eventController.sink
-                                            .add(FocusTextFieldRegisterEvent(
-                                                isFocusOnAddress: true,
-                                                isFocusOnBirthday: false,
-                                                isFocusOnCitizenIdentification:
-                                                    false,
-                                                isFocusOnEmail: false,
-                                                isFocusOnPassword: false,
-                                                isFocusOnPhone: false,
-                                                isFocusOnUsername: false)),
-                                        onChanged: (value) => registerBloc
-                                            .eventController.sink
-                                            .add(InputAddressEvent(
-                                                address: value)),
-                                        validator: (value) =>
-                                            snapshot.data!.validateAddress(),
-                                      );
-                                    },
-                                    optionsBuilder: (textEditingValue) {
-                                      if (textEditingValue.text.isEmpty ||
-                                          textEditingValue.text == '') {
-                                        return const Iterable.empty();
-                                      }
-
-                                      return autoCompleteService
-                                          .autoComplet(textEditingValue.text)
-                                          .then((value) {
-                                        if (value is PlacesResult) {
-                                          return value.predictions!.where(
-                                              (element) => utf8
-                                                  .decode(element
-                                                      .description!.runes
-                                                      .toList())
-                                                  .toLowerCase()
-                                                  .contains(textEditingValue
-                                                      .text
-                                                      .toLowerCase()));
-                                        } else {
+                                      ),
+                                      prefixIcon: const Icon(
+                                        Icons.account_box,
+                                        color: primaryColor,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+                                            if (snapshot
+                                                    .data!.focusUsernameColor ==
+                                                secondaryColor) {
+                                              usernameTextEditingController
+                                                  .clear();
+                                              registerBloc.eventController.sink
+                                                  .add(InputUsernameEvent(
+                                                      username:
+                                                          usernameTextEditingController
+                                                              .text));
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: snapshot
+                                                .data!.focusUsernameColor,
+                                          )),
+                                      enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 2.5)),
+                                      focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: secondaryColor,
+                                              width: 3.0)),
+                                      errorStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
+                                    ),
+                                    onTap: () => registerBloc
+                                        .eventController.sink
+                                        .add(FocusTextFieldRegisterEvent(
+                                            isFocusOnUsername: true,
+                                            isFocusOnAddress: false,
+                                            isFocusOnBirthday: false,
+                                            isFocusOnCitizenIdentification:
+                                                false,
+                                            isFocusOnPassword: false,
+                                            isFocusOnPhone: false)),
+                                    onChanged: (value) => registerBloc
+                                        .eventController.sink
+                                        .add(InputUsernameEvent(
+                                            username: value)),
+                                    validator: (value) =>
+                                        snapshot.data!.validateUsername(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 2),
+                                  builder: (context, value, child) =>
+                                      Opacity(opacity: value, child: child),
+                                  child: TextFormField(
+                                    controller: passwordTextEditingController,
+                                    style: const TextStyle(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      label: const Text(
+                                        "Password",
+                                        style: TextStyle(
+                                          fontFamily: "Lobster",
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      prefixIcon: const Icon(
+                                        Icons.lock,
+                                        color: primaryColor,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+                                            if (snapshot
+                                                    .data!.focusPasswordColor ==
+                                                secondaryColor) {
+                                              passwordTextEditingController
+                                                  .clear();
+                                              registerBloc.eventController.sink
+                                                  .add(InputPasswordEvent(
+                                                      password:
+                                                          passwordTextEditingController
+                                                              .text));
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: snapshot
+                                                .data!.focusPasswordColor,
+                                          )),
+                                      enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 2.5)),
+                                      focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: secondaryColor,
+                                              width: 3.0)),
+                                      errorStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
+                                    ),
+                                    onTap: () => registerBloc
+                                        .eventController.sink
+                                        .add(FocusTextFieldRegisterEvent(
+                                            isFocusOnPassword: true,
+                                            isFocusOnAddress: false,
+                                            isFocusOnBirthday: false,
+                                            isFocusOnCitizenIdentification:
+                                                false,
+                                            isFocusOnPhone: false,
+                                            isFocusOnUsername: false)),
+                                    onChanged: (value) => registerBloc
+                                        .eventController.sink
+                                        .add(InputPasswordEvent(
+                                            password: value)),
+                                    validator: (value) =>
+                                        snapshot.data!.validatePassword(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 3),
+                                  builder: (context, value, child) => Opacity(
+                                    opacity: value,
+                                    child: child,
+                                  ),
+                                  child: TextFormField(
+                                    controller: emailTextEditingController,
+                                    style: const TextStyle(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      label: const Text(
+                                        "Email",
+                                        style: TextStyle(
+                                          fontFamily: "Lobster",
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      prefixIcon: const Icon(
+                                        Icons.mail,
+                                        color: primaryColor,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+                                            if (snapshot
+                                                    .data!.focusEmailColor ==
+                                                secondaryColor) {
+                                              emailTextEditingController
+                                                  .clear();
+                                              registerBloc.eventController.sink
+                                                  .add(InputEmailEvent(
+                                                      email:
+                                                          emailTextEditingController
+                                                              .text));
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            color:
+                                                snapshot.data!.focusEmailColor,
+                                          )),
+                                      enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 2.5)),
+                                      focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: primaryColor, width: 3.0)),
+                                      errorStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
+                                    ),
+                                    onTap: () => registerBloc
+                                        .eventController.sink
+                                        .add(FocusTextFieldRegisterEvent(
+                                            isFocusOnEmail: true,
+                                            isFocusOnAddress: false,
+                                            isFocusOnBirthday: false,
+                                            isFocusOnCitizenIdentification:
+                                                false,
+                                            isFocusOnPassword: false,
+                                            isFocusOnPhone: false,
+                                            isFocusOnUsername: false)),
+                                    onChanged: (value) => registerBloc
+                                        .eventController.sink
+                                        .add(InputEmailEvent(email: value)),
+                                    validator: (value) =>
+                                        snapshot.data!.validateEmail(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 4),
+                                  builder: (context, value, child) => Opacity(
+                                    opacity: value,
+                                    child: child,
+                                  ),
+                                  child: Autocomplete<Prediction>(
+                                      displayStringForOption:
+                                          displayStringForOption,
+                                      fieldViewBuilder: (context,
+                                          textEditingController,
+                                          focusNode,
+                                          onFieldSubmitted) {
+                                        return TextFormField(
+                                          controller: textEditingController,
+                                          focusNode: focusNode,
+                                          style: const TextStyle(
+                                              color: Colors.black45,
+                                              fontWeight: FontWeight.bold),
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            label: const Text(
+                                              "Address",
+                                              style: TextStyle(
+                                                fontFamily: "Lobster",
+                                                color: primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            prefixIcon: const Icon(
+                                              Icons.location_city,
+                                              color: primaryColor,
+                                            ),
+                                            suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  if (snapshot.data!
+                                                          .focusAddressColor ==
+                                                      secondaryColor) {
+                                                    textEditingController
+                                                        .clear();
+                                                    registerBloc
+                                                        .eventController.sink
+                                                        .add(InputAddressEvent(
+                                                            address:
+                                                                textEditingController
+                                                                    .text));
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: snapshot
+                                                      .data!.focusAddressColor,
+                                                )),
+                                            enabledBorder:
+                                                const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                        width: 2.5)),
+                                            focusedBorder:
+                                                const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: secondaryColor,
+                                                        width: 3.0)),
+                                            errorStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.redAccent),
+                                          ),
+                                          onTap: () => registerBloc
+                                              .eventController.sink
+                                              .add(FocusTextFieldRegisterEvent(
+                                                  isFocusOnAddress: true,
+                                                  isFocusOnBirthday: false,
+                                                  isFocusOnCitizenIdentification:
+                                                      false,
+                                                  isFocusOnEmail: false,
+                                                  isFocusOnPassword: false,
+                                                  isFocusOnPhone: false,
+                                                  isFocusOnUsername: false)),
+                                          validator: (value) =>
+                                              snapshot.data!.validateAddress(),
+                                        );
+                                      },
+                                      optionsBuilder: (textEditingValue) {
+                                        if (textEditingValue.text.isEmpty ||
+                                            textEditingValue.text == '') {
                                           return const Iterable.empty();
                                         }
-                                      });
-                                    }),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  controller: phoneTextEditingController,
-                                  keyboardType: TextInputType.phone,
-                                  style: const TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    label: const Text(
-                                      "Phone",
-                                      style: TextStyle(
-                                        fontFamily: "Lobster",
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    prefixIcon: const Icon(
-                                      Icons.phone,
-                                      color: primaryColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                        onPressed: () {
-                                          if (snapshot.data!.focusPhoneColor ==
-                                              secondaryColor) {
-                                            phoneTextEditingController.clear();
-                                            registerBloc.eventController.sink
-                                                .add(InputPhoneEvent(
-                                                    phone:
-                                                        phoneTextEditingController
-                                                            .text));
+
+                                        return autoCompleteService
+                                            .autoComplet(textEditingValue.text)
+                                            .then((value) {
+                                          if (value is PlacesResult) {
+                                            return value.predictions!.where(
+                                                (element) => utf8
+                                                    .decode(element
+                                                        .description!.runes
+                                                        .toList())
+                                                    .toLowerCase()
+                                                    .contains(textEditingValue
+                                                        .text
+                                                        .toLowerCase()));
+                                          } else {
+                                            return const Iterable.empty();
                                           }
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: snapshot.data!.focusPhoneColor,
-                                        )),
-                                    enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 2.5)),
-                                    focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: secondaryColor, width: 3.0)),
-                                    errorStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent),
-                                  ),
-                                  onTap: () => registerBloc.eventController.sink
-                                      .add(FocusTextFieldRegisterEvent(
-                                    isFocusOnPhone: true,
-                                    isFocusOnAddress: false,
-                                    isFocusOnBirthday: false,
-                                    isFocusOnCitizenIdentification: false,
-                                    isFocusOnEmail: false,
-                                    isFocusOnPassword: false,
-                                    isFocusOnUsername: false,
-                                  )),
-                                  onChanged: (value) => registerBloc
-                                      .eventController.sink
-                                      .add(InputPhoneEvent(phone: value)),
-                                  validator: (value) =>
-                                      snapshot.data!.validatePhone(),
+                                        });
+                                      },
+                                      onSelected: (option) => registerBloc
+                                          .eventController.sink
+                                          .add(InputAddressEvent(
+                                              address: utf8.decode(option
+                                                  .description!.runes
+                                                  .toList())))),
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                TextFormField(
-                                  controller: idCardTextEditingController,
-                                  keyboardType: TextInputType.number,
-                                  style: const TextStyle(
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    label: const Text(
-                                      "ID Card",
-                                      style: TextStyle(
-                                        fontFamily: "Lobster",
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 5),
+                                  builder: (context, value, child) => Opacity(
+                                    opacity: value,
+                                    child: child,
+                                  ),
+                                  child: TextFormField(
+                                    controller: phoneTextEditingController,
+                                    keyboardType: TextInputType.phone,
+                                    style: const TextStyle(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      label: const Text(
+                                        "Phone",
+                                        style: TextStyle(
+                                          fontFamily: "Lobster",
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
+                                      prefixIcon: const Icon(
+                                        Icons.phone,
+                                        color: primaryColor,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+                                            if (snapshot
+                                                    .data!.focusPhoneColor ==
+                                                secondaryColor) {
+                                              phoneTextEditingController
+                                                  .clear();
+                                              registerBloc.eventController.sink
+                                                  .add(InputPhoneEvent(
+                                                      phone:
+                                                          phoneTextEditingController
+                                                              .text));
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            color:
+                                                snapshot.data!.focusPhoneColor,
+                                          )),
+                                      enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 2.5)),
+                                      focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: secondaryColor,
+                                              width: 3.0)),
+                                      errorStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
                                     ),
-                                    prefixIcon: const Icon(
-                                      Icons.card_membership,
-                                      color: primaryColor,
-                                    ),
-                                    suffixIcon: IconButton(
-                                        onPressed: () {
-                                          if (snapshot.data!
-                                                  .focusCitizenIdentificationColor ==
-                                              secondaryColor) {
-                                            idCardTextEditingController.clear();
-                                            registerBloc.eventController.sink
-                                                .add(InputidCardNumberEvent(
-                                                    idCardNumber:
-                                                        idCardTextEditingController
-                                                            .text));
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: snapshot.data!
-                                              .focusCitizenIdentificationColor,
-                                        )),
-                                    enabledBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 2.5)),
-                                    focusedBorder: const UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: secondaryColor, width: 3.0)),
-                                    errorStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent),
+                                    onTap: () => registerBloc
+                                        .eventController.sink
+                                        .add(FocusTextFieldRegisterEvent(
+                                      isFocusOnPhone: true,
+                                      isFocusOnAddress: false,
+                                      isFocusOnBirthday: false,
+                                      isFocusOnCitizenIdentification: false,
+                                      isFocusOnEmail: false,
+                                      isFocusOnPassword: false,
+                                      isFocusOnUsername: false,
+                                    )),
+                                    onChanged: (value) => registerBloc
+                                        .eventController.sink
+                                        .add(InputPhoneEvent(phone: value)),
+                                    validator: (value) =>
+                                        snapshot.data!.validatePhone(),
                                   ),
-                                  onTap: () => registerBloc.eventController.sink
-                                      .add(FocusTextFieldRegisterEvent(
-                                          isFocusOnCitizenIdentification: true,
-                                          isFocusOnAddress: false,
-                                          isFocusOnBirthday: false,
-                                          isFocusOnEmail: false,
-                                          isFocusOnPassword: false,
-                                          isFocusOnPhone: false,
-                                          isFocusOnUsername: false)),
-                                  onChanged: (value) => registerBloc
-                                      .eventController.sink
-                                      .add(InputidCardNumberEvent(
-                                          idCardNumber: value)),
-                                  validator: (value) => snapshot.data!
-                                      .validateCitizenIdentification(),
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                        flex: 1,
-                                        child: SizedBox(
-                                          height: 59,
-                                          child: InputDecorator(
-                                            decoration: InputDecoration(
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                                prefixIcon:
-                                                    snapshot.data!.gender ==
-                                                            "Male"
-                                                        ? const Icon(
-                                                            Icons.boy,
-                                                            color: primaryColor,
-                                                          )
-                                                        : const Icon(
-                                                            Icons.girl,
-                                                            color: primaryColor,
-                                                          ),
-                                                enabledBorder:
-                                                    const OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white24,
-                                                            width: 2.5)),
-                                                focusedBorder:
-                                                    const UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                secondaryColor,
-                                                            width: 3.0)),
-                                                errorStyle: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.redAccent)),
-                                            child: DropdownButton<String>(
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                              dropdownColor: primaryColor,
-                                              items: registerBloc
-                                                  .genderSelection
-                                                  .map((e) => DropdownMenuItem(
-                                                        value: e,
-                                                        child: Text(
-                                                          e,
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .black45),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 6),
+                                  builder: (context, value, child) => Opacity(
+                                    opacity: value,
+                                    child: child,
+                                  ),
+                                  child: TextFormField(
+                                    controller: idCardTextEditingController,
+                                    keyboardType: TextInputType.number,
+                                    style: const TextStyle(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      label: const Text(
+                                        "ID Card",
+                                        style: TextStyle(
+                                          fontFamily: "Lobster",
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      prefixIcon: const Icon(
+                                        Icons.card_membership,
+                                        color: primaryColor,
+                                      ),
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+                                            if (snapshot.data!
+                                                    .focusCitizenIdentificationColor ==
+                                                secondaryColor) {
+                                              idCardTextEditingController
+                                                  .clear();
+                                              registerBloc.eventController.sink
+                                                  .add(InputidCardNumberEvent(
+                                                      idCardNumber:
+                                                          idCardTextEditingController
+                                                              .text));
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: snapshot.data!
+                                                .focusCitizenIdentificationColor,
+                                          )),
+                                      enabledBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent,
+                                              width: 2.5)),
+                                      focusedBorder: const UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: secondaryColor,
+                                              width: 3.0)),
+                                      errorStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
+                                    ),
+                                    onTap: () => registerBloc
+                                        .eventController.sink
+                                        .add(FocusTextFieldRegisterEvent(
+                                            isFocusOnCitizenIdentification:
+                                                true,
+                                            isFocusOnAddress: false,
+                                            isFocusOnBirthday: false,
+                                            isFocusOnEmail: false,
+                                            isFocusOnPassword: false,
+                                            isFocusOnPhone: false,
+                                            isFocusOnUsername: false)),
+                                    onChanged: (value) => registerBloc
+                                        .eventController.sink
+                                        .add(InputidCardNumberEvent(
+                                            idCardNumber: value)),
+                                    validator: (value) => snapshot.data!
+                                        .validateCitizenIdentification(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 7),
+                                  builder: (context, value, child) => Opacity(
+                                    opacity: value,
+                                    child: child,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                          flex: 1,
+                                          child: SizedBox(
+                                            height: 59,
+                                            child: InputDecorator(
+                                              decoration: InputDecoration(
+                                                  filled: true,
+                                                  fillColor: Colors.white,
+                                                  prefixIcon: snapshot
+                                                              .data!.gender ==
+                                                          "Male"
+                                                      ? const Icon(
+                                                          Icons.boy,
+                                                          color: primaryColor,
+                                                        )
+                                                      : const Icon(
+                                                          Icons.girl,
+                                                          color: primaryColor,
                                                         ),
-                                                      ))
-                                                  .toList(),
-                                              value: snapshot.data!.gender,
-                                              underline: const SizedBox(),
-                                              onChanged: (value) {
-                                                registerBloc
-                                                    .eventController.sink
-                                                    .add(ChooseGenderEvent(
-                                                        gender: value));
-                                              },
-                                            ),
-                                          ),
-                                        )),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: TextFormField(
-                                        readOnly: true,
-                                        controller: dobTextFieldController,
-                                        style: const TextStyle(
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.bold),
-                                        decoration: InputDecoration(
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          label: const Text(
-                                            "Birthday",
-                                            style: TextStyle(
-                                              fontFamily: "Lobster",
-                                              color: primaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          prefixIcon: const Icon(
-                                            Icons.calendar_month,
-                                            color: primaryColor,
-                                          ),
-                                          suffixIcon: IconButton(
-                                              onPressed: () {
-                                                if (snapshot.data!
-                                                        .focusBirthdayColor ==
-                                                    secondaryColor) {
-                                                  dobTextFieldController
-                                                      .clear();
+                                                  enabledBorder:
+                                                      const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .white24,
+                                                                  width: 2.5)),
+                                                  focusedBorder:
+                                                      const UnderlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color:
+                                                                  secondaryColor,
+                                                              width: 3.0)),
+                                                  errorStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.redAccent)),
+                                              child: DropdownButton<String>(
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                dropdownColor: primaryColor,
+                                                items: registerBloc
+                                                    .genderSelection
+                                                    .map(
+                                                        (e) => DropdownMenuItem(
+                                                              value: e,
+                                                              child: Text(
+                                                                e,
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black45),
+                                                              ),
+                                                            ))
+                                                    .toList(),
+                                                value: snapshot.data!.gender,
+                                                underline: const SizedBox(),
+                                                onChanged: (value) {
                                                   registerBloc
                                                       .eventController.sink
-                                                      .add(InputDobEvent(
-                                                          dob:
-                                                              dobTextFieldController
-                                                                  .text));
-                                                }
-                                              },
-                                              icon: Icon(
-                                                Icons.close,
-                                                color: snapshot
-                                                    .data!.focusBirthdayColor,
-                                              )),
-                                          enabledBorder:
-                                              const UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 2.5)),
-                                          focusedBorder:
-                                              const UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: secondaryColor,
-                                                      width: 3.0)),
-                                          errorStyle: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.redAccent),
-                                        ),
-                                        onTap: () {
-                                          showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime(1980),
-                                            firstDate: DateTime(1980),
-                                            lastDate: DateTime(2004),
-                                          ).then((value) {
-                                            dobTextFieldController.text =
-                                                dateFormat.format(value!);
-                                            registerBloc.eventController.sink
-                                                .add(InputDobEvent(
-                                                    dob: dobTextFieldController
-                                                        .text));
-                                            registerBloc.eventController.sink
-                                                .add(FocusTextFieldRegisterEvent(
-                                                    isFocusOnBirthday: true,
-                                                    isFocusOnAddress: false,
-                                                    isFocusOnCitizenIdentification:
-                                                        false,
-                                                    isFocusOnEmail: false,
-                                                    isFocusOnPassword: false,
-                                                    isFocusOnPhone: false,
-                                                    isFocusOnUsername: false));
-                                          });
-                                        },
-                                        validator: (value) =>
-                                            snapshot.data!.validateDob(),
+                                                      .add(ChooseGenderEvent(
+                                                          gender: value));
+                                                },
+                                              ),
+                                            ),
+                                          )),
+                                      const SizedBox(
+                                        width: 5,
                                       ),
-                                    )
-                                  ],
+                                      Expanded(
+                                        flex: 1,
+                                        child: TextFormField(
+                                          readOnly: true,
+                                          controller: dobTextFieldController,
+                                          style: const TextStyle(
+                                              color: Colors.black45,
+                                              fontWeight: FontWeight.bold),
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            label: const Text(
+                                              "Birthday",
+                                              style: TextStyle(
+                                                fontFamily: "Lobster",
+                                                color: primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            prefixIcon: const Icon(
+                                              Icons.calendar_month,
+                                              color: primaryColor,
+                                            ),
+                                            suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  if (snapshot.data!
+                                                          .focusBirthdayColor ==
+                                                      secondaryColor) {
+                                                    dobTextFieldController
+                                                        .clear();
+                                                    registerBloc
+                                                        .eventController.sink
+                                                        .add(InputDobEvent(
+                                                            dob:
+                                                                dobTextFieldController
+                                                                    .text));
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: snapshot
+                                                      .data!.focusBirthdayColor,
+                                                )),
+                                            enabledBorder:
+                                                const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                        width: 2.5)),
+                                            focusedBorder:
+                                                const UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: secondaryColor,
+                                                        width: 3.0)),
+                                            errorStyle: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.redAccent),
+                                          ),
+                                          onTap: () {
+                                            showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime(1980),
+                                              firstDate: DateTime(1980),
+                                              lastDate: DateTime(2004),
+                                            ).then((value) {
+                                              dobTextFieldController.text =
+                                                  dateFormat.format(value!);
+                                              registerBloc.eventController.sink
+                                                  .add(InputDobEvent(
+                                                      dob:
+                                                          dobTextFieldController
+                                                              .text));
+                                              registerBloc.eventController.sink
+                                                  .add(FocusTextFieldRegisterEvent(
+                                                      isFocusOnBirthday: true,
+                                                      isFocusOnAddress: false,
+                                                      isFocusOnCitizenIdentification:
+                                                          false,
+                                                      isFocusOnEmail: false,
+                                                      isFocusOnPassword: false,
+                                                      isFocusOnPhone: false,
+                                                      isFocusOnUsername:
+                                                          false));
+                                            });
+                                          },
+                                          validator: (value) =>
+                                              snapshot.data!.validateDob(),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ]),
                             ),
