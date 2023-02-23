@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
-import 'package:staywithme_passenger_application/screen/main_screen.dart';
+
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
 
 class AuthenticateWrapperScreen extends StatelessWidget {

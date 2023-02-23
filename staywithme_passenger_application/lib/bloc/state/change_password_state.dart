@@ -6,7 +6,9 @@ class ChangePasswordState {
 
   String? validateNewPassword() {
     if (newPassword == null || newPassword == "") {
-      return "Enter new password";
+      return "Please enter password";
+    } else if (newPassword != rePassword) {
+      return "re-password not match";
     }
 
     return null;
@@ -14,13 +16,11 @@ class ChangePasswordState {
 
   String? validateRePassword() {
     if (rePassword == null || rePassword == "") {
-      return "Enter re-password";
+      return "Please enter password";
+    } else if (newPassword != rePassword) {
+      return "re-password not match";
     }
 
     return null;
-  }
-
-  bool isRePasswordValid() {
-    return rePassword == newPassword;
   }
 }

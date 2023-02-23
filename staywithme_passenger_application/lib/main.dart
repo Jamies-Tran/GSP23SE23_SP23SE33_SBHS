@@ -4,11 +4,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/authenticate_wrapper.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/change_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/forget_password_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/google_chosen_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
+import 'package:staywithme_passenger_application/screen/authenticate/validate_otp_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
@@ -55,12 +56,6 @@ class MyApp extends StatelessWidget {
             (context) => const CompleteGoogleRegisterScreen(),
         GoogleAccountValidationScreen.checkValidGoogleAccountRoute: (context) =>
             const GoogleAccountValidationScreen(),
-        ForgetPasswordScreen.forgetPasswordRoute: (context) =>
-            const ForgetPasswordScreen(),
-        SendMailScreen.sendMailScreenRoute: (context) => const SendMailScreen(),
-        ValidatePasswordModificationOtpScreen
-                .validatePasswordModificationScreenRoute:
-            (context) => const ValidatePasswordModificationOtpScreen(),
         ChangePasswordScreen.changePasswordScreenRoute: (context) =>
             const ChangePasswordScreen(),
         AuthenticateWrapperScreen.authenticateWrapperScreenRoute: (context) =>
@@ -73,6 +68,11 @@ class MyApp extends StatelessWidget {
             const AddBalanceScreen(),
         PaymentHistoryScreen.paymentHistoryScreenRoute: (context) =>
             const PaymentHistoryScreen(),
+        SendMailScreen.sendMailsCreenRoute: (context) => const SendMailScreen(),
+        ValidateOtpScreen.validateOtpScreen: (context) =>
+            const ValidateOtpScreen(),
+        ChangePasswordScreen.changePasswordScreenRoute: (context) =>
+            const ChangePasswordScreen(),
         MainScreen.mainScreenRoute: (context) => const MainScreen()
       },
     );

@@ -6,11 +6,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/info_mng_event.dart';
 import 'package:staywithme_passenger_application/bloc/info_mng_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
-import 'package:staywithme_passenger_application/model/auto_complete_model.dart';
 
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
-import 'package:staywithme_passenger_application/service/user/auto_complete_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -439,7 +437,7 @@ class _PassengerInfoManagementScreenState
                   } else {
                     return ElevatedButton(
                         onPressed: () => fireAuthService.signOut(),
-                        child: const Text("sign out"));
+                        child: Text("${snapshot.error!}"));
                   }
 
                 default:

@@ -35,6 +35,5 @@ class AutoCompleteService extends IAutoCompleteService {
     } on SocketException catch (e) {
       return e;
     }
-    throw UnimplementedError();
   }
 }

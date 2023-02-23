@@ -5,8 +5,6 @@ import 'package:staywithme_passenger_application/bloc/event/add_balance_event.da
 import 'package:staywithme_passenger_application/bloc/state/add_balance_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/payment_model.dart';
-import 'package:staywithme_passenger_application/service/user/payment_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class AddBalanceScreen extends StatefulWidget {
   const AddBalanceScreen({super.key});
@@ -19,7 +17,6 @@ class AddBalanceScreen extends StatefulWidget {
 class _AddBalanceScreenState extends State<AddBalanceScreen> {
   final addBalanceBloc = AddBalanceBloc();
   final formKey = GlobalKey<FormState>();
-  final _paymentService = locator.get<IPaymentService>();
 
   @override
   void dispose() {
@@ -29,8 +26,8 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final username = contextArguments["username"];
+    // final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
+    // final username = contextArguments["username"];
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -109,7 +106,7 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                      content: Container(
+                                      content: SizedBox(
                                           height: 200,
                                           width: 200,
                                           child: Center(
@@ -120,7 +117,7 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                                                 //         snapshot
                                                 //             .data!.balance!),
                                                 future: Future.delayed(
-                                                    Duration(days: 1)),
+                                                    const Duration(days: 1)),
                                                 builder:
                                                     (context, futureSnapshot) {
                                                   final data =

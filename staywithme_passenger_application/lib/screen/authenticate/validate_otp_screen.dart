@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:staywithme_passenger_application/bloc/change_password_bloc.dart';
-import 'package:staywithme_passenger_application/bloc/event/change_password_event.dart';
 import 'package:staywithme_passenger_application/bloc/event/validate_otp_event.dart';
-import 'package:staywithme_passenger_application/bloc/state/change_password_state.dart';
 import 'package:staywithme_passenger_application/bloc/state/validate_otp_state.dart';
 import 'package:staywithme_passenger_application/bloc/validate_otp_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
@@ -11,22 +8,22 @@ import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
-  const ChangePasswordScreen({super.key});
-  static const String changePasswordScreenRoute = "/change-password";
+class ValidateOtpScreen extends StatefulWidget {
+  const ValidateOtpScreen({super.key});
+  static const String validateOtpScreen = "/validate-otp";
 
   @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+  State<ValidateOtpScreen> createState() => _ValidateOtpScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final changePasswordBloc = ChangePasswordBloc();
+class _ValidateOtpScreenState extends State<ValidateOtpScreen> {
+  final validateOtpBloc = ValidateOtpBloc();
   final formKey = GlobalKey<FormState>();
   final authService = locator.get<IAuthenticateService>();
 
   @override
   void dispose() {
-    changePasswordBloc.dispose();
+    validateOtpBloc.dispose();
     super.dispose();
   }
 
@@ -40,9 +37,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final msg = contextArguments != null ? contextArguments["msg"] : null;
     final email = contextArguments!["email"];
 
-    return StreamBuilder<ChangePasswordState>(
-        stream: changePasswordBloc.stateController.stream,
-        initialData: changePasswordBloc.initData(),
+    return StreamBuilder<ValidateOtpState>(
+        stream: validateOtpBloc.stateController.stream,
+        initialData: validateOtpBloc.initData(),
         builder: (context, snapshot) {
           return Scaffold(
             body: Container(
@@ -70,7 +67,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Text(
-                            "Change password",
+                            "Enter otp",
                             style: TextStyle(
                                 fontFamily: "Lobster",
                                 fontWeight: FontWeight.bold,
@@ -83,102 +80,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               key: formKey,
                               child: Column(
                                 children: [
-                                  TweenAnimationBuilder(
-                                    tween: Tween<double>(begin: 0, end: 1),
-                                    duration: const Duration(seconds: 4),
-                                    builder: (context, value, child) => Opacity(
-                                      opacity: value,
-                                      child: child,
-                                    ),
-                                    child: TweenAnimationBuilder(
-                                      tween: Tween<double>(begin: 200, end: 0),
-                                      duration: const Duration(seconds: 4),
-                                      builder: (context, value, child) =>
-                                          Container(
-                                        margin: EdgeInsets.only(left: value),
-                                        child: child,
-                                      ),
-                                      child: TextFormField(
-                                        decoration: const InputDecoration(
-                                            hintText: "Enter new password",
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: primaryColor,
-                                                    width: 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            focusedBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: primaryColor),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            errorBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.red,
-                                                    width: 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            hintStyle: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.451))),
-                                        onChanged: (value) => changePasswordBloc
-                                            .eventController.sink
-                                            .add(InputNewPasswordEvent(
-                                                newPassword: value)),
-                                        validator: (value) => snapshot.data!
-                                            .validateNewPassword(),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  TweenAnimationBuilder(
-                                    tween: Tween<double>(begin: 0, end: 1),
-                                    duration: const Duration(seconds: 4),
-                                    builder: (context, value, child) => Opacity(
-                                      opacity: value,
-                                      child: child,
-                                    ),
-                                    child: TweenAnimationBuilder(
-                                      tween: Tween<double>(begin: 200, end: 0),
-                                      duration: const Duration(seconds: 4),
-                                      builder: (context, value, child) =>
-                                          Container(
-                                        margin: EdgeInsets.only(right: value),
-                                        child: child,
-                                      ),
-                                      child: TextFormField(
-                                        decoration: const InputDecoration(
-                                            hintText: "Re-enter password",
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: primaryColor,
-                                                    width: 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            focusedBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: primaryColor),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            errorBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.red,
-                                                    width: 1.0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            hintStyle: TextStyle(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.451))),
-                                        onChanged: (value) => changePasswordBloc
-                                            .eventController.sink
-                                            .add(InputRePasswordEvent(
-                                                rePassword: value)),
-                                        validator: (value) =>
-                                            snapshot.data!.validateRePassword(),
-                                      ),
-                                    ),
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                        hintText: "Enter here",
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: primaryColor,
+                                                width: 1.0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: primaryColor),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        errorBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.red, width: 1.0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        hintStyle:
+                                            TextStyle(color: Colors.black45)),
+                                    onChanged: (value) => validateOtpBloc
+                                        .eventController.sink
+                                        .add(InputOtpEvent(otp: value)),
+                                    validator: (value) =>
+                                        snapshot.data!.validateOtp(),
                                   ),
                                   SizedBox(
                                     height: isExcOccured ? 20 : 10,
@@ -225,10 +152,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                                             bottom: 25),
                                                     child: FutureBuilder(
                                                       future: authService
-                                                          .changePassword(
-                                                              snapshot.data!
-                                                                  .newPassword!,
-                                                              email),
+                                                          .validatePasswordModificationOtp(
+                                                              snapshot
+                                                                  .data!.otp!),
                                                       builder:
                                                           (context, snapshot) {
                                                         switch (snapshot
@@ -242,7 +168,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                                                       .deepOrangeAccent,
                                                                 ),
                                                                 Text(
-                                                                  "Please wait...",
+                                                                  "Checking...",
                                                                   style: TextStyle(
                                                                       fontFamily:
                                                                           "Lobster",
@@ -259,18 +185,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                                                   snapshot.data;
                                                               if (data
                                                                   is bool) {
-                                                                changePasswordBloc
+                                                                validateOtpBloc
                                                                     .eventController
                                                                     .sink
-                                                                    .add(ChangePasswordSuccessEvent(
+                                                                    .add(ValidateOtpSuccessEvent(
                                                                         context:
-                                                                            context));
+                                                                            context,
+                                                                        email:
+                                                                            email));
                                                               } else if (data
                                                                   is ServerExceptionModel) {
-                                                                changePasswordBloc
+                                                                validateOtpBloc
                                                                     .eventController
                                                                     .sink
-                                                                    .add(BackWardToChangePasswordScreenEvent(
+                                                                    .add(BackwardToValidateOtpScreenEvent(
                                                                         context:
                                                                             context,
                                                                         isExcOccured:
@@ -293,7 +221,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           }
                                         },
                                         child: const Text(
-                                          "Change",
+                                          "Validate",
                                           style: TextStyle(
                                               fontFamily: "Lobster",
                                               fontWeight: FontWeight.bold),

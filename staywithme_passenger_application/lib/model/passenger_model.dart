@@ -58,7 +58,7 @@ class PassengerPropertyModel {
       PassengerPropertyModel(
           id: json["id"],
           balanceWalletModel:
-              BalanceWalletModel.fromJson(json["passengerWallet"]));
+              BalanceWalletModel.fromJson(json["balanceWallet"]));
 
   Map<String, dynamic> toJson() =>
       {"id": id, "passengerWallet": balanceWalletModel};

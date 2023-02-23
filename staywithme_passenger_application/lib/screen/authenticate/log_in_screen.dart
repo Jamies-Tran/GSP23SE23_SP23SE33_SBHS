@@ -377,9 +377,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                       loginModel),
                                                               builder: (context,
                                                                   futureBuilderSnapshot) {
-                                                                dynamic data =
-                                                                    futureBuilderSnapshot
-                                                                        .data;
                                                                 switch (futureBuilderSnapshot
                                                                     .connectionState) {
                                                                   case ConnectionState
@@ -400,6 +397,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                     );
                                                                   case ConnectionState
                                                                       .done:
+                                                                    dynamic
+                                                                        data =
+                                                                        futureBuilderSnapshot
+                                                                            .data;
                                                                     if (data
                                                                         is LoginModel) {
                                                                       return FutureBuilder(

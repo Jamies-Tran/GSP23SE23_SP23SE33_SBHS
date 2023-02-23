@@ -14,18 +14,18 @@ class InputRePasswordEvent extends ChangePasswordEvent {
   String? rePassword;
 }
 
-class PasswordModificationEvent extends ChangePasswordEvent {
-  PasswordModificationEvent({this.context, this.email, this.newPassword});
+class BackWardToChangePasswordScreenEvent extends ChangePasswordEvent {
+  BackWardToChangePasswordScreenEvent(
+      {this.msg, this.isExcOccured, this.context, this.email});
 
-  String? newPassword;
   String? email;
+  String? msg;
+  bool? isExcOccured;
   BuildContext? context;
 }
 
-class BackwardToChangePasswordScreenEvent extends ChangePasswordEvent {
-  BackwardToChangePasswordScreenEvent({this.context, this.message, this.email});
+class ChangePasswordSuccessEvent extends ChangePasswordEvent {
+  ChangePasswordSuccessEvent({this.context});
 
-  String? message;
-  String? email;
   BuildContext? context;
 }

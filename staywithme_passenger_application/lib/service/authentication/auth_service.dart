@@ -125,9 +125,8 @@ class AuthenticateService extends IAuthenticateService {
     final client = http.Client();
     Uri uri = Uri.parse("$sendOtpByMailUrl?email=$email");
     try {
-      final response = await client.get(uri, headers: {
-        "content-type": "applicaiton/json"
-      }).timeout(Duration(seconds: connectionTimeOut));
+      final response =
+          await client.get(uri, headers: {"content-type": "application/json"});
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -135,8 +134,6 @@ class AuthenticateService extends IAuthenticateService {
             ServerExceptionModel.fromJson(json.decode(response.body));
         return serverExceptionModel;
       }
-    } on TimeoutException catch (e) {
-      return e;
     } on SocketException catch (e) {
       return e;
     }

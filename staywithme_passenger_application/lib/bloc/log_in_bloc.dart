@@ -2,21 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/log_in_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/log_in_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/model/login_model.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/authenticate_wrapper.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/forget_password_screen.dart';
+
 import 'package:staywithme_passenger_application/screen/authenticate/google_chosen_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/google_validation_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
+import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
-import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -130,8 +127,9 @@ class LoginBloc {
       });
     } else if (event is NavigateToForgetPasswordScreenEvent) {
       Navigator.pushNamed(
-          event.context!, ForgetPasswordScreen.forgetPasswordRoute,
-          arguments: {"isForgetPassword": true});
+        event.context!,
+        SendMailScreen.sendMailsCreenRoute,
+      );
     }
 
     stateController.sink.add(LoginState(

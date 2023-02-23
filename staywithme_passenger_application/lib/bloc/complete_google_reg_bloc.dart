@@ -9,7 +9,6 @@ import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/complete_google_reg_screen.dart';
-import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
@@ -34,7 +33,6 @@ class CompleteGoogleRegBloc {
   String? _gender;
   String? _dob;
   final genderSelection = ["Male", "Female"];
-  String? _cancelGoogleRegRoute;
 
   Color? _focusUsernameColor;
   Color? _focusPhoneColor;
