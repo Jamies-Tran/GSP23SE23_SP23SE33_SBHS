@@ -8,32 +8,45 @@ import { ServerHttpService } from 'src/app/services/verify-landlord.service';
   styleUrls: ['./request-account-landlord.component.scss'],
 })
 export class RequestAccountLandlordComponent implements OnInit {
-  valuesFirst: data[] = [];
-  valuesSecond: data[] = [];
+  valuesPending: data[] = [];
+  valuesBanned: data[] = [];
+  valuesActive: data[] = [];
+  valuesReject: data[] = [];
   message!: string;
-  public statusFirst = 'Not_activated';
-  public statusSecond = 'All';
   registerError: string = '';
   constructor(private http: ServerHttpService, public dialog: MatDialog) {}
   ngOnInit(): void {
-    this.getStatusLandlordFirst("Not_activated");
-    this.getStatusLandlordSecond("Accept");
+    this.getStatusLandlord();
+
   }
-  public getStatusLandlordFirst(status: string) {
-    this.http.getLanlord(this.statusFirst).subscribe((data) => {
-      this.valuesFirst = data['userList'];
-        console.log(data)
+  public getStatusLandlord() {
+    // Pending
+    this.http.getLanlord("NOT_ACTIVATED").subscribe((data) => {
+      this.valuesPending = data['userList'];
+        console.log(this.valuesPending);
       }
     );
-  }
-  public getStatusLandlordSecond(status: string) {
-    this.http.getLanlord(this.statusFirst).subscribe(
-      (data) => {
-        this.valuesSecond = data['userList'];
-        console.log(data)
+    // Banned
+    this.http.getLanlord("BANNED").subscribe((data) => {
+      this.valuesPending = data['userList'];
+        console.log(this.valuesBanned);
       }
     );
+    // Active
+    this.http.getLanlord("ACTIVATED").subscribe((data) => {
+      this.valuesPending = data['userList'];
+        console.log(this.valuesActive);
+      }
+    );
+    // Reject
+    this.http.getLanlord("REJECT").subscribe((data) => {
+      this.valuesPending = data['userList'];
+        console.log(this.valuesReject);
+      }
+    );
+
   }
+
   public Id = 0;
   public createBy = '';
   public isAccept = true;
@@ -101,24 +114,48 @@ export class RequestAccountLandlordComponent implements OnInit {
   tableSize: number = 5;
   tableSizes: any = [5, 10, 15, 20];
 
-  onTableDataChangeFirst(event: any) {
+  // Pending
+  onTableDataChangePending(event: any) {
     this.page = event;
-    this.valuesFirst;
+    this.valuesPending;
   }
-  onTableSizeChangeFirst(event: any): void {
+  onTableSizeChangePending(event: any): void {
     this.tableSize = event.target.value;
     this.page = 1;
-    this.valuesFirst;
+    this.valuesPending;
   }
 
-  onTableDataChangeSecond(event: any) {
+  // Banned
+  onTableDataChangeBanned(event: any) {
     this.page = event;
-    this.valuesSecond;
+    this.valuesBanned;
   }
-  onTableSizeChangeSecond(event: any): void {
+  onTableSizeChangeBanned(event: any): void {
     this.tableSize = event.target.value;
     this.page = 1;
-    this.valuesSecond;
+    this.valuesBanned;
+  }
+
+  // Active
+  onTableDataChangeActive(event: any) {
+    this.page = event;
+    this.valuesActive;
+  }
+  onTableSizeChangeActive(event: any): void {
+    this.tableSize = event.target.value;
+    this.page = 1;
+    this.valuesActive;
+  }
+
+  // Reject
+  onTableDataChangeReject(event: any) {
+    this.page = event;
+    this.valuesReject;
+  }
+  onTableSizeChangeReject(event: any): void {
+    this.tableSize = event.target.value;
+    this.page = 1;
+    this.valuesReject;
   }
 
   // dialog error
