@@ -1,0 +1,52 @@
+<div class="wrapper">
+  <div class="sidenav">
+    <div class="logo-container">
+
+      <div class="logo-text text-white" ng-if="collapsed">Stay With Me</div>
+    </div>
+    <hr class="hr-line">
+    <div class="sidenav-container">
+      <ul class="sidenav-nav">
+        <li class="sidenav-nav-item">
+          <a class="sidenav-nav-link" routerLink="/Landlord/Homestay" routerLinkActive="active">
+            <mat-icon class="sidenav-link-icon">groups</mat-icon>
+            <p class="sidenav-link-text" ng-if="collapsed">Homestay</p>
+          </a>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+  <!-- div body -->
+  <div class="body">
+    <!-- header search -->
+
+    <div class="header navbar navbar-top border-bottom ">
+      <div class="container-fluid">
+        <div class="row user ">
+          <div class="col icon ">
+            <img [src]="avatarUrl" class="rounded-pill avatar">
+          </div>
+          <div class="col username">
+            <div class="name">{{username}} </div>
+            <div class="roles">Admin</div>
+          </div>
+          <div class="col collapse-avatar">
+
+          </div>
+          <div class="col logout">
+            <button mat-icon-button (click)="logout()" class="btn-logout border-0">
+              <i class="fa fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Body page -->
+
+    <router-outlet></router-outlet>
+  </div>
+</div>
