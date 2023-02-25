@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore: ^4.3.1
   flutter_advanced_avatar: ^1.1.0
   url_launcher: ^6.1.9
+  firebase_storage: ^11.0.14
 
 dev_dependencies:
   flutter_test:

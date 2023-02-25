@@ -230,7 +230,8 @@ class _SendMailScreenState extends State<SendMailScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                      onPressed: () {}, child: Text("Cancel"))
+                                      onPressed: () {},
+                                      child: const Text("Cancel"))
                                 ],
                               )),
                         ]),

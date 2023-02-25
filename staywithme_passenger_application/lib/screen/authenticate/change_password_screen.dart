@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/change_password_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/change_password_event.dart';
-import 'package:staywithme_passenger_application/bloc/event/validate_otp_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/change_password_state.dart';
-import 'package:staywithme_passenger_application/bloc/state/validate_otp_state.dart';
-import 'package:staywithme_passenger_application/bloc/validate_otp_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
@@ -302,7 +299,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                      onPressed: () {}, child: Text("Cancel"))
+                                      onPressed: () {},
+                                      child: const Text("Cancel"))
                                 ],
                               )),
                         ]),

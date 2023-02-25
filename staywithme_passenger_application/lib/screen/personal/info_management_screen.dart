@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/info_mng_event.dart';
 import 'package:staywithme_passenger_application/bloc/info_mng_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
+import 'package:staywithme_passenger_application/model/exc_model.dart';
 
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
@@ -434,10 +437,29 @@ class _PassengerInfoManagementScreenState
                         ],
                       )),
                     );
-                  } else {
+                  } else if (data is ServerExceptionModel) {
                     return ElevatedButton(
                         onPressed: () => fireAuthService.signOut(),
-                        child: Text("${snapshot.error!}"));
+                        child: Text("${data.message}"));
+                  } else if (data is SocketException ||
+                      data is TimeoutException) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Something wrong with server",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Please try again later",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const SizedBox();
                   }
 
                 default:

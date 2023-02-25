@@ -29,7 +29,8 @@ final paymentHistoryUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT_HISTORY"]}";
 
 final autoCompleteUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["AUTOCOMPLETE"]}";
-
+final cityProvincesUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["CITY_PROVINCE"]}";
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final connectionTimeOut = int.parse(dotenv.env["CONNECTION_TIMEOUT"]!);

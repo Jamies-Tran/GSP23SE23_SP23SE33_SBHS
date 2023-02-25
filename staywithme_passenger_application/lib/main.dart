@@ -56,8 +56,6 @@ class MyApp extends StatelessWidget {
             (context) => const CompleteGoogleRegisterScreen(),
         GoogleAccountValidationScreen.checkValidGoogleAccountRoute: (context) =>
             const GoogleAccountValidationScreen(),
-        ChangePasswordScreen.changePasswordScreenRoute: (context) =>
-            const ChangePasswordScreen(),
         AuthenticateWrapperScreen.authenticateWrapperScreenRoute: (context) =>
             const AuthenticateWrapperScreen(),
         PassengerInfoManagementScreen.passengerInfoManagementScreenRoute:

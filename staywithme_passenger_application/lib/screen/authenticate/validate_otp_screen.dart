@@ -230,7 +230,8 @@ class _ValidateOtpScreenState extends State<ValidateOtpScreen> {
                                     ),
                                   ),
                                   TextButton(
-                                      onPressed: () {}, child: Text("Cancel"))
+                                      onPressed: () {},
+                                      child: const Text("Cancel"))
                                 ],
                               )),
                         ]),
