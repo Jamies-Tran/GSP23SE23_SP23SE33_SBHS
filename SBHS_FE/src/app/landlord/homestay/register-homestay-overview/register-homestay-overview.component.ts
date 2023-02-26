@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServerHttpService } from 'src/app/services/homestay.service';
 import { RegisterHomestayPriceComponent } from '../register-homestay-price/register-homestay-price.component';
 import { RegisterHomestayComponent } from '../register-homestay/register-homestay.component';
@@ -8,8 +8,12 @@ import { RegisterHomestayComponent } from '../register-homestay/register-homesta
   templateUrl: './register-homestay-overview.component.html',
   styleUrls: ['./register-homestay-overview.component.scss']
 })
-export class RegisterHomestayOverviewComponent {
+export class RegisterHomestayOverviewComponent implements OnInit{
+ ngOnInit(): void {
+
+ }
   constructor(private http: ServerHttpService) {}
+
   register(){
     let price = "123";
     let homestayName ="";
@@ -22,6 +26,7 @@ export class RegisterHomestayOverviewComponent {
     homestayImages.push({imageUrl:"123"})
     let homestayServices: Array<{name: string,price: string, status:string}> =[];
     homestayServices.push({name:"breakfast",price:"123123",status:"true"})
+
     this.http.registerHomestay(homestayName,address,totalRoom,city,homestayImages,homestayServices,homestayFacilities,price).subscribe((data) =>{
       console.log(data);
     })

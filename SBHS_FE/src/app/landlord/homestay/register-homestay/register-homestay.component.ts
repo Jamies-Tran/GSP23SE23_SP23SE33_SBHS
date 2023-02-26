@@ -11,7 +11,7 @@ import { RegisterHomestayPriceComponent } from '../register-homestay-price/regis
 })
 export class RegisterHomestayComponent implements OnInit {
   //
-  constructor(private _formBuilder: FormBuilder, private http: ServerHttpService, public dialog: MatDialog) {}
+  constructor(private _formBuilder: FormBuilder,  public dialog: MatDialog) {}
 
   // homestayName: string = '';
   // totalRoom: string = '';
@@ -22,7 +22,7 @@ export class RegisterHomestayComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  
+
   // information
 
   informationFormGroup = this._formBuilder.group({
@@ -124,5 +124,5 @@ export class RegisterHomestayComponent implements OnInit {
     console.log('delete', this.newService.length + i);
   }
 
-  
+
 }

@@ -13,7 +13,7 @@ export class ForgetPasswordService {
       'Content-Type': 'application/json',
     })
   }
-  private REST_API_SERVER = 'http://localhost:8080';
+  private REST_API_SERVER = 'http://localhost:8081';
   constructor(private HttpClient: HttpClient) { }
 
   // Step 1 Forget Password
