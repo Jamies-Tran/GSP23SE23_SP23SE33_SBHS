@@ -24,6 +24,6 @@ public interface UserRepo extends JpaRepository<SwmUser, Long> {
     @Query(value = "select u from SwmUser u where u.phone = :phone")
     Optional<SwmUser> findByPhone(@Param("phone") String phone);
 
-    @Query(value = "select u from SwmUser u where u.landlordProperty.status like :status")
+    @Query(value = "select u from SwmUser u where u.landlordProperty.status like %:status%")
     Page<SwmUser> findLandlordListFilterByStatus(Pageable pageable, @Param("status") String status);
 }
