@@ -235,12 +235,13 @@
                 <div class="row">
                   <div class="col">
                     <div class="mb-5">
-                      <div class="row">
+                      <div class="row mb-2">
                         <div class="col-xxl-10">
                           <span><i class="fa-regular fa-heart"></i> Smoking allowed</span>
                         </div>
                         <div class="col-xxl-2">
-                          <i class="fa-regular fa-heart"></i>
+                          <!-- <mat-slide-toggle [(ngModel)]="isChecked"></mat-slide-toggle> -->
+                          <mat-slide-toggle ></mat-slide-toggle>
                         </div>
                       </div>
                       <div class="row">
@@ -248,7 +249,7 @@
                           <span><i class="fa-regular fa-heart"></i> Pet allowed</span>
                         </div>
                         <div class="col-xxl-2">
-                          <i class="fa-regular fa-heart"></i>
+                          <mat-slide-toggle ></mat-slide-toggle>
                         </div>
                       </div>
                     </div>
@@ -423,7 +424,7 @@
                     <hr>
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button routerLink="../Overview">Continue</button>
                     </div>
 
                   </div>
