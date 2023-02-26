@@ -16,4 +16,8 @@ public interface BlocHomestayRepo extends JpaRepository<BlocHomestay, Long> {
 
     @Query(value = "select b from BlocHomestay b where b.status = :status")
     Page<BlocHomestay> findBlocHomestaysByStatus(Pageable pageable, @Param("status") String status);
+
+    @Query(value = "select b from BlocHomestay b where b.status = 'ACTIVE' order by b.totalAverageRating desc")
+    Page<BlocHomestay> getBlocListOrderByTotalAverageRatingPoint(Pageable pageable);
+
 }

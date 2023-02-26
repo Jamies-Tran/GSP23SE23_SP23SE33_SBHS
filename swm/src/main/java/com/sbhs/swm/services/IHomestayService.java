@@ -32,4 +32,7 @@ public interface IHomestayService {
 
         public Page<Homestay> getHomestayListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
                         boolean isPreviousPage);
+
+        public Page<BlocHomestay> getBlocListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
+                        boolean isPreviousPage);
 }

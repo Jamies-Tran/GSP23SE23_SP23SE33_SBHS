@@ -77,8 +77,7 @@ public class HomestayController {
                 return new ResponseEntity<HomestayListPagingDto>(homestayResponseListDto, HttpStatus.OK);
         }
 
-        @GetMapping("/bloc-list")
-        @PreAuthorize("hasAuthority('homestay:view')")
+        @GetMapping("/user/bloc-list")
         public ResponseEntity<?> findBlocList(@RequestParam String status, @RequestParam int page,
                         @RequestParam int size,
                         @RequestParam boolean isNextPage, boolean isPreviousPage) {
@@ -92,8 +91,7 @@ public class HomestayController {
                 return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
         }
 
-        @GetMapping
-        @PreAuthorize("hasAuthority('homestay:view')")
+        @GetMapping("/user/homestay-detail")
         public ResponseEntity<?> findHomestayByName(@RequestParam String name) {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
@@ -101,7 +99,7 @@ public class HomestayController {
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
         }
 
-        @GetMapping("/city-provinces")
+        @GetMapping("/user/city-provinces")
         public ResponseEntity<?> getHomestayCityOrProvinceList() {
                 List<String> homestayCityOrProvinceList = homestayService.getHomestayCityOrProvince();
                 List<String> blocCityOrProvinceList = homestayService.getBlocCityOrProvince();
@@ -121,6 +119,34 @@ public class HomestayController {
                 TotalHomestayFromLocationResponseDto totalHomestay = new TotalHomestayFromLocationResponseDto(
                                 totalHomestays, totalBlocs);
                 return new ResponseEntity<TotalHomestayFromLocationResponseDto>(totalHomestay, HttpStatus.OK);
+        }
+
+        @GetMapping("/user/homestay-rating")
+        public ResponseEntity<?> getHomestayListOrderByTotalAverageRating(@RequestParam int page,
+                        @RequestParam int size, @RequestParam boolean isNextPage,
+                        @RequestParam boolean isPreviousPage) {
+                Page<Homestay> homestays = homestayService.getHomestayListOrderByTotalAverageRatingPoint(page, size,
+                                isNextPage, isPreviousPage);
+                List<HomestayResponseDto> responseHomestayList = homestays.getContent().stream()
+                                .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
+                HomestayListPagingDto responseHomestays = new HomestayListPagingDto(responseHomestayList,
+                                homestays.getNumber());
+
+                return new ResponseEntity<HomestayListPagingDto>(responseHomestays, HttpStatus.OK);
+        }
+
+        @GetMapping("/user/bloc-rating")
+        public ResponseEntity<?> getBlocListOrderByTotalAverageRating(@RequestParam int page,
+                        @RequestParam int size, @RequestParam boolean isNextPage,
+                        @RequestParam boolean isPreviousPage) {
+                Page<BlocHomestay> blocs = homestayService.getBlocListOrderByTotalAverageRatingPoint(page, size,
+                                isNextPage, isPreviousPage);
+                List<BlocHomestayResponseDto> responseBlocList = blocs.getContent().stream()
+                                .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
+                                .collect(Collectors.toList());
+                BlocHomestayListPagingDto blocHomestayListPagingDto = new BlocHomestayListPagingDto(responseBlocList,
+                                blocs.getNumber());
+                return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
         }
 
 }

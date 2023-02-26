@@ -230,8 +230,29 @@ public class HomestayService implements IHomestayService {
     @Override
     public Page<Homestay> getHomestayListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
             boolean isPreviousPage) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHomestayListOrderByTotalAverageRatingPoint'");
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Homestay> homestays = homestayRepo.getHomestayListOrderByTotalAverageRatingPoint(pageable);
+        if (homestays.hasNext() && isNextPage == true && isPreviousPage == false) {
+            homestays = homestayRepo.getHomestayListOrderByTotalAverageRatingPoint(homestays.nextPageable());
+        } else if (homestays.hasPrevious() && isPreviousPage == true && isPreviousPage == false) {
+            homestays = homestayRepo.getHomestayListOrderByTotalAverageRatingPoint(homestays.previousPageable());
+        }
+
+        return homestays;
+    }
+
+    @Override
+    public Page<BlocHomestay> getBlocListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BlocHomestay> blocs = blocHomestayRepo.getBlocListOrderByTotalAverageRatingPoint(pageable);
+        if (blocs.hasNext() && isNextPage == true && isPreviousPage == false) {
+            blocs = blocHomestayRepo.getBlocListOrderByTotalAverageRatingPoint(blocs.nextPageable());
+        } else if (blocs.hasPrevious() && isPreviousPage == true && isNextPage == false) {
+            blocs = blocHomestayRepo.getBlocListOrderByTotalAverageRatingPoint(blocs.previousPageable());
+        }
+
+        return blocs;
     }
 
 }

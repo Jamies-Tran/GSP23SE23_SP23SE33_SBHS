@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import com.sbhs.swm.models.Homestay;
 
 public interface HomestayRepo extends JpaRepository<Homestay, Long> {
@@ -36,7 +35,7 @@ public interface HomestayRepo extends JpaRepository<Homestay, Long> {
     @Query(value = "select count(b.cityProvince) from BlocHomestay b where b.cityProvince = :location and b.status = 'ACTIVE'")
     Integer getTotalBlocOnLocation(@Param("location") String location);
 
-    @Query(value = "select h from Homestay h order by h.totalAverageRating")
+    @Query(value = "select h from Homestay h where h.status = 'ACTIVE' order by h.totalAverageRating desc")
     Page<Homestay> getHomestayListOrderByTotalAverageRatingPoint(Pageable pageable);
 
 }
