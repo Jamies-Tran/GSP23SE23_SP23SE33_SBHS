@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./register-homestay.component.scss']
 })
 export class RegisterHomestayComponent {
-
+  homestayName : string = "";
+  totalRoom : string = "";
+  address : string = "";
+  city : string = "";
+  
 }
