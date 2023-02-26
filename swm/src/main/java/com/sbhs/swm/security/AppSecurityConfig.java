@@ -52,6 +52,7 @@ public class AppSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/swagger-ui.html/**", "/webjars/springfox-swagger-ui/**",
                 "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/swagger-ui.html",
-                "/swagger-ui.html/**", "/api/user/*", "/api/admin/first", "/api/payment/redirect", "/api/map/**");
+                "/swagger-ui.html/**", "/api/user/*", "/api/admin/first", "/api/payment/redirect", "/api/map/**",
+                "/api/homestay/city-provinces");
     }
 }

@@ -34,11 +34,17 @@ public class Homestay extends BaseModel {
     @Column(columnDefinition = "nvarchar(500)")
     private @Setter String address;
 
+    @Column(columnDefinition = "nvarchar(500)")
+    private @Setter String cityProvince;
+
     @Column
     private @Setter String businessLicense;
 
     @Column
     private @Setter int availableRooms;
+
+    @Column
+    private @Setter double totalAverageRating = 0.0;
 
     @Column
     private @Setter String status;
@@ -54,6 +60,9 @@ public class Homestay extends BaseModel {
 
     @OneToMany(mappedBy = "homestay", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private @Setter List<HomestayService> homestayServices;
+
+    @OneToMany(mappedBy = "homestay", cascade = { CascadeType.REMOVE })
+    private @Setter List<Rating> ratings;
 
     @ManyToOne
     private @Setter Landlord landlord;

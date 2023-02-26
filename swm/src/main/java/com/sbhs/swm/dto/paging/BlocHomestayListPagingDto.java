@@ -1,8 +1,7 @@
 package com.sbhs.swm.dto.paging;
 
 import java.util.List;
-
-import com.sbhs.swm.dto.BlocHomestayDto;
+import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BlocHomestayListPagingDto {
-    private List<BlocHomestayDto> blocs;
+    private List<BlocHomestayResponseDto> blocs;
     private Integer pageNumber;
 }

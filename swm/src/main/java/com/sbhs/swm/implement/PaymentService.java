@@ -113,18 +113,18 @@ public class PaymentService implements IPaymentService {
         WalletType walletType = WalletType.valueOf(momoCaptureWalletDto.getOrderInfo());
         switch (walletType) {
             case PASSENGER_WALLET:
-                long currentBalance = user.getPassengerProperty().getPassengerWallet()
+                long currentBalance = user.getPassengerProperty().getBalanceWallet()
                         .getTotalBalance();
-                user.getPassengerProperty().getPassengerWallet()
+                user.getPassengerProperty().getBalanceWallet()
                         .setTotalBalance(currentBalance + momoCaptureWalletDto.getAmount());
                 PaymentHistory paymentHistory = new PaymentHistory();
                 paymentHistory.setAmount(momoCaptureWalletDto.getAmount());
                 paymentHistory.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
                 paymentHistory
-                        .setPassengerWallet(user.getPassengerProperty().getPassengerWallet().getPassengerWallet());
+                        .setPassengerWallet(user.getPassengerProperty().getBalanceWallet().getPassengerWallet());
                 paymentHistory.setPaymentMethod(PaymentType.MOMO.name());
                 PaymentHistory savedPaymentHistory = paymentRepo.save(paymentHistory);
-                user.getPassengerProperty().getPassengerWallet().getPassengerWallet()
+                user.getPassengerProperty().getBalanceWallet().getPassengerWallet()
                         .setPaymentHistories(List.of(savedPaymentHistory));
                 break;
             default:

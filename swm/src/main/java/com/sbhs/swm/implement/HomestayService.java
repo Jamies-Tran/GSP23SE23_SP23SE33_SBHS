@@ -1,5 +1,6 @@
 package com.sbhs.swm.implement;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import com.sbhs.swm.repositories.BlocHomestayRepo;
 import com.sbhs.swm.repositories.HomestayRepo;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IUserService;
+import com.sbhs.swm.util.CityProvinceNameUtil;
+import com.sbhs.swm.util.DateFormatUtil;
 
 @Service
 public class HomestayService implements IHomestayService {
@@ -36,8 +39,15 @@ public class HomestayService implements IHomestayService {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private DateFormatUtil dateFormatUtil;
+
+    @Autowired
+    private CityProvinceNameUtil cityProvinceNameUtil;
+
     @Override
     public Homestay createHomestay(Homestay homestay) {
+
         SwmUser user = userService.authenticatedUser();
         if (user.getLandlordProperty() == null) {
             throw new UsernameNotFoundException(user.getUsername());
@@ -46,11 +56,28 @@ public class HomestayService implements IHomestayService {
         } else if (homestayRepo.findHomestayByName(homestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
         }
+        List<String> splittedAddress = new LinkedList<String>(List.of(homestay.getAddress().split(",")));
+        String city = splittedAddress.get(homestay.getAddress().split(",").length - 1);
+        homestay.setCityProvince(
+                cityProvinceNameUtil.shortenCityName(city.trim()));
+        splittedAddress.remove(city);
+        StringBuilder addressBuilder = new StringBuilder();
+        for (int addressIndex = 0; addressIndex < splittedAddress.size(); addressIndex++) {
+            if (addressIndex == splittedAddress.size() - 1) {
+                addressBuilder.append(splittedAddress.get(addressIndex));
+            } else {
+                addressBuilder.append(splittedAddress.get(addressIndex)).append(",");
+            }
+
+        }
+        homestay.setAddress(addressBuilder.toString());
         homestay.setStatus(HomestayStatus.PENDING.name());
         homestay.setLandlord(user.getLandlordProperty());
         homestay.getHomestayServices().forEach(h -> h.setHomestay(homestay));
         homestay.getHomestayImages().forEach(i -> i.setHomestay(homestay));
         homestay.getHomestayFacilities().forEach(f -> f.setHomestay(homestay));
+        homestay.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        homestay.setCreatedBy(user.getUsername());
 
         user.getLandlordProperty().setHomestays(List.of(homestay));
         Homestay savedHomestay = homestayRepo.save(homestay);
@@ -68,17 +95,35 @@ public class HomestayService implements IHomestayService {
         } else if (blocHomestayRepo.findBlocHomestayByName(blocHomestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
         }
+        List<String> splittedAddress = new LinkedList<String>(List.of(blocHomestay.getAddress().split(",")));
+        String city = splittedAddress.get(blocHomestay.getAddress().split(",").length - 1);
+        blocHomestay.setCityProvince(
+                cityProvinceNameUtil.shortenCityName(city.trim()));
+        splittedAddress.remove(city);
+        StringBuilder addressBuilder = new StringBuilder();
+        for (int addressIndex = 0; addressIndex < splittedAddress.size(); addressIndex++) {
+            if (addressIndex == splittedAddress.size() - 1) {
+                addressBuilder.append(splittedAddress.get(addressIndex));
+            } else {
+                addressBuilder.append(splittedAddress.get(addressIndex)).append(",");
+            }
+
+        }
+        blocHomestay.setAddress(addressBuilder.toString());
         blocHomestay.setLandlord(user.getLandlordProperty());
         blocHomestay.setStatus(HomestayStatus.PENDING.name());
         blocHomestay.getHomestayServices().forEach(s -> s.setBloc(blocHomestay));
         blocHomestay.getHomestays().forEach(h -> {
             h.setAddress(blocHomestay.getAddress());
+            h.setCityProvince(blocHomestay.getCityProvince());
             h.setBusinessLicense(blocHomestay.getBusinessLicense());
             h.setHomestayServices(blocHomestay.getHomestayServices());
             h.setLandlord(user.getLandlordProperty());
             h.setStatus(blocHomestay.getStatus());
             h.setBloc(blocHomestay);
         });
+        blocHomestay.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        blocHomestay.setCreatedBy(user.getUsername());
 
         BlocHomestay savedBlocHomestay = blocHomestayRepo.save(blocHomestay);
 
@@ -152,6 +197,41 @@ public class HomestayService implements IHomestayService {
         }
 
         return blocHomestays;
+    }
+
+    @Override
+    public List<String> getHomestayCityOrProvince() {
+        List<String> cityOrProvinceList = homestayRepo.getHomestayCityOrProvince();
+
+        return cityOrProvinceList;
+    }
+
+    @Override
+    public Integer getTotalHomestayOnLocation(String location) {
+        Integer totalHomestayOnLocation = homestayRepo.getTotalHomestayOnLocation(location);
+
+        return totalHomestayOnLocation;
+    }
+
+    @Override
+    public List<String> getBlocCityOrProvince() {
+        List<String> cityOrProvinceList = homestayRepo.getBlocCityOrProvince();
+
+        return cityOrProvinceList;
+    }
+
+    @Override
+    public Integer getTotalBlocOnLocation(String location) {
+        Integer totalBloc = homestayRepo.getTotalBlocOnLocation(location);
+
+        return totalBloc;
+    }
+
+    @Override
+    public Page<Homestay> getHomestayListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHomestayListOrderByTotalAverageRatingPoint'");
     }
 
 }

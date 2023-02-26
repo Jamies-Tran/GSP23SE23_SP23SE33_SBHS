@@ -14,5 +14,5 @@ public class LandlordResponseDto extends BaseResponseDto {
     private String idCardFrontImageUrl;
     private String idCardBackImageUrl;
     private String status;
-    private BalanceWalletResponseDto landlordWallet;
+    private BalanceWalletResponseDto balanceWallet;
 }

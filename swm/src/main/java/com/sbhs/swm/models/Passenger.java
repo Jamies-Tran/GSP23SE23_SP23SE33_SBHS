@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,7 +36,10 @@ public class Passenger extends BaseModel {
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
-    private @Setter BalanceWallet passengerWallet;
+    private @Setter BalanceWallet balanceWallet;
+
+    @OneToMany(mappedBy = "passenger", fetch = FetchType.LAZY)
+    private @Setter List<Rating> ratings;
 
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;

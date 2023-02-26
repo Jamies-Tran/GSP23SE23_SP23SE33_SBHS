@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbhs.swm.dto.BlocHomestayDto;
-import com.sbhs.swm.dto.HomestayDto;
 import com.sbhs.swm.dto.paging.BlocHomestayListPagingDto;
 import com.sbhs.swm.dto.paging.HomestayListPagingDto;
+import com.sbhs.swm.dto.request.BlocHomestayRequestDto;
+import com.sbhs.swm.dto.request.HomestayRequestDto;
+import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
+import com.sbhs.swm.dto.response.HomestayResponseDto;
+import com.sbhs.swm.dto.response.TotalBlocFromCityProvinceResponseDto;
+import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
+import com.sbhs.swm.dto.response.TotalHomestayFromLocationResponseDto;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.services.IHomestayService;
@@ -37,22 +42,22 @@ public class HomestayController {
 
         @PostMapping("/new-homestay")
         @PreAuthorize("hasAuthority('homestay:create')")
-        public ResponseEntity<?> createHomestay(@RequestBody HomestayDto homestay) {
+        public ResponseEntity<?> createHomestay(@RequestBody HomestayRequestDto homestay) {
                 Homestay saveHomestay = modelMapper.map(homestay, Homestay.class);
                 Homestay savedHomestay = homestayService.createHomestay(saveHomestay);
-                HomestayDto responseHomestay = modelMapper.map(savedHomestay, HomestayDto.class);
+                HomestayResponseDto responseHomestay = modelMapper.map(savedHomestay, HomestayResponseDto.class);
 
-                return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.CREATED);
+                return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.CREATED);
         }
 
         @PostMapping("/new-bloc")
         @PreAuthorize("hasAuthority('homestay:create')")
-        public ResponseEntity<?> createBloc(@RequestBody BlocHomestayDto bloc) {
+        public ResponseEntity<?> createBloc(@RequestBody BlocHomestayRequestDto bloc) {
                 BlocHomestay saveBloc = modelMapper.map(bloc, BlocHomestay.class);
                 BlocHomestay savedBloc = homestayService.createBlocHomestay(saveBloc);
-                BlocHomestayDto responseBloc = modelMapper.map(savedBloc, BlocHomestayDto.class);
+                BlocHomestayResponseDto responseBloc = modelMapper.map(savedBloc, BlocHomestayResponseDto.class);
 
-                return new ResponseEntity<BlocHomestayDto>(responseBloc, HttpStatus.CREATED);
+                return new ResponseEntity<BlocHomestayResponseDto>(responseBloc, HttpStatus.CREATED);
         }
 
         @GetMapping("/homestay-list")
@@ -63,7 +68,8 @@ public class HomestayController {
                 Page<Homestay> homestays = homestayService.findHomestayList(filter, param.toUpperCase(), page, size,
                                 isNextPage,
                                 isPreviousPage);
-                List<HomestayDto> homestayDtos = homestays.stream().map(h -> modelMapper.map(h, HomestayDto.class))
+                List<HomestayResponseDto> homestayDtos = homestays.stream()
+                                .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
                                 homestays.getPageable().getPageNumber());
@@ -78,8 +84,9 @@ public class HomestayController {
                         @RequestParam boolean isNextPage, boolean isPreviousPage) {
                 Page<BlocHomestay> blocs = homestayService.findBlocHomestaysByStatus(status, page, size, isNextPage,
                                 isPreviousPage);
-                List<BlocHomestayDto> blocHomestayDtos = blocs.stream()
-                                .map(b -> modelMapper.map(b, BlocHomestayDto.class)).collect(Collectors.toList());
+                List<BlocHomestayResponseDto> blocHomestayDtos = blocs.stream()
+                                .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
+                                .collect(Collectors.toList());
                 BlocHomestayListPagingDto blocHomestayListPagingDto = new BlocHomestayListPagingDto(blocHomestayDtos,
                                 blocs.getNumber());
                 return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
@@ -89,9 +96,31 @@ public class HomestayController {
         @PreAuthorize("hasAuthority('homestay:view')")
         public ResponseEntity<?> findHomestayByName(@RequestParam String name) {
                 Homestay homestay = homestayService.findHomestayByName(name);
-                HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+                HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
 
-                return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
+                return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
+        }
+
+        @GetMapping("/city-provinces")
+        public ResponseEntity<?> getHomestayCityOrProvinceList() {
+                List<String> homestayCityOrProvinceList = homestayService.getHomestayCityOrProvince();
+                List<String> blocCityOrProvinceList = homestayService.getBlocCityOrProvince();
+                List<TotalHomestayFromCityProvinceResponseDto> totalHomestays = homestayCityOrProvinceList.stream()
+                                .map(h -> {
+                                        Integer total = homestayService.getTotalHomestayOnLocation(h);
+                                        TotalHomestayFromCityProvinceResponseDto totalHomestayFromCityProvinceResponseDto = new TotalHomestayFromCityProvinceResponseDto(
+                                                        h, total);
+                                        return totalHomestayFromCityProvinceResponseDto;
+                                }).sorted().collect(Collectors.toList());
+                List<TotalBlocFromCityProvinceResponseDto> totalBlocs = blocCityOrProvinceList.stream().map(b -> {
+                        Integer total = homestayService.getTotalBlocOnLocation(b);
+                        TotalBlocFromCityProvinceResponseDto totalBlocFromCityProvinceResponseDto = new TotalBlocFromCityProvinceResponseDto(
+                                        b, total);
+                        return totalBlocFromCityProvinceResponseDto;
+                }).sorted().collect(Collectors.toList());
+                TotalHomestayFromLocationResponseDto totalHomestay = new TotalHomestayFromLocationResponseDto(
+                                totalHomestays, totalBlocs);
+                return new ResponseEntity<TotalHomestayFromLocationResponseDto>(totalHomestay, HttpStatus.OK);
         }
 
 }

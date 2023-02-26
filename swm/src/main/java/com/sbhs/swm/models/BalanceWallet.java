@@ -26,10 +26,10 @@ public class BalanceWallet extends BaseModel {
     @Column
     private @Setter long totalBalance = 0;
 
-    @OneToOne(mappedBy = "passengerWallet")
+    @OneToOne(mappedBy = "balanceWallet")
     private @Setter Passenger passenger;
 
-    @OneToOne(mappedBy = "landlordWallet")
+    @OneToOne(mappedBy = "balanceWallet")
     private @Setter Landlord landlord;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })

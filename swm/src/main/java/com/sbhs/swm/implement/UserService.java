@@ -84,7 +84,7 @@ public class UserService implements IUserService {
         passengerWallet.setPassengerBalanceWallet(balanceWallet);
         passengerWallet.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         passengerWallet.setCreatedBy(user.getUsername());
-        passenger.setPassengerWallet(balanceWallet);
+        passenger.setBalanceWallet(balanceWallet);
 
         SwmRole passengerRole = roleService.findRoleByName("passenger");
         passengerRole.setUsers(List.of(user));
@@ -116,17 +116,21 @@ public class UserService implements IUserService {
 
         balanceWallet.setLandlordWallet(landlordWallet);
         balanceWallet.setLandlord(landlord);
+        balanceWallet.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        balanceWallet.setCreatedBy(user.getUsername());
         landlordWallet.setLandlordBalanceWallet(balanceWallet);
+        landlordWallet.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        landlordWallet.setCreatedBy(user.getUsername());
         landlord.setIdCardFrontImageUrl(idCardFrontImageUrl);
         landlord.setIdCardBackImageUrl(idCardBackImageUrl);
-        landlord.setLandlordWallet(balanceWallet);
+        landlord.setBalanceWallet(balanceWallet);
         landlord.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         landlord.setCreatedBy(user.getUsername());
         landlordRole.setUsers(List.of(user));
         user.setRoles(List.of(landlordRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setLandlordProperty(landlord);
-        user.setCreatedBy(dateFormatUtil.formatDateTimeNowToString());
+        user.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         landlord.setUser(user);
         SwmUser savedUser = userRepo.save(user);
         return savedUser;

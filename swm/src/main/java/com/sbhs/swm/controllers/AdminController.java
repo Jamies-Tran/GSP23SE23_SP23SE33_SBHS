@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbhs.swm.dto.BlocHomestayDto;
-import com.sbhs.swm.dto.HomestayDto;
 import com.sbhs.swm.dto.paging.LandlordListPagingDto;
+import com.sbhs.swm.dto.request.BlocHomestayRequestDto;
+import com.sbhs.swm.dto.request.HomestayRequestDto;
 import com.sbhs.swm.dto.request.SwmUserRequestDto;
 import com.sbhs.swm.dto.response.SwmUserResponseDto;
 import com.sbhs.swm.models.BlocHomestay;
@@ -94,14 +94,14 @@ public class AdminController {
         switch (homestayStyle.toUpperCase()) {
             case "HOMESTAY":
                 Homestay homestay = adminService.activateHomestay(name);
-                HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+                HomestayRequestDto responseHomestay = modelMapper.map(homestay, HomestayRequestDto.class);
 
-                return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
+                return new ResponseEntity<HomestayRequestDto>(responseHomestay, HttpStatus.OK);
             case "BLOC":
                 BlocHomestay bloc = adminService.activateBlocHomestay(name);
-                BlocHomestayDto responseBloc = modelMapper.map(bloc, BlocHomestayDto.class);
+                BlocHomestayRequestDto responseBloc = modelMapper.map(bloc, BlocHomestayRequestDto.class);
 
-                return new ResponseEntity<BlocHomestayDto>(responseBloc, HttpStatus.OK);
+                return new ResponseEntity<BlocHomestayRequestDto>(responseBloc, HttpStatus.OK);
             default:
                 return new ResponseEntity<String>("Invalid homestay style(HOMESTAY or BLOC)", HttpStatus.BAD_REQUEST);
         }
@@ -114,14 +114,14 @@ public class AdminController {
         switch (homestayStyle.toUpperCase()) {
             case "HOMESTAY":
                 Homestay homestay = adminService.rejectHomestay(name);
-                HomestayDto responseHomestay = modelMapper.map(homestay, HomestayDto.class);
+                HomestayRequestDto responseHomestay = modelMapper.map(homestay, HomestayRequestDto.class);
 
-                return new ResponseEntity<HomestayDto>(responseHomestay, HttpStatus.OK);
+                return new ResponseEntity<HomestayRequestDto>(responseHomestay, HttpStatus.OK);
             case "BLOC":
                 BlocHomestay bloc = adminService.rejectBloc(name);
-                BlocHomestayDto responseBloc = modelMapper.map(bloc, BlocHomestayDto.class);
+                BlocHomestayRequestDto responseBloc = modelMapper.map(bloc, BlocHomestayRequestDto.class);
 
-                return new ResponseEntity<BlocHomestayDto>(responseBloc, HttpStatus.OK);
+                return new ResponseEntity<BlocHomestayRequestDto>(responseBloc, HttpStatus.OK);
             default:
                 return new ResponseEntity<String>("Invalid homestay style(HOMESTAY or BLOC)", HttpStatus.BAD_REQUEST);
         }

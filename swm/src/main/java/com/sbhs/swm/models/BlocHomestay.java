@@ -31,17 +31,26 @@ public class BlocHomestay extends BaseModel {
     @Column(columnDefinition = "nvarchar(500)")
     private @Setter String address;
 
+    @Column(columnDefinition = "nvarchar(500)")
+    private @Setter String cityProvince;
+
     @Column
     private @Setter String businessLicense;
 
     @Column
     private @Setter String status;
 
+    @Column
+    private @Setter double totalAverageRating = 0.0;
+
     @OneToMany(mappedBy = "bloc", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private @Setter List<Homestay> homestays;
 
     @OneToMany(mappedBy = "bloc")
     private @Setter List<HomestayService> homestayServices;
+
+    @OneToMany(mappedBy = "bloc", cascade = { CascadeType.REMOVE })
+    private @Setter List<Rating> ratings;
 
     @ManyToOne
     private @Setter Landlord landlord;

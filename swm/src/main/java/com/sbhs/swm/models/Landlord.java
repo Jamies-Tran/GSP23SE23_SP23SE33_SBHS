@@ -40,7 +40,7 @@ public class Landlord extends BaseModel {
     private @Setter String idCardBackImageUrl;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter BalanceWallet landlordWallet;
+    private @Setter BalanceWallet balanceWallet;
 
     @OneToMany(mappedBy = "landlord")
     private @Setter List<Homestay> homestays;

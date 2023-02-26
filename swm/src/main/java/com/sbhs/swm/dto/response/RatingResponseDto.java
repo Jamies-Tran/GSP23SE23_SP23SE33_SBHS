@@ -9,7 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerResponseDto extends BaseResponseDto {
+public class RatingResponseDto extends BaseResponseDto {
     private Long id;
-    private BalanceWalletResponseDto balanceWallet;
+    private Double servicePoint;
+    private Double locationPoint;
+    private Double securityPoint;
+    private String comment;
 }
