@@ -31,8 +31,6 @@
               <td>{{post.id}}</td>
               <td>{{post.username}}</td>
               <td>{{post.createdDate}}</td>
-
-
               <td>
                 <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
@@ -190,15 +188,11 @@
             <tr *ngFor="let post of valuesReject | paginate:{
             itemsPerPage: tableSize,
             currentPage: page,
-            totalItems: count}
-
-          ;
+            totalItems: count};
           let i = index">
               <td>{{post.id}}</td>
               <td>{{post.username}}</td>
               <td>{{post.createdDate}}</td>
-
-
               <td>
                 <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i

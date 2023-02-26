@@ -28,19 +28,19 @@ export class RequestAccountLandlordComponent implements OnInit {
     );
     // Banned
     this.http.getLanlord("BANNED").subscribe((data) => {
-      this.valuesPending = data['userList'];
+      this.valuesBanned = data['userList'];
         console.log(this.valuesBanned);
       }
     );
     // Active
     this.http.getLanlord("ACTIVATED").subscribe((data) => {
-      this.valuesPending = data['userList'];
+      this.valuesActive = data['userList'];
         console.log(this.valuesActive);
       }
     );
     // Reject
     this.http.getLanlord("REJECT").subscribe((data) => {
-      this.valuesPending = data['userList'];
+      this.valuesReject = data['userList'];
         console.log(this.valuesReject);
       }
     );
@@ -49,17 +49,17 @@ export class RequestAccountLandlordComponent implements OnInit {
 
   public Id = 0;
   public createBy = '';
-  public isAccept = true;
-  public isReject = false;
   public rejectMessage = '';
-  public onItemSelector(id: number, createdBy: string) {
+  public username =""
+  public onItemSelector(id: number, username: string) {
     this.Id = id;
+    this.username = username;
     localStorage.setItem('id', id + '');
-    localStorage.setItem('createdBy', createdBy);
+    localStorage.setItem('username', username);
   }
   public accept() {
     this.http
-      .verifyLandlord(this.Id + '', this.isAccept, this.rejectMessage)
+      .verifyLandlord(this.username,"accpet")
       .subscribe(
         (data) => {
           if (data != null) {
@@ -85,7 +85,7 @@ export class RequestAccountLandlordComponent implements OnInit {
   }
   public reject() {
     this.http
-      .verifyLandlord(this.Id + '', this.isReject, this.rejectMessage)
+      .verifyLandlord(this.username,"reject")
       .subscribe(
         (data) => {
           if (data != null) {

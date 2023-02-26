@@ -70,9 +70,7 @@ export class AccountLandlordDetailComponent implements OnInit {
   public accept() {
     this.http
       .verifyLandlord(
-        localStorage.getItem('id') + '',
-        this.isAccept,
-        this.rejectMessage
+        localStorage.getItem('username')+"","accpet"
       )
       .subscribe(
         (data) => {
@@ -102,9 +100,7 @@ export class AccountLandlordDetailComponent implements OnInit {
   public reject() {
     this.http
       .verifyLandlord(
-        localStorage.getItem('id') + '',
-        this.isReject,
-        this.rejectMessage
+        localStorage.getItem('username')+"","reject"
       )
       .subscribe(
         (data) => {
