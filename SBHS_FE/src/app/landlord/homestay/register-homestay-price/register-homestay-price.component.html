@@ -1,0 +1,48 @@
+<div class="container">
+  <form>
+    <div class="row w-100 justify-content-center">
+      <div class="col-8 ">
+        <h3 class="my-4">Set the price per night for this apartment</h3>
+        <div class="d-flex  flex-column">
+          <!-- Step 1 -->
+          <div class="input-content basic-information card">
+            <div class="add-input card-body pb-0 pt-3">
+              <div class="row">
+                <div class="col w-100 mb-5">
+                  <h5>How much do you want to charge per night?</h5>
+
+                  <div class="my-3">
+                    <h6 class="mb-0">Price guests pay </h6>
+                    <div class="input-group">
+                      <span class="input-group-text">VNĐ</span>
+                      <input type="number" min="0" class="form-control" />
+                    </div>
+                    <p class="text-muted fs-6">Including taxes, commission and charges</p>
+
+                  </div>
+                  <div class="ps-4" *ngIf="">
+                    <span class="fs-5"> <span class="text-muted ">5.00%</span> Staywithme.com commisson</span>
+                    <br>
+                    <hr>
+                    <span class="fs-5"><span class="text-muted">VNĐ {{price}}</span> Your earnings (including
+                      taxes)</span>
+                  </div>
+                  <br>
+                  <hr>
+                  <div class="add-btn d-flex flex-row ">
+                    <button class="btn-back" mat-raised-button routerLink="Overview">Back</button>
+                    <button class="btn-next w-100" color="primary" mat-raised-button
+                      routerLink="../Overview">Continue</button>
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

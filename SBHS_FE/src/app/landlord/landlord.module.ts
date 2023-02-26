@@ -28,6 +28,10 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { RegisterHomestayImageComponent } from './homestay/register-homestay-image/register-homestay-image.component';
+import { RegisterHomestayOverviewComponent } from './homestay/register-homestay-overview/register-homestay-overview.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { RegisterHomestayPriceComponent } from './homestay/register-homestay-price/register-homestay-price.component';
 
 
 @NgModule({
@@ -37,6 +41,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CategoryHomestayComponent,
     RegisterHomestayComponent,
     RegisterBlocHomestayComponent,
+    RegisterHomestayImageComponent,
+    RegisterHomestayOverviewComponent,
+    RegisterHomestayPriceComponent,
   ],
   imports: [
     CommonModule,
@@ -57,7 +64,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     FormsModule,
     MdbFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgxDropzoneModule
   ],
 })
 export class LandlordModule {}

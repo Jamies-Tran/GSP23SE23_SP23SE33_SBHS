@@ -12,13 +12,11 @@ input:-webkit-autofill:active {
 
 .input-content {
 
-
   .add-input {
     background: white;
     padding-bottom: 30px;
   }
 }
-
 
 :host ::ng-deep .city-select .mat-mdc-form-field-infix {
   padding-top: 4.5px !important;
@@ -33,7 +31,6 @@ input:-webkit-autofill:active {
 }
 
 // button
-
 .add-btn {
 
   .btn-next {
@@ -61,17 +58,15 @@ input:-webkit-autofill:active {
   .select-form {
     height: 35.4px;
   }
-
 }
-
 
 .additional-facility {
-  .btn-add-facility{
+  .btn-add-facility {
     height: 35px;
     max-height: 40px;
-
   }
 }
-.click{
+
+.click {
   cursor: pointer;
 }
