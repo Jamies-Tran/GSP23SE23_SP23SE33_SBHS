@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomestayComponent } from './homestay/homestay.component';
 import { LandlordComponent } from './landlord.component';
 import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
-import { RegisterComponent } from '../guest/register/register.component';
+import { RegisterBlocHomestayComponent } from './homestay/register-bloc-homestay/register-bloc-homestay.component';
+import { RegisterHomestayComponent } from './homestay/register-homestay/register-homestay.component';
 
 const routes: Routes = [
   {
@@ -26,11 +27,11 @@ const routes: Routes = [
             children:[
               {
                 path:'RegisterHomestay',
-                component : RegisterComponent
+                component : RegisterHomestayComponent
               },
               {
                 path:'RegisterBlocHomestay',
-
+                component: RegisterBlocHomestayComponent
               },
             ]
           }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ServerHttpService } from 'src/app/services/verify-landlord.service';
+import { ActionPendingComponent } from '../../pop-up/action-pending/action-pending.component';
 
 @Component({
   selector: 'app-request-account-landlord',
@@ -44,7 +45,6 @@ export class RequestAccountLandlordComponent implements OnInit {
         console.log(this.valuesReject);
       }
     );
-
   }
 
   public Id = 0;
@@ -58,6 +58,7 @@ export class RequestAccountLandlordComponent implements OnInit {
     localStorage.setItem('createdBy', createdBy);
   }
   public accept() {
+    console.log("Accept");
     this.http
       .verifyLandlord(this.Id + '', this.isAccept, this.rejectMessage)
       .subscribe(
@@ -67,7 +68,6 @@ export class RequestAccountLandlordComponent implements OnInit {
             this.openDialogSuccess();
             location.reload();
           }
-
           console.log(data);
         },
         (error) => {
@@ -84,6 +84,7 @@ export class RequestAccountLandlordComponent implements OnInit {
       );
   }
   public reject() {
+    console.log("Reject");
     this.http
       .verifyLandlord(this.Id + '', this.isReject, this.rejectMessage)
       .subscribe(
@@ -108,22 +109,27 @@ export class RequestAccountLandlordComponent implements OnInit {
       );
   }
 
+  isChecked !: boolean;
+  isCheckedAction(){
+    if(this.isChecked){
+      this.accept();
+    }else{
+      this.reject();
+    }
+  }
+
   title = 'pagination';
   page: number = 1;
   count: number = 0;
   tableSize: number = 5;
-  tableSizes: any = [5, 10, 15, 20];
+
 
   // Pending
   onTableDataChangePending(event: any) {
     this.page = event;
     this.valuesPending;
   }
-  onTableSizeChangePending(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
-    this.valuesPending;
-  }
+
 
   // Banned
   onTableDataChangeBanned(event: any) {
@@ -169,6 +175,16 @@ export class RequestAccountLandlordComponent implements OnInit {
     //   data: this.message,
     // });
   }
+
+  openDialogAction(){
+    this.dialog.open(ActionPendingComponent, {
+      data: this.message,
+      disableClose: true
+    });
+  }
+
+
+
 }
 
 export interface data {

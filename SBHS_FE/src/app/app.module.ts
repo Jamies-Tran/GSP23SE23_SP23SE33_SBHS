@@ -37,6 +37,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
+import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+
 
 // Component
 import { AppComponent } from './app.component';
@@ -46,6 +48,9 @@ import { ForgotPassComponent } from './guest/forgot-pass/forgot-pass.component';
 import { environment } from '../environments/environment';
 import { WelcomePageComponent } from './guest/welcome-page/welcome-page.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ActionPendingComponent } from './pop-up/action-pending/action-pending.component';
+import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 
 @NgModule({
   declarations: [
@@ -54,6 +59,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RegisterComponent,
     ForgotPassComponent,
     WelcomePageComponent,
+    ActionPendingComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,7 +93,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatTabsModule,
     NgxPaginationModule,
     MatStepperModule,
-    CdkStepperModule
+    CdkStepperModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MdbValidationModule,
+    MdbFormsModule
   ],
   providers: [
     {

@@ -18,9 +18,26 @@ import { LandlordRoutingModule } from './landlord-routing.module';
 import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
 import { RegisterHomestayComponent } from './homestay/register-homestay/register-homestay.component';
 import { RegisterBlocHomestayComponent } from './homestay/register-bloc-homestay/register-bloc-homestay.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import {
+  matFormFieldAnimations,
+  MatFormFieldModule,
+} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 @NgModule({
-  declarations: [HomestayComponent, LandlordComponent, CategoryHomestayComponent, RegisterHomestayComponent, RegisterBlocHomestayComponent],
+  declarations: [
+    HomestayComponent,
+    LandlordComponent,
+    CategoryHomestayComponent,
+    RegisterHomestayComponent,
+    RegisterBlocHomestayComponent,
+  ],
   imports: [
     CommonModule,
     LandlordRoutingModule,
@@ -33,6 +50,14 @@ import { RegisterBlocHomestayComponent } from './homestay/register-bloc-homestay
     MatTabsModule,
     NgxPaginationModule,
     MatButtonModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MdbValidationModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MdbFormsModule,
+    MatCheckboxModule
   ],
 })
 export class LandlordModule {}

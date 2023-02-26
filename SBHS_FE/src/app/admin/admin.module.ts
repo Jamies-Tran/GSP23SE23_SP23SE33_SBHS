@@ -14,6 +14,8 @@ import { MatPaginatedTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AccountLandlordDetailComponent } from './request-account-landlord/account-landlord-detail/account-landlord-detail.component';
 import { MatButtonModule } from '@angular/material/button';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -29,7 +31,10 @@ import { MatButtonModule } from '@angular/material/button';
     MatSelectModule,
     MatTabsModule,
     NgxPaginationModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSlideToggleModule,
+    FormsModule,
+    MatDialogModule
   ],
 })
 export class AdminModule {}

@@ -4,7 +4,7 @@
   </div>
 
   <div class="row">
-    <div class="col-xxl-6 col-xl-6 col-lg-6">
+    <div class="col-xxl-6 col-xl-6 ">
       <!-- Pending -->
       <div class="body card mb-4">
         <div class="border-bottom-text border-bottom mt-3  w-100">
@@ -21,13 +21,13 @@
             </tr>
           </thead>
           <tbody style="height:30vh">
-            <tr *ngFor="let post of valuesPending | paginate:{
-          itemsPerPage: tableSize,
-          currentPage: page,
-          totalItems: count}
+            <tr matRipple *ngFor="let post of valuesPending | paginate:{
+              itemsPerPage: tableSize,
+              currentPage: page,
+              totalItems: count
+              };
+              let i = index">
 
-        ;
-        let i = index">
               <td>{{post.id}}</td>
               <td>{{post.username}}</td>
               <td>{{post.createdDate}}</td>
@@ -41,7 +41,14 @@
                   (click)="accept()"><i class="fa-solid fa-check"></i></button>
                 <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
+
               </td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>a</td>
+              <td>b</td>
+              <td><mat-slide-toggle name="isChecked" [(ngModel)]="isChecked" (click)="openDialogAction()" >Slide Toggle Checked: {{isChecked}}</mat-slide-toggle></td>
             </tr>
           </tbody>
         </table>
@@ -58,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xxl-6 col-xl-6 col-lg-6">
+    <div class="col-xxl-6 col-xl-6 ">
       <!-- Activatec -->
       <div class="body card mb-4">
         <div class="border-bottom-text border-bottom mt-3  w-100">
@@ -115,7 +122,7 @@
   </div>
 
   <div class="row">
-    <div class="col-xxl-6 col-xl-6 col-lg-6">
+    <div class="col-xxl-6 col-xl-6 ">
       <!-- Banned -->
       <div class="body card mb-4">
         <div class="border-bottom-text border-bottom mt-3  w-100">
@@ -169,7 +176,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xxl-6 col-xl-6 col-lg-6">
+    <div class="col-xxl-6 col-xl-6 ">
 
       <!-- Reject -->
       <div class="body card mb-4">
@@ -178,7 +185,7 @@
         </div>
 
         <table class="table table-striped table-hover">
-          <thead >
+          <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
