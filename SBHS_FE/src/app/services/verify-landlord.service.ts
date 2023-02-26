@@ -31,20 +31,13 @@ export class ServerHttpService {
       .pipe(catchError(this.handleError));
   }
   public verifyLandlord(
-    requestId: string,
-    isAccepted: boolean,
-    rejectMessage: string
+    username: string,
+    isAccept: string
   ) {
-    var value = {
-      isAccepted,
-      rejectMessage,
-    };
     const url =
-      `${this.REST_API_SERVER}/api/request/verification/landlord/` +
-      requestId +
-      ``;
+      `${this.REST_API_SERVER}/api/admin/landlord-activate?username=`+username+``;
     return this.httpClient
-      .patch<any>(url, value, this.httpOptions)
+      .put<any>(url, "accept",this.httpOptions)
       .pipe(catchError(this.handleError));
   }
   public getLandlordDetail() {
