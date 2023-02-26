@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ServerHttpService } from 'src/app/services/homestay.service';
+import { RegisterHomestayPriceComponent } from '../register-homestay-price/register-homestay-price.component';
 
 @Component({
   selector: 'app-register-homestay',
@@ -8,7 +11,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class RegisterHomestayComponent implements OnInit {
   //
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: FormBuilder, private http: ServerHttpService, public dialog: MatDialog) {}
 
   // homestayName: string = '';
   // totalRoom: string = '';
@@ -19,6 +22,7 @@ export class RegisterHomestayComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  
   // information
 
   informationFormGroup = this._formBuilder.group({
@@ -27,18 +31,14 @@ export class RegisterHomestayComponent implements OnInit {
     number: ['', Validators.required],
     city: ['', Validators.required],
   });
-
+  formInformationFormGroupValue = this.informationFormGroup.controls;
+  homestayName = this.formInformationFormGroupValue.homestayName.value!;
+  address = this.formInformationFormGroupValue.address.value!;
+  number = this.formInformationFormGroupValue.number.value!;
+  city = this.formInformationFormGroupValue.city.value!;
   informationForm() {
     // Lay value
     const formInformationFormGroupValue = this.informationFormGroup.controls;
-    let homestayName = formInformationFormGroupValue.homestayName.value!;
-    let address = formInformationFormGroupValue.address.value!;
-    let number = formInformationFormGroupValue.number.value!;
-    let city = formInformationFormGroupValue.city.value!;
-    console.log(homestayName);
-    console.log(address);
-    console.log(number);
-    console.log(city);
     console.log(this.informationFormGroup.value);
   }
 
@@ -124,8 +124,5 @@ export class RegisterHomestayComponent implements OnInit {
     console.log('delete', this.newService.length + i);
   }
 
-
-  register(){
-
-  }
+  
 }

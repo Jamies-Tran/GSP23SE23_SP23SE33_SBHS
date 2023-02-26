@@ -1,5 +1,5 @@
 <div class="container">
-  <form>
+  <form  (ngSubmit)="register()">
     <div class="row w-100 justify-content-center">
       <div class="col-8 ">
         <h2 class="my-4">Overview Homestay</h2>
@@ -77,8 +77,9 @@
           </div>
 
         </div>
-
-
+        <br>
+        <div style="padding-left: 90%;"><button type="submit" mat-raised-button style="background-color: green; color: aliceblue;">Submit</button></div>
+        
       </div>
 
     </div>

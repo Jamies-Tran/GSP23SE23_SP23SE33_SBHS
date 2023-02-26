@@ -69,8 +69,8 @@ export class AccountLandlordDetailComponent implements OnInit {
   public rejectMessage = '';
   public accept() {
     this.http
-      .verifyLandlord(
-        localStorage.getItem('username')+"","accpet"
+      .acceptLandlord(
+        localStorage.getItem('username')+""
       )
       .subscribe(
         (data) => {
@@ -99,8 +99,8 @@ export class AccountLandlordDetailComponent implements OnInit {
   }
   public reject() {
     this.http
-      .verifyLandlord(
-        localStorage.getItem('username')+"","reject"
+      .rejectLandlord(
+        localStorage.getItem('username')+"","NOT_MATCHED"
       )
       .subscribe(
         (data) => {

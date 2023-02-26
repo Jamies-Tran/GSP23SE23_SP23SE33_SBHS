@@ -15,7 +15,7 @@ export class ServerHttpService {
     })
   };
   public model: any = {};
-  private REST_API_SERVER = 'http://localhost:8080';
+  private REST_API_SERVER = 'http://localhost:8081';
   constructor(private httpClient: HttpClient) { }
 
   public getHomestayList(){
@@ -44,6 +44,32 @@ export class ServerHttpService {
     const url = `${this.REST_API_SERVER}/api/homestay/removal/`+id+``;
     return this.httpClient
       .delete<any>(url, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  public registerHomestay(
+    name: string,
+    address: string,
+    availableRooms: string,
+    businessLicense: string,
+    homestayImages: Array<any>,
+    homestayServices: Array<any>,
+    homestayFacilities: Array<any>,
+    price: string
+  ) {
+    var value = {
+      address,
+      availableRooms,
+      businessLicense,
+      homestayFacilities,
+      homestayImages,
+      homestayServices,
+      name,
+      price
+    };
+    console.log(value);
+    const url = `${this.REST_API_SERVER}/api/homestay/new-homestay`;
+    return this.httpClient
+      .post<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 }

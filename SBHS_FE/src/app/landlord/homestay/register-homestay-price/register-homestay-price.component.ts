@@ -8,4 +8,7 @@ import { Component } from '@angular/core';
 export class RegisterHomestayPriceComponent {
 
   public price = "";
+  public getPrice(){
+    return this.price;
+  }
 }

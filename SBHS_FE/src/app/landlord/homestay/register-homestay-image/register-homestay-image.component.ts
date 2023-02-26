@@ -22,4 +22,5 @@ export class RegisterHomestayImageComponent {
     console.log('files lenght: ', this.files.length);
 
   }
+  
 }

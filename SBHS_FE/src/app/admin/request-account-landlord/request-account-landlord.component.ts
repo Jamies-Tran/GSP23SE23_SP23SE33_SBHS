@@ -60,7 +60,7 @@ export class RequestAccountLandlordComponent implements OnInit {
   public accept() {
     console.log("Accept");
     this.http
-      .verifyLandlord(this.username,"accpet")
+      .acceptLandlord(this.username)
       .subscribe(
         (data) => {
           if (data != null) {
@@ -86,7 +86,7 @@ export class RequestAccountLandlordComponent implements OnInit {
   public reject() {
     console.log("Reject");
     this.http
-      .verifyLandlord(this.username,"reject")
+      .rejectLandlord(this.username,"NOT_MATCHED")
       .subscribe(
         (data) => {
           if (data != null) {

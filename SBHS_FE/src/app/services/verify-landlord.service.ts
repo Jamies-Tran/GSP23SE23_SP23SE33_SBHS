@@ -30,14 +30,23 @@ export class ServerHttpService {
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  public verifyLandlord(
-    username: string,
-    isAccept: string
+  public acceptLandlord(
+    username: string
   ) {
     const url =
       `${this.REST_API_SERVER}/api/admin/landlord-activate?username=`+username+``;
     return this.httpClient
       .put<any>(url, "accept",this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  public rejectLandlord(
+    username: string,
+    reason: string
+  ) {
+    const url =
+      `${this.REST_API_SERVER}/api/admin/landlord-reject?reason=`+reason+`&username=`+username+``;
+    return this.httpClient
+      .put<any>(url, "false",this.httpOptions)
       .pipe(catchError(this.handleError));
   }
   public getLandlordDetail() {

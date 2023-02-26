@@ -15,7 +15,7 @@
                     <h6 class="mb-0">Price guests pay </h6>
                     <div class="input-group">
                       <span class="input-group-text">VNĐ</span>
-                      <input type="number" min="0" class="form-control" name="price" [(ngModel)]="price" />
+                      <input type="number" min="0" class="form-control" name="price" [(ngModel)]="price" [ngModelOptions]="{standalone: true}"/>
                     </div>
                     <p class="text-muted fs-6">Including taxes, commission and charges</p>
 
