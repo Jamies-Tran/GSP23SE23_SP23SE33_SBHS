@@ -69,7 +69,7 @@ export class LoginLandlordComponent {
         localStorage.setItem('username', data['username']);
         console.log(data);
         if (data['roles'][0] === 'LANDLORD') {
-          this.router.navigate(['/Login'], {
+          this.router.navigate(['/Landlord'], {
             relativeTo: this.route,
           });
         } else
