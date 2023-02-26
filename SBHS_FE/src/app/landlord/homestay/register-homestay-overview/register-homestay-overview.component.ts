@@ -13,7 +13,7 @@ export class RegisterHomestayOverviewComponent implements OnInit{
 
  }
   constructor(private http: ServerHttpService) {}
-
+ result : string =""
   register(){
     let price = "123";
     let homestayName ="";
@@ -29,6 +29,10 @@ export class RegisterHomestayOverviewComponent implements OnInit{
 
     this.http.registerHomestay(homestayName,address,totalRoom,city,homestayImages,homestayServices,homestayFacilities,price).subscribe((data) =>{
       console.log(data);
-    })
+      this.result = "Register Homestay Success"
+    },(error =>{
+      this.result = "Register Homestay Fail!!!"
+    }))
   }
+  
 }
