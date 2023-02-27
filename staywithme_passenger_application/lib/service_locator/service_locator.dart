@@ -3,6 +3,7 @@ import 'package:staywithme_passenger_application/service/authentication/auth_ser
 import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service/user/auto_complete_service.dart';
+import 'package:staywithme_passenger_application/service/user/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/user/payment_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 
@@ -18,4 +19,5 @@ void setup() {
   locator.registerLazySingleton<IPaymentService>(() => PaymentService());
   locator
       .registerLazySingleton<IAutoCompleteService>(() => AutoCompleteService());
+  locator.registerLazySingleton<IHomestayService>(() => HomestayService());
 }

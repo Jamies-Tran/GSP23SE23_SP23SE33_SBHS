@@ -15,8 +15,6 @@ abstract class IUserService {
   Future<dynamic> getAreaImage(String area);
 
   Future<dynamic> getAreaHomestayInfo();
-
-  String? getFullCityProvinceName(String cityProvince);
 }
 
 class UserService extends IUserService {
@@ -48,37 +46,13 @@ class UserService extends IUserService {
 
   @override
   Future getAreaImage(String area) async {
-    String? url;
-    switch (area) {
-      case "HCM":
-        url = await storage
-            .child("homepage")
-            .child("homepage_mobile")
-            .child("hcm.jpeg")
-            .getDownloadURL();
-        break;
-      case "GL":
-        url = await storage
-            .child("homepage")
-            .child("homepage_mobile")
-            .child("gia_lai.jpg")
-            .getDownloadURL();
-        break;
-      case "HN":
-        url = await storage
-            .child("homepage")
-            .child("homepage_mobile")
-            .child("ha_noi.jpg")
-            .getDownloadURL();
-        break;
-      case "BT":
-        url = await storage
-            .child("homepage")
-            .child("homepage_mobile")
-            .child("phu_quy.jpg")
-            .getDownloadURL();
-        break;
-    }
+    String img = "$area.jpg";
+    String url = await storage
+        .child("homepage")
+        .child("homepage_mobile")
+        .child(img)
+        .getDownloadURL();
+
     return url;
   }
 
@@ -94,14 +68,17 @@ class UserService extends IUserService {
             TotalHomestayFromLocationModel.fromJson(json.decode(response.body));
         if (totalHomestayFromLocationModel.totalHomestays!.isNotEmpty) {
           for (var e in totalHomestayFromLocationModel.totalHomestays!) {
-            String avatarUrl = await getAreaImage(e.cityProvince!);
+            String avatarUrl =
+                await getAreaImage(utf8.decode(e.cityProvince!.runes.toList()));
             e.avatarUrl = avatarUrl;
           }
         }
 
-        if (totalHomestayFromLocationModel.totalHomestays!.isNotEmpty) {
+        if (totalHomestayFromLocationModel.totalBlocs!.isNotEmpty) {
           for (var e in totalHomestayFromLocationModel.totalBlocs!) {
-            getAreaImage(e.cityProvince!).then((value) => e.avatarUrl = value);
+            String avatarUrl =
+                await getAreaImage(utf8.decode(e.cityProvince!.runes.toList()));
+            e.avatarUrl = avatarUrl;
           }
         }
         return totalHomestayFromLocationModel;
@@ -110,22 +87,6 @@ class UserService extends IUserService {
       return e;
     } on TimeoutException catch (e) {
       return e;
-    }
-  }
-
-  @override
-  String? getFullCityProvinceName(String cityProvince) {
-    switch (cityProvince) {
-      case "HCM":
-        return "Hồ Chí Minh";
-      case "GL":
-        return "Gia Lai";
-      case "HN":
-        return "Hà Nội";
-      case "BT":
-        return "Bình Thuận";
-      default:
-        return null;
     }
   }
 }
