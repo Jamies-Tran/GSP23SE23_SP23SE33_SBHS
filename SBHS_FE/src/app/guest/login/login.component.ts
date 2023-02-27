@@ -29,7 +29,7 @@ export class LoginLandlordComponent {
   loggedIn: any;
 
   async ngOnInit(): Promise<void> {
-    if (localStorage.getItem('registerSucess') == 'true') {
+    if (localStorage.getItem('registerSuccess') == 'true') {
       this.flag = 'true';
     }
 

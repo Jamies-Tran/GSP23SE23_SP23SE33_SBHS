@@ -114,6 +114,7 @@ export class RegisterComponent {
   onSelectFontCitizenID(files: any) {
     console.log(event);
     this.fontCitizenIDfiles.push(...files.addedFiles);
+    console.log(this.fontCitizenIDfiles)
     if (this.fontCitizenIDfiles.length >= 1) {
       this.showDiv.font = false;
     }
@@ -155,23 +156,28 @@ export class RegisterComponent {
       this.showDiv.back = true;
     }
   }
-
+  back : string ="";
+  front : string = "";
+  Result : string ="";
   public register() {
     if (this.valid() == true) {
     this.http
       .registerLandlord(
         this.addressFormControl.value + '',
-        this.dobFormControl.value + '',
+        "1999-25-12",
         this.emailFormControl.value + '',
         this.gender,
         this.idFormControl.value + '',
         this.passwordFormControl.value + '',
         this.phoneFormControl.value + '',
-        this.usernameFormControl.value + ''
+        this.usernameFormControl.value + '',
+        this.back,
+        this.front
       )
       .subscribe((data) => {
         localStorage.setItem('registerSuccess', 'true');
-        this.router.navigate(['/Landlord'], { relativeTo: this.route });
+        this.router.navigate(['/Login'], { relativeTo: this.route });
+        
       });
     }
   }

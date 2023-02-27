@@ -29,7 +29,9 @@ export class ServerHttpService {
     idCardNumber: string,
     password: string,
     phone: string,
-    username: string
+    username: string,
+    back: string,
+    front: string
   ) {
     let avatarUrl = '';
     var value = {
@@ -43,7 +45,7 @@ export class ServerHttpService {
       phone,
       username,
     };
-    const url = `${this.REST_API_SERVER}/api/user/registration-landlord`;
+    const url = `${this.REST_API_SERVER}/api/user/registration-landlord?back=`+back+`&front=`+front+``;
     return this.httpClient
       .post<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));

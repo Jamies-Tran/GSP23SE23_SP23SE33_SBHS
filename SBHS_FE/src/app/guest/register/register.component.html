@@ -181,7 +181,7 @@
                     <h6>Upload font your Citizen ID</h6>
 
                     <div ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
-                      (change)="onSelectFontCitizenID($event)" *ngIf="showDiv.font">
+                      (change)="onSelectFontCitizenID($event)" *ngIf="showDiv.font" [(ngModel)]="front">
                       <ngx-dropzone-label>
                         <div>
                           <i class="fas fa-cloud-upload-alt icon-upload"></i>
@@ -203,7 +203,7 @@
                   <div class="col-right col-12 col-md-6">
                     <h6>Upload back your Citizen ID</h6>
                     <div ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
-                      (change)="onSelectBackCitizenID($event)" *ngIf="showDiv.back">
+                      (change)="onSelectBackCitizenID($event)" *ngIf="showDiv.back" [(ngModel)]="back">
                       <ngx-dropzone-label>
                         <div>
                           <i class="fas fa-cloud-upload-alt icon-upload"></i>
