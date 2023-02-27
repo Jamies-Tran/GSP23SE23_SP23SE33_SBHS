@@ -120,6 +120,7 @@ public class HomestayService implements IHomestayService {
             h.setHomestayServices(blocHomestay.getHomestayServices());
             h.setLandlord(user.getLandlordProperty());
             h.setStatus(blocHomestay.getStatus());
+            h.getHomestayImages().forEach(i -> i.setHomestay(h));
             h.setBloc(blocHomestay);
         });
         blocHomestay.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
