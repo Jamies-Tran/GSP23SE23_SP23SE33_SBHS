@@ -16,6 +16,7 @@ final otpVerificationUrl =
 
 final passwordModificationUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["PASSWORD_MODIFICATION"]}";
+
 final emailValidateUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["EMAIL_VALIDATE"]}";
 
@@ -29,12 +30,18 @@ final paymentHistoryUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT_HISTORY"]}";
 
 final autoCompleteUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["AUTOCOMPLETE"]}";
+
 final cityProvincesUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["CITY_PROVINCE"]}";
+
 final homestayListOrderByRatingUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_AVG_RATING"]}";
+
 final blocListOrderByRatingUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_AVG_RATING"]}";
+
+final homestayNearestLocationUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_NEAREST_LOCATION"]}";
 
 // common variable
 final currencyFormat = NumberFormat("#,##0");

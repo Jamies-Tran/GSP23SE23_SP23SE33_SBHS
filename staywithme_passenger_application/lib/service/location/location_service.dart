@@ -9,20 +9,20 @@ class LocationService extends ILocationService {
   Future getUserCurrentLocation() async {
     bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (isServiceEnabled == false) {
-      return "Location Service disable";
+      return null;
     }
     final checkLocationPermission = await Geolocator.checkPermission();
     if (checkLocationPermission.name == LocationPermission.denied.name) {
       final requestPermission = await Geolocator.requestPermission();
       if (requestPermission.name == LocationPermission.denied.name) {
-        return "user don't want to share location";
+        return null;
       } else if (requestPermission.name ==
           LocationPermission.deniedForever.name) {
-        return "user deny to share location forever";
+        return null;
       }
     } else if (checkLocationPermission.name ==
         LocationPermission.deniedForever.name) {
-      return "user deny to share location forever";
+      return null;
     }
 
     return Geolocator.getCurrentPosition(

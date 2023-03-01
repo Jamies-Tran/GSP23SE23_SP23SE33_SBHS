@@ -14,6 +14,9 @@ abstract class IHomestayService {
 
   Future<dynamic> getBlocListOrderByTotalAverageRating(
       int page, int size, bool isNextPage, bool isPreviousPage);
+
+  Future<dynamic> getHomestayNearestLocationList(double lat, double lng,
+      int page, int size, bool isNextPage, bool isPreviousPage);
 }
 
 class HomestayService extends IHomestayService {
@@ -56,6 +59,32 @@ class HomestayService extends IHomestayService {
         BlocHomestayListPagingModel blocHomestayListPagingModel =
             BlocHomestayListPagingModel.fromJson(json.decode(response.body));
         return blocHomestayListPagingModel;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on SocketException catch (e) {
+      return e;
+    } on TimeoutException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getHomestayNearestLocationList(double lat, double lng, int page,
+      int size, bool isNextPage, bool isPreviousPage) async {
+    String origin = "$lat,$lng";
+    final client = http.Client();
+    final uri = Uri.parse(
+        "$homestayNearestLocationUrl?address=$origin&isGeometry=${true}&page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
+    try {
+      final response =
+          await client.get(uri, headers: {"content-type": "application/json"});
+      if (response.statusCode == 200) {
+        HomestayListPagingModel homestayListPagingModel =
+            HomestayListPagingModel.fromJson(json.decode(response.body));
+        return homestayListPagingModel;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

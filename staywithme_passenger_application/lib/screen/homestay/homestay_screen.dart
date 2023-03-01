@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_event.dart';
 import 'package:staywithme_passenger_application/bloc/homestay_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
@@ -13,7 +14,8 @@ import 'package:staywithme_passenger_application/service_locator/service_locator
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 
 class HomestayScreen extends StatefulWidget {
-  const HomestayScreen({super.key});
+  const HomestayScreen({super.key, this.position});
+  final Position? position;
 
   @override
   State<HomestayScreen> createState() => _HomestayScreenState();
@@ -78,8 +80,9 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                 BorderRadius.all(Radius.circular(50))),
                       ),
                       readOnly: true,
-                      onTap: () => homestayBloc.eventController.sink
-                          .add(OnClickSearchTextFieldEvent(context: context)),
+                      onTap: () => homestayBloc.eventController.sink.add(
+                          OnClickSearchTextFieldEvent(
+                              context: context, position: widget.position)),
                     ),
                   ),
                 ),
