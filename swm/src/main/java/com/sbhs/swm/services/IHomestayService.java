@@ -41,5 +41,6 @@ public interface IHomestayService {
 
         public PagedListHolder<Homestay> getHomestayListNearByLocation(String address, int page, int size,
                         boolean isNextPage,
-                        boolean isPreviousPage);
+                        boolean isPreviousPage,
+                        boolean isGeometry);
 }

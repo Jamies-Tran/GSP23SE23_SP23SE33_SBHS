@@ -44,8 +44,8 @@ public class GoongService implements IGoongService {
     }
 
     @Override
-    public DistanceResultRows getDistanceFromLocation(String origins, List<String> destinations) {
-        String geometryAddressOrigin = this.convertAddressToGeometry(origins);
+    public DistanceResultRows getDistanceFromLocation(String origins, List<String> destinations, boolean isGeometry) {
+        String geometryAddressOrigin = isGeometry ? this.convertAddressToGeometry(origins) : origins;
         List<String> geometryAddressDestinations = destinations.stream().map(d -> d.split("-")[1])
                 .collect(Collectors.toList());
         StringBuilder apiUrlBuilder = new StringBuilder();
@@ -79,6 +79,7 @@ public class GoongService implements IGoongService {
     public String convertAddressToGeometry(String address) {
         StringBuilder apiUrlBuilder = new StringBuilder();
         StringBuilder latlngBuilder = new StringBuilder();
+
         apiUrlBuilder.append(GEOCODING_URL).append("?address=").append(address).append("&api_key=").append(goongApiKey);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -155,9 +155,9 @@ public class HomestayController {
         @GetMapping("/user/homestay-address")
         public ResponseEntity<?> getHomestaySortedByAddress(@RequestParam String address, @RequestParam int page,
                         @RequestParam int size, @RequestParam boolean isNextPage,
-                        @RequestParam boolean isPreviousPage) {
+                        @RequestParam boolean isPreviousPage, @RequestParam boolean isGeometry) {
                 PagedListHolder<Homestay> homestays = homestayService.getHomestayListNearByLocation(address, page, size,
-                                isNextPage, isPreviousPage);
+                                isNextPage, isPreviousPage, isGeometry);
                 List<HomestayResponseDto> homestayResponseList = homestays.getPageList().stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
                 homestayResponseList.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));

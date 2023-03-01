@@ -270,11 +270,12 @@ public class HomestayService implements IHomestayService {
     @Override
     public PagedListHolder<Homestay> getHomestayListNearByLocation(String address, int page, int size,
             boolean isNextPage,
-            boolean isPreviousPage) {
+            boolean isPreviousPage,
+            boolean isGeometry) {
         List<Homestay> homestays = homestayRepo.findAll();
         List<String> destinations = homestays.stream().map(h -> h.getAddress())
                 .collect(Collectors.toList());
-        DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations);
+        DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations, isGeometry);
         List<DistanceElement> addressesSorted = distanceResultRows.getRows().get(0).getElements().stream()
                 .sorted(Collections.reverseOrder())
                 .collect(Collectors.toList());

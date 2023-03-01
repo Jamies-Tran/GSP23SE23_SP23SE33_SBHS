@@ -8,7 +8,7 @@ import com.sbhs.swm.dto.goong.PlacesResult;
 public interface IGoongService {
     public PlacesResult getLocationPredictions(String place);
 
-    public DistanceResultRows getDistanceFromLocation(String origins, List<String> destinations);
+    public DistanceResultRows getDistanceFromLocation(String origins, List<String> destinations, boolean isGeometry);
 
     public String convertAddressToGeometry(String address);
 }
