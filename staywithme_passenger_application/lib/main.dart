@@ -10,6 +10,7 @@ import 'package:staywithme_passenger_application/screen/authenticate/log_in_scre
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/validate_otp_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
@@ -71,6 +72,8 @@ class MyApp extends StatelessWidget {
             const ValidateOtpScreen(),
         ChangePasswordScreen.changePasswordScreenRoute: (context) =>
             const ChangePasswordScreen(),
+        SearchHomestayScreen.searchHomestayScreenRoute: (context) =>
+            const SearchHomestayScreen(),
         MainScreen.mainScreenRoute: (context) => const MainScreen()
       },
     );

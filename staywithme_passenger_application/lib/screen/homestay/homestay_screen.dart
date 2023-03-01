@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:staywithme_passenger_application/bloc/event/homestay_event.dart';
+import 'package:staywithme_passenger_application/bloc/homestay_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_city_province_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/service/user/homestay_service.dart';
+import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
@@ -20,8 +22,7 @@ class HomestayScreen extends StatefulWidget {
 class _HomestayScreenState extends State<HomestayScreen> {
   final userService = locator.get<IUserService>();
   final homestayService = locator.get<IHomestayService>();
-  // final formKey = GlobalKey<FormState>();
-  // final searchOptionTextEditingController = TextEditingController();
+  final homestayBloc = HomestayBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +78,8 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                 BorderRadius.all(Radius.circular(50))),
                       ),
                       readOnly: true,
+                      onTap: () => homestayBloc.eventController.sink
+                          .add(OnClickSearchTextFieldEvent(context: context)),
                     ),
                   ),
                 ),
