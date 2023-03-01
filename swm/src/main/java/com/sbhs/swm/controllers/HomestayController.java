@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,7 @@ public class HomestayController {
                 Homestay saveHomestay = modelMapper.map(homestay, Homestay.class);
                 Homestay savedHomestay = homestayService.createHomestay(saveHomestay);
                 HomestayResponseDto responseHomestay = modelMapper.map(savedHomestay, HomestayResponseDto.class);
+                responseHomestay.setAddress(responseHomestay.getAddress().split("-")[0]);
 
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.CREATED);
         }
@@ -71,6 +73,7 @@ public class HomestayController {
                 List<HomestayResponseDto> homestayDtos = homestays.stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
+                homestayDtos.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
                                 homestays.getPageable().getPageNumber());
 
@@ -147,6 +150,22 @@ public class HomestayController {
                 BlocHomestayListPagingDto blocHomestayListPagingDto = new BlocHomestayListPagingDto(responseBlocList,
                                 blocs.getNumber());
                 return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
+        }
+
+        @GetMapping("/user/homestay-address")
+        public ResponseEntity<?> getHomestaySortedByAddress(@RequestParam String address, @RequestParam int page,
+                        @RequestParam int size, @RequestParam boolean isNextPage,
+                        @RequestParam boolean isPreviousPage) {
+                PagedListHolder<Homestay> homestays = homestayService.getHomestayListNearByLocation(address, page, size,
+                                isNextPage, isPreviousPage);
+                List<HomestayResponseDto> homestayResponseList = homestays.getPageList().stream()
+                                .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
+                homestayResponseList.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));
+                HomestayListPagingDto homestayListPagingDto = new HomestayListPagingDto(homestayResponseList,
+                                homestays.getPage());
+
+                return new ResponseEntity<HomestayListPagingDto>(homestayListPagingDto, HttpStatus.OK);
+
         }
 
 }

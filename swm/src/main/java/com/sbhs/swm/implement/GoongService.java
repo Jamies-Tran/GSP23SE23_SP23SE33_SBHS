@@ -46,7 +46,7 @@ public class GoongService implements IGoongService {
     @Override
     public DistanceResultRows getDistanceFromLocation(String origins, List<String> destinations) {
         String geometryAddressOrigin = this.convertAddressToGeometry(origins);
-        List<String> geometryAddressDestinations = destinations.stream().map(d -> this.convertAddressToGeometry(d))
+        List<String> geometryAddressDestinations = destinations.stream().map(d -> d.split("-")[1])
                 .collect(Collectors.toList());
         StringBuilder apiUrlBuilder = new StringBuilder();
         StringBuilder destinationBuilder = new StringBuilder();
@@ -64,19 +64,6 @@ public class GoongService implements IGoongService {
         apiUrlBuilder.append(DISTANCE_URL).append("?origins=").append(geometryAddressOrigin)
                 .append("&destinations=").append(destinationBuilder.toString()).append("&vehicle=car")
                 .append("&api_key=").append(goongApiKey);
-        // DistanceElement distanceElement = new DistanceElement();
-        // DistanceResultList distanceResultList = new DistanceResultList();
-        // DistanceResultRows rawDistanceResultRows = new DistanceResultRows();
-        // List<DistanceElement> distanceElements = new ArrayList<>();
-        // List<DistanceResultList> distanceResultLists = new ArrayList<>();
-        // for (String e : destinations) {
-        // distanceElement.setAddress(e);
-        // distanceElements.add(distanceElement);
-        // distanceResultList.setElements(distanceElements);
-        // distanceResultLists.add(distanceResultList);
-        // }
-
-        // rawDistanceResultRows.setRows(distanceResultLists);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         DistanceResultRows distanceResultRows = restTemplate.getForObject(apiUrlBuilder.toString(),

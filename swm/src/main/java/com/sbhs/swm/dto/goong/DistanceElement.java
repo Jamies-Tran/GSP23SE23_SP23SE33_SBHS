@@ -9,16 +9,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DistanceElement {
+public class DistanceElement implements Comparable<DistanceElement> {
     private Duration duration;
     private Distance distance;
     private String address;
     private String status;
 
-    // public DistanceElement buildFromAnotherDistanceElement(DistanceElement
-    // newDistanceElement) {
-    // newDistanceElement.setAddress(this.getAddress());
+    @Override
+    public int compareTo(DistanceElement d) {
+        if (d.getDistance().getValue() < this.getDistance().getValue()) {
+            return -1;
+        } else if (d.getDistance().getValue() > this.getDistance().getValue()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
-    // return newDistanceElement;
-    // }
 }

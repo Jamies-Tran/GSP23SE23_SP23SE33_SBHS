@@ -1,15 +1,19 @@
 package com.sbhs.swm.implement;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.sbhs.swm.dto.goong.DistanceElement;
+import com.sbhs.swm.dto.goong.DistanceResultRows;
 import com.sbhs.swm.handlers.exceptions.HomestayNameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.HomestayNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidAccountOperatorException;
@@ -22,6 +26,7 @@ import com.sbhs.swm.models.status.HomestayStatus;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.BlocHomestayRepo;
 import com.sbhs.swm.repositories.HomestayRepo;
+import com.sbhs.swm.services.IGoongService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IUserService;
 import com.sbhs.swm.util.CityProvinceNameUtil;
@@ -45,6 +50,9 @@ public class HomestayService implements IHomestayService {
     @Autowired
     private CityProvinceNameUtil cityProvinceNameUtil;
 
+    @Autowired
+    private IGoongService goongService;
+
     @Override
     public Homestay createHomestay(Homestay homestay) {
 
@@ -56,6 +64,7 @@ public class HomestayService implements IHomestayService {
         } else if (homestayRepo.findHomestayByName(homestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
         }
+        String homestayGeometryAddress = goongService.convertAddressToGeometry(homestay.getAddress());
         List<String> splittedAddress = new LinkedList<String>(List.of(homestay.getAddress().split(",")));
         String city = splittedAddress.get(homestay.getAddress().split(",").length - 1);
         homestay.setCityProvince(
@@ -70,6 +79,7 @@ public class HomestayService implements IHomestayService {
             }
 
         }
+        addressBuilder.append("-").append(homestayGeometryAddress);
         homestay.setAddress(addressBuilder.toString());
         homestay.setStatus(HomestayStatus.PENDING.name());
         homestay.setLandlord(user.getLandlordProperty());
@@ -95,6 +105,7 @@ public class HomestayService implements IHomestayService {
         } else if (blocHomestayRepo.findBlocHomestayByName(blocHomestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
         }
+
         List<String> splittedAddress = new LinkedList<String>(List.of(blocHomestay.getAddress().split(",")));
         String city = splittedAddress.get(blocHomestay.getAddress().split(",").length - 1);
         blocHomestay.setCityProvince(
@@ -254,6 +265,39 @@ public class HomestayService implements IHomestayService {
         }
 
         return blocs;
+    }
+
+    @Override
+    public PagedListHolder<Homestay> getHomestayListNearByLocation(String address, int page, int size,
+            boolean isNextPage,
+            boolean isPreviousPage) {
+        List<Homestay> homestays = homestayRepo.findAll();
+        List<String> destinations = homestays.stream().map(h -> h.getAddress())
+                .collect(Collectors.toList());
+        DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations);
+        List<DistanceElement> addressesSorted = distanceResultRows.getRows().get(0).getElements().stream()
+                .sorted(Collections.reverseOrder())
+                .collect(Collectors.toList());
+        List<Homestay> homestaySortedList = addressesSorted.stream()
+                .map(a -> this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
+        PagedListHolder<Homestay> homestayPage = new PagedListHolder<>(homestaySortedList);
+        homestayPage.setPage(page);
+        homestayPage.setPageSize(size);
+        if (homestayPage.isLastPage() == false && isNextPage == true && isPreviousPage == false) {
+            homestayPage.nextPage();
+        } else if (homestayPage.isFirstPage() == false && isPreviousPage == true && isNextPage == false) {
+            homestayPage.previousPage();
+        }
+
+        return homestayPage;
+    }
+
+    @Override
+    public Homestay findHomestayByAddress(String address) {
+        Homestay homestay = homestayRepo.findHomestayByAddress(address)
+                .orElseThrow(() -> new HomestayNotFoundException());
+
+        return homestay;
     }
 
 }

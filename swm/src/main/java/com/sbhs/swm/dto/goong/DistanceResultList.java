@@ -13,13 +13,4 @@ import lombok.Setter;
 public class DistanceResultList {
     private List<DistanceElement> elements;
 
-    // public DistanceResultList buildFromAnother(DistanceResultList
-    // newDistanceElementResultList) {
-
-    // this.setElements(newDistanceElementResultList.getElements().stream()
-    // .map(r ->
-    // r.buildFromAnotherDistanceElement(r)).collect(Collectors.toList()));
-    // return this;
-
-    // }
 }
