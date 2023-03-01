@@ -23,11 +23,11 @@ public class PassengerWallet extends BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "depositForPassengerWallet")
-    private @Setter List<PassengerDeposit> depositForHomestays;
-
     @OneToOne(mappedBy = "passengerWallet")
     private @Setter BalanceWallet passengerBalanceWallet;
+
+    @OneToMany(mappedBy = "passengerWallet")
+    private @Setter List<BookingDeposit> deposits;
 
     @OneToMany(mappedBy = "passengerWallet")
     private @Setter List<PaymentHistory> paymentHistories;

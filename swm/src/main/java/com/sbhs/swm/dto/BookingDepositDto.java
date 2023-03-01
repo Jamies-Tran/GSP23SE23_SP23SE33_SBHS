@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerDepositDto {
-    private Long id;
-    private Long deposit;
+public class BookingDepositDto {
+    private Long amount;
 }

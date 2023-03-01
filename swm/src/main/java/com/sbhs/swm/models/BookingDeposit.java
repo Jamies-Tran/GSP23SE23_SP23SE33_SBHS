@@ -1,10 +1,12 @@
 package com.sbhs.swm.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,17 +17,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class PassengerDeposit extends BaseModel {
+public class BookingDeposit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private @Setter Long deposit;
+    @Column
+    private @Setter Long amount;
 
     @ManyToOne
-    private @Setter Homestay homestay;
+    private @Setter PassengerWallet passengerWallet;
 
-    @ManyToOne
-    private @Setter PassengerWallet depositForPassengerWallet;
+    @OneToOne(mappedBy = "deposit")
+    private @Setter Booking booking;
 
 }
