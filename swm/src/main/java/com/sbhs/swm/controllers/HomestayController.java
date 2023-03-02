@@ -158,7 +158,8 @@ public class HomestayController {
                         @RequestParam int page,
                         @RequestParam int size, @RequestParam boolean isNextPage,
                         @RequestParam boolean isPreviousPage) {
-                if (filter.getFilterOption() != null) {
+                if ((filter.getFilterOption() != null)
+                                || (filter.getFilterOption() == null && filter.getSearchString() == null)) {
                         PagedListHolder<Homestay> homestays = homestayService.getHomestayListFiltered(
                                         filter.getFilterOption(), page, size, isNextPage, isPreviousPage);
                         List<HomestayResponseDto> homestayResponseList = homestays.getPageList().stream()

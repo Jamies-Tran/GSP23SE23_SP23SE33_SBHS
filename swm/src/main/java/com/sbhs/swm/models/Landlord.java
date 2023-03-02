@@ -28,7 +28,7 @@ public class Landlord extends BaseModel {
     private Long id;
 
     @Column
-    private @Setter String status = LandlordStatus.NOT_ACTIVATED.name();
+    private @Setter String status = LandlordStatus.PENDING.name();
 
     @OneToMany(mappedBy = "landlord")
     private @Setter List<Promotion> promotions;

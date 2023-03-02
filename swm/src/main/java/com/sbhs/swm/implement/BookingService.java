@@ -22,18 +22,12 @@ import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IUserService;
+import com.sbhs.swm.util.BookingDateValidationString;
+import com.sbhs.swm.util.BookingDateValidationUtil;
 import com.sbhs.swm.util.DateFormatUtil;
 
 @Service
 public class BookingService implements IBookingService {
-
-    private enum validateBookingDate {
-        OK,
-        INVALID,
-        START_ALREADY_BOOKED,
-        END_ALREADY_BOOKED,
-        ON_BOOKING_PERIOD
-    }
 
     @Autowired
     private BookingRepo bookingRepo;
@@ -53,6 +47,9 @@ public class BookingService implements IBookingService {
     @Autowired
     private DateFormatUtil dateFormatUtil;
 
+    @Autowired
+    private BookingDateValidationUtil bookingDateValidationUtil;
+
     @Override
     public List<Booking> findBookingsByUsername(String username) {
         List<Booking> bookings = bookingRepo.findBookingListByUsername(username);
@@ -70,82 +67,88 @@ public class BookingService implements IBookingService {
     @Override
     public Booking createBooking(Booking booking, String homestayName, List<String> homestayServices) {
         SwmUser user = userService.authenticatedUser();
-        String validateBookingDateString = checkBookingDate(booking.getBookingFrom(), booking.getBookingTo(),
-                homestayName);
-        switch (validateBookingDate.valueOf(validateBookingDateString)) {
-            case ON_BOOKING_PERIOD:
-                throw new InvalidBookingException(validateBookingDateString);
-            case START_ALREADY_BOOKED:
-                throw new InvalidBookingException(validateBookingDateString);
-            case END_ALREADY_BOOKED:
-                throw new InvalidBookingException(validateBookingDateString);
-            case INVALID:
-                throw new InvalidBookingException(validateBookingDateString);
-            case OK:
-                Homestay homestay = homestayService.findHomestayByName(homestayName);
-                int totalHomestayRoomBooked = bookingRepo.totalHomestayRoomBooked(homestayName);
-                int availableRoom = homestay.getAvailableRooms() - totalHomestayRoomBooked;
-                if (availableRoom == 0 || booking.getTotalRoom() > availableRoom) {
-                    throw new BookingOutOfRoomException();
-                }
-                List<HomestayService> homestayServiceList = homestayServices.stream()
-                        .map(s -> homestayServiceRepo.findHomestayServiceByName(s).orElseThrow())
-                        .collect(Collectors.toList());
+        Homestay homestay = homestayService.findHomestayByName(homestayName);
+        List<HomestayService> homestayServiceList = homestayServices.stream()
+                .map(s -> homestayServiceRepo.findHomestayServiceByName(s).orElseThrow())
+                .collect(Collectors.toList());
 
-                booking.setPassenger(user.getPassengerProperty());
-                booking.setHomestay(homestay);
-                booking.setHomestayServices(homestayServiceList);
-                booking.getDeposit().setBooking(booking);
-                booking.getDeposit()
-                        .setPassengerWallet(user.getPassengerProperty().getBalanceWallet().getPassengerWallet());
-                user.getPassengerProperty().getBalanceWallet().getPassengerWallet()
-                        .setDeposits(List.of(booking.getDeposit()));
-                booking.getHomestayServices().forEach(s -> s.setBookings(List.of(booking)));
-                booking.setCreatedBy(user.getUsername());
-                booking.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-                booking.setStatus(BookingStatus.PENDING.name());
+        booking.setPassenger(user.getPassengerProperty());
+        booking.setHomestay(homestay);
+        booking.setHomestayServices(homestayServiceList);
+        booking.getDeposit().setBooking(booking);
+        booking.getDeposit()
+                .setPassengerWallet(user.getPassengerProperty().getBalanceWallet().getPassengerWallet());
+        user.getPassengerProperty().getBalanceWallet().getPassengerWallet()
+                .setDeposits(List.of(booking.getDeposit()));
+        booking.getHomestayServices().forEach(s -> s.setBookings(List.of(booking)));
+        booking.setCreatedBy(user.getUsername());
+        booking.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        booking.setStatus(BookingStatus.PENDING.name());
 
-                homestayServiceList.forEach(h -> h.setBookings(List.of(booking)));
-                homestay.setBookings(List.of(booking));
-                homestay.setAvailableRooms(availableRoom);
-                user.getPassengerProperty().setBookings(List.of(booking));
-                Booking savedBooking = bookingRepo.save(booking);
+        homestayServiceList.forEach(h -> h.setBookings(List.of(booking)));
+        homestay.setBookings(List.of(booking));
+        user.getPassengerProperty().setBookings(List.of(booking));
+        Booking savedBooking = bookingRepo.save(booking);
 
-                mailService.informBookingToLandlord(savedBooking);
-                return savedBooking;
-            default:
-                return null;
-        }
-
+        mailService.informBookingToLandlord(savedBooking);
+        return savedBooking;
     }
 
     @Override
-    public String checkBookingDate(String startDate, String endDate, String homestayName) {
-        List<Booking> bookings = bookingRepo.findAllHomestayBooking(homestayName);
-        Date currentStart = dateFormatUtil.formatGivenDate(startDate);
-        Date currentEnd = dateFormatUtil.formatGivenDate(endDate);
-        if (currentStart.after(currentEnd) || currentStart.compareTo(currentEnd) == 0) {
-            return validateBookingDate.INVALID.name();
+    public int checkBookingDate(String bookingStart, String bookingEnd, String homestayName,
+            int totalBookingRoom) {
+        String validateBookingDateString = bookingDateValidationUtil.bookingValidateString(bookingStart, bookingEnd,
+                homestayName);
+        Homestay homestay = homestayService.findHomestayByName(homestayName);
+        int totalHomestayRoomBooked = bookingRepo.totalHomestayRoomBooked(homestayName) != null
+                ? bookingRepo.totalHomestayRoomBooked(homestayName)
+                : 0;
+        int availableRoom = homestay.getAvailableRooms() - totalHomestayRoomBooked;
+
+        switch (BookingDateValidationString.valueOf(validateBookingDateString)) {
+            case INVALID:
+                throw new InvalidBookingException(validateBookingDateString);
+            case ON_BOOKING_PERIOD:
+                if (availableRoom == 0 || totalBookingRoom > availableRoom) {
+                    throw new BookingOutOfRoomException();
+                }
+                break;
+            case CURRENT_START_ON_BOOKED_END:
+                int totalRoomWillBeFree = 0;
+                for (Booking b : homestay.getBookings()) {
+                    Date bookedEnd = dateFormatUtil.formatGivenDate(b.getBookingTo());
+                    Date currentStart = dateFormatUtil.formatGivenDate(bookingStart);
+                    if (bookedEnd.before(currentStart) || bookedEnd.compareTo(currentStart) == 0) {
+                        int totalFreeRoomOnDate = bookingRepo.totalHomestayRoomWillBeCheckedOut(homestayName,
+                                b.getBookingTo()) != null ? bookingRepo.totalHomestayRoomWillBeCheckedOut(homestayName,
+                                        b.getBookingTo()) : 0;
+                        totalRoomWillBeFree = totalRoomWillBeFree + totalFreeRoomOnDate;
+                    }
+                }
+
+                availableRoom = availableRoom + totalRoomWillBeFree;
+                if (availableRoom == 0 || totalBookingRoom > availableRoom) {
+                    throw new BookingOutOfRoomException();
+                }
+                return availableRoom;
+            case CURRENT_END_ON_BOOKED_END:
+                if (availableRoom == 0 || totalBookingRoom > availableRoom) {
+                    throw new BookingOutOfRoomException();
+                }
+                return availableRoom;
+            case CURRENT_START_ON_BOOKED_START:
+                if (availableRoom == 0 || totalBookingRoom > availableRoom) {
+                    throw new BookingOutOfRoomException();
+                }
+                return availableRoom;
+
+            case OK:
+                return availableRoom;
+            default:
+                return 0;
         }
-        for (Booking b : bookings) {
-            Date bookedStart = dateFormatUtil.formatGivenDate(b.getBookingFrom());
-            Date bookedEnd = dateFormatUtil.formatGivenDate(b.getBookingTo());
-            if ((bookedStart.after(currentStart) && bookedStart.before(currentEnd))
-                    && (bookedEnd.after(currentEnd) && bookedEnd.after(currentStart))) {
-                return validateBookingDate.ON_BOOKING_PERIOD.name();
-            } else if ((bookedStart.after(currentStart) && bookedStart.after(currentEnd))
-                    && (bookedEnd.before(currentEnd) && bookedEnd.before(currentStart))) {
-                return validateBookingDate.ON_BOOKING_PERIOD.name();
-            } else if ((bookedStart.before(currentStart) && bookedStart.before(currentEnd))
-                    && (bookedEnd.after(currentStart) && bookedEnd.before(currentEnd))) {
-                return validateBookingDate.ON_BOOKING_PERIOD.name();
-            } else if (bookedStart.compareTo(currentStart) == 0 || bookedStart.compareTo(currentEnd) == 0) {
-                return validateBookingDate.START_ALREADY_BOOKED.name();
-            } else if (bookedEnd.compareTo(currentEnd) == 0 || bookedEnd.compareTo(currentStart) == 0) {
-                return validateBookingDate.END_ALREADY_BOOKED.name();
-            }
-        }
-        return validateBookingDate.OK.name();
+
+        return 0;
     }
 
 }

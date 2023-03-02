@@ -11,5 +11,6 @@ public interface IBookingService {
 
     Booking findBookingById(Long id);
 
-    String checkBookingDate(String startDate, String endDate, String homestayName);
+    int checkBookingDate(String bookingStart, String bookingEnd, String homestayName, int totalBookingRoom);
+
 }

@@ -1,4 +1,4 @@
-package com.sbhs.swm.dto.request;
+package com.sbhs.swm.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HomestaySearchFilter {
-    private FilterOption filterOption;
-    private String searchString;
-
+public class BookingDateValidationResponseDto {
+    private Integer availableRoom;
 }

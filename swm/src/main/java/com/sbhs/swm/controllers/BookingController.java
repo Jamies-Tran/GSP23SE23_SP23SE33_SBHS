@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbhs.swm.dto.request.BookingRequestDto;
+import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
 import com.sbhs.swm.dto.response.BookingResponseDto;
+import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.services.IBookingService;
 
@@ -35,5 +37,16 @@ public class BookingController {
         responseBooking.getHomestay().setAddress(responseBooking.getHomestay().getAddress().split("-")[0]);
 
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/validate-booking-date")
+    public ResponseEntity<?> checkBookingDate(@RequestBody BookingDateValidationRequestDto validationBookingRequest) {
+        int avaiblableRoom = bookingService.checkBookingDate(validationBookingRequest.getBookingStart(),
+                validationBookingRequest.getBookingEnd(), validationBookingRequest.getHomestayName(),
+                validationBookingRequest.getTotalBookingRoom());
+        BookingDateValidationResponseDto responseValidationBookingDate = new BookingDateValidationResponseDto(
+                avaiblableRoom);
+
+        return new ResponseEntity<BookingDateValidationResponseDto>(responseValidationBookingDate, HttpStatus.OK);
     }
 }

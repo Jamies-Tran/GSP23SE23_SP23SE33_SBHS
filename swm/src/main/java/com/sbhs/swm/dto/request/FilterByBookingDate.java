@@ -12,4 +12,5 @@ import lombok.Setter;
 public class FilterByBookingDate {
     private String start;
     private String end;
+    private Integer totalRoom;
 }

@@ -9,8 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HomestaySearchFilter {
-    private FilterOption filterOption;
-    private String searchString;
-
+public class BookingDateValidationRequestDto {
+    private String bookingStart;
+    private String bookingEnd;
+    private String homestayName;
+    private Integer totalBookingRoom;
 }
