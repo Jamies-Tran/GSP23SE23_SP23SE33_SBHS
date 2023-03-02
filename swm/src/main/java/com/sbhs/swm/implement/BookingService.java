@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.handlers.exceptions.BookingNotFoundException;
+import com.sbhs.swm.handlers.exceptions.BookingOutOfRoomException;
 import com.sbhs.swm.handlers.exceptions.InvalidBookingException;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Homestay;
@@ -19,6 +20,7 @@ import com.sbhs.swm.repositories.BookingRepo;
 import com.sbhs.swm.repositories.HomestayServiceRepo;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
+import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IUserService;
 import com.sbhs.swm.util.DateFormatUtil;
 
@@ -27,7 +29,7 @@ public class BookingService implements IBookingService {
 
     private enum validateBookingDate {
         OK,
-        CONFLIC,
+        INVALID,
         START_ALREADY_BOOKED,
         END_ALREADY_BOOKED,
         ON_BOOKING_PERIOD
@@ -44,6 +46,9 @@ public class BookingService implements IBookingService {
 
     @Autowired
     private IHomestayService homestayService;
+
+    @Autowired
+    private IMailService mailService;
 
     @Autowired
     private DateFormatUtil dateFormatUtil;
@@ -74,10 +79,15 @@ public class BookingService implements IBookingService {
                 throw new InvalidBookingException(validateBookingDateString);
             case END_ALREADY_BOOKED:
                 throw new InvalidBookingException(validateBookingDateString);
-            case CONFLIC:
+            case INVALID:
                 throw new InvalidBookingException(validateBookingDateString);
             case OK:
                 Homestay homestay = homestayService.findHomestayByName(homestayName);
+                int totalHomestayRoomBooked = bookingRepo.totalHomestayRoomBooked(homestayName);
+                int availableRoom = homestay.getAvailableRooms() - totalHomestayRoomBooked;
+                if (availableRoom == 0 || booking.getTotalRoom() > availableRoom) {
+                    throw new BookingOutOfRoomException();
+                }
                 List<HomestayService> homestayServiceList = homestayServices.stream()
                         .map(s -> homestayServiceRepo.findHomestayServiceByName(s).orElseThrow())
                         .collect(Collectors.toList());
@@ -97,8 +107,11 @@ public class BookingService implements IBookingService {
 
                 homestayServiceList.forEach(h -> h.setBookings(List.of(booking)));
                 homestay.setBookings(List.of(booking));
+                homestay.setAvailableRooms(availableRoom);
                 user.getPassengerProperty().setBookings(List.of(booking));
                 Booking savedBooking = bookingRepo.save(booking);
+
+                mailService.informBookingToLandlord(savedBooking);
                 return savedBooking;
             default:
                 return null;
@@ -112,7 +125,7 @@ public class BookingService implements IBookingService {
         Date currentStart = dateFormatUtil.formatGivenDate(startDate);
         Date currentEnd = dateFormatUtil.formatGivenDate(endDate);
         if (currentStart.after(currentEnd) || currentStart.compareTo(currentEnd) == 0) {
-            return validateBookingDate.CONFLIC.name();
+            return validateBookingDate.INVALID.name();
         }
         for (Booking b : bookings) {
             Date bookedStart = dateFormatUtil.formatGivenDate(b.getBookingFrom());

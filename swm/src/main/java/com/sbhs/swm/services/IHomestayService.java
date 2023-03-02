@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 
+import com.sbhs.swm.dto.request.FilterOption;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
 
@@ -39,8 +40,13 @@ public interface IHomestayService {
         public Page<BlocHomestay> getBlocListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
                         boolean isPreviousPage);
 
-        public PagedListHolder<Homestay> getHomestayListNearByLocation(String address, int page, int size,
+        public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, int page, int size,
                         boolean isNextPage,
-                        boolean isPreviousPage,
-                        boolean isGeometry);
+                        boolean isPreviousPage);
+
+        public List<Homestay> filterByAddress(List<Homestay> homestays, String address, boolean isGeometry);
+
+        public List<Homestay> filterByBookingDate(List<Homestay> homestays, String bookingStart, String bookingEnd);
+
+        public boolean checkValidBooking(Homestay homestay, String currentStart, String currentEnd);
 }

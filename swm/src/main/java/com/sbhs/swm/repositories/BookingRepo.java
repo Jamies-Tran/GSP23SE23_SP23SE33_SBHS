@@ -14,4 +14,7 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
 
     @Query(value = "select b from Booking b where b.homestay.name = :name")
     List<Booking> findAllHomestayBooking(@Param("name") String homestay);
+
+    @Query(value = "select sum(b.totalRoom) from Booking b where b.homestay.name = :name")
+    Integer totalHomestayRoomBooked(@Param("name") String homestayName);
 }

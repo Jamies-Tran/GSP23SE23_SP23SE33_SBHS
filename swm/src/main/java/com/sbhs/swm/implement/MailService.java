@@ -14,8 +14,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.models.BlocHomestay;
+import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IUserService;
 
@@ -118,21 +120,47 @@ public class MailService implements IMailService {
         return builder.toString();
     }
 
-    private String generateLandlordRejectedMailSubject(String username) {
+    private String generateLandlordRejectedMailSubject(String username, String reason) {
         StringBuilder builder = new StringBuilder();
         builder.append("<h1>We're sorry</h1>").append("</br>").append(
-                "<p>Your account <span style=\"font-weight:bold;color:orange\">").append(username)
-                .append("</span> had been rejected due to invalid id card information.")
-                .append("</br>")
+                "<p>Your account <span style=\"font-weight:bold;color:orange\">").append(username).append("</span>")
+                .append(" had been rejected due to ");
+        switch (LandlordStatus.valueOf(reason)) {
+            case REJECTED_ID_NUMBER_NOT_MATCHED_IMAGE:
+                builder.append("your identity number not match with the image you had provided us.");
+                break;
+            case REJECTED_ID_BACK_IMAGE:
+                builder.append("your image of the back of identity card is invalid.");
+            case REJECTED_ID_FRONT_IMAGE:
+                builder.append("your image of the front of identity card is invalid.");
+                break;
+            default:
+                break;
+
+        }
+        builder.append("</br>")
                 .append("<p>Please contact us via phone 0981874736 or admin001@gmail.com for more information.</p>")
                 .append("</br>")
                 .append("<p>Sinerely</p>").append("</br>").append("<h2>Stay With Me</h2>");
+
         return builder.toString();
     }
 
     private String passwordModificationOtpGenerator() {
         RandomString otpGenerator = new RandomString(6);
         return otpGenerator.nextString();
+    }
+
+    private String generateInformBookingMailSubject(Booking booking) {
+        StringBuilder informMailBuilder = new StringBuilder();
+        informMailBuilder.append("<h1>Dear ").append(booking.getHomestay().getLandlord().getUser().getUsername())
+                .append("</h1>").append("</br>").append("<p> you have a new booking from ")
+                .append(booking.getPassenger().getUser().getUsername()).append(" for homestay ")
+                .append(booking.getHomestay().getName()).append(" at ").append(booking.getCreatedDate())
+                .append(". </p>").append("</br>").append("<p>").append("The booking will start from ")
+                .append(booking.getBookingFrom()).append(" ,so please go to www.google.com for more details.</p>")
+                .append("</br>").append("<h2>Good luck</h2>");
+        return informMailBuilder.toString();
     }
 
     @Override
@@ -159,7 +187,9 @@ public class MailService implements IMailService {
             helper.setTo(new InternetAddress(user.getEmail()));
             helper.setFrom("no-reply@swm.com", "stay_with_me");
             helper.setSubject("Landlord account");
-            helper.setText(generateLandlordRejectedMailSubject(user.getUsername()), true);
+            helper.setText(
+                    generateLandlordRejectedMailSubject(user.getUsername(), user.getLandlordProperty().getStatus()),
+                    true);
             mailSender.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());
@@ -202,6 +232,22 @@ public class MailService implements IMailService {
             helper.setFrom("no-reply@swm.com", "stay_with_me");
             helper.setSubject("Homestay pending");
             mailSender.send(mimeMessage);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void informBookingToLandlord(Booking booking) {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        try {
+            helper.setTo(new InternetAddress(booking.getHomestay().getLandlord().getUser().getEmail()));
+            helper.setFrom("no-reply@swm.com", "stay_with_me");
+            helper.setSubject("New booking");
+            helper.setText(generateInformBookingMailSubject(booking), true);
+            mailSender.send(mimeMessage);
+
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());
         }

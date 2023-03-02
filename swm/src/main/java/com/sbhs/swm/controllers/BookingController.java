@@ -32,6 +32,7 @@ public class BookingController {
         Booking savedBooking = bookingService.createBooking(booking, bookingRequest.getHomestayName(),
                 bookingRequest.getHomestayServices());
         BookingResponseDto responseBooking = modelMapper.map(savedBooking, BookingResponseDto.class);
+        responseBooking.getHomestay().setAddress(responseBooking.getHomestay().getAddress().split("-")[0]);
 
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.CREATED);
     }

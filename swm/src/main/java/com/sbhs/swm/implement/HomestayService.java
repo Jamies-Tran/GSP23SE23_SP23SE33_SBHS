@@ -1,6 +1,7 @@
 package com.sbhs.swm.implement;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.dto.goong.DistanceElement;
 import com.sbhs.swm.dto.goong.DistanceResultRows;
+import com.sbhs.swm.dto.request.FilterOption;
 import com.sbhs.swm.handlers.exceptions.HomestayNameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.HomestayNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidAccountOperatorException;
 import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
+import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.HomestayStatus;
@@ -268,20 +271,21 @@ public class HomestayService implements IHomestayService {
     }
 
     @Override
-    public PagedListHolder<Homestay> getHomestayListNearByLocation(String address, int page, int size,
+    public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, int page, int size,
             boolean isNextPage,
-            boolean isPreviousPage,
-            boolean isGeometry) {
+            boolean isPreviousPage) {
         List<Homestay> homestays = homestayRepo.findAll();
-        List<String> destinations = homestays.stream().map(h -> h.getAddress())
-                .collect(Collectors.toList());
-        DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations, isGeometry);
-        List<DistanceElement> addressesSorted = distanceResultRows.getRows().get(0).getElements().stream()
-                .sorted(Collections.reverseOrder())
-                .collect(Collectors.toList());
-        List<Homestay> homestaySortedList = addressesSorted.stream()
-                .map(a -> this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
-        PagedListHolder<Homestay> homestayPage = new PagedListHolder<>(homestaySortedList);
+
+        if (filterOption.getFilterByBookingDate() != null) {
+            homestays = this.filterByBookingDate(homestays, filterOption.getFilterByBookingDate().getStart(),
+                    filterOption.getFilterByBookingDate().getEnd());
+        }
+        if (filterOption.getFilterByAddress() != null) {
+            homestays = this.filterByAddress(homestays, filterOption.getFilterByAddress().getAddress(),
+                    filterOption.getFilterByAddress().getIsGeometry());
+
+        }
+        PagedListHolder<Homestay> homestayPage = new PagedListHolder<>(homestays);
         homestayPage.setPage(page);
         homestayPage.setPageSize(size);
         if (homestayPage.isLastPage() == false && isNextPage == true && isPreviousPage == false) {
@@ -299,6 +303,52 @@ public class HomestayService implements IHomestayService {
                 .orElseThrow(() -> new HomestayNotFoundException());
 
         return homestay;
+    }
+
+    @Override
+    public List<Homestay> filterByAddress(List<Homestay> homestays, String address, boolean isGeometry) {
+        List<String> destinations = homestays.stream().map(h -> h.getAddress())
+                .collect(Collectors.toList());
+        DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations, isGeometry);
+        List<DistanceElement> addressesSorted = distanceResultRows.getRows().get(0).getElements().stream()
+                .sorted(Collections.reverseOrder())
+                .collect(Collectors.toList());
+        List<Homestay> homestaySortedList = addressesSorted.stream()
+                .map(a -> this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
+        return homestaySortedList;
+    }
+
+    @Override
+    public List<Homestay> filterByBookingDate(List<Homestay> homestays, String bookingStart, String bookingEnd) {
+        List<Homestay> homestaySortedList = homestays.stream()
+                .filter(h -> this.checkValidBooking(h, bookingStart, bookingEnd)).collect(Collectors.toList());
+        return homestaySortedList;
+    }
+
+    @Override
+    public boolean checkValidBooking(Homestay homestay, String currentStart, String currentEnd) {
+        List<Booking> bookings = homestay.getBookings();
+        Date currentStartDate = dateFormatUtil.formatGivenDate(currentStart);
+        Date currentEnDate = dateFormatUtil.formatGivenDate(currentEnd);
+        for (Booking b : bookings) {
+            Date bookedStart = dateFormatUtil.formatGivenDate(b.getBookingFrom());
+            Date bookedEnd = dateFormatUtil.formatGivenDate(b.getBookingTo());
+            if ((bookedStart.after(currentStartDate) && bookedStart.before(currentEnDate))
+                    && (bookedEnd.after(currentEnDate) && bookedEnd.after(currentStartDate))) {
+                return false;
+            } else if ((bookedStart.after(currentStartDate) && bookedStart.after(currentEnDate))
+                    && (bookedEnd.before(currentEnDate) && bookedEnd.before(currentStartDate))) {
+                return false;
+            } else if ((bookedStart.before(currentStartDate) && bookedStart.before(currentEnDate))
+                    && (bookedEnd.after(currentStartDate) && bookedEnd.before(currentEnDate))) {
+                return false;
+            } else if (bookedStart.compareTo(currentStartDate) == 0 || bookedStart.compareTo(currentEnDate) == 0) {
+                return false;
+            } else if (bookedEnd.compareTo(currentEnDate) == 0 || bookedEnd.compareTo(currentStartDate) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
