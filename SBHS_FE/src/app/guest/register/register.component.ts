@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
@@ -10,7 +11,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/register.service';
 import { ImageService } from '../../services/image.service';
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -22,8 +22,11 @@ export class RegisterComponent {
     private router: Router,
     private route: ActivatedRoute,
     private storage: AngularFireStorage,
-    private image: ImageService
+    private image: ImageService,
+    public datepipe: DatePipe,
+    
   ) {}
+  
   hidePassword = true;
   hideConfirmPass = true;
   passwordFormControl = new FormControl('', [Validators.required]);
@@ -159,7 +162,15 @@ export class RegisterComponent {
   back : string ="";
   front : string = "";
   Result : string ="";
+  date :string = this.dobFormControl.value!
+  lastest_date :string =""
+  // public convertDOB(){
+  //   let newDate = new Date(this.date);
+  //   this.lastest_date = this.datepipe.transform(newDate,'yyyy-MM-dd')+""
+  // }
   public register() {
+   // this.convertDOB();
+    //console.log(this.lastest_date);
     if (this.valid() == true) {
     this.http
       .registerLandlord(
@@ -178,6 +189,8 @@ export class RegisterComponent {
         localStorage.setItem('registerSuccess', 'true');
         this.router.navigate(['/Login'], { relativeTo: this.route });
         
+      },error =>{
+        this.Result = "Check your information!!!!"
       });
     }
   }

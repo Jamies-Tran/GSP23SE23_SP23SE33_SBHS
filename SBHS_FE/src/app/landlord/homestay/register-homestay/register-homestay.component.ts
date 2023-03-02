@@ -31,14 +31,19 @@ export class RegisterHomestayComponent implements OnInit {
     number: ['', Validators.required],
     city: ['', Validators.required],
   });
-  formInformationFormGroupValue = this.informationFormGroup.controls;
-  homestayName = this.formInformationFormGroupValue.homestayName.value!;
-  address = this.formInformationFormGroupValue.address.value!;
-  number = this.formInformationFormGroupValue.number.value!;
-  city = this.formInformationFormGroupValue.city.value!;
+  homestayName : string ="123";
+  address : string ="";
+  totalRoom : string ="";
+  city : string ="";
   informationForm() {
     // Lay value
+  
     const formInformationFormGroupValue = this.informationFormGroup.controls;
+    this.homestayName = formInformationFormGroupValue.homestayName.value!;
+    this.address = formInformationFormGroupValue.address.value!;
+    this.totalRoom = formInformationFormGroupValue.number.value!;
+    this.city = formInformationFormGroupValue.city.value!;
+    console.log(this.homestayName,this.address)
     console.log(this.informationFormGroup.value);
   }
 
@@ -123,6 +128,5 @@ export class RegisterHomestayComponent implements OnInit {
     this.newService.splice(i, 1);
     console.log('delete', this.newService.length + i);
   }
-
 
 }

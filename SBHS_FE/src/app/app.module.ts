@@ -51,6 +51,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActionPendingComponent } from './pop-up/action-pending/action-pending.component';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { DatePipe } from '@angular/common';
+import { RegisterHomestayComponent } from './landlord/homestay/register-homestay/register-homestay.component';
+
 
 @NgModule({
   declarations: [
@@ -112,12 +115,16 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
             ),
           },
         ],
+        
         onError: (err) => {
           console.error(err);
         },
       } as SocialAuthServiceConfig,
     },
+    DatePipe,
+    RegisterHomestayComponent
   ],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule {}
