@@ -34,6 +34,7 @@ export class ServerHttpService {
     front: string
   ) {
     let avatarUrl = '';
+
     var value = {
       address,
       avatarUrl,
@@ -45,12 +46,13 @@ export class ServerHttpService {
       phone,
       username,
     };
-    const url = `${this.REST_API_SERVER}/api/user/registration-landlord?back=`+back+`&front=`+front+``;
+    // const url = `${this.REST_API_SERVER}/api/user/registration-landlord?back=`+back+`&front=`+front+``;
+    const url = `${this.REST_API_SERVER}/api/user/registration-landlord?front=${front}&back=${back}`;
     return this.httpClient
       .post<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  
+
   private handleError(error: HttpErrorResponse) {
     // if (error.error instanceof ErrorEvent) {
     //   // A client-side or network error occurred. Handle it accordingly.
@@ -64,5 +66,12 @@ export class ServerHttpService {
     // }
     // // return an observable with a user-facing error message
     return throwError(error.error);
+  }
+
+  public getAutoComplete(place: string) {
+    const url = `${this.REST_API_SERVER}/api/map?place=${place}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions)
+      .pipe(catchError(this.handleError));
   }
 }

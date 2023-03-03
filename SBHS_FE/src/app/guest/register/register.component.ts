@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
   FormControl,
@@ -10,13 +10,17 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/register.service';
 import { ImageService } from '../../services/image.service';
-
+import { Observable } from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatFormField } from '@angular/material/form-field';
+// import { Address, AddressPrediction, predictions2 } from './register.component';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit , AfterViewInit{
   constructor(
     private http: ServerHttpService,
     private router: Router,
@@ -54,20 +58,7 @@ export class RegisterComponent {
       return;
     } else if (this.phoneFormControl.value == '') {
       return;
-    } 
-    // else if (this.citizenIdentificationUrlFront == '') {
-    //   console.log('font' ,this.validFont);
-    //   this.validFont == false;
-    //   this.message = 'Please choose image Citizen ID Front';
-    //   this.openDialog();
-    //   return;
-    // } else if (this.citizenIdentificationUrlBack == '') {
-    //   console.log('back' ,this.validBack);
-    //   this.validBack == false;
-    //   this.message = 'Please choose image Citizen ID Back';
-    //   this.openDialog();
-    //   return;
-    // } 
+    }
      else if (this.passwordFormControl.value != this.confirmPasswordFormControl.value) {
       return;
     }else if(this.passwordFormControl.value == ''){
@@ -95,6 +86,8 @@ export class RegisterComponent {
   // Right Image Url
   public loginRegisterImageUrl = '';
   public logoImageUrl = '';
+
+
   async ngOnInit(): Promise<void> {
     this.loginRegisterImageUrl = await this.image.getImage(
       'homepage/login-register.jpg'
@@ -104,7 +97,9 @@ export class RegisterComponent {
     // logo
     this.logoImageUrl = await this.image.getImage('logo/logo-3.png');
     console.log(this.logoImageUrl);
-  }
+
+
+      }
 
   // File image
   fontCitizenIDfiles: File[] = [];
@@ -156,8 +151,8 @@ export class RegisterComponent {
       this.showDiv.back = true;
     }
   }
-  back : string ="";
-  front : string = "";
+  back : string ="A";
+  front : string = "B";
   Result : string ="";
   public register() {
     if (this.valid() == true) {
@@ -177,12 +172,72 @@ export class RegisterComponent {
       .subscribe((data) => {
         localStorage.setItem('registerSuccess', 'true');
         this.router.navigate(['/Login'], { relativeTo: this.route });
-        
+
       });
     }
   }
-  
+
+  // auto complete
+  // options :Address[] = [{value: 'Mary'}, {value: 'Shelley'}, {value: 'Mady'}];
+  // filteredOptions!: Observable<Address[]>;
+
+  // displayFn(address: Address): string {
+  //   return address && address.value ? address.value : '';
+  // }
+
+  // private _filter(value: string): Address[] {
+  //   const filterValue = value.toLowerCase();
+
+  //   return this.options.filter(option => option.value.toLowerCase().includes(filterValue));
+  // }
+
+  @ViewChild(MatAutocompleteTrigger) autocomplete!: MatAutocompleteTrigger;
+  @ViewChild('formField') autoCompleteFormField!: MatFormField;
+  ngAfterViewInit() {
+    var observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting)
+          console.log('Element is is not in screen');
+        this.autocomplete.closePanel();
+      },
+      { threshold: [1] }
+    );
+
+    observer.observe(this.autoCompleteFormField._elementRef.nativeElement);
+  }
+
+
+  // autocomplete Prediction
+  place :any;
+
+  filteredOptions!: Observable<predictions2[]>;
+  predictions:any;
+
+  public getAutocomplete(event:any):void{
+    type predictions = Array<{description:string}>;
+    this.place = event.target.value;
+    this.http.getAutoComplete(this.place).subscribe((data) =>{
+      console.log(data);
+      const predictions:predictions    = data['predictions'];
+      this.predictions = predictions
+      console.log(this.predictions);
+    })
+  }
+
+
+
 }
+
+
+
+
+
+
+//  predictions 2
+export class predictions2{
+  description!:string;
+}
+
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(

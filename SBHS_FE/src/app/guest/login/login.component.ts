@@ -67,14 +67,19 @@ export class LoginLandlordComponent {
       .subscribe((data) => {
         localStorage.setItem('userToken', data['token']);
         localStorage.setItem('username', data['username']);
+        localStorage.setItem('role', data['roles']);
         console.log(data);
         if (data['roles'][0] === 'LANDLORD') {
           this.router.navigate(['/Landlord'], {
             relativeTo: this.route,
           });
-        } else
-          this.router.navigate(['/Admin'], { relativeTo: this.route });
-        
+        } else if (data['roles'][0] === 'ADMIN') {
+          this.router.navigate(['/Admin'], {
+            relativeTo: this.route,
+          });
+        } else this.router.navigate([''], {
+          relativeTo: this.route,
+        });
       });
   }
 

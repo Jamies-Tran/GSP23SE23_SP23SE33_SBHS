@@ -38,7 +38,31 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
-
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatListModule} from '@angular/material/list';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {CdkScrollableModule, ScrollingModule} from '@angular/cdk/scrolling';
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatCardModule} from '@angular/material/card';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTreeModule} from '@angular/material/tree';
 
 // Component
 import { AppComponent } from './app.component';
@@ -51,6 +75,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActionPendingComponent } from './pop-up/action-pending/action-pending.component';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { TestComponent } from './test/test/test.component';
+import { TestTwoComponent } from './test/test-two/test-two.component';
+import { TestThreeComponent } from './test/test/test-three/test-three.component';
+import { PortalModule } from '@angular/cdk/portal';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @NgModule({
   declarations: [
@@ -60,6 +89,9 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
     ForgotPassComponent,
     WelcomePageComponent,
     ActionPendingComponent,
+    TestComponent,
+    TestTwoComponent,
+    TestThreeComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +117,7 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+
     MatRippleModule,
     MatButtonToggleModule,
     MatMenuModule,
@@ -97,7 +130,62 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
     MatSlideToggleModule,
     MatFormFieldModule,
     MdbValidationModule,
-    MdbFormsModule
+    MdbFormsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    OverlayModule,
+    PortalModule,
+    ScrollingModule,
+    CdkScrollableModule,
+
+
+    A11yModule,
+    ClipboardModule,
+    CdkStepperModule,
+    CdkScrollableModule,
+    CdkTableModule,
+    CdkTreeModule,
+    DragDropModule,
+    MatAutocompleteModule,
+    MatBadgeModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatTreeModule,
+    OverlayModule,
+    PortalModule,
+    ScrollingModule,
   ],
   providers: [
     {

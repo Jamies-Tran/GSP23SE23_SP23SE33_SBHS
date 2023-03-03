@@ -18,11 +18,12 @@ export class RequestAccountLandlordComponent implements OnInit {
   constructor(private http: ServerHttpService, public dialog: MatDialog) {}
   ngOnInit(): void {
     this.getStatusLandlord();
+    console.log("length:" , this.valuesPending.length);
 
   }
   public getStatusLandlord() {
     // Pending
-    this.http.getLanlord("NOT_ACTIVATED").subscribe((data) => {
+    this.http.getLanlord("PENDING").subscribe((data) => {
       this.valuesPending = data['userList'];
         console.log(this.valuesPending);
       }

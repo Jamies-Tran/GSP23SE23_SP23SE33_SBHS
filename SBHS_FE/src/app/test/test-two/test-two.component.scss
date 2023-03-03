@@ -44,7 +44,6 @@
 
 .left {
   max-width: 256px;
-  min-width: 256px;
 }
 
 .example-container {
@@ -98,15 +97,15 @@
 }
 
 .navbar {
-  height: 64px;
-  max-height: 64px;
-  min-height: 64px;
+  height: 9vh;
+  max-height: 9vh;
+  min-height: 9vh;
 }
 
 .main-content {
-  height: calc(100vh - 64px);
-  max-height: calc(100vh - 64px);
-  min-height: calc(100vh - 64px);
+  height: 91vh;
+  max-height: 91vh;
+  min-height: 91vh;
 }
 
 .sidenav {
@@ -131,8 +130,10 @@
   }
 
   .username {
+
+
     .name {
-      width: 62px;
+      width: 60px;
       font-size: 18px;
       min-height: 19px;
       line-height: 18px;
@@ -149,6 +150,8 @@
   }
 
   .collapse-avatar {
+
+
     .btn-collapse-avatar {
       font-size: 20px;
     }
@@ -156,13 +159,9 @@
 
   .logout {
     .btn-logout {
+
       font-size: 20px;
       color: #9a9a9a;
     }
   }
-}
-
-.active{
-  background-image: linear-gradient(to right, #FFCE03, #FD9A01, #FD6104, #FF2C05, );
-  background-image: -webkit-linear-gradient(to right,#FFCE03,  #FD9A01, #FD6104, #FF2C05, );
 }

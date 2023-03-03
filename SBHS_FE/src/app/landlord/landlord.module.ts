@@ -33,6 +33,7 @@ import { RegisterHomestayOverviewComponent } from './homestay/register-homestay-
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { RegisterHomestayPriceComponent } from './homestay/register-homestay-price/register-homestay-price.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MdbFormsModule,
     MatCheckboxModule,
     NgxDropzoneModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSidenavModule
   ],
 })
 export class LandlordModule {}

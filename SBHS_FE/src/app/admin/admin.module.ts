@@ -16,6 +16,10 @@ import { AccountLandlordDetailComponent } from './request-account-landlord/accou
 import { MatButtonModule } from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -34,7 +38,11 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatSlideToggleModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSidenavModule,
+    MatListModule,
+    MatGridListModule,
+    MatToolbarModule
   ],
 })
 export class AdminModule {}

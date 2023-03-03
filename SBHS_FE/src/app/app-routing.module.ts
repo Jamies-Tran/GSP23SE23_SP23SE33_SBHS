@@ -7,6 +7,9 @@ import { WelcomePageComponent } from './guest/welcome-page/welcome-page.componen
 import { AdminComponent } from './admin/admin.component';
 import { LandlordComponent } from './landlord/landlord.component';
 import { LandlordModule } from './landlord/landlord.module';
+import { TestComponent } from './test/test/test.component';
+import { TestTwoComponent } from './test/test-two/test-two.component';
+import { TestThreeComponent } from './test/test/test-three/test-three.component';
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent },
@@ -35,6 +38,18 @@ const routes: Routes = [
     path: 'Landlord',
     loadChildren: () =>
       import('./landlord/landlord-routing.module').then((m) => m.LandlordRoutingModule),
+  },
+  {
+    path: 'Test',
+    component: TestComponent
+  },
+  {
+    path: 'Test2',
+    component: TestTwoComponent
+  },
+  {
+    path: 'Test3',
+    component: TestThreeComponent
   },
 ];
 

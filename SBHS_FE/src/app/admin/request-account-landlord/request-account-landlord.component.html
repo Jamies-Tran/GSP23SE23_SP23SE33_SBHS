@@ -4,14 +4,17 @@
   </div>
 
   <div class="row">
-    <div class="col-xxl-6 col-xl-6 ">
-      <!-- Pending -->
+    <div class="col col ">
       <div class="body card mb-4">
-        <div class="border-bottom-text border-bottom mt-3  w-100">
-          <h4 class="fw-normal mx-3 mb-3">Pending</h4>
-        </div>
+        <mat-tab-group>
+          <!-- Pending -->
+          <mat-tab label="Pending">
 
-        <table class="table table-striped table-hover">
+        <!-- <div class="border-bottom-text border-bottom mt-3  w-100">
+          <h4 class="fw-normal mx-3 mb-3">Pending</h4>
+        </div> -->
+
+        <table class="table table-striped table-hover" style="height:60vh">
           <thead class="">
             <tr>
               <th>ID</th>
@@ -20,18 +23,17 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody style="height:30vh">
+          <tbody >
             <tr matRipple *ngFor="let post of valuesPending | paginate:{
               itemsPerPage: tableSize,
               currentPage: page,
               totalItems: count
               };
               let i = index">
-
               <td>{{post.id}}</td>
               <td>{{post.username}}</td>
               <td>{{post.createdDate}}</td>
-              <td>
+              <!-- <td>
                 <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
                     class="fa-solid fa-eye"></i></button>
@@ -40,13 +42,40 @@
                 <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
 
-              </td>
+              </td> -->
+              <td><mat-slide-toggle name="isChecked{{i}}" (click)="onItemSelector(post.id, post.username)"  (click)="openDialogAction()" ></mat-slide-toggle></td>
             </tr>
-            <tr>
-              <td>1</td>
-              <td>a</td>
-              <td>b</td>
-              <td><mat-slide-toggle name="isChecked" [(ngModel)]="isChecked" (click)="openDialogAction()" >Slide Toggle Checked: {{isChecked}}</mat-slide-toggle></td>
+
+
+            <tr *ngIf="valuesPending.length < 1">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr *ngIf="valuesPending.length < 2">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesPending.length < 3">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesPending.length < 4">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesPending.length < 5">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -61,16 +90,9 @@
           </div>
 
         </div>
-      </div>
-    </div>
-    <div class="col-xxl-6 col-xl-6 ">
-      <!-- Activatec -->
-      <div class="body card mb-4">
-        <div class="border-bottom-text border-bottom mt-3  w-100">
-          <h4 class="fw-normal mx-3 mb-3">Activated</h4>
-        </div>
-
-        <table class="table table-striped table-hover">
+      </mat-tab>
+      <mat-tab label="Activated">
+        <table class="table table-striped table-hover" style="height:60vh">
           <thead class="">
             <tr>
               <th>ID</th>
@@ -102,6 +124,36 @@
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
               </td>
             </tr>
+            <tr *ngIf="valuesActive.length < 1">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr *ngIf="valuesActive.length < 2">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesActive.length < 3">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesActive.length < 4">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesActive.length < 5">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
         <!-- pagination -->
@@ -115,19 +167,9 @@
           </div>
 
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xxl-6 col-xl-6 ">
-      <!-- Banned -->
-      <div class="body card mb-4">
-        <div class="border-bottom-text border-bottom mt-3  w-100">
-          <h4 class="fw-normal mx-3 mb-3">Banned</h4>
-        </div>
-
-        <table class="table table-striped table-hover">
+      </mat-tab>
+      <mat-tab label="Banned">
+        <table class="table table-striped table-hover" style="height:60vh">
           <thead class="">
             <tr>
               <th>ID</th>
@@ -159,6 +201,36 @@
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
               </td>
             </tr>
+            <tr *ngIf="valuesBanned.length < 1">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr *ngIf="valuesBanned.length < 2">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesBanned.length < 3">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesBanned.length < 4">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesBanned.length < 5">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
         <!-- pagination -->
@@ -172,17 +244,10 @@
           </div>
 
         </div>
-      </div>
-    </div>
-    <div class="col-xxl-6 col-xl-6 ">
+      </mat-tab>
 
-      <!-- Reject -->
-      <div class="body card mb-4">
-        <div class="border-bottom-text border-bottom mt-3  w-100">
-          <h4 class="fw-normal mx-3 mb-3">Reject</h4>
-        </div>
-
-        <table class="table table-striped table-hover">
+      <mat-tab label="Reject">
+        <table class="table table-striped table-hover" style="height:60vh">
           <thead>
             <tr>
               <th>ID</th>
@@ -210,6 +275,36 @@
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
               </td>
             </tr>
+            <tr *ngIf="valuesReject.length < 1">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr *ngIf="valuesReject.length < 2">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesReject.length < 3">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesReject.length < 4">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr  *ngIf="valuesReject.length < 5">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
         <!-- pagination -->
@@ -223,15 +318,15 @@
           </div>
 
         </div>
+      </mat-tab>
+
+
+      </mat-tab-group>
+
       </div>
     </div>
+
   </div>
-
-
-
-
-
-
 
 
 </div>

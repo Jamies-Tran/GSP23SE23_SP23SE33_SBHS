@@ -2,7 +2,7 @@
 
   <mat-sidenav-container class="example-container vh-100 vw-100" [autosize]=" mobileQuery.matches ? 'false' : 'true' ">
 
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" [style.min-width]="!isExpanded ? '0' :''"
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
       opened="true" class="left">
       <img src="https://www.gstatic.com/mobilesdk/190424_mobilesdk/nav_nachos@2x.png" class="w-100 vh-100 pt-5"
         *ngIf="isExpanded">
