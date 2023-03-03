@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
@@ -26,8 +27,11 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     private router: Router,
     private route: ActivatedRoute,
     private storage: AngularFireStorage,
-    private image: ImageService
+    private image: ImageService,
+    public datepipe: DatePipe,
+
   ) {}
+
   hidePassword = true;
   hideConfirmPass = true;
   passwordFormControl = new FormControl('', [Validators.required]);
@@ -154,7 +158,15 @@ export class RegisterComponent implements OnInit , AfterViewInit{
   back : string ="A";
   front : string = "B";
   Result : string ="";
+  date :string = this.dobFormControl.value!
+  lastest_date :string =""
+  // public convertDOB(){
+  //   let newDate = new Date(this.date);
+  //   this.lastest_date = this.datepipe.transform(newDate,'yyyy-MM-dd')+""
+  // }
   public register() {
+   // this.convertDOB();
+    //console.log(this.lastest_date);
     if (this.valid() == true) {
     this.http
       .registerLandlord(
@@ -173,6 +185,8 @@ export class RegisterComponent implements OnInit , AfterViewInit{
         localStorage.setItem('registerSuccess', 'true');
         this.router.navigate(['/Login'], { relativeTo: this.route });
 
+      },error =>{
+        this.Result = "Check your information!!!!"
       });
     }
   }

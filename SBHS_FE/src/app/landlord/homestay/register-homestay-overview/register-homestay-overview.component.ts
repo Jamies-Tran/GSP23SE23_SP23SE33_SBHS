@@ -12,14 +12,15 @@ export class RegisterHomestayOverviewComponent implements OnInit{
  ngOnInit(): void {
 
  }
-  constructor(private http: ServerHttpService) {}
+  constructor(private http: ServerHttpService,public getHomestayinfo : RegisterHomestayComponent) {}
  result : string =""
   register(){
     let price = "123";
-    let homestayName ="";
-    let address ="";
+
+    let address =this.getHomestayinfo.address;
     let totalRoom ="";
     let city =""
+    console.log(this.getHomestayinfo.homestayName)
     let homestayFacilities: Array<{name:string,quantity:string}> =[];
     homestayFacilities.push({name:'123',quantity:'1'});
     let homestayImages: Array<{imageUrl:string}>=[];
@@ -27,7 +28,7 @@ export class RegisterHomestayOverviewComponent implements OnInit{
     let homestayServices: Array<{name: string,price: string, status:string}> =[];
     homestayServices.push({name:"breakfast",price:"123123",status:"true"})
 
-    this.http.registerHomestay(homestayName,address,totalRoom,city,homestayImages,homestayServices,homestayFacilities,price).subscribe((data) =>{
+    this.http.registerHomestay(this.getHomestayinfo.homestayName,address,totalRoom,city,homestayImages,homestayServices,homestayFacilities,price).subscribe((data) =>{
       console.log(data);
       this.result = "Register Homestay Success"
     },(error =>{
