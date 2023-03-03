@@ -32,7 +32,7 @@ public class BookingController {
     public ResponseEntity<?> createBooking(@RequestBody BookingRequestDto bookingRequest) {
         Booking booking = modelMapper.map(bookingRequest, Booking.class);
         Booking savedBooking = bookingService.createBooking(booking, bookingRequest.getHomestayName(),
-                bookingRequest.getHomestayServices());
+                bookingRequest.getHomestayServicesString());
         BookingResponseDto responseBooking = modelMapper.map(savedBooking, BookingResponseDto.class);
         responseBooking.getHomestay().setAddress(responseBooking.getHomestay().getAddress().split("-")[0]);
 

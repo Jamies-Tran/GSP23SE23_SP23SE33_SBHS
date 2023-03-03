@@ -19,7 +19,7 @@ public class BookingRequestDto {
     private Long totalRoom;
     private Long totalPrice;
     private String homestayName;
-    private List<String> homestayServices;
+    private List<String> homestayServicesString;
     private BookingDepositDto deposit;
     private String status;
 }

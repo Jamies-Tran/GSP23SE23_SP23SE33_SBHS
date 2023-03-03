@@ -14,4 +14,5 @@ public class FilterOption {
     private Boolean rating;
     private FilterByBookingDate filterByBookingDate;
     private FilterByAddress filterByAddress;
+    private FilterByPrice filterByPrice;
 }

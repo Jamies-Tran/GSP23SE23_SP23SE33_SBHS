@@ -26,7 +26,8 @@ public class DateFormatUtil {
     }
 
     public int calculateAge(String dob) {
-        String formatDob = this.formatGivenDateTimeToString(this.formatGivenDate(dob));
+        Date formatDobDate = this.formatGivenDate(dob);
+        String formatDob = this.formatGivenDateTimeToString(formatDobDate);
         LocalDate birthdate = LocalDate.of(Integer.parseInt(formatDob.split("-")[0]),
                 Integer.parseInt(formatDob.split("-")[1]), Integer.parseInt(formatDob.split("-")[2]));
         LocalDate now = LocalDate.now();

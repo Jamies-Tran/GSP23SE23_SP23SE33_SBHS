@@ -9,8 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FilterByAddress {
-    private String address;
-    private Integer distance;
-    private Boolean isGeometry;
+public class FilterByPrice {
+    private Long highest;
+    private Long lowest;
 }

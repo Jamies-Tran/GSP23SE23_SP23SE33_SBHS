@@ -8,8 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -42,7 +41,6 @@ public class HomestayService extends BaseModel {
     @ManyToOne
     private @Setter Homestay homestay;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "booking_service", joinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "booking_id", referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "homestayServices")
     private @Setter List<Booking> bookings;
 }
