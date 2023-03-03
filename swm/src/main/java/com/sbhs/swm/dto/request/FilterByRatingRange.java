@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FilterByFacility {
-    private String name;
-    private Integer quantity;
+public class FilterByRatingRange {
+    private Double highest;
+    private Double lowest;
 }

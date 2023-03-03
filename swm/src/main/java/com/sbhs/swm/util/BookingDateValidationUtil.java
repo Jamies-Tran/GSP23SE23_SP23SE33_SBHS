@@ -21,7 +21,7 @@ public class BookingDateValidationUtil {
         List<Booking> bookings = bookingRepo.findAllHomestayBooking(homestayName);
         Date currentStart = dateFormatUtil.formatGivenDate(startDate);
         Date currentEnd = dateFormatUtil.formatGivenDate(endDate);
-        if (currentStart.after(currentEnd) || currentStart.compareTo(currentEnd) == 0) {
+        if (currentStart.after(currentEnd) || currentStart.after(currentEnd)) {
             return BookingDateValidationString.INVALID.name();
         }
         for (Booking b : bookings) {

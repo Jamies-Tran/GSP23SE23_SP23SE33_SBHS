@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FilterByFacility {
+public class FilterByHomestayService {
     private String name;
-    private Integer quantity;
+    private Long price;
 }

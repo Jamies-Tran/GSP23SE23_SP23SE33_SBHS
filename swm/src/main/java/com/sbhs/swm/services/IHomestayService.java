@@ -45,9 +45,4 @@ public interface IHomestayService {
                         boolean isPreviousPage);
 
         public List<Homestay> filterByAddress(List<Homestay> homestays, String address, boolean isGeometry);
-
-        public List<Homestay> filterByBookingDate(List<Homestay> homestays, String bookingStart, String bookingEnd,
-                        int totalRoom);
-
-        public boolean checkValidBooking(Homestay homestay, String currentStart, String currentEnd, int totalRoom);
 }

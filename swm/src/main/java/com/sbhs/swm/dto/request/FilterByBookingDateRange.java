@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FilterByBookingDate {
+public class FilterByBookingDateRange {
     private String start;
     private String end;
     private Integer totalRoom;

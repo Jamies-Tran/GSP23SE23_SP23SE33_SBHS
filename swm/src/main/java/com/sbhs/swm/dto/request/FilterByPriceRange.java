@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FilterByPrice {
+public class FilterByPriceRange {
     private Long highest;
     private Long lowest;
 }

@@ -1,7 +1,6 @@
 package com.sbhs.swm.implement;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,19 +21,16 @@ import com.sbhs.swm.handlers.exceptions.InvalidAccountOperatorException;
 import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
-import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.HomestayStatus;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.BlocHomestayRepo;
-import com.sbhs.swm.repositories.BookingRepo;
 import com.sbhs.swm.repositories.HomestayRepo;
+import com.sbhs.swm.services.IFilterHomestayService;
 import com.sbhs.swm.services.IGoongService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IUserService;
-import com.sbhs.swm.util.BookingDateValidationString;
-import com.sbhs.swm.util.BookingDateValidationUtil;
 import com.sbhs.swm.util.CityProvinceNameUtil;
 import com.sbhs.swm.util.DateFormatUtil;
 
@@ -47,8 +43,8 @@ public class HomestayService implements IHomestayService {
     @Autowired
     private BlocHomestayRepo blocHomestayRepo;
 
-    @Autowired
-    private BookingRepo bookingRepo;
+    // @Autowired
+    // private BookingRepo bookingRepo;
 
     @Autowired
     private IUserService userService;
@@ -62,8 +58,11 @@ public class HomestayService implements IHomestayService {
     @Autowired
     private IGoongService goongService;
 
+    // @Autowired
+    // private BookingDateValidationUtil bookingDateValidationUtil;
+
     @Autowired
-    private BookingDateValidationUtil bookingDateValidationUtil;
+    private IFilterHomestayService filterHomestayService;
 
     @Override
     public Homestay createHomestay(Homestay homestay) {
@@ -285,15 +284,39 @@ public class HomestayService implements IHomestayService {
             boolean isPreviousPage) {
         List<Homestay> homestays = homestayRepo.findAll();
         if (filterOption != null) {
-            if (filterOption.getFilterByBookingDate() != null) {
-                homestays = this.filterByBookingDate(homestays, filterOption.getFilterByBookingDate().getStart(),
-                        filterOption.getFilterByBookingDate().getEnd(),
-                        filterOption.getFilterByBookingDate().getTotalRoom());
-            }
             if (filterOption.getFilterByAddress() != null) {
-                homestays = this.filterByAddress(homestays, filterOption.getFilterByAddress().getAddress(),
+                homestays = filterHomestayService.filterByAddress(homestays,
+                        filterOption.getFilterByAddress().getAddress(),
+                        filterOption.getFilterByAddress().getDistance(),
+
                         filterOption.getFilterByAddress().getIsGeometry());
 
+            }
+            if (filterOption.getFilterByBookingDateRange() != null) {
+                homestays = filterHomestayService.filterByBookingDateRange(homestays,
+                        filterOption.getFilterByBookingDateRange().getStart(),
+                        filterOption.getFilterByBookingDateRange().getEnd(),
+                        filterOption.getFilterByBookingDateRange().getTotalRoom());
+            }
+            if (filterOption.getFilterByFacility() != null) {
+                homestays = filterHomestayService.filterByFacility(homestays,
+                        filterOption.getFilterByFacility().getName(), filterOption.getFilterByFacility().getQuantity());
+            }
+
+            if (filterOption.getFilterByHomestayService() != null) {
+                homestays = filterHomestayService.filterByHomestayService(homestays,
+                        filterOption.getFilterByHomestayService().getName(),
+                        filterOption.getFilterByHomestayService().getPrice());
+            }
+            if (filterOption.getFilterByPriceRange() != null) {
+                homestays = filterHomestayService.filterByPriceRange(homestays,
+                        filterOption.getFilterByPriceRange().getHighest(),
+                        filterOption.getFilterByPriceRange().getLowest());
+            }
+            if (filterOption.getFilterByRatingRange() != null) {
+                homestays = filterHomestayService.filterByRatingRange(homestays,
+                        filterOption.getFilterByRatingRange().getHighest(),
+                        filterOption.getFilterByRatingRange().getLowest());
             }
         }
 
@@ -328,67 +351,6 @@ public class HomestayService implements IHomestayService {
         List<Homestay> homestaySortedList = addressesSorted.stream()
                 .map(a -> this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
         return homestaySortedList;
-    }
-
-    @Override
-    public List<Homestay> filterByBookingDate(List<Homestay> homestays, String bookingStart, String bookingEnd,
-            int totalRoom) {
-        List<Homestay> homestaySortedList = homestays.stream()
-                .filter(h -> this.checkValidBooking(h, bookingStart, bookingEnd, totalRoom))
-                .collect(Collectors.toList());
-        return homestaySortedList;
-    }
-
-    @Override
-    public boolean checkValidBooking(Homestay homestay, String bookingStart, String bookingEnd, int totalRoom) {
-        int totalBookedRoom = bookingRepo.totalHomestayRoomBooked(homestay.getName()) != null
-                ? bookingRepo.totalHomestayRoomBooked(homestay.getName())
-                : 0;
-        int availableRoom = homestay.getAvailableRooms() - totalBookedRoom;
-        String getBookingValidationgString = bookingDateValidationUtil.bookingValidateString(bookingStart, bookingEnd,
-                homestay.getName());
-        switch (BookingDateValidationString.valueOf(getBookingValidationgString)) {
-            case INVALID:
-                return false;
-            case CURRENT_END_ON_BOOKED_END:
-
-                if (availableRoom == 0 || totalRoom > availableRoom) {
-                    return false;
-                }
-                return true;
-            case CURRENT_START_ON_BOOKED_END:
-                int totalRoomWillBeFreed = 0;
-                for (Booking b : homestay.getBookings()) {
-                    Date bookedEnd = dateFormatUtil.formatGivenDate(b.getBookingTo());
-                    Date currentStart = dateFormatUtil.formatGivenDate(bookingStart);
-                    if (bookedEnd.before(currentStart) || bookedEnd.compareTo(currentStart) == 0) {
-                        int totalFreeRoomOnDate = bookingRepo.totalHomestayRoomWillBeCheckedOut(homestay.getName(),
-                                b.getBookingTo()) != null
-                                        ? bookingRepo.totalHomestayRoomWillBeCheckedOut(homestay.getName(),
-                                                b.getBookingTo())
-                                        : 0;
-                        totalRoomWillBeFreed = totalRoomWillBeFreed + totalFreeRoomOnDate;
-                    }
-                }
-                availableRoom = availableRoom + totalRoomWillBeFreed;
-                if (availableRoom == 0 || totalRoom > availableRoom) {
-                    return false;
-                }
-                return true;
-            case CURRENT_START_ON_BOOKED_START:
-                if (availableRoom == 0 || totalRoom > availableRoom) {
-                    return false;
-                }
-                return true;
-            case ON_BOOKING_PERIOD:
-                if (availableRoom == 0 || totalRoom > availableRoom) {
-                    return false;
-                }
-                return true;
-            case OK:
-                return true;
-        }
-        return false;
     }
 
 }
