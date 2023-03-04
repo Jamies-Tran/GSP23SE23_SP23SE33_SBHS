@@ -10,30 +10,28 @@
           <!-- Pending -->
           <mat-tab label="Pending">
 
-        <!-- <div class="border-bottom-text border-bottom mt-3  w-100">
-          <h4 class="fw-normal mx-3 mb-3">Pending</h4>
-        </div> -->
 
-        <table class="table table-striped table-hover" style="height:60vh">
-          <thead class="">
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody >
-            <tr matRipple *ngFor="let post of valuesPending | paginate:{
+            <table class="table table-striped table-hover mt-2" style="height:60vh">
+              <thead class="">
+                <tr class="text-center">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr matRipple *ngFor="let post of valuesPending | paginate:{
               itemsPerPage: tableSize,
               currentPage: page,
               totalItems: count
               };
-              let i = index">
-              <td>{{post.id}}</td>
-              <td>{{post.username}}</td>
-              <td>{{post.createdDate}}</td>
-              <!-- <td>
+              let i = index" [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
+                  (click)="onItemSelector(post.id, post.username)">
+                  <td>{{post.id}}</td>
+                  <td>{{post.username}}</td>
+                  <td>{{post.createdDate}}</td>
+                  <!-- <td>
                 <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
                     class="fa-solid fa-eye"></i></button>
@@ -43,285 +41,295 @@
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
 
               </td> -->
-              <td><mat-slide-toggle name="isChecked{{i}}" (click)="onItemSelector(post.id, post.username)"  (click)="openDialogAction()" ></mat-slide-toggle></td>
-            </tr>
+                  <td><mat-slide-toggle name="isChecked{{i}}" (click)="onItemSelector(post.id, post.username)"
+                      (click)="openDialogAction()"></mat-slide-toggle></td>
+                </tr>
 
 
-            <tr *ngIf="valuesPending.length < 1">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr *ngIf="valuesPending.length < 2">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesPending.length < 3">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesPending.length < 4">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesPending.length < 5">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- pagination -->
-        <div class="row w-100">
-          <div class="col-sm-6">
+                <tr *ngIf="valuesPending.length < 1">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesPending.length < 2">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesPending.length < 3">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesPending.length < 4">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesPending.length < 5" routerLink="AccountLandlordDetail" [style.cursor]="'pointer'"
+                  (click)="onItemSelector(1, 'a')">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><mat-slide-toggle name="isChecked" (click)="onItemSelector(1, 'a')"
+                      (click)="openDialogAction()"></mat-slide-toggle></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination -->
+            <div class="row w-100">
+              <div class="col-sm-6">
 
-          </div>
-          <div class="col-sm-6 d-flex justify-content-center">
-            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChangePending($event)">
-            </pagination-controls>
-          </div>
+              </div>
+              <div class="col-sm-6 d-flex justify-content-center">
+                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                  (pageChange)="onTableDataChangePending($event)">
+                </pagination-controls>
+              </div>
 
-        </div>
-      </mat-tab>
-      <mat-tab label="Activated">
-        <table class="table table-striped table-hover" style="height:60vh">
-          <thead class="">
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody style="height:30vh">
-            <tr *ngFor="let post of valuesActive | paginate:{
+            </div>
+          </mat-tab>
+          <mat-tab label="Activated">
+            <table class="table table-striped table-hover" style="height:60vh">
+              <thead class="">
+                <tr class="text-center">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Action Ban</th>
+                </tr>
+              </thead>
+              <tbody style="height:30vh">
+                <tr *ngFor="let post of valuesActive | paginate:{
             itemsPerPage: tableSize,
             currentPage: page,
             totalItems: count}
 
           ;
-          let i = index">
-              <td>{{post.id}}</td>
-              <td>{{post.username}}</td>
-              <td>{{post.createdDate}}</td>
+          let i = index" [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
+                  (click)="onItemSelector(post.id, post.username)">
+                  <td>{{post.id}}</td>
+                  <td>{{post.username}}</td>
+                  <td>{{post.createdDate}}</td>
 
 
-              <td>
-                <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
+                  <td>
+                    <!-- <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
                     class="fa-solid fa-eye"></i></button>
                 <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
-                  (click)="accept()"><i class="fa-solid fa-check"></i></button>
-                <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
-                  (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
-              </td>
-            </tr>
-            <tr *ngIf="valuesActive.length < 1">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr *ngIf="valuesActive.length < 2">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesActive.length < 3">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesActive.length < 4">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesActive.length < 5">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- pagination -->
-        <div class="row w-100">
-          <div class="col-sm-6">
+                  (click)="accept()"><i class="fa-solid fa-check"></i></button> -->
+                    <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
+                      (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
+                  </td>
+                </tr>
+                <tr *ngIf="valuesActive.length < 1">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesActive.length < 2">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesActive.length < 3">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesActive.length < 4">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesActive.length < 5">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination -->
+            <div class="row w-100">
+              <div class="col-sm-6">
 
-          </div>
-          <div class="col-sm-6 d-flex justify-content-center">
-            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChangeActive($event)">
-            </pagination-controls>
-          </div>
+              </div>
+              <div class="col-sm-6 d-flex justify-content-center">
+                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                  (pageChange)="onTableDataChangeActive($event)">
+                </pagination-controls>
+              </div>
 
-        </div>
-      </mat-tab>
-      <mat-tab label="Banned">
-        <table class="table table-striped table-hover" style="height:60vh">
-          <thead class="">
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody style="height:30vh">
-            <tr *ngFor="let post of valuesBanned | paginate:{
+            </div>
+          </mat-tab>
+          <mat-tab label="Banned">
+            <table class="table table-striped table-hover" style="height:60vh">
+              <thead class="">
+                <tr class="text-center">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Accept Action</th>
+                </tr>
+              </thead>
+              <tbody style="height:30vh">
+                <tr *ngFor="let post of valuesBanned | paginate:{
             itemsPerPage: tableSize,
             currentPage: page,
             totalItems: count}
 
           ;
-          let i = index">
-              <td>{{post.id}}</td>
-              <td>{{post.username}}</td>
-              <td>{{post.createdDate}}</td>
+          let i = index" [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
+                  (click)="onItemSelector(post.id, post.username)">
+                  <td>{{post.id}}</td>
+                  <td>{{post.username}}</td>
+                  <td>{{post.createdDate}}</td>
 
 
-              <td>
-                <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
-                  routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
-                    class="fa-solid fa-eye"></i></button>
-                <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
-                  (click)="accept()"><i class="fa-solid fa-check"></i></button>
-                <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
-                  (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
-              </td>
-            </tr>
-            <tr *ngIf="valuesBanned.length < 1">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr *ngIf="valuesBanned.length < 2">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesBanned.length < 3">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesBanned.length < 4">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesBanned.length < 5">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- pagination -->
-        <div class="row w-100">
-          <div class="col-sm-6">
+                  <td>
+                    <!-- <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
+                      routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
+                        class="fa-solid fa-eye"></i></button> -->
+                    <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
+                      (click)="accept()"><i class="fa-solid fa-check"></i></button>
+                    <!-- <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
+                      (click)="reject()"><i class="fa-solid fa-xmark"></i></button> -->
+                  </td>
+                </tr>
+                <tr *ngIf="valuesBanned.length < 1">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesBanned.length < 2">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesBanned.length < 3">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesBanned.length < 4">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesBanned.length < 5">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination -->
+            <div class="row w-100">
+              <div class="col-sm-6">
 
-          </div>
-          <div class="col-sm-6 d-flex justify-content-center">
-            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChangeBanned($event)">
-            </pagination-controls>
-          </div>
+              </div>
+              <div class="col-sm-6 d-flex justify-content-center">
+                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                  (pageChange)="onTableDataChangeBanned($event)">
+                </pagination-controls>
+              </div>
 
-        </div>
-      </mat-tab>
+            </div>
+          </mat-tab>
 
-      <mat-tab label="Reject">
-        <table class="table table-striped table-hover" style="height:60vh">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody style="height:30vh">
-            <tr *ngFor="let post of valuesReject | paginate:{
+          <mat-tab label="Reject">
+            <table class="table table-striped table-hover" style="height:60vh">
+              <thead>
+                <tr class="text-center">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody style="height:30vh">
+                <tr *ngFor="let post of valuesReject | paginate:{
             itemsPerPage: tableSize,
             currentPage: page,
             totalItems: count};
-          let i = index">
-              <td>{{post.id}}</td>
-              <td>{{post.username}}</td>
-              <td>{{post.createdDate}}</td>
-              <td>
-                <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
-                  routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
-                    class="fa-solid fa-eye"></i></button>
-                <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
-                  (click)="accept()"><i class="fa-solid fa-check"></i></button>
-                <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
-                  (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
-              </td>
-            </tr>
-            <tr *ngIf="valuesReject.length < 1">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr *ngIf="valuesReject.length < 2">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesReject.length < 3">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesReject.length < 4">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr  *ngIf="valuesReject.length < 5">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- pagination -->
-        <div class="row w-100">
-          <div class="col-sm-6">
+          let i = index" [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
+                  (click)="onItemSelector(post.id, post.username)">
+                  <td>{{post.id}}</td>
+                  <td>{{post.username}}</td>
+                  <td>{{post.createdDate}}</td>
+                  <td>
+                    <!-- <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
+                      routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
+                        class="fa-solid fa-eye"></i></button> -->
+                    <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
+                      (click)="accept()"><i class="fa-solid fa-check"></i></button>
+                    <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
+                      (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
+                  </td>
+                </tr>
+                <tr *ngIf="valuesReject.length < 1">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesReject.length < 2">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesReject.length < 3">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesReject.length < 4">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="valuesReject.length < 5">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination -->
+            <div class="row w-100">
+              <div class="col-sm-6">
 
-          </div>
-          <div class="col-sm-6 d-flex justify-content-center">
-            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChangeReject($event)">
-            </pagination-controls>
-          </div>
+              </div>
+              <div class="col-sm-6 d-flex justify-content-center">
+                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                  (pageChange)="onTableDataChangeReject($event)">
+                </pagination-controls>
+              </div>
 
-        </div>
-      </mat-tab>
+            </div>
+          </mat-tab>
 
 
-      </mat-tab-group>
+        </mat-tab-group>
 
       </div>
     </div>

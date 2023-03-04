@@ -47,7 +47,7 @@ export class ServerHttpService {
       username,
     };
     // const url = `${this.REST_API_SERVER}/api/user/registration-landlord?back=`+back+`&front=`+front+``;
-    const url = `${this.REST_API_SERVER}/api/user/registration-landlord?front=${front}&back=${back}`;
+    const url = `${this.REST_API_SERVER}/api/user/registration-landlord?back=${back}&front=${front}`;
     return this.httpClient
       .post<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));

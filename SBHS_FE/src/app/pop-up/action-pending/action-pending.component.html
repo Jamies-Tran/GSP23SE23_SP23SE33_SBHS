@@ -3,18 +3,20 @@
 
   <div class="warnning">
     <h4>What your action</h4>
+
   </div>
 </div>
+<form (ngSubmit)="reject()" #myForm="ngForm">
 <div class="container">
   <div class="content">
     <div class="text">
       <p>
         <span>Choose reason (IF choose reject):</span>
         <mat-form-field appearance="outline" class=" select-form">
-          <mat-select value="REJECTED_ID_NUMBER_NOT_MATCHED_IMAGE">
-            <mat-option value="REJECTED_ID_NUMBER_NOT_MATCHED_IMAGE" class="text-capitalize">Id Nunber Not Matched</mat-option>
-            <mat-option value="REJECTED_ID_FRONT_IMAGE" class="text-capitalize">Invalid Front Image</mat-option>
-            <mat-option value="REJECTED_ID_BACK_IMAGE" class="text-capitalize">Invalid Back Image</mat-option>
+          <mat-select value="NOT_MATCHED" [(ngModel)]="status" required name="reject">
+            <mat-option value="NOT_MATCHED" class="text-capitalize">Id Nunber Not Matched</mat-option>
+            <mat-option value="FRONT_IMAGE" class="text-capitalize">Invalid Front Image</mat-option>
+            <mat-option value="BACK_IMAGE" class="text-capitalize">Invalid Back Image</mat-option>
           </mat-select>
         </mat-form-field>
       </p>
@@ -22,8 +24,9 @@
 
     </div>
     <div class="button">
-      <button class="cancel" mat-button mat-dialog-close>Reject</button>
-      <button class="delete" mat-button mat-dialog-close >Accept</button>
+      <button color="warn" mat-button mat-dialog-close mat-raised-button type="submit" [disabled]="!myForm.valid">Reject</button>
+      <button color="primary" mat-button mat-dialog-close mat-raised-button type="button" (click)="accept()">Accept</button>
     </div>
   </div>
 </div>
+</form>

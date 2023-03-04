@@ -9,7 +9,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  public username = localStorage.getItem('username');
+  public username = localStorage.getItem('usernameLogined');
   public role = localStorage.getItem('role');
   constructor(
     private router: Router,
@@ -23,7 +23,9 @@ export class AdminComponent implements OnInit {
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
   public avatarUrl = '';
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.username = localStorage.getItem('usernameLogined');
+  }
   public logout() {
     localStorage.clear();
     this.router.navigate(['/Login'], { relativeTo: this.route });

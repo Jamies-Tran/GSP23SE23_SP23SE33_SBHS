@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ImageService } from 'src/app/services/image.service';
 import { ServerHttpService } from 'src/app/services/login.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { MatDialog } from '@angular/material/dialog';
+import { SuccessComponent } from '../../pop-up/success/success.component';
 @Component({
   selector: 'app-login-landlord',
   templateUrl: './login.component.html',
@@ -21,16 +23,19 @@ export class LoginLandlordComponent {
     private router: Router,
     private route: ActivatedRoute,
     private image: ImageService,
-    private authService: SocialAuthService
+    private authService: SocialAuthService,
+    public dialog: MatDialog,
   ) {}
 
-  flag = 'false';
+  message !: any;
   user: any;
   loggedIn: any;
 
   async ngOnInit(): Promise<void> {
-    if (localStorage.getItem('registerSuccess') == 'true') {
-      this.flag = 'true';
+
+    if(localStorage.getItem('registerSuccess') === 'true'){
+      this.message = localStorage.getItem('message');
+      this.openDialogSuccess();
     }
 
     // logo
@@ -52,13 +57,13 @@ export class LoginLandlordComponent {
       console.log(this.user.email);
     });
   }
+
   hide = true;
   passwordFormControl = new FormControl('', [Validators.required]);
   usernameFormControl = new FormControl('', [Validators.required]);
   matcher = new MyErrorStateMatcher();
 
   public getProfile() {
-    this.flag = 'false';
     this.http
       .login(
         this.usernameFormControl.value + '',
@@ -66,7 +71,7 @@ export class LoginLandlordComponent {
       )
       .subscribe((data) => {
         localStorage.setItem('userToken', data['token']);
-        localStorage.setItem('username', data['username']);
+        localStorage.setItem('usernameLogined', data['username']);
         localStorage.setItem('role', data['roles']);
         console.log(data);
         if (data['roles'][0] === 'LANDLORD') {
@@ -86,6 +91,20 @@ export class LoginLandlordComponent {
   // Image Url
   public loginRegisterImageUrl = '';
   public logoImageUrl = '';
+
+  openDialogSuccess() {
+    localStorage.setItem('registerSuccess', "");
+
+    const timeout = 3000;
+    const dialogRef = this.dialog.open(SuccessComponent, {
+      data: this.message,
+    });
+    dialogRef.afterOpened().subscribe(_ => {
+      setTimeout(() => {
+         dialogRef.close();
+      }, timeout)
+    })
+  }
 }
 
 /** Error when invalid control is dirty, touched, or submitted. */

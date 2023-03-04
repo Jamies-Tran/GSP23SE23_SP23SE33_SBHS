@@ -1,7 +1,7 @@
 // Module
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatRippleModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -83,6 +83,20 @@ import { TestTwoComponent } from './test/test-two/test-two.component';
 import { TestThreeComponent } from './test/test/test-three/test-three.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { A11yModule } from '@angular/cdk/a11y';
+import { SuccessComponent } from './pop-up/success/success.component';
+import { MessageComponent } from './pop-up/message/message.component';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'YYYY-MM-DD',
+  },
+  display: {
+    dateInput: 'YYYY-MM-DD',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @NgModule({
   declarations: [
@@ -95,6 +109,8 @@ import { A11yModule } from '@angular/cdk/a11y';
     TestComponent,
     TestTwoComponent,
     TestThreeComponent,
+    SuccessComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,7 +127,7 @@ import { A11yModule } from '@angular/cdk/a11y';
     MatCheckboxModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+
     NgxDropzoneModule,
     MdbCarouselModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
@@ -189,6 +205,7 @@ import { A11yModule } from '@angular/cdk/a11y';
     OverlayModule,
     PortalModule,
     ScrollingModule,
+
   ],
   providers: [
     {
@@ -210,9 +227,11 @@ import { A11yModule } from '@angular/cdk/a11y';
       } as SocialAuthServiceConfig,
     },
     DatePipe,
-    RegisterHomestayComponent
+    RegisterHomestayComponent,
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ],
   bootstrap: [AppComponent],
 
 })
 export class AppModule {}
+

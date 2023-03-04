@@ -15,7 +15,11 @@ import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormField } from '@angular/material/form-field';
+
 // import { Address, AddressPrediction, predictions2 } from './register.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageComponent } from '../../pop-up/message/message.component';
+import { SuccessComponent } from '../../pop-up/success/success.component';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -29,7 +33,7 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     private storage: AngularFireStorage,
     private image: ImageService,
     public datepipe: DatePipe,
-
+    public dialog: MatDialog,
   ) {}
 
   hidePassword = true;
@@ -43,13 +47,14 @@ export class RegisterComponent implements OnInit , AfterViewInit{
   ]);
   addressFormControl = new FormControl('', [Validators.required]);
   idFormControl = new FormControl('', [Validators.required]);
-  dobFormControl = new FormControl('', [Validators.required]);
+  dobFormControl = new FormControl('2023/1/1', [Validators.required]);
   phoneFormControl = new FormControl('', [Validators.required]);
   gender = 'Male';
   matcher = new MyErrorStateMatcher();
   email = this.emailFormControl.value +"";
   validMail: boolean = true;
   filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
   public valid() {
     this.validMail = this.filter.test(this.emailFormControl.value+"");
     if (this.usernameFormControl.value == '') {
@@ -67,7 +72,8 @@ export class RegisterComponent implements OnInit , AfterViewInit{
       return;
     }else if(this.passwordFormControl.value == ''){
       return;
-    } else if (this.validMail == false) {
+    }
+    else if (this.validMail == false) {
       return;
     } else return true;
   }
@@ -118,11 +124,9 @@ export class RegisterComponent implements OnInit , AfterViewInit{
       this.showDiv.font = false;
     }
 
-    // test up imge firebase
+
     for (this.file of this.fontCitizenIDfiles) {
-      const path = 'test/' + this.file.name;
-      const fileRef = this.storage.ref(path);
-      this.storage.upload(path, this.file);
+      this.front=this.file.name;
     }
   }
 
@@ -143,6 +147,9 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     if (this.backCitizenIDfiles.length >= 1) {
       this.showDiv.back = false;
     }
+    for (this.file of this.backCitizenIDfiles) {
+      this.back=this.file.name;
+    }
   }
 
   onRemoveBackCitizenID(event: File) {
@@ -155,11 +162,12 @@ export class RegisterComponent implements OnInit , AfterViewInit{
       this.showDiv.back = true;
     }
   }
-  back : string ="A";
-  front : string = "B";
+  back : string ="";
+  front : string = "";
   Result : string ="";
   date :string = this.dobFormControl.value!
   lastest_date :string =""
+  message='';
   // public convertDOB(){
   //   let newDate = new Date(this.date);
   //   this.lastest_date = this.datepipe.transform(newDate,'yyyy-MM-dd')+""
@@ -182,13 +190,49 @@ export class RegisterComponent implements OnInit , AfterViewInit{
         this.front
       )
       .subscribe((data) => {
+        for(this.file of this.fontCitizenIDfiles ){
+          const path = 'landlord/citizenIdentification/' + this.file.name;
+          const fileRef = this.storage.ref(path);
+          this.storage.upload(path, this.file);
+        }
+        for(this.file of this.backCitizenIDfiles ){
+          const path = 'landlord/citizenIdentification/' + this.file.name;
+          const fileRef = this.storage.ref(path);
+          this.storage.upload(path, this.file);
+        }
+
+        localStorage.setItem('message', 'Register Success');
         localStorage.setItem('registerSuccess', 'true');
+        this.message = 'Register Success';
+        this.openDialogSuccess();
         this.router.navigate(['/Login'], { relativeTo: this.route });
+
 
       },error =>{
         this.Result = "Check your information!!!!"
+        console.log(error.message);
+        this.message = error.message;
+        this.openDialogMessage();
       });
-    }
+    } else console.log("register fail")
+  }
+
+  openDialogMessage() {
+    this.dialog.open(MessageComponent, {
+      data: this.message,
+    });
+  }
+  openDialogSuccess() {
+    const timeout = 3000;
+    const dialogRef = this.dialog.open(SuccessComponent, {
+      data: this.message,
+    });
+    dialogRef.afterOpened().subscribe(_ => {
+      setTimeout(() => {
+         dialogRef.close();
+         location.reload();
+      }, timeout)
+    })
   }
 
   // auto complete
@@ -238,6 +282,7 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     })
   }
 
+  public dob = '';
 
 
 }
