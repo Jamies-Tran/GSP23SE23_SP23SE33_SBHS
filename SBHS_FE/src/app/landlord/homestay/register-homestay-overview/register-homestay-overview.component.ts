@@ -10,7 +10,7 @@ import { RegisterHomestayComponent } from '../register-homestay/register-homesta
 })
 export class RegisterHomestayOverviewComponent implements OnInit{
  ngOnInit(): void {
-
+console.log(this.getHomestayinfo);
  }
   constructor(private http: ServerHttpService,public getHomestayinfo : RegisterHomestayComponent) {}
  result : string =""
@@ -35,5 +35,5 @@ export class RegisterHomestayOverviewComponent implements OnInit{
       this.result = "Register Homestay Fail!!!"
     }))
   }
-  
+
 }
