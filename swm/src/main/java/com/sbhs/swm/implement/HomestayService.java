@@ -375,14 +375,23 @@ public class HomestayService implements IHomestayService {
     public Long getHighestPriceOfHomestayService() {
         List<Long> homestayServicePriceList = homestayServiceRepo.getHomestayServiceOrderByPrice();
 
-        return homestayServicePriceList.get(0);
+        if (!homestayServicePriceList.isEmpty()) {
+            return homestayServicePriceList.get(0);
+        } else {
+            return 0L;
+        }
+
     }
 
     @Override
     public Long getHighestPriceOfHomestay() {
         List<Long> homestayPriceList = homestayRepo.getHomestayOrderByPrice();
+        if (!homestayPriceList.isEmpty()) {
+            return homestayPriceList.get(0);
+        } else {
+            return 0L;
+        }
 
-        return homestayPriceList.get(0);
     }
 
 }

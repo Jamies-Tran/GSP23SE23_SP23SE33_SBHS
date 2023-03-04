@@ -27,4 +27,7 @@ public class HomestayRule extends BaseModel {
     @ManyToOne
     private @Setter Homestay homestay;
 
+    @ManyToOne
+    private @Setter BlocHomestay bloc;
+
 }
