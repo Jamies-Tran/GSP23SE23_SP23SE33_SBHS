@@ -29,7 +29,7 @@ export class RegisterHomestayComponent implements OnInit {
     homestayName: ['', Validators.required],
     address: ['', Validators.required],
     number: ['', Validators.required],
-    city: ['', Validators.required],
+
   });
   homestayName : string ="123";
   address : string ="";
@@ -37,12 +37,12 @@ export class RegisterHomestayComponent implements OnInit {
   city : string ="";
   informationForm() {
     // Lay value
-  
+
     const formInformationFormGroupValue = this.informationFormGroup.controls;
     this.homestayName = formInformationFormGroupValue.homestayName.value!;
     this.address = formInformationFormGroupValue.address.value!;
     this.totalRoom = formInformationFormGroupValue.number.value!;
-    this.city = formInformationFormGroupValue.city.value!;
+
     console.log(this.homestayName,this.address)
     console.log(this.informationFormGroup.value);
   }
@@ -83,7 +83,7 @@ export class RegisterHomestayComponent implements OnInit {
 
   houseRuleForm() {
     console.log(this.houseRuleFormGroup.value);
-    this.serviceForm();
+
   }
 
   // Service
