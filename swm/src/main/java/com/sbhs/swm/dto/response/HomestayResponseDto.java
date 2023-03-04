@@ -30,4 +30,5 @@ public class HomestayResponseDto extends BaseResponseDto {
     private List<HomestayFacilityDto> homestayFacilities;
     private List<HomestayServiceDto> homestayServices;
     private List<RatingResponseDto> ratings;
+    private List<HomestayRuleResponseDto> homestayRules;
 }

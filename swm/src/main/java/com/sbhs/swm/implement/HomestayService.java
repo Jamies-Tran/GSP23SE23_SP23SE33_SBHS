@@ -26,7 +26,9 @@ import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.HomestayStatus;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.BlocHomestayRepo;
+import com.sbhs.swm.repositories.HomestayFacilityRepo;
 import com.sbhs.swm.repositories.HomestayRepo;
+import com.sbhs.swm.repositories.HomestayServiceRepo;
 import com.sbhs.swm.services.IFilterHomestayService;
 import com.sbhs.swm.services.IGoongService;
 import com.sbhs.swm.services.IHomestayService;
@@ -43,8 +45,11 @@ public class HomestayService implements IHomestayService {
     @Autowired
     private BlocHomestayRepo blocHomestayRepo;
 
-    // @Autowired
-    // private BookingRepo bookingRepo;
+    @Autowired
+    private HomestayFacilityRepo homestayFacilityRepo;
+
+    @Autowired
+    private HomestayServiceRepo homestayServiceRepo;
 
     @Autowired
     private IUserService userService;
@@ -57,9 +62,6 @@ public class HomestayService implements IHomestayService {
 
     @Autowired
     private IGoongService goongService;
-
-    // @Autowired
-    // private BookingDateValidationUtil bookingDateValidationUtil;
 
     @Autowired
     private IFilterHomestayService filterHomestayService;
@@ -91,7 +93,9 @@ public class HomestayService implements IHomestayService {
 
         }
         addressBuilder.append("-").append(homestayGeometryAddress);
+
         homestay.setAddress(addressBuilder.toString());
+        homestay.getHomestayRules().forEach(r -> r.setHomestay(homestay));
         homestay.setStatus(HomestayStatus.PENDING.name());
         homestay.setLandlord(user.getLandlordProperty());
         homestay.getHomestayServices().forEach(h -> h.setHomestay(homestay));
@@ -282,7 +286,7 @@ public class HomestayService implements IHomestayService {
     public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, int page, int size,
             boolean isNextPage,
             boolean isPreviousPage) {
-        List<Homestay> homestays = homestayRepo.findAll();
+        List<Homestay> homestays = homestayRepo.getAllAvailableHomestay();
         if (filterOption != null) {
             if (filterOption.getFilterByAddress() != null) {
                 homestays = filterHomestayService.filterByAddress(homestays,
@@ -351,6 +355,34 @@ public class HomestayService implements IHomestayService {
         List<Homestay> homestaySortedList = addressesSorted.stream()
                 .map(a -> this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
         return homestaySortedList;
+    }
+
+    @Override
+    public List<String> getAllHomestayFacilityNames() {
+        List<String> homestayFacilityNames = homestayFacilityRepo.getHomestayFacilityDistincNames();
+
+        return homestayFacilityNames;
+    }
+
+    @Override
+    public List<String> getAllHomestayServiceNames() {
+        List<String> homestayServiceNames = homestayServiceRepo.getHomestayServiceDistincNames();
+
+        return homestayServiceNames;
+    }
+
+    @Override
+    public Long getHighestPriceOfHomestayService() {
+        List<Long> homestayServicePriceList = homestayServiceRepo.getHomestayServiceOrderByPrice();
+
+        return homestayServicePriceList.get(0);
+    }
+
+    @Override
+    public Long getHighestPriceOfHomestay() {
+        List<Long> homestayPriceList = homestayRepo.getHomestayOrderByPrice();
+
+        return homestayPriceList.get(0);
     }
 
 }

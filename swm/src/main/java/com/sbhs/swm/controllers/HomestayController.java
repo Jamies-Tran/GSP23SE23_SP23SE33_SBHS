@@ -24,6 +24,7 @@ import com.sbhs.swm.dto.request.BlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.HomestayRequestDto;
 import com.sbhs.swm.dto.request.HomestaySearchFilter;
 import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
+import com.sbhs.swm.dto.response.FilterAdditionalResponseDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
 import com.sbhs.swm.dto.response.TotalBlocFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
@@ -174,6 +175,19 @@ public class HomestayController {
                         return new ResponseEntity<String>("Unimplemented", HttpStatus.NOT_FOUND);
                 }
 
+        }
+
+        @GetMapping("/user/additional-filter")
+        public ResponseEntity<?> getAdditionalHomestayFilterInformation() {
+                List<String> homestayFactilityNames = homestayService.getAllHomestayFacilityNames();
+                List<String> homestayServiceNames = homestayService.getAllHomestayServiceNames();
+                Long homestayHighestPrice = homestayService.getHighestPriceOfHomestay();
+                Long homestayServiceHighestPrice = homestayService.getHighestPriceOfHomestayService();
+                FilterAdditionalResponseDto filterAdditionalResponseDto = new FilterAdditionalResponseDto(
+                                homestayFactilityNames, homestayServiceNames, homestayHighestPrice,
+                                homestayServiceHighestPrice);
+
+                return new ResponseEntity<FilterAdditionalResponseDto>(filterAdditionalResponseDto, HttpStatus.OK);
         }
 
 }

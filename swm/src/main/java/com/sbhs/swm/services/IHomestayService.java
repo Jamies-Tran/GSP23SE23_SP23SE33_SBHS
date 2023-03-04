@@ -45,4 +45,12 @@ public interface IHomestayService {
                         boolean isPreviousPage);
 
         public List<Homestay> filterByAddress(List<Homestay> homestays, String address, boolean isGeometry);
+
+        public List<String> getAllHomestayFacilityNames();
+
+        public List<String> getAllHomestayServiceNames();
+
+        public Long getHighestPriceOfHomestayService();
+
+        public Long getHighestPriceOfHomestay();
 }

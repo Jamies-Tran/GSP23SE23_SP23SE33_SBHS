@@ -26,4 +26,5 @@ public class HomestayRequestDto {
     private List<HomestayImageDto> homestayImages;
     private List<HomestayFacilityDto> homestayFacilities;
     private List<HomestayServiceDto> homestayServices;
+    private List<HomestayRuleRequestDto> homestayRules;
 }

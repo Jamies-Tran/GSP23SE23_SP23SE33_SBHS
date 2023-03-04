@@ -11,6 +11,10 @@ import org.springframework.data.repository.query.Param;
 import com.sbhs.swm.models.Homestay;
 
 public interface HomestayRepo extends JpaRepository<Homestay, Long> {
+
+    @Query(value = "select h from Homestay h where h.status = 'ACTIVE'")
+    List<Homestay> getAllAvailableHomestay();
+
     @Query(value = "select h from Homestay h where h.name = :name")
     Optional<Homestay> findHomestayByName(@Param("name") String name);
 
@@ -41,4 +45,6 @@ public interface HomestayRepo extends JpaRepository<Homestay, Long> {
     @Query(value = "select h from Homestay h where h.address = :address")
     Optional<Homestay> findHomestayByAddress(@Param("address") String address);
 
+    @Query(value = "select h.price from Homestay h where h.status = 'ACTIVE' order by h.price desc")
+    List<Long> getHomestayOrderByPrice();
 }

@@ -67,6 +67,9 @@ public class Homestay extends BaseModel {
     @OneToMany(mappedBy = "homestay")
     private @Setter List<Booking> bookings;
 
+    @OneToMany(mappedBy = "homestay", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private @Setter List<HomestayRule> homestayRules;
+
     @ManyToOne
     private @Setter Landlord landlord;
 
