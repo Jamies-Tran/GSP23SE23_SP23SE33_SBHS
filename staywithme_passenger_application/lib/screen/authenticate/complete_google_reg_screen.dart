@@ -477,7 +477,7 @@ class _CompleteGoogleRegisterScreenState
                                     }
 
                                     return autoCompleteService
-                                        .autoComplet(textEditingValue.text)
+                                        .autoComplete(textEditingValue.text)
                                         .then((value) {
                                       if (value is PlacesResult) {
                                         return value.predictions!.where(

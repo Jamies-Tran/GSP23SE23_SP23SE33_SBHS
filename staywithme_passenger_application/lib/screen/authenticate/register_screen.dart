@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:staywithme_passenger_application/bloc/event/reg_event.dart';
 import 'package:staywithme_passenger_application/bloc/reg_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/reg_state.dart';
@@ -23,7 +22,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreen extends State<RegisterScreen> {
   final formState = GlobalKey<FormState>();
   final registerBloc = RegisterBloc();
-  final dateFormat = DateFormat("yyyy-MM-dd");
 
   final dobTextFieldController = TextEditingController();
   final usernameTextEditingController = TextEditingController();
@@ -443,7 +441,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         }
 
                                         return autoCompleteService
-                                            .autoComplet(textEditingValue.text)
+                                            .autoComplete(textEditingValue.text)
                                             .then((value) {
                                           if (value is PlacesResult) {
                                             return value.predictions!.where(

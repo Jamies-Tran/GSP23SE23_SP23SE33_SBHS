@@ -10,7 +10,8 @@ import 'package:staywithme_passenger_application/service/location/location_servi
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({super.key, this.position});
+  final Position? position;
 
   static const String mainScreenRoute = "/main-screen";
   @override
@@ -37,49 +38,31 @@ class _MainScreenState extends State<MainScreen> {
     return StreamBuilder<MainScreenState>(
         initialData: mainscreenBloc.initialData(startingIndex),
         stream: mainscreenBloc.stateController.stream,
-        builder: (context, snapshot) => Container(
-              color: primaryColor,
-              child: FutureBuilder(
-                future: locationService.getUserCurrentLocation(),
-                builder: (context, getCurrentLocationSnapshot) {
-                  switch (getCurrentLocationSnapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return const SizedBox();
-                    case ConnectionState.done:
-                      final data = getCurrentLocationSnapshot.data;
-                      return Scaffold(
-                        body: widgets(data).elementAt(snapshot.data!.index!),
-                        bottomNavigationBar: BottomNavigationBar(
-                          items: const [
-                            BottomNavigationBarItem(
-                                icon: Icon(
-                                  Icons.home,
-                                  color: Colors.black,
-                                ),
-                                label: "Homestay"),
-                            BottomNavigationBarItem(
-                                icon: Icon(
-                                  Icons.person,
-                                  color: Colors.black,
-                                ),
-                                label: "Personal")
-                          ],
-                          currentIndex: snapshot.data!.index!,
-                          backgroundColor: primaryColor,
-                          selectedItemColor: Colors.black,
-                          selectedLabelStyle: const TextStyle(
-                              fontFamily: "Lobster",
-                              fontWeight: FontWeight.bold),
-                          showUnselectedLabels: false,
-                          onTap: (value) => mainscreenBloc.eventController.sink
-                              .add(TapNavigationBarEvent(index: value)),
-                        ),
-                      );
-                    default:
-                      break;
-                  }
-                  return const SizedBox();
-                },
+        builder: (context, snapshot) => Scaffold(
+              body: widgets(widget.position).elementAt(snapshot.data!.index!),
+              bottomNavigationBar: BottomNavigationBar(
+                items: const [
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.home,
+                        color: Colors.black,
+                      ),
+                      label: "Homestay"),
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                      label: "Personal")
+                ],
+                currentIndex: snapshot.data!.index!,
+                backgroundColor: primaryColor,
+                selectedItemColor: Colors.black,
+                selectedLabelStyle: const TextStyle(
+                    fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                showUnselectedLabels: false,
+                onTap: (value) => mainscreenBloc.eventController.sink
+                    .add(TapNavigationBarEvent(index: value)),
               ),
             ));
   }

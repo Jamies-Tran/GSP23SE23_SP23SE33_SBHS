@@ -40,11 +40,15 @@ final homestayListOrderByRatingUrl =
 final blocListOrderByRatingUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_AVG_RATING"]}";
 
-final homestayNearestLocationUrl =
-    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_NEAREST_LOCATION"]}";
+final homestayByFilterUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_FILTER"]}";
+
+final homestayFilterAddtionalUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["FILTER_ADDITIONAL"]}";
 
 // common variable
 final currencyFormat = NumberFormat("#,##0");
+final dateFormat = DateFormat("yyyy-MM-dd");
 final connectionTimeOut = int.parse(dotenv.env["CONNECTION_TIMEOUT"]!);
 const primaryColor = Colors.orange;
 const secondaryColor = Colors.deepOrangeAccent;

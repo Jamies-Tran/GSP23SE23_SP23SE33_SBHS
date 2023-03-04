@@ -8,12 +8,12 @@ import 'package:staywithme_passenger_application/model/auto_complete_model.dart'
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 
 abstract class IAutoCompleteService {
-  Future<dynamic> autoComplet(String place);
+  Future<dynamic> autoComplete(String place);
 }
 
 class AutoCompleteService extends IAutoCompleteService {
   @override
-  Future autoComplet(String place) async {
+  Future autoComplete(String place) async {
     final client = http.Client();
     Uri uri = Uri.parse("$autoCompleteUrl?place=$place");
     try {

@@ -7,6 +7,7 @@ import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
+import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 
 abstract class IHomestayService {
   Future<dynamic> getHomestayListOrderByTotalAverageRating(
@@ -15,8 +16,10 @@ abstract class IHomestayService {
   Future<dynamic> getBlocListOrderByTotalAverageRating(
       int page, int size, bool isNextPage, bool isPreviousPage);
 
-  Future<dynamic> getHomestayNearestLocationList(double lat, double lng,
-      int page, int size, bool isNextPage, bool isPreviousPage);
+  Future<dynamic> getHomestayByFilter(SearchFilterModel filter, int page,
+      int size, bool isNextPage, bool isPreviousPage);
+
+  Future<dynamic> getHomestayFilterAdditionalInformation();
 }
 
 class HomestayService extends IHomestayService {
@@ -72,19 +75,43 @@ class HomestayService extends IHomestayService {
   }
 
   @override
-  Future getHomestayNearestLocationList(double lat, double lng, int page,
-      int size, bool isNextPage, bool isPreviousPage) async {
-    String origin = "$lat,$lng";
+  Future getHomestayByFilter(SearchFilterModel filter, int page, int size,
+      bool isNextPage, bool isPreviousPage) async {
     final client = http.Client();
     final uri = Uri.parse(
-        "$homestayNearestLocationUrl?address=$origin&isGeometry=${true}&page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
+        "$homestayByFilterUrl?page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
     try {
-      final response =
-          await client.get(uri, headers: {"content-type": "application/json"});
+      final response = await client.post(uri,
+          headers: {"content-type": "application/json"},
+          body: json.encode(filter.toJson()));
       if (response.statusCode == 200) {
         HomestayListPagingModel homestayListPagingModel =
             HomestayListPagingModel.fromJson(json.decode(response.body));
         return homestayListPagingModel;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on SocketException catch (e) {
+      return e;
+    } on TimeoutException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getHomestayFilterAdditionalInformation() async {
+    final client = http.Client();
+    final uri = Uri.parse(homestayFilterAddtionalUrl);
+    try {
+      final response =
+          await client.get(uri, headers: {"content-type": "application/json"});
+      if (response.statusCode == 200) {
+        FilterAddtionalInformationModel addtionalInformation =
+            FilterAddtionalInformationModel.fromJson(
+                json.decode(response.body));
+        return addtionalInformation;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

@@ -10,7 +10,10 @@ import 'package:staywithme_passenger_application/screen/authenticate/log_in_scre
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/validate_otp_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/intro_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
@@ -46,7 +49,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      initialRoute: MainScreen.mainScreenRoute,
+      initialRoute: IntroScreen.instroScreenRoute,
       routes: {
         LoginScreen.loginScreenRoute: (context) => const LoginScreen(),
         RegisterScreen.registerAccountRoute: (context) =>
@@ -74,7 +77,11 @@ class MyApp extends StatelessWidget {
             const ChangePasswordScreen(),
         SearchHomestayScreen.searchHomestayScreenRoute: (context) =>
             const SearchHomestayScreen(),
-        MainScreen.mainScreenRoute: (context) => const MainScreen()
+        FilterTransactionScreen.filterTransactionScreenRoute: (context) =>
+            const FilterTransactionScreen(),
+        FilterScreen.filterScreenRoute: (context) => const FilterScreen(),
+        MainScreen.mainScreenRoute: (context) => const MainScreen(),
+        IntroScreen.instroScreenRoute: (context) => const IntroScreen()
       },
     );
   }
