@@ -15,33 +15,26 @@
                 <div class="row">
                   <div class="col">
                     <div class="mb-5">
-
+                      <!-- Homestay's Name -->
                       <div class="mb-3">
                         <h6 class="mb-0">Homestay's Name <span class="text-danger">*</span></h6>
                         <input type="text" name="homestayNameInput" class="form-control" required mdbInput mdbValidate
                           formControlName="homestayName">
                       </div>
-
+                      <!-- Available Rooms -->
                       <div class="mb-3">
-                        <h6 class="mb-0">Total Room <span class="text-danger">*</span></h6>
+                        <h6 class="mb-0">Available Rooms <span class="text-danger">*</span></h6>
                         <input type="number" name="homestayTotalRoomInput" class="form-control" required mdbInput
-                          mdbValidate formControlName="number">
+                          mdbValidate formControlName="number" min="1" max="100" maxlength="3" minlength="1"
+                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                       </div>
+                      <!-- Address -->
                       <div class="mb-3">
                         <h6 class="mb-0">Address <span class="text-danger">*</span></h6>
                         <input type="text" name="homstayAddressInput" class="form-control" required mdbInput mdbValidate
                           formControlName="address">
                       </div>
-                      <div class="mb-3 city-select">
-                        <h6 class="mb-0">City <span class="text-danger">*</span></h6>
-                        <mat-form-field appearance="outline" class="w-100 select-form">
-                          <mat-select formControlName="city" name="cityInput" required>
-                            <mat-option value="Hanoi">Ha Noi</mat-option>
-                            <mat-option value="danang">Da Nang</mat-option>
-                            <mat-option value="HCM">Ho Chi Minh</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+
                     </div>
 
                     <hr>
@@ -152,7 +145,7 @@
                             class="fa-solid fa-plus"></i></div>
                         <div class="col-xxl-4 ">
                           <input name="newFacility" type="text" class="form-control" placeholder="New Facility"
-                            [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" />
+                            [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" #value{{i}}="ngModel" (required)="value.status ? 'required' : ''"/>
                         </div>
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center">
                           <mat-checkbox color="primary" [(ngModel)]="value.status" name="value{{i}}"></mat-checkbox>
@@ -200,7 +193,7 @@
         </div>
         <div class="col-xxl-1 d-none d-xl-block"></div>
 
-        <div class="col-xxl-4 d-none d-xl-block">
+        <!-- <div class="col-xxl-4 d-none d-xl-block">
           <div class="input-content card w-100 basic-information">
             <div class="add-input card-body ">
               <div class="row">
@@ -226,7 +219,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
 
@@ -274,17 +267,17 @@
                         <div class="col-xxl-6 city-select">
                           <h6 class="mb-0">Check-in <span class="text-danger">*</span></h6>
                           <mat-form-field appearance="outline" class="w-100 select-form">
-                            <mat-select name="check-in" formControlName="checkIn">
-                              <mat-option value="12">12:00</mat-option>
-                              <mat-option value="13">13:00</mat-option>
-                              <mat-option value="14">14:00</mat-option>
+                            <mat-select name="check-in" formControlName="checkIn" required>
+                              <mat-option value="12:00">12:00</mat-option>
+                              <mat-option value="13:00">13:00</mat-option>
+                              <mat-option value="14:00">14:00</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
                         <div class="col-xxl-6 city-select">
                           <h6 class="mb-0">Check-out <span class="text-danger">*</span></h6>
                           <mat-form-field appearance="outline" class="w-100 select-form">
-                            <mat-select name="check-out" formControlName="checkOut">
+                            <mat-select name="check-out" formControlName="checkOut" required>
                               <mat-option value="111">11:00</mat-option>
                               <mat-option value="10">10:00</mat-option>
                               <mat-option value="12">12:00</mat-option>
@@ -363,8 +356,10 @@
                       </div>
                       <div class="col-xxl-5 ">
                         <div class="col-input">
-                          <input name="breakfastInputt" type="number" pattern="[0~9]*" min="1" class="form-control"
-                            matInput placeholder="Price" formControlName="breakfastPrice" />
+                          <input name="breakfastInputt" type="number" pattern="[0~9]*" min="1000" class="form-control" minlength="4" maxlength="10"
+                            matInput placeholder="Price" formControlName="breakfastPrice" (required)="serviceFormGroup.controls.breakfast.value ? 'required' : ''"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            />
                         </div>
                       </div>
                       <div class="col-xxl-1"></div>
@@ -384,8 +379,10 @@
                       </div>
                       <div class="col-xxl-5 ">
                         <div class="col-input">
-                          <input name="SwimmingInputt" type="number" pattern="[0~9]*" min="1" class="form-control"
-                            matInput placeholder="Price" formControlName="swimmingPrice" />
+                          <input name="SwimmingInputt" type="number" pattern="[0~9]*" min="1000" class="form-control" minlength="4" maxlength="10"
+                            matInput placeholder="Price" formControlName="swimmingPrice" (required)="serviceFormGroup.controls.swimming.value ? 'required' : ''"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            />
                         </div>
                       </div>
                       <div class="col-xxl-1"></div>
@@ -404,7 +401,7 @@
                             class="fa-solid fa-plus"></i></div>
                         <div class="col-xxl-4 ">
                           <input name="newService" type="text" class="form-control" placeholder="New Service"
-                            [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}" />
+                            [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"  (required)="value.status ? 'required' : ''" />
                         </div>
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center">
                           <mat-checkbox color="primary" [(ngModel)]="value.status"
@@ -412,9 +409,10 @@
                         </div>
                         <div class="col-xxl-5 ">
                           <div class="col-input">
-                            <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
+                            <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status" minlength="4" maxlength="10"
                               pattern="[0~9]*" min="1" class="form-control" matInput placeholder="Price"
-                              [(ngModel)]="value.price" />
+                              [(ngModel)]="value.price"  (required)="value.status ? 'true' : 'false'"
+                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
                           </div>
                         </div>
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
@@ -450,6 +448,12 @@
                       <button class="btn-next w-100" color="primary" mat-raised-button type="submit" routerLink="../Overview">Continue</button>
                     </div>
                   </form>
+
+
+
+
+
+
                 </div>
               </div>
             </div>
