@@ -34,15 +34,12 @@
                         <input type="text" name="homstayAddressInput" class="form-control" required mdbInput mdbValidate
                           formControlName="address">
                       </div>
-
                     </div>
-
                     <hr>
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-reset" mat-raised-button type="reset">Reset</button>
                       <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -77,7 +74,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
       </form>
@@ -109,7 +105,6 @@
                         <mat-checkbox color="primary" formControlName="tv"></mat-checkbox>
                       </div>
                       <div class="col-xxl-5 ">
-
                       </div>
                       <div class="col-xxl-1"></div>
                     </div>
@@ -126,7 +121,6 @@
                         <mat-checkbox color="primary" formControlName="wifi"></mat-checkbox>
                       </div>
                       <div class="col-xxl-5 ">
-
                       </div>
                       <div class="col-xxl-1"></div>
                     </div>
@@ -134,8 +128,6 @@
                     <br>
                     <hr>
                   </form>
-
-
                   <!-- Additional Facility -->
                   <h5 class="mb-2">Additional Facility</h5>
                   <div class="additional-facility">
@@ -145,22 +137,20 @@
                             class="fa-solid fa-plus"></i></div>
                         <div class="col-xxl-4 ">
                           <input name="newFacility" type="text" class="form-control" placeholder="New Facility"
-                            [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" #value{{i}}="ngModel" (required)="value.status ? 'required' : ''"/>
+                            [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" #value{{i}}="ngModel"
+                            (required)="value.status ? 'required' : ''" />
                         </div>
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center">
                           <mat-checkbox color="primary" [(ngModel)]="value.status" name="value{{i}}"></mat-checkbox>
                         </div>
-
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
                           matRipple (click)="removeFacility(i)">
                           <i class="fa-solid fa-xmark"></i>
                         </div>
                         <div class="col-xxl-5 ">
-
                         </div>
                       </div>
                     </div>
-
                     <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
                       (click)="addFacility()">
                       <div class="row w-100">
@@ -172,11 +162,7 @@
                         </div>
                       </div>
                     </div>
-
                   </div>
-
-
-
                   <!-- Button -->
                   <form [formGroup]="facilityFormGroup" (ngSubmit)="facilityForm()" #formtwo="ngForm">
                     <br>
@@ -221,9 +207,6 @@
           </div>
         </div> -->
       </div>
-
-
-
     </mat-step>
     <!-- Facility -->
 
@@ -247,7 +230,6 @@
                           <mat-slide-toggle formControlName="smoking" name="smokingInput"></mat-slide-toggle>
                         </div>
                       </div>
-
                       <div class="row mb-2">
                         <div class="col-xxl-10">
                           <span><i class="fa-regular fa-heart"></i> Pet allowed</span>
@@ -257,11 +239,8 @@
                         </div>
                       </div>
                     </div>
-
-
                     <hr>
                     <!-- Checkin - Check out -->
-
                     <div>
                       <div class="row">
                         <div class="col-xxl-6 city-select">
@@ -292,14 +271,12 @@
                       <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
                       <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
                     </div>
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-xxl-1 d-none d-xl-block"></div>
-
           <div class="col-xxl-4 d-none d-xl-block">
             <div class="input-content card w-100 basic-information">
               <div class="add-input card-body ">
@@ -314,7 +291,6 @@
                         <span class="text-break">You can easily customize these house rules later, and you can set
                           additional house rules on the Policies page of the Extranet after completing
                           registration.</span>
-
                       </div>
                     </div>
                   </div>
@@ -322,11 +298,8 @@
               </div>
             </div>
           </div>
-
         </div>
-
       </form>
-
     </mat-step>
 
     <!-- Service -->
@@ -356,10 +329,10 @@
                       </div>
                       <div class="col-xxl-5 ">
                         <div class="col-input">
-                          <input name="breakfastInputt" type="number" pattern="[0~9]*" min="1000" class="form-control" minlength="4" maxlength="10"
-                            matInput placeholder="Price" formControlName="breakfastPrice" (required)="serviceFormGroup.controls.breakfast.value ? 'required' : ''"
-                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            />
+                          <input name="breakfastInputt" type="number" pattern="[0~9]*" min="1000" class="form-control"
+                            minlength="4" maxlength="10" matInput placeholder="Price" formControlName="breakfastPrice"
+                            (required)="serviceFormGroup.controls.breakfast.value ? 'required' : ''"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                         </div>
                       </div>
                       <div class="col-xxl-1"></div>
@@ -379,15 +352,14 @@
                       </div>
                       <div class="col-xxl-5 ">
                         <div class="col-input">
-                          <input name="SwimmingInputt" type="number" pattern="[0~9]*" min="1000" class="form-control" minlength="4" maxlength="10"
-                            matInput placeholder="Price" formControlName="swimmingPrice" (required)="serviceFormGroup.controls.swimming.value ? 'required' : ''"
-                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            />
+                          <input name="SwimmingInputt" type="number" pattern="[0~9]*" min="1000" class="form-control"
+                            minlength="4" maxlength="10" matInput placeholder="Price" formControlName="swimmingPrice"
+                            (required)="serviceFormGroup.controls.swimming.value ? 'required' : ''"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                         </div>
                       </div>
                       <div class="col-xxl-1"></div>
                     </div>
-
                   </form>
                   <br>
                   <hr>
@@ -401,7 +373,8 @@
                             class="fa-solid fa-plus"></i></div>
                         <div class="col-xxl-4 ">
                           <input name="newService" type="text" class="form-control" placeholder="New Service"
-                            [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"  (required)="value.status ? 'required' : ''" />
+                            [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"
+                            (required)="value.status ? 'required' : ''" />
                         </div>
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center">
                           <mat-checkbox color="primary" [(ngModel)]="value.status"
@@ -409,17 +382,16 @@
                         </div>
                         <div class="col-xxl-5 ">
                           <div class="col-input">
-                            <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status" minlength="4" maxlength="10"
-                              pattern="[0~9]*" min="1" class="form-control" matInput placeholder="Price"
-                              [(ngModel)]="value.price"  (required)="value.status ? 'true' : 'false'"
-                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+                            <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
+                              minlength="4" maxlength="10" pattern="[0~9]*" min="1" class="form-control" matInput
+                              placeholder="Price" [(ngModel)]="value.price" (required)="value.status ? 'true' : 'false'"
+                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                           </div>
                         </div>
                         <div class="col-xxl-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
                           matRipple (click)="removeService(i)">
                           <i class="fa-solid fa-xmark"></i>
                         </div>
-
                       </div>
                     </div>
 
@@ -434,27 +406,18 @@
                         </div>
                       </div>
                     </div>
-
                   </div>
 
-
-
-
-                    <!-- Button -->
-                    <br>
-                    <hr>
-                    <form a#formour="ngForm">
+                  <!-- Button -->
+                  <br>
+                  <hr>
+                  <form #formour="ngForm">
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext routerLink="../Overview" >Continue</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext
+                        routerLink="../Overview">Continue</button>
                     </div>
-</form>
-
-
-
-
-
-
+                  </form>
                 </div>
               </div>
             </div>

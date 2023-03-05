@@ -88,7 +88,9 @@ export class RegisterHomestayComponent implements OnInit {
 
   houseRuleForm() {
     console.log(this.houseRuleFormGroup.value);
+    console.log(this.serviceFormGroup.value);
 
+    this.serviceForm();
   }
 
   // Service
