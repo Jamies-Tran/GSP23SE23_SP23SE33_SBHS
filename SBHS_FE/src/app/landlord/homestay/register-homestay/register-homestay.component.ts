@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-register-homestay',
@@ -151,8 +152,19 @@ export class RegisterHomestayComponent implements OnInit {
     console.log('size', this.newService.length);
   }
 
+  @ViewChild('stepper') stepper!: MatStepper;
   removeService(i: any) {
     this.newService.splice(i, 1);
     console.log('delete', this.newService.length + i);
+  }
+
+  step1(){
+    this.stepper.selectedIndex = 1;
+  }
+  step3(){
+    this.stepper.selectedIndex = 3;
+  }
+  step4(){
+    this.stepper.selectedIndex = 4;
   }
 }
