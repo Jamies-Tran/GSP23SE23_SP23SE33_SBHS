@@ -34,7 +34,13 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     private image: ImageService,
     public datepipe: DatePipe,
     public dialog: MatDialog,
-  ) {}
+  ) {
+    const currentYear = new Date().getFullYear();
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 1);
+    this.minDate = new Date(currentYear - 100, 0, 1);
+    this.maxDate = new Date(currentYear - 18, 0, 0);
+  }
 
   hidePassword = true;
   hideConfirmPass = true;
@@ -175,11 +181,12 @@ export class RegisterComponent implements OnInit , AfterViewInit{
   public register() {
    // this.convertDOB();
     //console.log(this.lastest_date);
+    this.convert(this.dob);
     if (this.valid() == true) {
     this.http
       .registerLandlord(
         this.addressFormControl.value + '',
-        "1999-25-12",
+        this.dob,
         this.emailFormControl.value + '',
         this.gender,
         this.idFormControl.value + '',
@@ -283,8 +290,16 @@ export class RegisterComponent implements OnInit , AfterViewInit{
   }
 
   public dob = '';
+  convert(event:any):void {
 
-
+    var date = new Date(event),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+     this.dob=[date.getFullYear(), mnth, day].join("-");
+     console.log('convert' , this.dob);
+  }
+  minDate!: Date;
+  maxDate!: Date;
 }
 
 

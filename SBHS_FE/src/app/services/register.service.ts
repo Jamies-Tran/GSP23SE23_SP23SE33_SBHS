@@ -33,8 +33,8 @@ export class ServerHttpService {
     back: string,
     front: string
   ) {
+    console.log('convert service ' , dob);
     let avatarUrl = '';
-
     var value = {
       address,
       avatarUrl,

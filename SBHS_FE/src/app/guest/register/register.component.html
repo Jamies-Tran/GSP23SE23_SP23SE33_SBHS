@@ -139,7 +139,7 @@
                       <mat-form-field class="input-username w-100" appearance="outline">
                         <mat-label>Day of Birth</mat-label>
                         <input matInput  [(ngModel)]="dob"  [errorStateMatcher]="matcher" name="txtDob"
-                          id="date" [matDatepicker]="picker"  required>
+                          id="date" [matDatepicker]="picker"  required [min]="minDate" [max]="maxDate">
                           <!-- onfocus="(this.type='date')" -->
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
