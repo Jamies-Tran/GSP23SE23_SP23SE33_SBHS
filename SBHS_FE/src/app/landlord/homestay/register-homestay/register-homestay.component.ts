@@ -47,7 +47,9 @@ export class RegisterHomestayComponent implements OnInit {
   // Facility
   facilityFormGroup = this._formBuilder.group({
     tv: false,
+    tvAmount:[{ value: '', disabled: true }],
     wifi: false,
+    wifiAmount:[{ value: '', disabled: true }],
   });
 
   facilityForm() {
@@ -62,7 +64,20 @@ export class RegisterHomestayComponent implements OnInit {
     }
     localStorage.setItem("homestayFacilities",homestayFacilities)
   }
-
+  enableInputTv() {
+    if (this.facilityFormGroup.controls.tv.value === true) {
+      this.facilityFormGroup.controls.tvAmount.enable();
+    } else {
+      this.facilityFormGroup.controls.tvAmount.disable();
+    }
+  }
+  enableInputWifi() {
+    if (this.facilityFormGroup.controls.wifi.value === true) {
+      this.facilityFormGroup.controls.wifiAmount.enable();
+    } else {
+      this.facilityFormGroup.controls.wifiAmount.disable();
+    }
+  }
   // New Facility
 
   newFacility: any[] = [];
