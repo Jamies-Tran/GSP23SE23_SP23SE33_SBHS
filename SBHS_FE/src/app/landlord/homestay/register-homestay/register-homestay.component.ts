@@ -49,18 +49,17 @@ export class RegisterHomestayComponent implements OnInit {
     tv: false,
     wifi: false,
   });
-
+  homestayFacilities: any = [];
   facilityForm() {
     console.log(' this.newFacility.push', this.newFacility);
     console.log(this.facilityFormGroup.value);
-    let homestayFacilities: any = [];
     if(this.facilityFormGroup.value["tv"] === true){
-      homestayFacilities.push({name:"tv",quantity:"2"})
+      this.homestayFacilities.push({name:"tv",quantity:"2"})
     }
     if(this.facilityFormGroup.value["wifi"] === true){
-      homestayFacilities.push({name:"wifi",quantity:"2"})
+      this.homestayFacilities.push({name:"wifi",quantity:"2"})
     }
-    localStorage.setItem("homestayFacilities",homestayFacilities)
+    localStorage.setItem("homestayFacilities",(this.homestayFacilities))
   }
 
   // New Facility
