@@ -53,7 +53,7 @@ public class BlocHomestay extends BaseModel {
     private @Setter List<Rating> ratings;
 
     @OneToMany(mappedBy = "bloc", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private @Setter List<HomestayRule> homestayRule;
+    private @Setter List<HomestayRule> homestayRules;
 
     @ManyToOne
     private @Setter Landlord landlord;

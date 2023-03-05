@@ -31,7 +31,7 @@ public class BookingController {
     @PreAuthorize("hasAuthority('booking:create')")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequestDto bookingRequest) {
         Booking booking = modelMapper.map(bookingRequest, Booking.class);
-        Booking savedBooking = bookingService.createBooking(booking, bookingRequest.getHomestayName(),
+        Booking savedBooking = bookingService.createBookingForHomestay(booking, bookingRequest.getHomestayName(),
                 bookingRequest.getHomestayServicesString());
         BookingResponseDto responseBooking = modelMapper.map(savedBooking, BookingResponseDto.class);
         responseBooking.getHomestay().setAddress(responseBooking.getHomestay().getAddress().split("-")[0]);

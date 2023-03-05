@@ -16,4 +16,5 @@ public class HomestayInBlocDto {
     private Long price;
     private Integer availableRooms;
     private List<HomestayImageDto> homestayImages;
+    private List<HomestayFacilityDto> homestayFacilities;
 }

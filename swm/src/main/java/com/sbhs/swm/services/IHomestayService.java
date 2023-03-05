@@ -44,7 +44,11 @@ public interface IHomestayService {
                         boolean isNextPage,
                         boolean isPreviousPage);
 
-        public List<Homestay> filterByAddress(List<Homestay> homestays, String address, boolean isGeometry);
+        public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, int page, int size,
+                        boolean isNextPage, boolean isPreviousPage);
+
+        // public List<Homestay> filterByAddress(List<Homestay> homestays, String
+        // address, boolean isGeometry);
 
         public List<String> getAllHomestayFacilityNames();
 

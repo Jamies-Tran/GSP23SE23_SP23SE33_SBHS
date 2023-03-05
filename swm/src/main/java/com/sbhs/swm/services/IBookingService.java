@@ -5,7 +5,7 @@ import java.util.List;
 import com.sbhs.swm.models.Booking;
 
 public interface IBookingService {
-    Booking createBooking(Booking booking, String homestayName, List<String> homestayServices);
+    Booking createBookingForHomestay(Booking booking, String homestayName, List<String> homestayServices);
 
     List<Booking> findBookingsByUsername(String username);
 

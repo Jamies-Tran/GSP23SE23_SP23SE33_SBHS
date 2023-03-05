@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FilterOption {
-    private String homestayType;
     private FilterByRatingRange filterByRatingRange;
     private FilterByBookingDateRange filterByBookingDateRange;
     private FilterByAddress filterByAddress;

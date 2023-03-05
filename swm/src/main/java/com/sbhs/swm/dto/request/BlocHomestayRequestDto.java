@@ -15,12 +15,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BlocHomestayRequestDto {
-    private Long id;
     private String name;
     private String address;
     private String businessLicense;
+    private Double totalAverageRating;
     private String status;
     private List<HomestayServiceDto> homestayServices;
     private List<HomestayInBlocDto> homestays;
-
+    private List<HomestayRuleRequestDto> homestayRules;
 }

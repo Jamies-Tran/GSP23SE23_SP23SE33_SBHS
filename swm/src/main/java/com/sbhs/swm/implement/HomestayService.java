@@ -1,10 +1,7 @@
 package com.sbhs.swm.implement;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -12,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.sbhs.swm.dto.goong.DistanceElement;
-import com.sbhs.swm.dto.goong.DistanceResultRows;
 import com.sbhs.swm.dto.request.FilterOption;
 import com.sbhs.swm.handlers.exceptions.HomestayNameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.HomestayNotFoundException;
@@ -29,6 +24,7 @@ import com.sbhs.swm.repositories.BlocHomestayRepo;
 import com.sbhs.swm.repositories.HomestayFacilityRepo;
 import com.sbhs.swm.repositories.HomestayRepo;
 import com.sbhs.swm.repositories.HomestayServiceRepo;
+import com.sbhs.swm.services.IFilterBlocHomestayService;
 import com.sbhs.swm.services.IFilterHomestayService;
 import com.sbhs.swm.services.IGoongService;
 import com.sbhs.swm.services.IHomestayService;
@@ -65,6 +61,9 @@ public class HomestayService implements IHomestayService {
 
     @Autowired
     private IFilterHomestayService filterHomestayService;
+
+    @Autowired
+    private IFilterBlocHomestayService filterBlocHomestayService;
 
     @Override
     public Homestay createHomestay(Homestay homestay) {
@@ -147,8 +146,10 @@ public class HomestayService implements IHomestayService {
             h.setLandlord(user.getLandlordProperty());
             h.setStatus(blocHomestay.getStatus());
             h.getHomestayImages().forEach(i -> i.setHomestay(h));
+            h.getHomestayFacilities().forEach(f -> f.setHomestay(h));
             h.setBloc(blocHomestay);
         });
+        blocHomestay.getHomestayRules().forEach(r -> r.setBloc(blocHomestay));
         blocHomestay.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         blocHomestay.setCreatedBy(user.getUsername());
 
@@ -344,18 +345,22 @@ public class HomestayService implements IHomestayService {
         return homestay;
     }
 
-    @Override
-    public List<Homestay> filterByAddress(List<Homestay> homestays, String address, boolean isGeometry) {
-        List<String> destinations = homestays.stream().map(h -> h.getAddress())
-                .collect(Collectors.toList());
-        DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations, isGeometry);
-        List<DistanceElement> addressesSorted = distanceResultRows.getRows().get(0).getElements().stream()
-                .sorted(Collections.reverseOrder())
-                .collect(Collectors.toList());
-        List<Homestay> homestaySortedList = addressesSorted.stream()
-                .map(a -> this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
-        return homestaySortedList;
-    }
+    // @Override
+    // public List<Homestay> filterByAddress(List<Homestay> homestays, String
+    // address, boolean isGeometry) {
+    // List<String> destinations = homestays.stream().map(h -> h.getAddress())
+    // .collect(Collectors.toList());
+    // DistanceResultRows distanceResultRows =
+    // goongService.getDistanceFromLocation(address, destinations, isGeometry);
+    // List<DistanceElement> addressesSorted =
+    // distanceResultRows.getRows().get(0).getElements().stream()
+    // .sorted(Collections.reverseOrder())
+    // .collect(Collectors.toList());
+    // List<Homestay> homestaySortedList = addressesSorted.stream()
+    // .map(a ->
+    // this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
+    // return homestaySortedList;
+    // }
 
     @Override
     public List<String> getAllHomestayFacilityNames() {
@@ -392,6 +397,52 @@ public class HomestayService implements IHomestayService {
             return 0L;
         }
 
+    }
+
+    @Override
+    public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, int page, int size,
+            boolean isNextPage, boolean isPreviousPage) {
+        List<BlocHomestay> blocs = blocHomestayRepo.getAllAvailableBlocs();
+        if (filterOption != null) {
+            if (filterOption.getFilterByBookingDateRange() != null) {
+                blocs = filterBlocHomestayService.filterBlocByBookingDateRange(blocs,
+                        filterOption.getFilterByBookingDateRange().getStart(),
+                        filterOption.getFilterByBookingDateRange().getEnd(),
+                        filterOption.getFilterByBookingDateRange().getTotalRoom());
+            }
+            if (filterOption.getFilterByAddress() != null) {
+                blocs = filterBlocHomestayService.filterByAddress(blocs, filterOption.getFilterByAddress().getAddress(),
+                        filterOption.getFilterByAddress().getDistance(),
+                        filterOption.getFilterByAddress().getIsGeometry());
+            }
+            if (filterOption.getFilterByFacility() != null) {
+                blocs = filterBlocHomestayService.filterByFacility(blocs, filterOption.getFilterByFacility().getName(),
+                        filterOption.getFilterByFacility().getQuantity());
+            }
+            if (filterOption.getFilterByHomestayService() != null) {
+                blocs = filterBlocHomestayService.filterByBlocService(blocs,
+                        filterOption.getFilterByHomestayService().getName(),
+                        filterOption.getFilterByHomestayService().getPrice());
+            }
+            if (filterOption.getFilterByPriceRange() != null) {
+                blocs = filterBlocHomestayService.filterByPriceRange(blocs,
+                        filterOption.getFilterByPriceRange().getLowest(),
+                        filterOption.getFilterByPriceRange().getHighest());
+            }
+            if (filterOption.getFilterByRatingRange() != null) {
+                blocs = filterBlocHomestayService.filterByRatingRange(blocs,
+                        filterOption.getFilterByRatingRange().getLowest(),
+                        filterOption.getFilterByRatingRange().getHighest());
+            }
+        }
+        PagedListHolder<BlocHomestay> pagedListHolder = new PagedListHolder<>(blocs);
+        if (pagedListHolder.isLastPage() == false && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
+        } else if (pagedListHolder.isFirstPage() == false && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
+        }
+
+        return pagedListHolder;
     }
 
 }

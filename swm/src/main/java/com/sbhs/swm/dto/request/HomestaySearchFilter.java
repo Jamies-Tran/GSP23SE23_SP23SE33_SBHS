@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class HomestaySearchFilter {
     private FilterOption filterOption;
+    private String homestayType;
     private String searchString;
 
 }

@@ -65,7 +65,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public Booking createBooking(Booking booking, String homestayName, List<String> homestayServices) {
+    public Booking createBookingForHomestay(Booking booking, String homestayName, List<String> homestayServices) {
         SwmUser user = userService.authenticatedUser();
         Homestay homestay = homestayService.findHomestayByName(homestayName);
         List<HomestayService> homestayServiceList = homestayServices.stream()
