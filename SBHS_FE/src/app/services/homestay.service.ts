@@ -14,6 +14,12 @@ export class ServerHttpService {
       'Authorization' :  'Bearer '+ localStorage.getItem('userToken')
     })
   };
+  private httpOptionsAutocomplete = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization' :  'Bearer '+ localStorage.getItem('userToken')
+    })
+  };
   public model: any = {};
   private REST_API_SERVER = 'http://localhost:8081';
   constructor(private httpClient: HttpClient) { }
@@ -70,6 +76,13 @@ export class ServerHttpService {
     const url = `${this.REST_API_SERVER}/api/homestay/new-homestay`;
     return this.httpClient
       .post<any>(url, value, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  public getAutoComplete(place: string) {
+    const url = `${this.REST_API_SERVER}/api/map?place=${place}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptionsAutocomplete)
       .pipe(catchError(this.handleError));
   }
 }

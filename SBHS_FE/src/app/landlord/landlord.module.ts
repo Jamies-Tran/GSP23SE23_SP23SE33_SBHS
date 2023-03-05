@@ -35,6 +35,7 @@ import { RegisterHomestayPriceComponent } from './homestay/register-homestay-pri
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { MatListModule } from '@angular/material/list';
     NgxDropzoneModule,
     MatSlideToggleModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatAutocompleteModule
   ],
 })
 export class LandlordModule {}

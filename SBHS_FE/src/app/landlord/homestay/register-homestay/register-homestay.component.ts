@@ -1,17 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/homestay.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Observable } from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatFormField } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-register-homestay',
   templateUrl: './register-homestay.component.html',
   styleUrls: ['./register-homestay.component.scss'],
 })
-export class RegisterHomestayComponent implements OnInit {
+export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   //
   constructor(
     private _formBuilder: FormBuilder,
@@ -19,15 +23,13 @@ export class RegisterHomestayComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: ServerHttpService,
-    private storage: AngularFireStorage,
+    private storage: AngularFireStorage
   ) {}
 
   // homestayName: string = '';
   // totalRoom: string = '';
   // address: string = '';
   // city: string = '';
-
-  newServices: any[] = [];
 
   ngOnInit(): void {}
 
@@ -136,7 +138,6 @@ export class RegisterHomestayComponent implements OnInit {
       // homestayServices.push({name: "Breakfast",price: this.serviceFormGroup.value["breakfastPrice"]["value"]})
       console.log(this.serviceFormGroup.value['breakfastPrice']);
     }
-
   }
 
   enableInputBreakfast() {
@@ -202,7 +203,6 @@ export class RegisterHomestayComponent implements OnInit {
         this.homestayLicenseFiles.indexOf(files),
         1
       );
-
     }
     if (
       this.homestayImageFiles.length >= 1 &&
@@ -253,26 +253,76 @@ export class RegisterHomestayComponent implements OnInit {
   // register submit
   result: string = '';
 
+  // autocomplete
+  // autocomplete Prediction
+  place: any;
 
+  filteredOptions!: Observable<predictions[]>;
+  predictions: any;
+
+  public getAutocomplete(event: any): void {
+    type predictions = Array<{ description: string }>;
+    this.place = event.target.value;
+    this.http.getAutoComplete(this.place).subscribe((data) => {
+      console.log(data);
+      const predictions: predictions = data['predictions'];
+      this.predictions = predictions;
+      console.log(this.predictions);
+    });
+  }
+  @ViewChild(MatAutocompleteTrigger) autocomplete!: MatAutocompleteTrigger;
+  @ViewChild('formField') autoCompleteFormField!: MatFormField;
+  ngAfterViewInit() {
+    var observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting)
+          console.log('Element is is not in screen');
+        this.autocomplete.closePanel();
+      },
+      { threshold: [1] }
+    );
+
+    observer.observe(this.autoCompleteFormField._elementRef.nativeElement);
+  }
+
+  // submit
   register() {
+    console.log('register');
     // homestay Image
     for (this.file of this.homestayImageFiles) {
-      console.log('file homestayimage name:', this.file.name);
-      const path = 'homestay/' + this.informationFormGroup.controls.homestayName.value +' ' + this.file.name ;
+      const path =
+        'homestay/' +
+        this.informationFormGroup.controls.homestayName.value +
+        ' ' +
+        this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
       this.homestayImages.push(this.file.name);
-      console.log('homestay image : ', this.homestayImages);
     }
 
     // homestayLicenseFiles
     for (this.file of this.homestayLicenseFiles) {
-      console.log('file homestay license name:', this.file.name);
-      const path = 'license/' +  this.informationFormGroup.controls.homestayName.value +' ' +this.file.name ;
+      const path =
+        'license/' +
+        this.informationFormGroup.controls.homestayName.value +
+        ' ' +
+        this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
       this.homestayLicense = this.file.name;
-      console.log('homestay License : ', this.homestayLicense);
     }
+    console.log('information : ', this.informationFormGroup.value);
+    console.log('homestay License : ', this.homestayLicense);
+    console.log('facility common : ', this.facilityFormGroup.value);
+    console.log('facility add : ', this.newFacility);
+    console.log('house rule : ', this.houseRuleFormGroup.value);
+    console.log('service common : ', this.serviceFormGroup.value);
+    console.log('service add : ', this.newService);
+    console.log('homestay image : ', this.homestayImages);
+    console.log('price : ', this.price);
   }
+}
+
+export class predictions {
+  description!: string;
 }

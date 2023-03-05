@@ -32,7 +32,13 @@
                       <div class="mb-3">
                         <h6 class="mb-0">Address <span class="text-danger">*</span></h6>
                         <input type="text" name="homstayAddressInput" class="form-control" required mdbInput mdbValidate
-                          formControlName="address">
+                          formControlName="address" [matAutocomplete]="auto" autocomplete="off" (input)="getAutocomplete($event)">
+
+                          <mat-autocomplete #auto="matAutocomplete" >
+                            <mat-option *ngFor="let place of predictions " [value]="place.description">
+                              {{place.description}}
+                            </mat-option>
+                          </mat-autocomplete>
                       </div>
                     </div>
                     <hr>
