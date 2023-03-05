@@ -36,6 +36,39 @@
                       </div>
                     </div>
                     <hr>
+                    <div class="mb-5">
+                      <div class="mb-3">
+                        <span>
+                          <h6 class=" text-break">Upload at a photo of your <span class="fw-bold fs-5">Homestay
+                              License</span>.<span class="text-danger">*</span></h6>
+
+                        </span>
+                      </div>
+
+
+                      <div ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
+                        (change)="onSelectHomestayLicense($event)" *ngIf="homestayLicenseFiles.length==0">
+                        <ngx-dropzone-label>
+                          <div>
+                            <i class="fas fa-cloud-upload-alt icon-upload"></i>
+                            <header>Drop files here or click to upload *</header>
+                          </div>
+                        </ngx-dropzone-label>
+                      </div>
+
+
+                      <div class="wrapper text-center" *ngFor="let f of homestayLicenseFiles">
+                        <ngx-dropzone-image-preview class=" overflow-hidden " ngProjectAs="ngx-dropzone-preview"
+                          [file]="f" [removable]="true" (removed)="onRemoveHomestayLicense(f)">
+                        </ngx-dropzone-image-preview>
+                        <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" (removed)="onRemoveHomestayLicense(f)">
+                          {{ f.name }}
+                        </ngx-dropzone-label>
+                      </div>
+
+
+                    </div>
+                    <hr>
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-reset" mat-raised-button type="reset">Reset</button>
                       <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
@@ -411,7 +444,8 @@
                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                           </div>
                         </div>
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
+                        <div
+                          class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
                           matRipple (click)="removeService(i)">
                           <i class="fa-solid fa-xmark"></i>
                         </div>
@@ -434,11 +468,10 @@
                   <!-- Button -->
                   <br>
                   <hr>
-                    <div class="add-btn d-flex flex-row ">
-                      <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext
-                        >Continue</button>
-                    </div>
+                  <div class="add-btn d-flex flex-row ">
+                    <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
+                    <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -479,6 +512,264 @@
 
     </mat-step>
     <!-- Service -->
+
+    <!-- Image -->
+    <mat-step editable>
+      <ng-template matStepLabel>Image</ng-template>
+      <form>
+
+        <h2 class="m-3">What does your homestay look like?</h2>
+
+        <div class="row w-100 m-0">
+          <div class="col-xxl-7">
+            <div class="input-content basic-information card">
+              <div class="add-input card-body ">
+                <div class="row">
+                  <div class="col">
+                    <div class="mb-5">
+                      <div>
+                        <p>
+                          <span class="fw-bold text-break">Upload at least 5 photos of your homestay.</span>
+                          <span class="text-break">The more you upload, the more likely you are to get bookings. You can
+                            add more
+                            later.</span>
+                        </p>
+                      </div>
+
+
+                      <div ngx-dropzone class="upload" [multiple]="true" [accept]="'image/*'"
+                        (change)="onSelectImageHomestay($event)">
+                        <ngx-dropzone-label>
+                          <div>
+                            <i class="fas fa-cloud-upload-alt icon-upload"></i>
+                            <header>Drop files here or click to upload *</header>
+                          </div>
+                        </ngx-dropzone-label>
+                      </div>
+                      <div *ngIf="homestayImageFiles.length">
+                        <br>
+                        <hr><br>
+                      </div>
+
+                      <div class="wrapper text-center" *ngFor="let f of homestayImageFiles">
+                        <ngx-dropzone-image-preview class=" overflow-hidden " ngProjectAs="ngx-dropzone-preview"
+                          [file]="f" [removable]="true" (removed)="onRemoveHomestayImage(f)">
+                        </ngx-dropzone-image-preview>
+                        <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" (removed)="onRemoveHomestayImage(f)">
+                          {{ f.name }}
+                        </ngx-dropzone-label>
+                      </div>
+
+
+                    </div>
+
+                    <hr>
+                    <div class="add-btn d-flex flex-row ">
+                      <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-1 d-none d-xl-block"></div>
+
+          <div class="col-xxl-4 d-none d-xl-block">
+            <div class="input-content card w-100 basic-information">
+              <div class="add-input card-body ">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fa-regular fa-heart"></i>
+                  </div>
+                  <div class="col-11">
+                    <div class="d-flex flex-column">
+                      <h5 class="text-break mb-4">What needs to be included in my address?</h5>
+                      <div>
+                        <ul class="mb-0">
+                          <li><span class="text-break">This name will be seen by passenger when they search for a place
+                              to stay.</span> </li>
+                          <li><span class="text-break">Include both your street name and number for the entire
+                              property</span> </li>
+                          <li><span class="text-break">Correctly spell the street name</span> </li>
+                          <li><span class="text-break">Use the physical address of the property, not your office or home
+                              address</span> </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+
+
+
+    </mat-step>
+    <!-- Image -->
+
+    <!-- Price -->
+    <mat-step editable>
+      <ng-template matStepLabel>Price</ng-template>
+      <form>
+        <div class="row w-100 justify-content-center">
+          <div class="col-8 ">
+            <h3 class="my-4">Set the price per night for this apartment</h3>
+            <div class="d-flex  flex-column">
+              <!-- Step 1 -->
+              <div class="input-content basic-information card">
+                <div class="add-input card-body pb-0 pt-3">
+                  <div class="row">
+                    <div class="col w-100 mb-5">
+                      <h5>How much do you want to charge per night?</h5>
+
+                      <div class="my-3">
+                        <h6 class="mb-0">Price guests pay </h6>
+                        <div class="input-group">
+                          <span class="input-group-text">VNĐ</span>
+                          <input type="number" min="0" class="form-control" name="price" [(ngModel)]="price"
+                            [ngModelOptions]="{standalone: true}" />
+                        </div>
+                        <p class="text-muted fs-6">Including taxes, commission and charges</p>
+
+                      </div>
+                      <div class="ps-4">
+                        <span class="fs-5"> <span class="text-muted ">5.00%</span> Staywithme.com commisson</span>
+                        <br>
+                        <hr>
+                        <span class="fs-5"><span class="text-muted">VNĐ {{ price }}</span> Your earnings (including
+                          taxes)</span>
+                      </div>
+                      <br>
+                      <hr>
+                      <div class="add-btn d-flex flex-row ">
+                        <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button
+                          matStepperNext>Continue</button>
+                      </div>
+
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+
+
+    </mat-step>
+    <!-- Price -->
+
+    <!-- Overview -->
+    <mat-step editable>
+      <ng-template matStepLabel>Overview</ng-template>
+      <form (ngSubmit)="register()">
+        <div>
+          <H1 style="color: red;text-align: center;">{{result}}</H1>
+        </div>
+        <div class="row w-100 justify-content-center">
+          <div class="col-8 ">
+            <h2 class="my-4">Overview Homestay</h2>
+            <div class="d-flex  flex-column">
+              <!-- Step 1 -->
+              <div class="input-content basic-information card">
+                <div class="add-input card-body pb-0 pt-3">
+                  <div class="row">
+                    <div class="col w-100">
+                      <div class="row">
+                        <div class="col-1 p-0 d-flex justify-content-center">
+                          <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <div class="col-10">
+                          <p>Step 1</p>
+                          <h5>Property details</h5>
+                          <p class="text-break">The basics. Add your homestay name, address, facilities and more.</p>
+                        </div>
+                        <div class="col-1 d-flex justify-content-center align-items-center p-0">
+                          <button mat-fab class="text-primary bg-body shadow-0 overflow-hidden" matRipple
+                            matRippleColor="darkgray" (click)="step1()">Edit</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+
+              <!-- Step 2 -->
+              <div class="input-content basic-information card">
+                <div class="add-input card-body pb-0 pt-3">
+                  <div class="row">
+                    <div class="col w-100">
+                      <div class="row">
+                        <div class="col-1 p-0 d-flex justify-content-center">
+                          <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <div class="col-9">
+                          <p>Step 2</p>
+                          <h5>Images</h5>
+                          <p class="text-break">Share some images of your homestay so passengers know what to expect.
+                          </p>
+                        </div>
+                        <div class="col-2 d-flex justify-content-center align-items-center p-0">
+                          <button mat-raised-button color="primary" class="px-1 w-100" (click)="step5()">Add
+                            Image</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <!-- Step 3 -->
+              <div class="input-content basic-information card">
+                <div class="add-input card-body pb-0 pt-3">
+                  <div class="row">
+                    <div class="col w-100">
+                      <div class="row">
+                        <div class="col-1 p-0 d-flex justify-content-center">
+                          <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <div class="col-10">
+                          <p>Step 3</p>
+                          <h5>Price</h5>
+                          <p class="text-break">Set the price per night for this homestay</p>
+                        </div>
+                        <div class="col-1 d-flex justify-content-center align-items-center p-0">
+                          <button mat-fab class="text-primary bg-body shadow-0 overflow-hidden" matRipple
+                            matRippleColor="darkgray" (click)="step6()">Edit</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="add-btn d-flex flex-row ">
+              <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
+              <button class="btn-next w-100 bg-success text-white"  mat-raised-button type="submit"
+                matStepperNext>Submit</button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+
+
+    </mat-step>
+    <!-- Overview -->
 
 
   </mat-stepper>
