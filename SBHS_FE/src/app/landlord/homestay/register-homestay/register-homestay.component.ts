@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/homestay.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-register-homestay',
@@ -17,7 +18,8 @@ export class RegisterHomestayComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private http: ServerHttpService
+    private http: ServerHttpService,
+    private storage: AngularFireStorage,
   ) {}
 
   // homestayName: string = '';
@@ -134,9 +136,7 @@ export class RegisterHomestayComponent implements OnInit {
       // homestayServices.push({name: "Breakfast",price: this.serviceFormGroup.value["breakfastPrice"]["value"]})
       console.log(this.serviceFormGroup.value['breakfastPrice']);
     }
-    this.router.navigate(['/Landlord/Homestay/Category/Overview'], {
-      relativeTo: this.route,
-    });
+
   }
 
   enableInputBreakfast() {
@@ -202,9 +202,7 @@ export class RegisterHomestayComponent implements OnInit {
         this.homestayLicenseFiles.indexOf(files),
         1
       );
-      console.log('file lenght slice', this.homestayLicenseFiles.length);
-      console.log('file array', this.homestayLicenseFiles);
-      console.log('file index', this.homestayLicenseFiles.indexOf(files));
+
     }
     if (
       this.homestayImageFiles.length >= 1 &&
@@ -254,5 +252,27 @@ export class RegisterHomestayComponent implements OnInit {
 
   // register submit
   result: string = '';
-  register() {}
+
+
+  register() {
+    // homestay Image
+    for (this.file of this.homestayImageFiles) {
+      console.log('file homestayimage name:', this.file.name);
+      const path = 'homestay/' + this.informationFormGroup.controls.homestayName.value +' ' + this.file.name ;
+      const fileRef = this.storage.ref(path);
+      this.storage.upload(path, this.file);
+      this.homestayImages.push(this.file.name);
+      console.log('homestay image : ', this.homestayImages);
+    }
+
+    // homestayLicenseFiles
+    for (this.file of this.homestayLicenseFiles) {
+      console.log('file homestay license name:', this.file.name);
+      const path = 'license/' +  this.informationFormGroup.controls.homestayName.value +' ' +this.file.name ;
+      const fileRef = this.storage.ref(path);
+      this.storage.upload(path, this.file);
+      this.homestayLicense = this.file.name;
+      console.log('homestay License : ', this.homestayLicense);
+    }
+  }
 }
