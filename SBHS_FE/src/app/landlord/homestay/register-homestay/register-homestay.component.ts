@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ServerHttpService } from 'src/app/services/homestay.service';
-import { RegisterHomestayPriceComponent } from '../register-homestay-price/register-homestay-price.component';
 
 @Component({
   selector: 'app-register-homestay',
@@ -31,10 +29,9 @@ export class RegisterHomestayComponent implements OnInit {
     number: ['', Validators.required],
 
   });
-  homestayName : string ="123";
+  homestayName : string ="";
   address : string ="";
   totalRoom : string ="";
-  city : string ="";
   informationForm() {
     // Lay value
 
@@ -42,9 +39,9 @@ export class RegisterHomestayComponent implements OnInit {
     this.homestayName = formInformationFormGroupValue.homestayName.value!;
     this.address = formInformationFormGroupValue.address.value!;
     this.totalRoom = formInformationFormGroupValue.number.value!;
-
-    console.log(this.homestayName,this.address)
-    console.log(this.informationFormGroup.value);
+    localStorage.setItem("homestayName",this.homestayName);
+    localStorage.setItem("address",this.address);
+    localStorage.setItem("totalRoom",this.totalRoom);
   }
 
   // Facility
@@ -56,6 +53,14 @@ export class RegisterHomestayComponent implements OnInit {
   facilityForm() {
     console.log(' this.newFacility.push', this.newFacility);
     console.log(this.facilityFormGroup.value);
+    let homestayFacilities: any = [];
+    if(this.facilityFormGroup.value["tv"] === true){
+      homestayFacilities.push({name:"tv",quantity:"2"})
+    }
+    if(this.facilityFormGroup.value["wifi"] === true){
+      homestayFacilities.push({name:"wifi",quantity:"2"})
+    }
+    localStorage.setItem("homestayFacilities",homestayFacilities)
   }
 
   // New Facility
@@ -97,6 +102,11 @@ export class RegisterHomestayComponent implements OnInit {
   serviceForm(){
     console.log(this.serviceFormGroup.value);
     console.log(this.newService);
+    let homestayServices : any =[];
+    if(this.serviceFormGroup.value["breakfast"] === true){
+      // homestayServices.push({name: "Breakfast",price: this.serviceFormGroup.value["breakfastPrice"]["value"]})
+      console.log(this.serviceFormGroup.value["breakfastPrice"])
+    }
   }
 
   enableInputBreakfast() {
@@ -128,5 +138,4 @@ export class RegisterHomestayComponent implements OnInit {
     this.newService.splice(i, 1);
     console.log('delete', this.newService.length + i);
   }
-
 }

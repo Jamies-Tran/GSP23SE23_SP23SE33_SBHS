@@ -19,7 +19,7 @@
                       <div class="mb-3">
                         <h6 class="mb-0">Homestay's Name <span class="text-danger">*</span></h6>
                         <input type="text" name="homestayNameInput" class="form-control" required mdbInput mdbValidate
-                          formControlName="homestayName">
+                          formControlName="homestayName" [(ngModel)]="homestayName">
                       </div>
                       <!-- Available Rooms -->
                       <div class="mb-3">
@@ -446,7 +446,7 @@
                     <form a#formour="ngForm">
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext routerLink="../Overview">Continue</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext routerLink="../Overview" >Continue</button>
                     </div>
 </form>
 
