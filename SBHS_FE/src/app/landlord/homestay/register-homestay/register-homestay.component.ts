@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-homestay',
@@ -10,7 +11,8 @@ import { MatStepper } from '@angular/material/stepper';
 })
 export class RegisterHomestayComponent implements OnInit {
   //
-  constructor(private _formBuilder: FormBuilder,  public dialog: MatDialog) {}
+  constructor(private _formBuilder: FormBuilder,  public dialog: MatDialog,private router: Router,
+    private route: ActivatedRoute) {}
 
   // homestayName: string = '';
   // totalRoom: string = '';
@@ -52,18 +54,17 @@ export class RegisterHomestayComponent implements OnInit {
     wifi: false,
     wifiAmount:[{ value: '', disabled: true }],
   });
-
+  homestayFacilities: Array<{name:string,quantity:string}> = [];
   facilityForm() {
     console.log(' this.newFacility.push', this.newFacility);
     console.log(this.facilityFormGroup.value);
-    let homestayFacilities: any = [];
     if(this.facilityFormGroup.value["tv"] === true){
-      homestayFacilities.push({name:"tv",quantity:"2"})
+      this.homestayFacilities.push({name:"tv",quantity:"2"})
     }
     if(this.facilityFormGroup.value["wifi"] === true){
-      homestayFacilities.push({name:"wifi",quantity:"2"})
+      this.homestayFacilities.push({name:"wifi",quantity:"2"})
     }
-    localStorage.setItem("homestayFacilities",homestayFacilities)
+    localStorage.setItem("homestayFacilities",JSON.stringify(this.homestayFacilities))
   }
   enableInputTv() {
     if (this.facilityFormGroup.controls.tv.value === true) {
@@ -125,7 +126,9 @@ export class RegisterHomestayComponent implements OnInit {
       // homestayServices.push({name: "Breakfast",price: this.serviceFormGroup.value["breakfastPrice"]["value"]})
       console.log(this.serviceFormGroup.value["breakfastPrice"])
     }
-  }
+    this.router.navigate(['/Landlord/Homestay/Category/Overview'], {
+      relativeTo: this.route})
+}
 
   enableInputBreakfast() {
     if (this.serviceFormGroup.controls.breakfast.value === true) {

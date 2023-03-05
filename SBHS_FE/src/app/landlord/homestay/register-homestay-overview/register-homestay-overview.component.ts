@@ -11,26 +11,26 @@ import { RegisterHomestayComponent } from '../register-homestay/register-homesta
 export class RegisterHomestayOverviewComponent implements OnInit{
  ngOnInit(): void {
  }
-  constructor(private http: ServerHttpService) {}
+  constructor(private http: ServerHttpService,public getHomestayinfo : RegisterHomestayComponent) {}
  result : string =""
   register(){
     let price = "123";
-
-    let address ="";
+    let homestayName = this.getHomestayinfo.homestayName;
+    let address =this.getHomestayinfo.address;
     let totalRoom ="";
     let city =""
-    console.log(localStorage.getItem("homestayFacilities"))
-    let homestayFacilities: any =localStorage.getItem("homestayFacilities");
+    let homestayFacilities: any =localStorage.getItem("homestayFacilities") ;
+    console.log(homestayFacilities)
     let homestayImages: Array<{imageUrl:string}>=[];
     homestayImages.push({imageUrl:"123"})
     let homestayServices: Array<{name: string,price: string, status:string}> =[];
     homestayServices.push({name:"breakfast",price:"123123",status:"true"})
 
-    this.http.registerHomestay(localStorage.getItem("homestayName")+"",address,totalRoom,city,homestayImages,homestayServices,homestayFacilities,price).subscribe((data) =>{
+    this.http.registerHomestay(homestayName,address,totalRoom,city,homestayImages,homestayServices,homestayFacilities,price).subscribe((data) =>{
       console.log(data);
       this.result = "Register Homestay Success"
     },(error =>{
-      this.result = "Register Homestay Fail!!!"
+      this.result = error
     }))
   }
   
