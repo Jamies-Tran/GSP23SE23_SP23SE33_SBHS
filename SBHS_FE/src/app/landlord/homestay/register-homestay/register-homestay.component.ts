@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/homestay.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormField } from '@angular/material/form-field';
 
@@ -24,14 +24,14 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private http: ServerHttpService,
     private storage: AngularFireStorage
-  ) {}
+  ) { }
 
   // homestayName: string = '';
   // totalRoom: string = '';
   // address: string = '';
   // city: string = '';
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   // information
 
@@ -44,16 +44,36 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   homestayName: string = '';
   address: string = '';
   totalRoom: string = '';
+  validateInformationForm(){
+    
+  }
   informationForm() {
     // Lay value
+    this.flag = false
+    
     console.log(this.informationFormGroup.value);
     const formInformationFormGroupValue = this.informationFormGroup.controls;
     this.homestayName = formInformationFormGroupValue.homestayName.value!;
     this.address = formInformationFormGroupValue.address.value!;
     this.totalRoom = formInformationFormGroupValue.number.value!;
-    localStorage.setItem('homestayName', this.homestayName);
-    localStorage.setItem('address', this.address);
-    localStorage.setItem('totalRoom', this.totalRoom);
+    if (this.homestayName === "") {
+      this.result = "Please enter homestay's name"
+      return
+    }
+    else if (this.address === "") {
+      this.result = "Please enter address"
+      console.log(this.address)
+      return
+    }
+    else if (this.totalRoom === "") {
+      this.result = "Please enter total room"
+      return
+    }
+    else if (this.homestayLicenseFiles.length < 1) {
+      this.result = "Please upload at a photo of your Homestay License"
+      return
+    }
+    else this.flag = true
   }
 
   // Facility
@@ -65,18 +85,14 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   });
   homestayFacilities: Array<{ name: string; quantity: string }> = [];
   facilityForm() {
-    console.log(' this.newFacility.push', this.newFacility);
     console.log(this.facilityFormGroup.value);
     if (this.facilityFormGroup.value['tv'] === true) {
-      this.homestayFacilities.push({ name: 'tv', quantity: '2' });
+      this.homestayFacilities.push({ name: 'tv', quantity: this.facilityFormGroup.value["tvAmount"]! });
     }
     if (this.facilityFormGroup.value['wifi'] === true) {
-      this.homestayFacilities.push({ name: 'wifi', quantity: '2' });
+      this.homestayFacilities.push({ name: 'wifi', quantity: this.facilityFormGroup.value["wifiAmount"]! });
     }
-    localStorage.setItem(
-      'homestayFacilities',
-      JSON.stringify(this.homestayFacilities)
-    );
+    console.log(this.homestayFacilities)
   }
   enableInputTv() {
     if (this.facilityFormGroup.controls.tv.value === true) {
@@ -98,13 +114,22 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
 
   addFacility() {
     this.newFacility.push({ name: '', status: false });
-    console.log('values', this.newFacility);
-    console.log('size', this.newFacility.length);
+    console.log(this.newFacility);
+    // console.log(this.newFacility[this.newFacility.length-1]);
+    // if(this.newFacility[this.newFacility.length-1]["status"] === true){
+    //   this.homestayFacilities.push({name: this.newFacility[this.newFacility.length-1]["name"],quantity: this.newFacility[this.newFacility.length-1]["price"]})
+    // }
+    // console.log(this.homestayFacilities)
   }
 
   removeFacility(i: any) {
     this.newFacility.splice(i, 1);
-    console.log('delete', this.newFacility.length + i);
+    // console.log(this.newFacility[i]);
+    // if(this.newFacility[i]["status"] === false){
+    //   this.homestayFacilities.splice(i+2,1)
+    // }
+    // this.homestayFacilities.splice(i+2,1)
+    // console.log(this.homestayFacilities)
   }
 
   // house rule
@@ -114,12 +139,15 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     checkIn: [''],
     checkOut: [''],
   });
-
+  homestayRules: any[] = [];
   houseRuleForm() {
     console.log(this.houseRuleFormGroup.value);
-    console.log(this.serviceFormGroup.value);
-
-    this.serviceForm();
+    if (this.houseRuleFormGroup.value["pet"] === true) {
+      this.homestayRules.push({ description: "non pet" })
+    }
+    if (this.houseRuleFormGroup.value["smoking"] === true) {
+      this.homestayRules.push({ description: "non smoking" })
+    }
   }
 
   // Service
@@ -129,14 +157,15 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     swimming: false,
     swimmingPrice: [{ value: '', disabled: true }],
   });
-
+  homestayServices: any[] = [];
   serviceForm() {
     console.log(this.serviceFormGroup.value);
     console.log(this.newService);
-    let homestayServices: any = [];
     if (this.serviceFormGroup.value['breakfast'] === true) {
-      // homestayServices.push({name: "Breakfast",price: this.serviceFormGroup.value["breakfastPrice"]["value"]})
-      console.log(this.serviceFormGroup.value['breakfastPrice']);
+      this.homestayServices.push({ name: "Breakfast", price: this.serviceFormGroup.value['breakfastPrice'] })
+    }
+    if (this.serviceFormGroup.value['swimming'] === true) {
+      this.homestayServices.push({ name: "Swimming", price: this.serviceFormGroup.value['swimmingPrice'] })
     }
   }
 
@@ -188,7 +217,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
 
   // image name file
   public homestayLicense!: string;
-  public homestayImages: string[] = [];
+  public homestayImages: any[] = [];
 
   // lấy file hình
   onSelectHomestayLicense(files: any) {
@@ -212,6 +241,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     } else {
       this.informationFormGroup.patchValue({ homestayLicense: false });
     }
+    
   }
 
   // xóa file hình
@@ -231,6 +261,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     } else {
       this.informationFormGroup.patchValue({ homestayLicense: false });
     }
+    
   }
 
   // lấy file hình
@@ -238,6 +269,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     console.log('onselect: ', files);
     // set files
     this.homestayImageFiles.push(...files.addedFiles);
+    
   }
 
   // xóa file hình
@@ -284,7 +316,8 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
 
     observer.observe(this.autoCompleteFormField._elementRef.nativeElement);
   }
-
+  // validate
+  flag = false;
   // submit
   register() {
     console.log('register');
@@ -297,7 +330,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
-      this.homestayImages.push(this.file.name);
+      this.homestayImages.push({imageUrl: this.file.name});
     }
 
     // homestayLicenseFiles
@@ -311,15 +344,16 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       this.storage.upload(path, this.file);
       this.homestayLicense = this.file.name;
     }
-    console.log('information : ', this.informationFormGroup.value);
-    console.log('homestay License : ', this.homestayLicense);
-    console.log('facility common : ', this.facilityFormGroup.value);
-    console.log('facility add : ', this.newFacility);
-    console.log('house rule : ', this.houseRuleFormGroup.value);
-    console.log('service common : ', this.serviceFormGroup.value);
-    console.log('service add : ', this.newService);
-    console.log('homestay image : ', this.homestayImages);
-    console.log('price : ', this.price);
+    console.log(this.homestayImages)
+    
+    if (this.flag === true) {
+      this.http.registerHomestay(this.homestayName, this.address, this.totalRoom,
+        this.homestayLicense, this.homestayImages, this.homestayServices, this.homestayFacilities, this.price, this.homestayRules).subscribe((data => {
+          this.result = "Register Homestay Success"
+        }), error => {
+          this.result = error
+        })
+    }
   }
 }
 

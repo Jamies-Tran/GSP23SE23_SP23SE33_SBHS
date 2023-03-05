@@ -25,7 +25,10 @@ export class ActionPendingComponent {
       (data) => {
         if (data != null) {
           this.message = 'Account have accept';
+          
           this.openDialogSuccess();
+          location.reload();
+          
         }
         console.log(data);
       },
@@ -49,7 +52,7 @@ export class ActionPendingComponent {
         if (data != null) {
           this.message = 'Account have reject';
           this.openDialogSuccess();
-          // location.reload();
+          location.reload();
         }
       },
       (error) => {

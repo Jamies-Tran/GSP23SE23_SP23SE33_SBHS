@@ -161,8 +161,9 @@ export class RequestAccountLandlordComponent implements OnInit {
         id: this.Id,
         username: this.username,
       },
-      disableClose: true,
+      disableClose: true   
     });
+    
   }
 }
 

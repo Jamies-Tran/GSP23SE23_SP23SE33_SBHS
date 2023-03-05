@@ -64,24 +64,41 @@ export class RegisterComponent implements OnInit , AfterViewInit{
   public valid() {
     this.validMail = this.filter.test(this.emailFormControl.value+"");
     if (this.usernameFormControl.value == '') {
+      this.message = "Username is used"
       return;
     } else if (this.addressFormControl.value == '') {
+      this.message = "Please enter your address"
       return;
     } else if (this.dobFormControl.value == '') {
+      this.message = "Please select your birthday"
       return;
     } else if (this.idFormControl.value == '') {
+      this.message = "Please enter your ID National"
       return;
     } else if (this.phoneFormControl.value == '') {
+      this.message = "Please Enter your phone or your phone is used"
       return;
     }
      else if (this.passwordFormControl.value != this.confirmPasswordFormControl.value) {
+      this.message = "Check confirm password"
       return;
     }else if(this.passwordFormControl.value == ''){
+      this.message = "Please enter your password"
       return;
     }
     else if (this.validMail == false) {
+      this.message = "Incorrect Email"
       return;
-    } else return true;
+    }
+    else if(this.front == ''){
+      this.message = "Please upload your front Citizen ID"
+      return;
+    }
+    else if(this.back == ''){
+      this.message = "Please upload your back Citizen ID"
+      return;
+    }
+     else return true;
   }
   getEmailErrorMessage() {
     if (this.emailFormControl.hasError('required')) {
@@ -185,14 +202,14 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     if (this.valid() == true) {
     this.http
       .registerLandlord(
-        this.addressFormControl.value + '',
+        this.addressFormControl.value!,
         this.dob,
-        this.emailFormControl.value + '',
+        this.emailFormControl.value!,
         this.gender,
-        this.idFormControl.value + '',
-        this.passwordFormControl.value + '',
-        this.phoneFormControl.value + '',
-        this.usernameFormControl.value + '',
+        this.idFormControl.value!,
+        this.passwordFormControl.value!,
+        this.phoneFormControl.value!,
+        this.usernameFormControl.value!,
         this.back,
         this.front
       )
@@ -221,7 +238,7 @@ export class RegisterComponent implements OnInit , AfterViewInit{
         this.message = error.message;
         this.openDialogMessage();
       });
-    } else console.log("register fail")
+    } else this.openDialogMessage();
   }
 
   openDialogMessage() {

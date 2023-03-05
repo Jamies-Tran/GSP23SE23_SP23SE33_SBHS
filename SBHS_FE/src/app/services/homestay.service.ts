@@ -60,7 +60,8 @@ export class ServerHttpService {
     homestayImages: Array<any>,
     homestayServices: Array<any>,
     homestayFacilities: Array<any>,
-    price: string
+    price: string,
+    homestayRules:Array<any>
   ) {
     var value = {
       address,
@@ -68,6 +69,7 @@ export class ServerHttpService {
       businessLicense,
       homestayFacilities,
       homestayImages,
+      homestayRules,
       homestayServices,
       name,
       price
@@ -83,6 +85,30 @@ export class ServerHttpService {
     const url = `${this.REST_API_SERVER}/api/map?place=${place}`;
     return this.httpClient
       .get<any>(url, this.httpOptionsAutocomplete)
+      .pipe(catchError(this.handleError));
+  }
+  public getListHomestay() {
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=Pending&isNextPage=true&isPreviousPage=true&page=0&param=a&size=100`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  public acceptHomestay(
+    name :string
+  ) {
+    const url =
+      `${this.REST_API_SERVER}/api/admin/homestay-activate?homestayStyle=HOMESTAY&name=`+name+``;
+    return this.httpClient
+      .put<any>(url, "accept",this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  public rejectHomestay(
+    name: string
+  ) {
+    const url =
+      `${this.REST_API_SERVER}api/admin/homestay-reject?homestayStyle=HOMESTAY&name=`+name+``;
+    return this.httpClient
+      .put<any>(url, "false",this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 }

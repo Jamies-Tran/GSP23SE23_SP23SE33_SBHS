@@ -15,6 +15,9 @@
                 <div class="row">
                   <div class="col">
                     <div class="mb-5">
+                      <div>
+                        <H1 style="color: red;text-align: center;">{{result}}</H1>
+                      </div>
                       <!-- Homestay's Name -->
                       <div class="mb-3">
                         <h6 class="mb-0">Homestay's Name <span class="text-danger">*</span></h6>
@@ -32,13 +35,14 @@
                       <div class="mb-3">
                         <h6 class="mb-0">Address <span class="text-danger">*</span></h6>
                         <input type="text" name="homstayAddressInput" class="form-control" required mdbInput mdbValidate
-                          formControlName="address" [matAutocomplete]="auto" autocomplete="off" (input)="getAutocomplete($event)">
+                          formControlName="address" [matAutocomplete]="auto" autocomplete="off"
+                          (input)="getAutocomplete($event)">
 
-                          <mat-autocomplete #auto="matAutocomplete" >
-                            <mat-option *ngFor="let place of predictions " [value]="place.description">
-                              {{place.description}}
-                            </mat-option>
-                          </mat-autocomplete>
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option *ngFor="let place of predictions " [value]="place.description">
+                            {{place.description}}
+                          </mat-option>
+                        </mat-autocomplete>
                       </div>
                     </div>
                     <hr>
@@ -75,10 +79,17 @@
 
                     </div>
                     <hr>
-                    <div class="add-btn d-flex flex-row ">
-                      <button class="btn-reset" mat-raised-button type="reset">Reset</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
-                    </div>
+                    <ng-container [ngSwitch]="true">
+                      <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === false">
+                        <button class="btn-reset" mat-raised-button type="reset">Reset</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button>Continue</button>
+                      </div>
+                      <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
+                        <button class="btn-reset" mat-raised-button type="reset">Reset</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext >Continue</button>
+                      </div>
+                    </ng-container>
+                    
                   </div>
                 </div>
               </div>
@@ -422,62 +433,64 @@
                       </div>
                       <div class="col-xxl-1 col-xl-1 col-lg-1"></div>
                     </div>
-                  </form>
-                  <br>
-                  <hr>
 
-                  <!-- Additional Service -->
-                  <h5 class="mb-2">Additional Service</h5>
-                  <div class="additional-facility">
-                    <div *ngFor="let value of newService; let i = index">
-                      <div class="row mb-2">
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center justify-content-center p-0"><i
-                            class="fa-solid fa-plus"></i></div>
-                        <div class="col-xxl-4 col-xl-4 col-lg-4 ">
-                          <input name="newService" type="text" class="form-control" placeholder="New Service"
-                            [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"
-                            (required)="value.status ? 'required' : ''" />
-                        </div>
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
-                          <mat-checkbox color="primary" [(ngModel)]="value.status"
-                            name="valueStatus{{i}}"></mat-checkbox>
-                        </div>
-                        <div class="col-xxl-5 col-xl-5 col-lg-5 ">
-                          <div class="col-input">
-                            <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
-                              minlength="4" maxlength="10" pattern="[0~9]*" min="1" class="form-control" matInput
-                              placeholder="Price" [(ngModel)]="value.price" (required)="value.status ? 'true' : 'false'"
-                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                    <br>
+                    <hr>
+
+                    <!-- Additional Service -->
+                    <h5 class="mb-2">Additional Service</h5>
+                    <div class="additional-facility">
+                      <div *ngFor="let value of newService; let i = index">
+                        <div class="row mb-2">
+                          <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center justify-content-center p-0">
+                            <i class="fa-solid fa-plus"></i></div>
+                          <div class="col-xxl-4 col-xl-4 col-lg-4 ">
+                            <input name="newService" type="text" class="form-control" placeholder="New Service"
+                              [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"
+                              (required)="value.status ? 'required' : ''" />
+                          </div>
+                          <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
+                            <mat-checkbox color="primary" [(ngModel)]="value.status"
+                              name="valueStatus{{i}}"></mat-checkbox>
+                          </div>
+                          <div class="col-xxl-5 col-xl-5 col-lg-5 ">
+                            <div class="col-input">
+                              <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
+                                minlength="4" maxlength="10" pattern="[0~9]*" min="1" class="form-control" matInput
+                                placeholder="Price" [(ngModel)]="value.price"
+                                (required)="value.status ? 'true' : 'false'"
+                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
+                          </div>
+                          <div
+                            class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
+                            matRipple (click)="removeService(i)">
+                            <i class="fa-solid fa-xmark"></i>
                           </div>
                         </div>
-                        <div
-                          class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
-                          matRipple (click)="removeService(i)">
-                          <i class="fa-solid fa-xmark"></i>
+                      </div>
+
+                      <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
+                        (click)="addService()">
+                        <div class="row w-100">
+                          <div class="col-xxl-2 col-xl-2 col-lg-2 d-flex align-items-center justify-content-center p-0">
+                            <i class="fa-solid fa-plus"></i>
+                          </div>
+                          <div class="col-xxl-8 col-xl-8 col-lg-8 d-flex align-items-center  ">
+                            <h6 class="m-0">Add Service</h6>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
-                      (click)="addService()">
-                      <div class="row w-100">
-                        <div class="col-xxl-2 col-xl-2 col-lg-2 d-flex align-items-center justify-content-center p-0">
-                          <i class="fa-solid fa-plus"></i>
-                        </div>
-                        <div class="col-xxl-8 col-xl-8 col-lg-8 d-flex align-items-center  ">
-                          <h6 class="m-0">Add Service</h6>
-                        </div>
-                      </div>
+                    <!-- Button -->
+                    <br>
+                    <hr>
+                    <div class="add-btn d-flex flex-row ">
+                      <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
                     </div>
-                  </div>
-
-                  <!-- Button -->
-                  <br>
-                  <hr>
-                  <div class="add-btn d-flex flex-row ">
-                    <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                    <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -533,6 +546,9 @@
                 <div class="row">
                   <div class="col">
                     <div class="mb-5">
+                      <div>
+                        <H1 style="color: red;text-align: center;">{{result}}</H1>
+                      </div>
                       <div>
                         <p>
                           <span class="fw-bold text-break">Upload at least 5 photos of your homestay.</span>
@@ -631,6 +647,9 @@
               <div class="input-content basic-information card">
                 <div class="add-input card-body pb-0 pt-3">
                   <div class="row">
+                    <div>
+                      <H1 style="color: red;text-align: center;">{{result}}</H1>
+                    </div>
                     <div class="col w-100 mb-5">
                       <h5>How much do you want to charge per night?</h5>
 
@@ -764,7 +783,7 @@
             <br>
             <div class="add-btn d-flex flex-row ">
               <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-              <button class="btn-next w-100 bg-success text-white"  mat-raised-button type="submit"
+              <button class="btn-next w-100 bg-success text-white" mat-raised-button type="submit"
                 matStepperNext>Submit</button>
             </div>
           </div>
