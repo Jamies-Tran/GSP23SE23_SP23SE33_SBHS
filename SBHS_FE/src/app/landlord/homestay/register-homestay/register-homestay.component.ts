@@ -185,6 +185,7 @@ export class RegisterHomestayComponent implements OnInit {
   homestayLicenseFiles: File[] = [];
   homestayImageFiles: File[] = [];
 
+  // image name file
   public homestayLicense!: string;
   public homestayImages: string[] = [];
 

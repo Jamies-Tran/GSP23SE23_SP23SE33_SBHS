@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { RequestAccountLandlordComponent } from './request-account-landlord/request-account-landlord.component';
 import { AccountLandlordDetailComponent } from './request-account-landlord/account-landlord-detail/account-landlord-detail.component';
+import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
+import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
 
 const routes: Routes = [
   {
@@ -21,7 +23,20 @@ const routes: Routes = [
             component: AccountLandlordDetailComponent
           }
         ]
-      }
+      },
+      {
+        path: 'Homestay',
+        component: RequestHomestayComponent,
+      },
+      {
+        path:'Homestay',
+        children:[
+          {
+            path: 'HomestayDetail',
+            component: HomestayDetailComponent
+          }
+        ]
+      },
     ],
   },
 ];

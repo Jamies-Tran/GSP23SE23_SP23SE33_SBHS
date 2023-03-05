@@ -130,20 +130,10 @@ export class RequestAccountLandlordComponent implements OnInit {
     this.page = event;
     this.valuesBanned;
   }
-  onTableSizeChangeBanned(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
-    this.valuesBanned;
-  }
 
   // Active
   onTableDataChangeActive(event: any) {
     this.page = event;
-    this.valuesActive;
-  }
-  onTableSizeChangeActive(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
     this.valuesActive;
   }
 
@@ -152,11 +142,7 @@ export class RequestAccountLandlordComponent implements OnInit {
     this.page = event;
     this.valuesReject;
   }
-  onTableSizeChangeReject(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
-    this.valuesReject;
-  }
+
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {

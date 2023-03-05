@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="header">
-    <h1>Landlord Management</h1>
+    <h1>Homestay Management</h1>
   </div>
 
   <div class="row">
@@ -27,12 +27,12 @@
               totalItems: count
               };
               let i = index" >
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.id}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.name}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.createdDate}}</td>
                   <!-- <td>
                 <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
@@ -43,7 +43,7 @@
                   (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
 
               </td> -->
-                  <td class="text-center"><mat-slide-toggle name="isChecked{{i}}" (click)="onItemSelector(post.id, post.username)"
+                  <td class="text-center"><mat-slide-toggle name="isChecked{{i}}" (click)="onItemSelector(post.id, post.name)"
                       (click)="openDialogAction()"></mat-slide-toggle></td>
                 </tr>
 
@@ -111,12 +111,12 @@
 
           ;
           let i = index" >
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.id}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.name}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.createdDate}}</td>
 
 
                   <td class="text-center">
@@ -125,7 +125,7 @@
                     class="fa-solid fa-eye"></i></button>
                 <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
                   (click)="accept()"><i class="fa-solid fa-check"></i></button> -->
-                    <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
+                    <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.name);"
                       (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
                   </td>
                 </tr>
@@ -190,19 +190,19 @@
             currentPage: page,
             totalItems: count};
             let i = index" >
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.id}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.name}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.createdDate}}</td>
                   <td class="text-center">
                     <!-- <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                       routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
                         class="fa-solid fa-eye"></i></button> -->
-                    <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
+                    <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.name);"
                       (click)="accept()"><i class="fa-solid fa-check"></i></button>
-                    <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
+                    <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.name);"
                       (click)="reject()"><i class="fa-solid fa-xmark"></i></button>
                   </td>
                 </tr>
@@ -269,19 +269,19 @@
 
           ;
           let i = index" >
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.id}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.name}}</td>
+                  <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
+                  (click)="onItemSelector(post.id, post.name)">{{post.createdDate}}</td>
 
 
                   <td class="text-center">
                     <!-- <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                       routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
                         class="fa-solid fa-eye"></i></button> -->
-                    <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.username);"
+                    <button mat-icon-button color="accent" (click)="onItemSelector(post.id, post.name);"
                       (click)="accept()"><i class="fa-solid fa-check"></i></button>
                     <!-- <button mat-icon-button color="warn" (click)="onItemSelector(post.id, post.username);"
                       (click)="reject()"><i class="fa-solid fa-xmark"></i></button> -->

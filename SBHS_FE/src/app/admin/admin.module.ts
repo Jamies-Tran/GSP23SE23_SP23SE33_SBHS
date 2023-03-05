@@ -20,10 +20,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
+import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
 
 
 @NgModule({
-  declarations: [AdminComponent, RequestAccountLandlordComponent, AccountLandlordDetailComponent],
+  declarations: [AdminComponent, RequestAccountLandlordComponent, AccountLandlordDetailComponent, RequestHomestayComponent, HomestayDetailComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

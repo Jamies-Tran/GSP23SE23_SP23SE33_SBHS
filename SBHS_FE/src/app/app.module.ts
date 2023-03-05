@@ -86,6 +86,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { SuccessComponent } from './pop-up/success/success.component';
 import { MessageComponent } from './pop-up/message/message.component';
 import { RegisterHomestayOverviewComponent } from './landlord/homestay/register-homestay-overview/register-homestay-overview.component';
+import { PendingHomestayComponent } from './pop-up/pending-homestay/pending-homestay.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -112,6 +113,7 @@ export const MY_DATE_FORMATS = {
     TestThreeComponent,
     SuccessComponent,
     MessageComponent,
+    PendingHomestayComponent,
   ],
   imports: [
     BrowserModule,

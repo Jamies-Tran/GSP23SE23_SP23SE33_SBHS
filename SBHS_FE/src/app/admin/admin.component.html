@@ -25,10 +25,33 @@
               <div class="w-100 overflow-auto h-100 main-content" id="left">
                 <mat-nav-list>
                   <!-- items -->
+                  <!--  Dashboard-->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0" [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                    routerLink="/Admin/Dashboard" routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">dashboard</mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Dashboard</span>
+                  </mat-list-item>
+                  <!-- items -->
+                  <!--  Landlord Management-->
                   <mat-list-item class="sidenav-nav-link w-100 p-0" [style.text-align]="!isExpanded ? 'center' : 'unset'"
                     routerLink="/Admin/RequestAccountLandlord" routerLinkActive="active">
                     <mat-icon class="sidenav-link-icon text-dark" matListItemIcon [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">groups</mat-icon>
                     <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Landlord Management</span>
+                  </mat-list-item>
+                    <!-- items -->
+                  <!--  Homestay-->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0" [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                    routerLink="/Admin/Homestay" routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">add_home</mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Homestay</span>
+                  </mat-list-item>
+
+                  <!-- items -->
+                  <!--  Special Day-->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0" [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                    routerLink="/Admin/SpecialDay" routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">calendar_month</mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Special Day</span>
                   </mat-list-item>
 
                 </mat-nav-list>
