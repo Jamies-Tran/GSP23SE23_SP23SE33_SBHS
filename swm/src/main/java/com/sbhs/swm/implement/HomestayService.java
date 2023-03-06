@@ -1,5 +1,6 @@
 package com.sbhs.swm.implement;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,7 +184,7 @@ public class HomestayService implements IHomestayService {
                     homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.previousPageable(), name);
                 }
                 break;
-            case "Homestay_OWNER":
+            case "HOMESTAY_OWNER":
                 homestayPage = homestayRepo.findHomestaysByLandlordName(pageable, name);
                 if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
                     homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.nextPageable(), name);
@@ -363,25 +364,49 @@ public class HomestayService implements IHomestayService {
     // }
 
     @Override
-    public List<String> getAllHomestayFacilityNames() {
-        List<String> homestayFacilityNames = homestayFacilityRepo.getHomestayFacilityDistincNames();
-
-        return homestayFacilityNames;
+    public List<String> getAllHomestayFacilityNames(String homestayType) {
+        List<String> facilityNames = new ArrayList<>();
+        switch (homestayType.toUpperCase()) {
+            case "HOMESTAY":
+                facilityNames = homestayFacilityRepo.getHomestayFacilityDistincNames();
+                break;
+            case "BLOC":
+                facilityNames = homestayFacilityRepo.getBlocFacilityDistincNames();
+                break;
+        }
+        return facilityNames;
     }
 
     @Override
-    public List<String> getAllHomestayServiceNames() {
-        List<String> homestayServiceNames = homestayServiceRepo.getHomestayServiceDistincNames();
+    public List<String> getAllHomestayServiceNames(String homestayType) {
+        List<String> serviceNames = new ArrayList<>();
+        switch (homestayType.toUpperCase()) {
+            case "HOMESTAY":
+                serviceNames = homestayServiceRepo.getHomestayServiceDistincNames();
+                break;
+            case "BLOC":
+                serviceNames = homestayServiceRepo.getBlocServiceDistincNames();
+                break;
+        }
 
-        return homestayServiceNames;
+        return serviceNames;
+
     }
 
     @Override
-    public Long getHighestPriceOfHomestayService() {
-        List<Long> homestayServicePriceList = homestayServiceRepo.getHomestayServiceOrderByPrice();
+    public Long getHighestPriceOfHomestayService(String homestayType) {
+        List<Long> servicePriceList = new ArrayList<>();
+        switch (homestayType) {
+            case "HOMESTAY":
+                servicePriceList = homestayServiceRepo.getHomestayServiceOrderByPrice();
+                break;
+            case "BLOC":
+                servicePriceList = homestayServiceRepo.getBlocServiceOrderByPrice();
+                break;
+        }
 
-        if (!homestayServicePriceList.isEmpty()) {
-            return homestayServicePriceList.get(0);
+        if (!servicePriceList.isEmpty()) {
+            return servicePriceList.get(0);
         } else {
             return 0L;
         }
@@ -389,8 +414,16 @@ public class HomestayService implements IHomestayService {
     }
 
     @Override
-    public Long getHighestPriceOfHomestay() {
-        List<Long> homestayPriceList = homestayRepo.getHomestayOrderByPrice();
+    public Long getHighestPriceOfHomestay(String homestayType) {
+        List<Long> homestayPriceList = new ArrayList<>();
+        switch (homestayType.toUpperCase()) {
+            case "HOMESTAY":
+                homestayPriceList = homestayRepo.getHomestayOrderByPrice();
+                break;
+            case "BLOC":
+                homestayPriceList = homestayRepo.getAllHomestayOrderByPrice();
+                break;
+        }
         if (!homestayPriceList.isEmpty()) {
             return homestayPriceList.get(0);
         } else {

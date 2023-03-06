@@ -12,7 +12,7 @@ import com.sbhs.swm.models.Homestay;
 
 public interface HomestayRepo extends JpaRepository<Homestay, Long> {
 
-    @Query(value = "select h from Homestay h where h.status = 'ACTIVE'")
+    @Query(value = "select h from Homestay h where h.status = 'ACTIVE' and h.bloc = null")
     List<Homestay> getAllAvailableHomestay();
 
     @Query(value = "select h from Homestay h where h.name = :name")
@@ -27,7 +27,7 @@ public interface HomestayRepo extends JpaRepository<Homestay, Long> {
     @Query(value = "select h from Homestay h where h.bloc.name = :blocName")
     Page<Homestay> findHomestayByBlocName(Pageable pageable, @Param("blocName") String blocName);
 
-    @Query(value = "select distinct h.cityProvince from Homestay h where h.status = 'ACTIVE'")
+    @Query(value = "select distinct h.cityProvince from Homestay h where h.status = 'ACTIVE' and h.bloc = null")
     List<String> getHomestayCityOrProvince();
 
     @Query(value = "select count(h.cityProvince) from Homestay h where h.cityProvince = :location and h.bloc = null and h.status = 'ACTIVE'")
@@ -45,6 +45,9 @@ public interface HomestayRepo extends JpaRepository<Homestay, Long> {
     @Query(value = "select h from Homestay h where h.address = :address")
     Optional<Homestay> findHomestayByAddress(@Param("address") String address);
 
-    @Query(value = "select h.price from Homestay h where h.status = 'ACTIVE' order by h.price desc")
+    @Query(value = "select h.price from Homestay h where h.status = 'ACTIVE' and h.bloc = null order by h.price desc")
     List<Long> getHomestayOrderByPrice();
+
+    @Query(value = "select h.price from Homestay h where h.status = 'ACTIVE' order by h.price desc")
+    List<Long> getAllHomestayOrderByPrice();
 }

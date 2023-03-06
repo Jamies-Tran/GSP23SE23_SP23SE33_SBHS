@@ -1,5 +1,6 @@
 package com.sbhs.swm.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +77,7 @@ public class HomestayController {
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
                 homestayDtos.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));
-                HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
+                HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos, null,
                                 homestays.getPageable().getPageNumber());
 
                 return new ResponseEntity<HomestayListPagingDto>(homestayResponseListDto, HttpStatus.OK);
@@ -134,7 +135,7 @@ public class HomestayController {
                                 isNextPage, isPreviousPage);
                 List<HomestayResponseDto> responseHomestayList = homestays.getContent().stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
-                HomestayListPagingDto responseHomestays = new HomestayListPagingDto(responseHomestayList,
+                HomestayListPagingDto responseHomestays = new HomestayListPagingDto(responseHomestayList, null,
                                 homestays.getNumber());
 
                 return new ResponseEntity<HomestayListPagingDto>(responseHomestays, HttpStatus.OK);
@@ -161,41 +162,68 @@ public class HomestayController {
                         @RequestParam boolean isPreviousPage) {
                 if ((filter.getFilterOption() != null)
                                 || (filter.getFilterOption() == null && filter.getSearchString() == null)) {
-                        if (filter.getHomestayType().equalsIgnoreCase("homestay")) {
-                                PagedListHolder<Homestay> homestays = homestayService.getHomestayListFiltered(
-                                                filter.getFilterOption(), page, size, isNextPage, isPreviousPage);
-                                List<HomestayResponseDto> homestayResponseList = homestays.getPageList().stream()
-                                                .map(h -> modelMapper.map(h, HomestayResponseDto.class))
-                                                .collect(Collectors.toList());
-                                homestayResponseList.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));
-                                HomestayListPagingDto homestayListPagingDto = new HomestayListPagingDto(
-                                                homestayResponseList,
-                                                homestays.getPage());
-
-                                return new ResponseEntity<HomestayListPagingDto>(homestayListPagingDto, HttpStatus.OK);
-                        } else if (filter.getHomestayType().equalsIgnoreCase("bloc")) {
-                                PagedListHolder<BlocHomestay> blocs = homestayService.getBlocListFiltered(
-                                                filter.getFilterOption(), page, size, isNextPage, isPreviousPage);
-                                List<BlocHomestayResponseDto> blocResponseDtos = blocs.getPageList().stream()
-                                                .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
-                                                .collect(Collectors.toList());
-                                BlocHomestayListPagingDto blocHomestayListPaging = new BlocHomestayListPagingDto(
-                                                blocResponseDtos, blocs.getPage());
-                                return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPaging,
-                                                HttpStatus.OK);
+                        HomestayListPagingDto homestayListPagingDto = new HomestayListPagingDto();
+                        switch (filter.getHomestayType().toUpperCase()) {
+                                case "HOMESTAY":
+                                        PagedListHolder<Homestay> homestays = homestayService.getHomestayListFiltered(
+                                                        filter.getFilterOption(), page, size, isNextPage,
+                                                        isPreviousPage);
+                                        List<HomestayResponseDto> homestayResponseList = homestays.getPageList()
+                                                        .stream()
+                                                        .map(h -> modelMapper.map(h, HomestayResponseDto.class))
+                                                        .collect(Collectors.toList());
+                                        homestayResponseList.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));
+                                        homestayListPagingDto.setHomestays(homestayResponseList);
+                                        homestayListPagingDto.setBlocs(new ArrayList<>());
+                                        homestayListPagingDto.setPageNumber(homestays.getPage());
+                                        break;
+                                case "BLOC":
+                                        PagedListHolder<BlocHomestay> blocs = homestayService.getBlocListFiltered(
+                                                        filter.getFilterOption(), page, size, isNextPage,
+                                                        isPreviousPage);
+                                        List<BlocHomestayResponseDto> blocResponseList = blocs.getPageList().stream()
+                                                        .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
+                                                        .collect(Collectors.toList());
+                                        homestayListPagingDto.setBlocs(blocResponseList);
+                                        homestayListPagingDto.setHomestays(new ArrayList<>());
+                                        homestayListPagingDto.setPageNumber(blocs.getPage());
+                                        break;
                         }
+                        // if (filter.getHomestayType().equalsIgnoreCase("homestay")) {
+                        // PagedListHolder<Homestay> homestays =
+                        // homestayService.getHomestayListFiltered(
+                        // filter.getFilterOption(), page, size, isNextPage, isPreviousPage);
+                        // List<HomestayResponseDto> homestayResponseList =
+                        // homestays.getPageList().stream()
+                        // .map(h -> modelMapper.map(h, HomestayResponseDto.class))
+                        // .collect(Collectors.toList());
+                        // homestayResponseList.forEach(h ->
+                        // h.setAddress(h.getAddress().split("-")[0]));
+                        // homestayListPagingDto.setHomestays(homestayResponseList);
+                        // homestayListPagingDto.setPageNumber(homestays.getPage());
 
+                        // } else if (filter.getHomestayType().equalsIgnoreCase("bloc")) {
+                        // PagedListHolder<BlocHomestay> blocs = homestayService.getBlocListFiltered(
+                        // filter.getFilterOption(), page, size, isNextPage, isPreviousPage);
+                        // List<BlocHomestayResponseDto> blocResponseList = blocs.getPageList().stream()
+                        // .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
+                        // .collect(Collectors.toList());
+                        // homestayListPagingDto.setBlocs(blocResponseList);
+                        // homestayListPagingDto.setPageNumber(blocs.getPage());
+
+                        // }
+                        return new ResponseEntity<HomestayListPagingDto>(homestayListPagingDto, HttpStatus.OK);
                 }
 
                 return new ResponseEntity<String>("Unimplemented", HttpStatus.NOT_FOUND);
         }
 
         @GetMapping("/user/additional-filter")
-        public ResponseEntity<?> getAdditionalHomestayFilterInformation() {
-                List<String> homestayFactilityNames = homestayService.getAllHomestayFacilityNames();
-                List<String> homestayServiceNames = homestayService.getAllHomestayServiceNames();
-                Long homestayHighestPrice = homestayService.getHighestPriceOfHomestay();
-                Long homestayServiceHighestPrice = homestayService.getHighestPriceOfHomestayService();
+        public ResponseEntity<?> getAdditionalHomestayFilterInformation(@RequestParam String homestayType) {
+                List<String> homestayFactilityNames = homestayService.getAllHomestayFacilityNames(homestayType);
+                List<String> homestayServiceNames = homestayService.getAllHomestayServiceNames(homestayType);
+                Long homestayHighestPrice = homestayService.getHighestPriceOfHomestay(homestayType);
+                Long homestayServiceHighestPrice = homestayService.getHighestPriceOfHomestayService(homestayType);
                 FilterAdditionalResponseDto filterAdditionalResponseDto = new FilterAdditionalResponseDto(
                                 homestayFactilityNames, homestayServiceNames, homestayHighestPrice,
                                 homestayServiceHighestPrice);
