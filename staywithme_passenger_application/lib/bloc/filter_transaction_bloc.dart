@@ -23,7 +23,8 @@ class FilterTransactionBloc {
           event.context!, FilterScreen.filterScreenRoute,
           arguments: {
             "position": event.position,
-            "filterAddtionalInformation": event.filterAddtionalInformation
+            "filterAddtionalInformation": event.filterAddtionalInformation,
+            "homestayType": event.homestayType
           });
     }
   }

@@ -6,9 +6,13 @@ abstract class FilterTransactionEvent {}
 
 class FinishGetFilterAdditionalHomestayEvent extends FilterTransactionEvent {
   FinishGetFilterAdditionalHomestayEvent(
-      {this.position, this.filterAddtionalInformation, this.context});
+      {this.position,
+      this.filterAddtionalInformation,
+      this.homestayType,
+      this.context});
 
   Position? position;
   FilterAddtionalInformationModel? filterAddtionalInformation;
+  String? homestayType;
   BuildContext? context;
 }

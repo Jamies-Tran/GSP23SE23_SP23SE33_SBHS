@@ -17,7 +17,7 @@ class HomestayBloc {
     if (event is OnClickSearchTextFieldEvent) {
       Navigator.pushNamed(
           event.context!, SearchHomestayScreen.searchHomestayScreenRoute,
-          arguments: {"position": event.position});
+          arguments: {"position": event.position, "homestayType": "homestay"});
     }
   }
 }

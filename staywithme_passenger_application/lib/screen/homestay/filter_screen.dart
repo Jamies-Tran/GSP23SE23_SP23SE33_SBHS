@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:staywithme_passenger_application/bloc/event/filter_homestay_event.dart';
+import 'package:staywithme_passenger_application/bloc/filter_homestay_bloc.dart';
+import 'package:staywithme_passenger_application/bloc/state/filter_homestay_state.dart';
 
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/auto_complete_model.dart';
@@ -27,8 +30,10 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   final homestayService = locator.get<IHomestayService>();
+  final filterHomestayBloc = FilterHomestayBloc();
   final bookingStartDateTextEditingController = TextEditingController();
   final bookingEndDateTextEditingController = TextEditingController();
+  final bookingTotalRoomTextEditingController = TextEditingController();
   RangeValues currentPriceRangeValue = const RangeValues(0, 0);
   RangeValues currentRatingRangeValue = const RangeValues(0, 0);
 
@@ -38,39 +43,48 @@ class _FilterScreenState extends State<FilterScreen> {
   double currentServicePrice = 0;
   final locationService = locator.get<ILocationService>();
   final autoCompleteService = locator.get<IAutoCompleteService>();
-  HomestayType homestayType = HomestayType.homestay;
+  // HomestayType homestayType = HomestayType.homestay;
   LocationType locationType = LocationType.nearby;
   Distance distance = Distance.one;
-
-  dynamic data;
 
   String displayStringForOption(Prediction prediction) =>
       utf8.decode(prediction.description!.runes.toList());
 
   @override
+  void dispose() {
+    filterHomestayBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<String> facilities = ["None"];
     List<String> services = ["None"];
-    int homestayHighestPrice = 100;
-    int homestayServiceHighestPrice = 100;
+    int homestayHighestPrice = 100000;
+    int homestayServiceHighestPrice = 100000;
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    FilterAddtionalInformationModel filterAdditional =
+    FilterAddtionalInformationModel? filterAdditional =
         contextArguments["filterAddtionalInformation"];
     Position? position = contextArguments["position"];
-    if (filterAdditional.homestayFacilityNames != null ||
-        filterAdditional.homestayFacilityNames!.isNotEmpty) {
-      facilities.addAll(filterAdditional.homestayFacilityNames!);
-    }
-    if (filterAdditional.homestayServiceNames != null ||
-        filterAdditional.homestayServiceNames!.isNotEmpty) {
-      services.addAll(filterAdditional.homestayServiceNames!);
-    }
-    if (filterAdditional.homestayHighestPrice != null) {
-      homestayHighestPrice = filterAdditional.homestayHighestPrice!;
-    }
-    if (filterAdditional.homestayServiceHighestPrice != null) {
-      homestayServiceHighestPrice =
-          filterAdditional.homestayServiceHighestPrice!;
+    String? homestayType = contextArguments["homestayType"];
+    if (filterAdditional != null) {
+      if (filterAdditional.homestayFacilityNames != null ||
+          filterAdditional.homestayFacilityNames!.isNotEmpty) {
+        facilities.addAll(filterAdditional.homestayFacilityNames!);
+      }
+      if (filterAdditional.homestayServiceNames != null ||
+          filterAdditional.homestayServiceNames!.isNotEmpty) {
+        services.addAll(filterAdditional.homestayServiceNames!);
+      }
+      if (filterAdditional.homestayHighestPrice != null &&
+          filterAdditional.homestayHighestPrice! > 0) {
+        homestayHighestPrice = filterAdditional.homestayHighestPrice!;
+      }
+      if (filterAdditional.homestayServiceHighestPrice != null &&
+          filterAdditional.homestayServiceHighestPrice! > 0) {
+        homestayServiceHighestPrice =
+            filterAdditional.homestayServiceHighestPrice!;
+      }
     }
 
     return Scaffold(
@@ -98,415 +112,491 @@ class _FilterScreenState extends State<FilterScreen> {
           ]),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              "Choose homestay",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 20),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: ListTile(
-                    title: Text(HomestayType.homestay.name),
-                    leading: Radio<HomestayType>(
-                      activeColor: primaryColor,
-                      value: HomestayType.homestay,
-                      groupValue: homestayType,
-                      onChanged: (value) {},
-                    ),
+        child: StreamBuilder<FilterHomestayState>(
+            stream: filterHomestayBloc.stateController.stream,
+            initialData: filterHomestayBloc.initData(homestayType!),
+            builder: (context, snapshot) {
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 15,
                   ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: ListTile(
-                    title: Text(HomestayType.bloc.name),
-                    leading: Radio<HomestayType>(
-                      activeColor: primaryColor,
-                      value: HomestayType.bloc,
-                      groupValue: homestayType,
-                      onChanged: (value) {},
-                    ),
+                  // const Text(
+                  //   "Choose homestay",
+                  //   style: TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.black,
+                  //       fontSize: 20),
+                  // ),
+                  // const SizedBox(
+                  //   height: 5,
+                  // ),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: ListTile(
+                  //         title: Text(HomestayType.homestay.name),
+                  //         leading: Radio<HomestayType>(
+                  //           activeColor: primaryColor,
+                  //           value: HomestayType.homestay,
+                  //           groupValue: snapshot.data!.homestayType,
+                  //           onChanged: (value) {
+                  //             filterHomestayBloc.eventController.sink.add(
+                  //                 ChooseHomestayTypeFilterEvent(
+                  //                     homestayType: value));
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 30,
+                  //     ),
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: ListTile(
+                  //         title: Text(HomestayType.bloc.name),
+                  //         leading: Radio<HomestayType>(
+                  //           activeColor: primaryColor,
+                  //           value: HomestayType.bloc,
+                  //           groupValue: snapshot.data!.homestayType,
+                  //           onChanged: (value) {
+                  //             filterHomestayBloc.eventController.sink.add(
+                  //                 ChooseHomestayTypeFilterEvent(
+                  //                     homestayType: value));
+                  //           },
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // const SizedBox(
+                  //   height: 30,
+                  // ),
+                  const Text(
+                    "Booking date filter",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
                   ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Text(
-              "Booking date filter",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: TextFormField(
-                    controller: bookingStartDateTextEditingController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                        hintText: "Start date",
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: const BorderSide(
-                                color: secondaryColor, width: 1.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: const BorderSide(
-                                color: secondaryColor, width: 1.0))),
-                    onTap: () {
-                      showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate:
-                                  DateTime.now().add(const Duration(days: 365)))
-                          .then((value) {
-                        bookingStartDateTextEditingController.text =
-                            dateFormat.format(value!);
-                      });
-                    },
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: TextFormField(
-                    controller: bookingEndDateTextEditingController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                        hintText: "End date",
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: const BorderSide(
-                                color: secondaryColor, width: 1.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: const BorderSide(
-                                color: secondaryColor, width: 1.0))),
-                    onTap: () {
-                      showDatePicker(
-                              context: context,
-                              initialDate: dateFormat
-                                  .parse(bookingStartDateTextEditingController
-                                      .text)
-                                  .add(const Duration(days: 1)),
-                              firstDate: dateFormat
-                                  .parse(bookingStartDateTextEditingController
-                                      .text)
-                                  .add(const Duration(days: 1)),
-                              lastDate: dateFormat
-                                  .parse(bookingStartDateTextEditingController
-                                      .text)
-                                  .add(const Duration(days: 365)))
-                          .then((value) {
-                        bookingEndDateTextEditingController.text =
-                            dateFormat.format(value!);
-                      });
-                    },
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Text("Location filter",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20)),
-            const SizedBox(
-              height: 5,
-            ),
-            position != null
-                ? Row(
+                  Row(
                     children: [
                       Expanded(
                         flex: 1,
-                        child: ListTile(
-                          title: Text(LocationType.address.name),
-                          leading: Radio<LocationType>(
-                            activeColor: primaryColor,
-                            value: LocationType.address,
-                            groupValue: locationType,
-                            onChanged: (value) {},
-                          ),
+                        child: TextFormField(
+                          controller: bookingStartDateTextEditingController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                              hintText: "Start date",
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(
+                                      color: secondaryColor, width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(
+                                      color: secondaryColor, width: 1.0))),
+                          onTap: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(days: 365)))
+                                .then((value) {
+                              bookingStartDateTextEditingController.text =
+                                  dateFormat.format(value!);
+                              filterHomestayBloc.eventController.sink.add(
+                                  ChooseBookingStartDateFilterEvent(
+                                      start:
+                                          bookingStartDateTextEditingController
+                                              .text));
+                            });
+                          },
                         ),
                       ),
                       const SizedBox(
-                        width: 50,
+                        width: 5,
                       ),
                       Expanded(
                         flex: 1,
-                        child: ListTile(
-                          title: Text(LocationType.nearby.name),
-                          leading: Radio<LocationType>(
-                            activeColor: primaryColor,
-                            value: LocationType.nearby,
-                            groupValue: locationType,
-                            onChanged: (value) {},
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-            const SizedBox(
-              height: 5,
-            ),
-            Autocomplete<Prediction>(
-              displayStringForOption: displayStringForOption,
-
-              fieldViewBuilder: (context, textEditingController, focusNode,
-                      onFieldSubmitted) =>
-                  SizedBox(
-                width: 350,
-                child: TextFormField(
-                  readOnly: true,
-                  controller: textEditingController,
-                  focusNode: focusNode,
-                  decoration: InputDecoration(
-                    hintText: "Enter address",
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: const BorderSide(
-                            color: Colors.black45, width: 1.0)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: const BorderSide(
-                            color: Colors.black45, width: 1.0)),
-                  ),
-                ),
-              ),
-              optionsBuilder: (textEditingValue) {
-                if (textEditingValue.text.isEmpty ||
-                    textEditingValue.text == '') {
-                  return const Iterable.empty();
-                }
-
-                return autoCompleteService
-                    .autoComplete(textEditingValue.text)
-                    .then((value) {
-                  if (value is PlacesResult) {
-                    return value.predictions!.where((element) => utf8
-                        .decode(element.description!.runes.toList())
-                        .toLowerCase()
-                        .contains(textEditingValue.text.toLowerCase()));
-                  } else {
-                    return const Iterable.empty();
-                  }
-                });
-              },
-              // onSelected: (option) => ,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Text(
-                    "choose distance",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: ListTile(
-                          title: const Text("1 km"),
-                          leading: Radio<Distance>(
-                            value: Distance.one,
-                            groupValue: distance,
-                            activeColor: primaryColor,
-                            onChanged: (value) {},
-                          ),
-                        )),
-                    Expanded(
-                        flex: 1,
-                        child: ListTile(
-                          title: const Text("3 km"),
-                          leading: Radio<Distance>(
-                            value: Distance.three,
-                            groupValue: distance,
-                            activeColor: primaryColor,
-                            onChanged: (value) {},
-                          ),
-                        )),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: ListTile(
-                          title: const Text("5 km"),
-                          leading: Radio<Distance>(
-                            value: Distance.five,
-                            groupValue: distance,
-                            activeColor: primaryColor,
-                            onChanged: (value) {},
-                          ),
-                        )),
-                    const Expanded(
-                      flex: 1,
-                      child: SizedBox(),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text("Rating filter",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-                const SizedBox(
-                  height: 20,
-                ),
-                RangeSlider(
-                  activeColor: primaryColor,
-                  divisions: 5,
-                  min: 0,
-                  max: 5,
-                  labels: RangeLabels(currentRatingRangeValue.start.toString(),
-                      currentRatingRangeValue.end.toString()),
-                  values: currentRatingRangeValue,
-                  onChanged: (value) {
-                    setState(() {
-                      currentRatingRangeValue = value;
-                    });
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Lowest: ${currentRatingRangeValue.start}"),
-                    const Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                    const SizedBox(
-                      width: 170,
-                    ),
-                    Text("Highest: ${currentRatingRangeValue.end}"),
-                    const Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text("Price filter",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-                RangeSlider(
-                  activeColor: primaryColor,
-                  divisions: 5,
-                  min: 0,
-                  max: homestayHighestPrice.toDouble(),
-                  values: currentPriceRangeValue,
-                  labels: RangeLabels(
-                      currencyFormat.format(currentPriceRangeValue.start),
-                      currencyFormat.format(currentPriceRangeValue.end)),
-                  onChanged: (value) {
-                    setState(() {
-                      currentPriceRangeValue = value;
-                    });
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Lowest: "),
-                    Text(
-                        "${currencyFormat.format(currentPriceRangeValue.start.toInt())} VND"),
-                    const SizedBox(
-                      width: 100,
-                    ),
-                    const Text("Highest: "),
-                    Text(
-                        "${currencyFormat.format(currentPriceRangeValue.end.toInt())} VND")
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text("Homestay Facility filter",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: DropdownButton<String>(
-                          value: currentFacility,
-                          icon: const Icon(
-                            Icons.house,
-                            color: primaryColor,
-                          ),
-                          underline: Container(
-                            color: Colors.transparent,
-                          ),
-                          items: facilities
-                              .map<DropdownMenuItem<String>>(
-                                  (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(e),
-                                      ))
-                              .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              currentFacility = value!;
+                        child: TextFormField(
+                          controller: bookingEndDateTextEditingController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                              hintText: "End date",
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(
+                                      color: secondaryColor, width: 1.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(
+                                      color: secondaryColor, width: 1.0))),
+                          onTap: () {
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: dateFormat
+                                        .parse(
+                                            bookingStartDateTextEditingController
+                                                .text)
+                                        .add(const Duration(days: 1)),
+                                    firstDate: dateFormat
+                                        .parse(
+                                            bookingStartDateTextEditingController
+                                                .text)
+                                        .add(const Duration(days: 1)),
+                                    lastDate: dateFormat
+                                        .parse(
+                                            bookingStartDateTextEditingController
+                                                .text)
+                                        .add(const Duration(days: 365)))
+                                .then((value) {
+                              bookingEndDateTextEditingController.text =
+                                  dateFormat.format(value!);
+                              filterHomestayBloc.eventController.sink.add(
+                                  ChooseBookingEndDateFilterEvent(
+                                      end: bookingEndDateTextEditingController
+                                          .text));
                             });
                           },
-                        )),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: bookingTotalRoomTextEditingController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        hintText: "Total room",
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: const BorderSide(
+                                color: secondaryColor, width: 1.0)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: const BorderSide(
+                                color: secondaryColor, width: 1.0))),
+                    onChanged: (value) {
+                      filterHomestayBloc.eventController.sink.add(
+                          InputTotalBookingRoomEvent(
+                              totalBookingRoom: int.parse(value)));
+                    },
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text("Location filter",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20)),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  position != null
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: ListTile(
+                                title: Text(LocationType.address.name),
+                                leading: Radio<LocationType>(
+                                  activeColor: primaryColor,
+                                  value: LocationType.address,
+                                  groupValue: snapshot.data!.locationType,
+                                  onChanged: (value) {
+                                    filterHomestayBloc.eventController.sink.add(
+                                        ChooseLocationTypeFilterEvent(
+                                            locationType: value));
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: ListTile(
+                                title: Text(LocationType.nearby.name),
+                                leading: Radio<LocationType>(
+                                  activeColor: primaryColor,
+                                  value: LocationType.nearby,
+                                  groupValue: snapshot.data!.locationType,
+                                  onChanged: (value) {
+                                    filterHomestayBloc.eventController.sink.add(
+                                        ChooseLocationTypeFilterEvent(
+                                            locationType: value));
+                                    filterHomestayBloc.eventController.sink.add(
+                                        ChooseNearByFilterEvent(
+                                            position: position));
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Autocomplete<Prediction>(
+                    displayStringForOption: displayStringForOption,
+
+                    fieldViewBuilder: (context, textEditingController,
+                            focusNode, onFieldSubmitted) =>
+                        SizedBox(
+                      width: 350,
+                      child: TextFormField(
+                        readOnly: snapshot.data!.isInputAddress!,
+                        controller: textEditingController,
+                        focusNode: focusNode,
+                        decoration: InputDecoration(
+                          hintText: "Enter address",
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                  color: snapshot.data!.isInputAddress!
+                                      ? Colors.black45
+                                      : primaryColor,
+                                  width: 1.0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                  color: snapshot.data!.isInputAddress!
+                                      ? Colors.black45
+                                      : primaryColor,
+                                  width: 1.0)),
+                        ),
+                      ),
+                    ),
+                    optionsBuilder: (textEditingValue) {
+                      if (textEditingValue.text.isEmpty ||
+                          textEditingValue.text == '') {
+                        return const Iterable.empty();
+                      }
+
+                      return autoCompleteService
+                          .autoComplete(textEditingValue.text)
+                          .then((value) {
+                        if (value is PlacesResult) {
+                          return value.predictions!.where((element) => utf8
+                              .decode(element.description!.runes.toList())
+                              .toLowerCase()
+                              .contains(textEditingValue.text.toLowerCase()));
+                        } else {
+                          return const Iterable.empty();
+                        }
+                      });
+                    },
+                    // onSelected: (option) => ,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "choose distance",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: ListTile(
+                                title: const Text("1 km"),
+                                leading: Radio<Distance>(
+                                  value: Distance.one,
+                                  groupValue: snapshot.data!.distance,
+                                  activeColor: primaryColor,
+                                  onChanged: (value) {
+                                    filterHomestayBloc.eventController.sink.add(
+                                        ChooseDistanceFilterEvent(
+                                            distance: value));
+                                  },
+                                ),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: ListTile(
+                                title: const Text("3 km"),
+                                leading: Radio<Distance>(
+                                  value: Distance.three,
+                                  groupValue: snapshot.data!.distance,
+                                  activeColor: primaryColor,
+                                  onChanged: (value) {
+                                    filterHomestayBloc.eventController.sink.add(
+                                        ChooseDistanceFilterEvent(
+                                            distance: value));
+                                  },
+                                ),
+                              )),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: ListTile(
+                                title: const Text("5 km"),
+                                leading: Radio<Distance>(
+                                  value: Distance.five,
+                                  groupValue: snapshot.data!.distance,
+                                  activeColor: primaryColor,
+                                  onChanged: (value) {
+                                    filterHomestayBloc.eventController.sink.add(
+                                        ChooseDistanceFilterEvent(
+                                            distance: value));
+                                  },
+                                ),
+                              )),
+                          const Expanded(
+                            flex: 1,
+                            child: SizedBox(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text("Rating filter",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20)),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      RangeSlider(
+                        activeColor: primaryColor,
+                        divisions: 5,
+                        min: 0,
+                        max: 5,
+                        labels: RangeLabels(
+                            snapshot.data!.ratingRangeValue!.start.toString(),
+                            snapshot.data!.ratingRangeValue!.end.toString()),
+                        values: snapshot.data!.ratingRangeValue!,
+                        onChanged: (value) {
+                          filterHomestayBloc.eventController.sink.add(
+                              ChooseRatingFilterEvent(
+                                  end: value.end, start: value.start));
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                              "Lowest: ${snapshot.data!.ratingRangeValue!.start}"),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          ),
+                          const SizedBox(
+                            width: 170,
+                          ),
+                          Text(
+                              "Highest: ${snapshot.data!.ratingRangeValue!.end}"),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const Text("Price filter",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20)),
+                      RangeSlider(
+                        activeColor: primaryColor,
+                        divisions: 5,
+                        min: 0,
+                        max: homestayHighestPrice.toDouble(),
+                        values: snapshot.data!.priceRangeValue!,
+                        labels: RangeLabels(
+                            currencyFormat
+                                .format(snapshot.data!.priceRangeValue!.start),
+                            currencyFormat
+                                .format(snapshot.data!.priceRangeValue!.end)),
+                        onChanged: (value) {
+                          filterHomestayBloc.eventController.sink.add(
+                              ChoosePriceFilterEvent(
+                                  start: value.start, end: value.end));
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Lowest: "),
+                          Text(
+                              "${currencyFormat.format(snapshot.data!.priceRangeValue!.start.toInt())} VND"),
+                          const SizedBox(
+                            width: 100,
+                          ),
+                          const Text("Highest: "),
+                          Text(
+                              "${currencyFormat.format(snapshot.data!.priceRangeValue!.end.toInt())} VND")
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const Text("Homestay facility filter",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20)),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      DropdownButton<String>(
+                        value: snapshot.data!.facilityName,
+                        icon: const Icon(
+                          Icons.arrow_downward,
+                          color: primaryColor,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: primaryColor),
+                        ),
+                        items: facilities
+                            .map<DropdownMenuItem<String>>(
+                                (e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                            .toList(),
+                        onChanged: (value) {
+                          filterHomestayBloc.eventController.sink.add(
+                              ChooseFacilityFilterEvent(facilityName: value));
+                        },
+                      ),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Slider(
@@ -514,63 +604,57 @@ class _FilterScreenState extends State<FilterScreen> {
                             min: 0,
                             max: 100,
                             divisions: 100,
-                            label: currentFacilityQuantity.toInt().toString(),
-                            value: currentFacilityQuantity,
+                            label: snapshot.data!.facilityQuantity!
+                                .toInt()
+                                .toString(),
+                            value: snapshot.data!.facilityQuantity!.toDouble(),
                             onChanged: (value) {
-                              setState(() {
-                                if (currentFacility != "None") {
-                                  currentFacilityQuantity = value;
-                                }
-                              });
+                              filterHomestayBloc.eventController.sink.add(
+                                  ChooseFacilityQuantityFilterEvent(
+                                      quantity: value));
                             },
                           ),
                           Container(
                             margin: const EdgeInsets.only(right: 20),
                             child: Text(
-                                "Quantity: ${currentFacilityQuantity.toInt()}"),
+                                "Quantity: ${snapshot.data!.facilityQuantity!.toInt()}"),
                           )
                         ],
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text("Homestay Service filter",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: DropdownButton<String>(
-                          value: currentService,
-                          icon: const Icon(
-                            Icons.room_service,
-                            color: primaryColor,
-                          ),
-                          underline: Container(
-                            color: Colors.transparent,
-                          ),
-                          items: services
-                              .map<DropdownMenuItem<String>>(
-                                  (e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(e),
-                                      ))
-                              .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              currentService = value!;
-                            });
-                          },
-                        )),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text("Homestay service filter",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20)),
+                      DropdownButton<String>(
+                        value: snapshot.data!.serviceName,
+                        icon: const Icon(
+                          Icons.arrow_downward,
+                          color: primaryColor,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: primaryColor),
+                        ),
+                        items: services
+                            .map<DropdownMenuItem<String>>(
+                                (e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                            .toList(),
+                        onChanged: (value) {
+                          filterHomestayBloc.eventController.sink.add(
+                              ChooseHomestayServiceFilterEvent(
+                                  serviceName: value));
+                        },
+                      ),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Slider(
@@ -579,46 +663,49 @@ class _FilterScreenState extends State<FilterScreen> {
                             max: homestayServiceHighestPrice.toDouble(),
                             divisions: homestayServiceHighestPrice,
                             label: currencyFormat
-                                .format(currentServicePrice.toInt()),
-                            value: currentServicePrice,
+                                .format(snapshot.data!.servicePrice),
+                            value: snapshot.data!.servicePrice!.toDouble(),
                             onChanged: (value) {
-                              setState(() {
-                                if (currentService != "None") {
-                                  currentServicePrice = value;
-                                }
-                              });
+                              filterHomestayBloc.eventController.sink.add(
+                                  ChooseHomestayServicePriceFilterEvent(
+                                      price: value));
                             },
                           ),
                           Container(
                             margin: const EdgeInsets.only(right: 20),
                             child: Text(
-                                "Price: ${currencyFormat.format(currentServicePrice.toInt())}"),
+                                "Price: ${currencyFormat.format(snapshot.data!.servicePrice)}"),
                           ),
                         ],
                       ),
-                    )
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 30, bottom: 10),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          maximumSize: const Size(150, 50),
-                          minimumSize: const Size(150, 50),
-                          backgroundColor: primaryColor),
-                      onPressed: () {},
-                      child: const Text(
-                        "Search",
-                        style: TextStyle(
-                            fontFamily: "Lobster",
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      )),
-                )
-              ],
-            )
-          ],
-        ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 30, bottom: 30),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                maximumSize: const Size(150, 50),
+                                minimumSize: const Size(150, 50),
+                                backgroundColor: primaryColor),
+                            onPressed: () {
+                              filterHomestayBloc.eventController.sink.add(
+                                  OnClickSearchHomestayEvent(
+                                      context: context,
+                                      searchFilterModel: snapshot.data!
+                                          .generateSearchFilterModel(),
+                                      homestayType: homestayType));
+                            },
+                            child: const Text(
+                              "Search",
+                              style: TextStyle(
+                                  fontFamily: "Lobster",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            )),
+                      )
+                    ],
+                  )
+                ],
+              );
+            }),
       ),
     );
   }

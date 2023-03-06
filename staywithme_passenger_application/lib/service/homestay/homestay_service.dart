@@ -19,7 +19,7 @@ abstract class IHomestayService {
   Future<dynamic> getHomestayByFilter(SearchFilterModel filter, int page,
       int size, bool isNextPage, bool isPreviousPage);
 
-  Future<dynamic> getHomestayFilterAdditionalInformation();
+  Future<dynamic> getHomestayFilterAdditionalInformation(String homestayType);
 }
 
 class HomestayService extends IHomestayService {
@@ -101,9 +101,10 @@ class HomestayService extends IHomestayService {
   }
 
   @override
-  Future getHomestayFilterAdditionalInformation() async {
+  Future getHomestayFilterAdditionalInformation(String homestayType) async {
     final client = http.Client();
-    final uri = Uri.parse(homestayFilterAddtionalUrl);
+    final uri =
+        Uri.parse("$homestayFilterAddtionalUrl?homestayType=$homestayType");
     try {
       final response =
           await client.get(uri, headers: {"content-type": "application/json"});

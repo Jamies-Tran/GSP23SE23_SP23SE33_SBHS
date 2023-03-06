@@ -1,3 +1,5 @@
+import 'package:staywithme_passenger_application/model/bloc_model.dart';
+
 class HomestayModel {
   HomestayModel(
       {this.name,
@@ -104,14 +106,17 @@ class RatingModel {
 }
 
 class HomestayListPagingModel {
-  HomestayListPagingModel({this.homestays, this.pageNumber});
+  HomestayListPagingModel({this.homestays, this.pageNumber, this.blocs});
 
   List<HomestayModel>? homestays;
+  List<BlocHomestayModel>? blocs;
   int? pageNumber;
 
   factory HomestayListPagingModel.fromJson(Map<String, dynamic> json) =>
       HomestayListPagingModel(
           homestays: List<HomestayModel>.from(
               json["homestays"].map((e) => HomestayModel.fromJson(e))),
+          blocs: List<BlocHomestayModel>.from(
+              json["blocs"].map((e) => BlocHomestayModel.fromJson(e))),
           pageNumber: json["pageNumber"]);
 }

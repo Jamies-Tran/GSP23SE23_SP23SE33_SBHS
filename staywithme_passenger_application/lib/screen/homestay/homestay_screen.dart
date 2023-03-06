@@ -82,7 +82,9 @@ class _HomestayScreenState extends State<HomestayScreen> {
                       readOnly: true,
                       onTap: () => homestayBloc.eventController.sink.add(
                           OnClickSearchTextFieldEvent(
-                              context: context, position: widget.position)),
+                              context: context,
+                              position: widget.position,
+                              homestayType: "homestay")),
                     ),
                   ),
                 ),

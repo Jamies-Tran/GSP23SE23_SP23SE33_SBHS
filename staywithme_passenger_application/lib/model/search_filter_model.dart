@@ -1,24 +1,26 @@
 class SearchFilterModel {
-  SearchFilterModel({this.filterOption, this.searchString});
+  SearchFilterModel({this.filterOption, this.searchString, this.homestayType});
 
   FilterOptionModel? filterOption;
   String? searchString;
+  String? homestayType;
 
-  Map<String, dynamic> toJson() =>
-      {"filterOption": filterOption?.toJson(), "searchString": searchString};
+  Map<String, dynamic> toJson() => {
+        "filterOption": filterOption?.toJson(),
+        "searchString": searchString,
+        "homestayType": homestayType
+      };
 }
 
 class FilterOptionModel {
   FilterOptionModel(
-      {this.homestayType,
-      this.filterByRatingRange,
+      {this.filterByRatingRange,
       this.filterByBookingDateRange,
       this.filterByAddress,
       this.filterByFacility,
       this.filterByPriceRange,
       this.filterByHomestayService});
 
-  String? homestayType;
   FilterByRatingRange? filterByRatingRange;
   FilterByBookingDate? filterByBookingDateRange;
   FilterByAddress? filterByAddress;
@@ -27,7 +29,6 @@ class FilterOptionModel {
   FilterByHomestayService? filterByHomestayService;
 
   Map<String, dynamic> toJson() => {
-        "homestayType": homestayType,
         "filterByRatingRange": filterByRatingRange,
         "filterByBookingDateRange": filterByBookingDateRange?.toJson(),
         "filterByAddress": filterByAddress?.toJson(),
@@ -41,7 +42,7 @@ class FilterByFacility {
   FilterByFacility({this.name, this.quantity});
 
   String? name;
-  String? quantity;
+  int? quantity;
 
   Map<String, dynamic> toJson() => {"name": name, "quantity": quantity};
 }

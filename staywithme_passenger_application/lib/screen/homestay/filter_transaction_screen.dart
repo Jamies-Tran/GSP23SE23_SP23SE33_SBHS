@@ -30,6 +30,7 @@ class _FilterTransactionScreenState extends State<FilterTransactionScreen> {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map?;
     Position? position =
         contextArguments != null ? contextArguments["position"] : null;
+    String homestayType = contextArguments?["homestayType"];
 
     return Scaffold(
       body: Container(
@@ -37,7 +38,8 @@ class _FilterTransactionScreenState extends State<FilterTransactionScreen> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: FutureBuilder(
-          future: homestayService.getHomestayFilterAdditionalInformation(),
+          future: homestayService
+              .getHomestayFilterAdditionalInformation(homestayType),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
@@ -48,7 +50,8 @@ class _FilterTransactionScreenState extends State<FilterTransactionScreen> {
                     FinishGetFilterAdditionalHomestayEvent(
                         context: context,
                         filterAddtionalInformation: data,
-                        position: position));
+                        position: position,
+                        homestayType: homestayType));
                 break;
               default:
                 break;
