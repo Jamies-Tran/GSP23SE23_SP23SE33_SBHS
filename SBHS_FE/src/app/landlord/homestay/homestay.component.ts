@@ -14,14 +14,15 @@ export class HomestayComponent implements OnInit {
   i : any;
   isDelete = "null"
   ngOnInit(): void {
-    this.http.getHomestayList().subscribe(async  (data) =>{
+    this.http.getHomestay('ACTIVE').subscribe(async  (data) =>{
       // this.value = data;
       // for(this.i of this.value ){
       //   console.log(this.i.homestayImages[0].url)
       // }
-      for(this.i of data){
+      console.log("data:" ,data);
+      for(this.i of data['homestays']){
 
-        var imgUrl = await this.image.getImage('homestay/' + this.i.homestayImages[0].url)
+        var imgUrl = await this.image.getImage('homestay/'  +  this.i.homestayImages[0].imageUrl)
         this.value.push({imgURL:imgUrl, name:this.i.name, id:this.i.id })
         console.log(imgUrl);
       }

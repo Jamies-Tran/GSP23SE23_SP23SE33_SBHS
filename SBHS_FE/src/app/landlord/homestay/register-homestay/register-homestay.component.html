@@ -51,7 +51,6 @@
                         <span>
                           <h6 class=" text-break">Upload at a photo of your <span class="fw-bold fs-5">Homestay
                               License</span>.<span class="text-danger">*</span></h6>
-
                         </span>
                       </div>
 
@@ -89,7 +88,7 @@
                         <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext >Continue</button>
                       </div>
                     </ng-container>
-                    
+
                   </div>
                 </div>
               </div>
@@ -146,47 +145,47 @@
                   <form [formGroup]="facilityFormGroup" (ngSubmit)="facilityForm()" #formtwo="ngForm">
                     <!-- TV -->
                     <div class="row mb-2">
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                         <i class="fas fa-tv"></i>
                       </div>
-                      <div class="col-xxl-4 col-xl-4 col-lg-4 d-flex align-items-center">
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
                         <span>TV</span>
                       </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                         <mat-checkbox color="primary" formControlName="tv" (change)="enableInputTv()"></mat-checkbox>
                       </div>
-                      <div class="col-xxl-5 col-xl-5 col-lg-5">
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
                         <div class="col-input">
                           <input name="tvInput" type="number" pattern="[0~9]*" min="1" class="form-control"
                             minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="tvAmount"
-                            (required)="this.facilityFormGroup.controls.tvAmount.value ? 'required' : ''"
+
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                         </div>
                       </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1"></div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
                     <!-- TV -->
 
                     <!-- Wifi -->
                     <div class="row mb-2">
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center"><i
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center"><i
                           class="fas fa-tv"></i></div>
-                      <div class="col-xxl-4 col-xl-4 col-lg-4 d-flex align-items-center">
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
                         <span>Wifi</span>
                       </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                         <mat-checkbox color="primary" formControlName="wifi"
                           (change)="enableInputWifi()"></mat-checkbox>
                       </div>
-                      <div class="col-xxl-5 col-xl-5 col-lg-5">
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
                         <div class="col-input">
                           <input name="wifiInput" type="number" pattern="[0~9]*" min="1" class="form-control"
                             minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="wifiAmount"
-                            (required)="this.facilityFormGroup.controls.wifiAmount.value ? 'required' : ''"
+
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                         </div>
                       </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1"></div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
                     <!-- Wifi -->
                     <br>
@@ -197,28 +196,28 @@
                   <div class="additional-facility">
                     <div *ngFor="let value of newFacility; let i = index">
                       <div class="row mb-2">
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center justify-content-center p-0"><i
+                        <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center justify-content-center p-0"><i
                             class="fa-solid fa-plus"></i></div>
-                        <div class="col-xxl-4 col-xl-4 col-lg-4">
+                        <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4">
                           <input name="newFacility" type="text" class="form-control" placeholder="New Facility"
                             [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" #value{{i}}="ngModel"
-                            (required)="value.status ? 'required' : ''" />
+                            />
                         </div>
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
+                        <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                           <mat-checkbox color="primary" [(ngModel)]="value.status" name="value{{i}}"></mat-checkbox>
                         </div>
 
-                        <div class="col-xxl-5 col-xl-5 col-lg-5">
+                        <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
                           <div class="col-input">
                             <input name="amount{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
                               minlength="1" maxlength="3" pattern="[0~9]*" min="1" class="form-control" matInput
                               max="999" placeholder="Amount" [(ngModel)]="value.price"
-                              (required)="value.status ? 'true' : 'false'"
+
                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                           </div>
                         </div>
                         <div
-                          class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
+                          class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
                           matRipple (click)="removeFacility(i)">
                           <i class="fa-solid fa-xmark"></i>
                         </div>
@@ -227,10 +226,10 @@
                     <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
                       (click)="addFacility()">
                       <div class="row w-100">
-                        <div class="col-xxl-2 col-xl-2 col-lg-2 d-flex align-items-center justify-content-center p-0">
+                        <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-2 d-flex align-items-center justify-content-center p-0">
                           <i class="fa-solid fa-plus"></i>
                         </div>
-                        <div class="col-xxl-8 col-xl-8 col-lg-8 d-flex align-items-center  ">
+                        <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 d-flex align-items-center  ">
                           <h6 class="m-0"> Add Facility</h6>
                         </div>
                       </div>
@@ -296,18 +295,18 @@
                   <div class="col">
                     <div class="mb-5">
                       <div class="row mb-2">
-                        <div class="col-xxl-10 col-xl-10 col-lg-10">
+                        <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10">
                           <span><i class="fa-regular fa-heart"></i> Smoking allowed</span>
                         </div>
-                        <div class="col-xxl-2 col-xl-2 col-lg-2">
+                        <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-2">
                           <mat-slide-toggle formControlName="smoking" name="smokingInput"></mat-slide-toggle>
                         </div>
                       </div>
                       <div class="row mb-2">
-                        <div class="col-xxl-10 col-xl-10 col-lg-10">
+                        <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10">
                           <span><i class="fa-regular fa-heart"></i> Pet allowed</span>
                         </div>
-                        <div class="col-xxl-2 col-xl-2 col-lg-2">
+                        <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-2">
                           <mat-slide-toggle formControlName="pet" name="petInput"></mat-slide-toggle>
                         </div>
                       </div>
@@ -316,7 +315,7 @@
                     <!-- Checkin - Check out -->
                     <div>
                       <div class="row">
-                        <div class="col-xxl-6 city-select">
+                        <div class="col-xxl-6 col-6 city-select">
                           <h6 class="mb-0">Check-in <span class="text-danger">*</span></h6>
                           <mat-form-field appearance="outline" class="w-100 select-form">
                             <mat-select name="check-in" formControlName="checkIn" required>
@@ -326,7 +325,7 @@
                             </mat-select>
                           </mat-form-field>
                         </div>
-                        <div class="col-xxl-6 city-select">
+                        <div class="col-xxl-6 col-6 city-select">
                           <h6 class="mb-0">Check-out <span class="text-danger">*</span></h6>
                           <mat-form-field appearance="outline" class="w-100 select-form">
                             <mat-select name="check-out" formControlName="checkOut" required>
@@ -657,8 +656,11 @@
                         <h6 class="mb-0">Price guests pay </h6>
                         <div class="input-group">
                           <span class="input-group-text">VNĐ</span>
-                          <input type="number" min="0" class="form-control" name="price" [(ngModel)]="price"
-                            [ngModelOptions]="{standalone: true}" />
+                          <input type="number" min="1000" class="form-control" name="price" [(ngModel)]="price"
+                            [ngModelOptions]="{standalone: true}" (input)="calcPriceTax($event)"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            maxlength="9" minlength="4"
+                            />
                         </div>
                         <p class="text-muted fs-6">Including taxes, commission and charges</p>
 
@@ -667,7 +669,7 @@
                         <span class="fs-5"> <span class="text-muted ">5.00%</span> Staywithme.com commisson</span>
                         <br>
                         <hr>
-                        <span class="fs-5"><span class="text-muted">VNĐ {{ price }}</span> Your earnings (including
+                        <span class="fs-5"><span class="text-muted">VNĐ {{ priceTax | number:'4.1-4' }}</span> Your earnings (including
                           taxes)</span>
                       </div>
                       <br>

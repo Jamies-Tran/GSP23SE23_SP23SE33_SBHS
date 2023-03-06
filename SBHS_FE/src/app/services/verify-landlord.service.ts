@@ -25,35 +25,37 @@ export class ServerHttpService {
   constructor(private httpClient: HttpClient) {}
 
   public getLanlord(status: string) {
-    const url = `${this.REST_API_SERVER}/api/admin/landlord-list?isNextPage=true&isPreviousPage=true&page=0&size=1000&status=`+status+``;
+    const url =
+      `${this.REST_API_SERVER}/api/admin/landlord-list?isNextPage=true&isPreviousPage=true&page=0&size=1000&status=` +
+      status +
+      ``;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  public acceptLandlord(
-    username: string
-  ) {
+  public acceptLandlord(username: string) {
     const url =
-      `${this.REST_API_SERVER}/api/admin/landlord-activate?username=`+username+``;
+      `${this.REST_API_SERVER}/api/admin/landlord-activate?username=` +
+      username +
+      ``;
     return this.httpClient
-      .put<any>(url, "accept",this.httpOptions)
+      .put<any>(url, 'accept', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  public rejectLandlord(
-    username: string,
-    reason: string
-  ) {
+
+  public rejectLandlord(username: string, reason: string) {
     const url =
-      `${this.REST_API_SERVER}/api/admin/landlord-reject?reason=`+reason+`&username=`+username+``;
+      `${this.REST_API_SERVER}/api/admin/landlord-reject?reason=` + reason + `&username=` +
+      username +
+      ``;
     return this.httpClient
-      .put<any>(url, "false",this.httpOptions)
+      .put<any>(url, 'false', this.httpOptions)
       .pipe(catchError(this.handleError));
   }
+
   public getLandlordDetail() {
     const url =
-      `${this.REST_API_SERVER}/api/user/get/` +
-      localStorage.getItem('createdBy') +
-      ``;
+      `${this.REST_API_SERVER}/api/user/info-username?username=` +localStorage.getItem("createdBy") +``;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));

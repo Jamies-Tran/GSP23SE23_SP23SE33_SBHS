@@ -39,7 +39,7 @@ export class AccountLandlordDetailComponent implements OnInit {
           this.dob = data['dob'];
           this.email = data['email'];
           this.citizenIdentificationString =
-            data['citizenIdentificationString'];
+            data['idCardNumber'];
           this.gender = data['gender'];
           this.phone = data['phone'];
           this.address = data['address'];
@@ -53,21 +53,24 @@ export class AccountLandlordDetailComponent implements OnInit {
               'landlord/avatar/default.png'
             );
           }
-
+          var landlordProperty = data['landlordProperty'];
+          var fontImage = landlordProperty.idCardFrontImageUrl;
+          var backImage = landlordProperty.idCardBackImageUrl;
           this.citizenIdentificationUrlFont = await this.image.getImage(
             'landlord/citizenIdentification/' +
-              data['citizenIdentificationUrlFront']
+              fontImage
           );
           this.citizenIdentificationUrlBack = await this.image.getImage(
             'landlord/citizenIdentification/' +
-              data['citizenIdentificationUrlBack']
+              backImage
           );
 
           console.log(this.citizenIdentificationUrlBack);
           console.log(this.citizenIdentificationUrlFont);
           console.log(this.avatarUrl);
-          console.log(data['citizenIdentificationUrlFront']);
-          console.log(data['citizenIdentificationUrlBack']);
+          console.log("font url:" , fontImage);
+          console.log("back url:" , backImage);
+
         },
         (error) => {
           this.message = error.message;
@@ -100,7 +103,7 @@ export class AccountLandlordDetailComponent implements OnInit {
         if (data != null) {
           this.message = 'Account have accept';
           this.openDialogSuccess();
-          this.router.navigate(['/Admin/Request'], {
+          this.router.navigate(['/Admin/RequestAccountLandlord'], {
             relativeTo: this.route,
           });
         }
@@ -131,7 +134,7 @@ export class AccountLandlordDetailComponent implements OnInit {
             this.message = 'Account have reject';
             this.openDialogSuccess();
             // location.reload();
-            this.router.navigate(['/Admin/Request'], {
+            this.router.navigate(['/Admin/RequestAccountLandlord'], {
               relativeTo: this.route,
             });
           }
@@ -139,13 +142,12 @@ export class AccountLandlordDetailComponent implements OnInit {
         (error) => {
           if (error['status'] == 500) {
             this.registerError = 'please check your information again!';
-            this.message = this.registerError;
-            this.message = this.registerError;
+            this.message = error;
             this.openDialogMessage();
           } else {
             this.registerError = error;
             this.message = error;
-            this.message = this.registerError;
+
             this.openDialogMessage();
           }
         }

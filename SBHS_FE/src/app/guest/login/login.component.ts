@@ -12,6 +12,7 @@ import { ServerHttpService } from 'src/app/services/login.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessComponent } from '../../pop-up/success/success.component';
+import { MessageComponent } from '../../pop-up/message/message.component';
 @Component({
   selector: 'app-login-landlord',
   templateUrl: './login.component.html',
@@ -85,7 +86,17 @@ export class LoginLandlordComponent {
         } else this.router.navigate([''], {
           relativeTo: this.route,
         });
+      },error =>{
+        console.log(error);
+        this.message = error;
+        this.openDialogMessage();
       });
+  }
+
+  openDialogMessage() {
+    this.dialog.open(MessageComponent, {
+      data: this.message,
+    });
   }
 
   // Image Url

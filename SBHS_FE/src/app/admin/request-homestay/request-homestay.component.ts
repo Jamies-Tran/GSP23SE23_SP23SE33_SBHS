@@ -4,6 +4,7 @@ import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';
 
 import { PendingHomestayComponent } from '../../pop-up/pending-homestay/pending-homestay.component';
+import { ServerHttpService } from 'src/app/services/homestay.service';
 
 @Component({
   selector: 'app-request-homestay',
@@ -16,8 +17,33 @@ export class RequestHomestayComponent implements OnInit{
   valuesActive: data[] = [];
   valuesReject: data[] = [];
   message!: string;
-  constructor(public dialog: MatDialog){}
+  constructor(public dialog: MatDialog,private http: ServerHttpService){}
   ngOnInit(): void {
+    this.getStatusLandlord();
+  }
+
+  public getStatusLandlord() {
+  // Pending
+  this.http.getHomestay('PENDING').subscribe((data) => {
+    this.valuesPending = data['homestays'];
+    console.log(this.valuesPending);
+  });
+  // Banned
+  this.http.getHomestay('BAN').subscribe((data) => {
+    this.valuesBanned = data['homestays'];
+    console.log(this.valuesBanned);
+  });
+  // Active
+  this.http.getHomestay('ACTIVE').subscribe((data) => {
+    this.valuesActive = data['homestays'];
+    console.log(this.valuesActive);
+  });
+  // Reject
+  this.http.getHomestay('RREJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
+    this.valuesReject = data['homestays'];
+    console.log(this.valuesReject);
+  });
+
 
   }
   public Id = 0;
@@ -31,12 +57,53 @@ export class RequestHomestayComponent implements OnInit{
     localStorage.setItem('homestayId', id + '');
     localStorage.setItem('homestayName', name);
   }
-  accept(){
-
+  public accept() {
+    console.log('Accept');
+    this.http.acceptHomestay(this.name).subscribe(
+      (data) => {
+        if (data != null) {
+          this.message = 'Account have accept';
+          this.openDialogSuccess();
+          location.reload();
+        }
+        console.log(data);
+      },
+      (error) => {
+        if (error['status'] == 500) {
+          // this.registerError = 'please check your information again!';
+          this.message = error;
+          this.openDialogMessage();
+        } else {
+          // this.registerError = error;
+          this.message = error;
+          this.openDialogMessage();
+        }
+      }
+    );
   }
 
-  reject(){
-
+  public reject() {
+    console.log('Reject');
+    this.http.rejectHomestay(this.name).subscribe(
+      (data) => {
+        if (data != null) {
+          this.message = 'Account have reject';
+          this.openDialogSuccess();
+          location.reload();
+        }
+      },
+      (error) => {
+        if (error['status'] == 500) {
+          // this.registerError = 'please check your information again!';
+          this.message = error;
+          this.openDialogMessage();
+        } else {
+          // this.registerError = error;
+          this.message = error;
+          this.openDialogMessage();
+        }
+      }
+    );
   }
   banned(){
 
@@ -87,7 +154,7 @@ export class RequestHomestayComponent implements OnInit{
     this.dialog.open(PendingHomestayComponent, {
       data: {
         id: this.Id,
-        username: this.name,
+        name: this.name,
       },
       disableClose: true,
     });

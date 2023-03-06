@@ -50,11 +50,11 @@ export class RequestAccountLandlordComponent implements OnInit {
   public rejectMessage = '';
   public username = '';
 
-  public onItemSelector(id: number, username: string) {
+  public onItemSelector(id: number, createdBy: string) {
     this.Id = id;
-    this.username = username;
+    this.username = createdBy;
     localStorage.setItem('id', id + '');
-    localStorage.setItem('username', username);
+    localStorage.setItem('createdBy', createdBy);
   }
 
   public accept() {
@@ -161,9 +161,9 @@ export class RequestAccountLandlordComponent implements OnInit {
         id: this.Id,
         username: this.username,
       },
-      disableClose: true   
+      disableClose: true
     });
-    
+
   }
 }
 

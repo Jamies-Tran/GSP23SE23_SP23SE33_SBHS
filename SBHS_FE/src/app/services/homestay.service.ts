@@ -24,8 +24,8 @@ export class ServerHttpService {
   private REST_API_SERVER = 'http://localhost:8081';
   constructor(private httpClient: HttpClient) { }
 
-  public getHomestayList(){
-    const url = `${this.REST_API_SERVER}/api/homestay/owner-list`;
+  public getHomestay(status: string){
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_STATUS&isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=1000&status=`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
