@@ -19,7 +19,7 @@ export class HomestayComponent implements OnInit {
       // for(this.i of this.value ){
       //   console.log(this.i.homestayImages[0].url)
       // }
-      console.log("data:" ,data);
+      console.log("data:" ,data['homestays']);
       for(this.i of data['homestays']){
 
         var imgUrl = await this.image.getImage('homestay/'  +  this.i.homestayImages[0].imageUrl)
