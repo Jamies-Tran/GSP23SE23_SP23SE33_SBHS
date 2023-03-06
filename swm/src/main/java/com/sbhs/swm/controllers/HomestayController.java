@@ -77,7 +77,8 @@ public class HomestayController {
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
                 homestayDtos.forEach(h -> h.setAddress(h.getAddress().split("-")[0]));
-                HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos, null,
+                HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
+                                new ArrayList<>(),
                                 homestays.getPageable().getPageNumber());
 
                 return new ResponseEntity<HomestayListPagingDto>(homestayResponseListDto, HttpStatus.OK);
@@ -135,7 +136,8 @@ public class HomestayController {
                                 isNextPage, isPreviousPage);
                 List<HomestayResponseDto> responseHomestayList = homestays.getContent().stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
-                HomestayListPagingDto responseHomestays = new HomestayListPagingDto(responseHomestayList, null,
+                HomestayListPagingDto responseHomestays = new HomestayListPagingDto(responseHomestayList,
+                                new ArrayList<>(),
                                 homestays.getNumber());
 
                 return new ResponseEntity<HomestayListPagingDto>(responseHomestays, HttpStatus.OK);
