@@ -1,7 +1,7 @@
 <div class="container">
 
-  <!-- <mat-stepper linear #stepper> -->
-  <mat-stepper #stepper>
+  <mat-stepper linear #stepper>
+  <!-- <mat-stepper #stepper> -->
     <!-- Basic Information -->
     <mat-step editable [stepControl]="informationFormGroup">
       <form [formGroup]="informationFormGroup" (ngSubmit)="informationForm()" #formone="ngForm">
