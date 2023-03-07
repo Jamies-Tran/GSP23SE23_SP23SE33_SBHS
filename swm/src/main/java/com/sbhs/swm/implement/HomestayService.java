@@ -92,7 +92,7 @@ public class HomestayService implements IHomestayService {
             }
 
         }
-        addressBuilder.append("-").append(homestayGeometryAddress);
+        addressBuilder.append("_").append(homestayGeometryAddress);
 
         homestay.setAddress(addressBuilder.toString());
         homestay.getHomestayRules().forEach(r -> r.setHomestay(homestay));
@@ -120,7 +120,7 @@ public class HomestayService implements IHomestayService {
         } else if (blocHomestayRepo.findBlocHomestayByName(blocHomestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
         }
-
+        String blocGeometryAddress = goongService.convertAddressToGeometry(blocHomestay.getAddress());
         List<String> splittedAddress = new LinkedList<String>(List.of(blocHomestay.getAddress().split(",")));
         String city = splittedAddress.get(blocHomestay.getAddress().split(",").length - 1);
         blocHomestay.setCityProvince(
@@ -135,6 +135,7 @@ public class HomestayService implements IHomestayService {
             }
 
         }
+        addressBuilder.append("_").append(blocGeometryAddress);
         blocHomestay.setAddress(addressBuilder.toString());
         blocHomestay.setLandlord(user.getLandlordProperty());
         blocHomestay.setStatus(HomestayStatus.PENDING.name());

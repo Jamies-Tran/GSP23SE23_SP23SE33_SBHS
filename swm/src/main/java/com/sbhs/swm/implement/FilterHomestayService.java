@@ -135,7 +135,7 @@ public class FilterHomestayService implements IFilterHomestayService {
     public List<Homestay> filterByFacility(List<Homestay> homestays, String name, int quantity) {
         homestays = homestays.stream().filter(h -> {
             for (HomestayFacility f : h.getHomestayFacilities()) {
-                return f.getName().equalsIgnoreCase(name) && f.getQuantity() == quantity;
+                return f.getName().equalsIgnoreCase(name) && f.getQuantity() >= quantity;
             }
             return false;
         }).collect(Collectors.toList());

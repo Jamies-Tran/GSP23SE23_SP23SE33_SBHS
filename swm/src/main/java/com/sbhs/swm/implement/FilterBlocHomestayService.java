@@ -131,7 +131,7 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
         List<DistanceElement> distanceElements = distanceResultRows.getRows().get(0).getElements().stream()
                 .filter(e -> e.getDistance().getValue() <= distance).collect(Collectors.toList());
         blocs = distanceElements.stream()
-                .map(d -> blocHomestayRepo.findBlocHomestayByName(d.getAddress()).get())
+                .map(d -> blocHomestayRepo.findBlocHomestayByAddress(d.getAddress()).get())
                 .collect(Collectors.toList());
         return blocs;
     }

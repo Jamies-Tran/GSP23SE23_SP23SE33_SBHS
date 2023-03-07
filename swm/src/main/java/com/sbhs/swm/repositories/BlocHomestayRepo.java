@@ -22,6 +22,9 @@ public interface BlocHomestayRepo extends JpaRepository<BlocHomestay, Long> {
     @Query(value = "select b from BlocHomestay b where b.name = :name")
     Optional<BlocHomestay> findBlocHomestayByName(@Param("name") String name);
 
+    @Query(value = "select b from BlocHomestay b where b.address = :address")
+    Optional<BlocHomestay> findBlocHomestayByAddress(@Param("address") String address);
+
     @Query(value = "select b from BlocHomestay b where b.status = :status")
     Page<BlocHomestay> findBlocHomestaysByStatus(Pageable pageable, @Param("status") String status);
 
