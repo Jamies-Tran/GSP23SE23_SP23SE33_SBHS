@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:staywithme_passenger_application/bloc/event/search_homestay_event.dart';
 import 'package:staywithme_passenger_application/bloc/search_homestay_bloc.dart';
@@ -11,6 +10,8 @@ import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
+import 'package:staywithme_passenger_application/service/image_service.dart';
+import 'package:staywithme_passenger_application/service/user/user_service.dart';
 
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -25,6 +26,8 @@ class SearchHomestayScreen extends StatefulWidget {
 class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
   final homestayService = locator.get<IHomestayService>();
   final searchTextFieldController = TextEditingController();
+  final userService = locator.get<IUserService>();
+  final imageService = locator.get<IImageService>();
 
   SearchHomestayBloc searchHomestayBloc = SearchHomestayBloc();
 
@@ -110,7 +113,7 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                       : Colors.white),
                               child: const Center(
                                   child: Text(
-                                "bloc",
+                                "Bloc",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               )),
                             ),
@@ -264,35 +267,100 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Container(
-                                                    height: 150,
-                                                    width: 400,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 10,
-                                                            right: 10),
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      top: 50,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(data
-                                                                .homestays![
-                                                                    index]
-                                                                .homestayImages![
-                                                                    0]
-                                                                .imageUrl!),
-                                                            fit: BoxFit.fill),
-                                                        borderRadius:
-                                                            const BorderRadius
+                                                  FutureBuilder(
+                                                    future: imageService
+                                                        .getHomestayImage(data
+                                                            .homestays![index]
+                                                            .homestayImages![0]
+                                                            .imageUrl!),
+                                                    builder: (context,
+                                                        imageSnapshot) {
+                                                      switch (imageSnapshot
+                                                          .connectionState) {
+                                                        case ConnectionState
+                                                            .waiting:
+                                                          return Container(
+                                                            height: 150,
+                                                            width: 200,
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10),
+                                                            padding:
+                                                                const EdgeInsets
                                                                     .only(
+                                                              top: 50,
+                                                            ),
+                                                            decoration: const BoxDecoration(
+                                                                color: Colors
+                                                                    .white24,
+                                                                borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10))),
+                                                          );
+                                                        case ConnectionState
+                                                            .done:
+                                                          String imageUrl =
+                                                              imageSnapshot
+                                                                      .data ??
+                                                                  'https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg';
+                                                          return Container(
+                                                            height: 150,
+                                                            width: 400,
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10,
+                                                                    right: 10),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top: 50,
+                                                            ),
+                                                            decoration: BoxDecoration(
+                                                                image: DecorationImage(
+                                                                    image: NetworkImage(
+                                                                        imageUrl),
+                                                                    fit: BoxFit
+                                                                        .fill),
+                                                                borderRadius: const BorderRadius
+                                                                        .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10))),
+                                                          );
+                                                        default:
+                                                          break;
+                                                      }
+                                                      return Container(
+                                                        height: 150,
+                                                        width: 200,
+                                                        margin: const EdgeInsets
+                                                            .only(left: 10),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 50,
+                                                        ),
+                                                        decoration: const BoxDecoration(
+                                                            color:
+                                                                Colors.white24,
+                                                            borderRadius: BorderRadius.only(
                                                                 topLeft: Radius
                                                                     .circular(
                                                                         10),
                                                                 topRight: Radius
                                                                     .circular(
                                                                         10))),
+                                                      );
+                                                    },
                                                   ),
                                                   Container(
                                                     height: 150,
@@ -356,39 +424,45 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                             const SizedBox(
                                                               height: 2,
                                                             ),
-                                                            RatingStars(
-                                                              animationDuration:
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          4),
-                                                              maxValue: 5.0,
-                                                              starColor:
-                                                                  secondaryColor,
-                                                              starBuilder: (index,
-                                                                      color) =>
-                                                                  Icon(
-                                                                Icons.star,
-                                                                color: color,
-                                                                size: 25,
+                                                            Row(children: [
+                                                              RatingStars(
+                                                                animationDuration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            4),
+                                                                maxValue: 5.0,
+                                                                starColor:
+                                                                    secondaryColor,
+                                                                starBuilder:
+                                                                    (index, color) =>
+                                                                        Icon(
+                                                                  Icons.star,
+                                                                  color: color,
+                                                                  size: 25,
+                                                                ),
+                                                                value: data
+                                                                    .homestays![
+                                                                        index]
+                                                                    .totalAverageRating!,
+                                                                starOffColor: Colors
+                                                                    .lightBlueAccent,
+                                                                starCount: 5,
+                                                                starSpacing:
+                                                                    5.0,
+                                                                valueLabelVisibility:
+                                                                    false,
                                                               ),
-                                                              value: data
-                                                                  .homestays![
-                                                                      index]
-                                                                  .totalAverageRating!,
-                                                              starOffColor: Colors
-                                                                  .lightBlueAccent,
-                                                              starCount: 5,
-                                                              starSpacing: 5.0,
-                                                              valueLabelVisibility:
-                                                                  false,
-                                                            ),
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Text(
+                                                                  "(${data.homestays![index].numberOfRating} number of reviews)"),
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                            ]),
                                                             const SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Text(
-                                                                "(${data.homestays![index].numberOfRating} number of reviews)"),
-                                                            const SizedBox(
-                                                              height: 5,
+                                                              height: 10,
                                                             ),
                                                             Text(utf8.decode(
                                                                 data
@@ -437,34 +511,100 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Container(
-                                                    height: 150,
-                                                    width: 400,
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 10),
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      top: 50,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(data
-                                                                .blocs![index]
-                                                                .homestays![0]
-                                                                .homestayImages![
-                                                                    0]
-                                                                .imageUrl!),
-                                                            fit: BoxFit.fill),
-                                                        borderRadius:
-                                                            const BorderRadius
+                                                  FutureBuilder(
+                                                    future: imageService
+                                                        .getHomestayImage(data
+                                                            .blocs![index]
+                                                            .homestays![0]
+                                                            .homestayImages![0]
+                                                            .imageUrl!),
+                                                    builder: (context,
+                                                        imageSnapshot) {
+                                                      String imageUrl =
+                                                          imageSnapshot.data ??
+                                                              'https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg';
+                                                      switch (imageSnapshot
+                                                          .connectionState) {
+                                                        case ConnectionState
+                                                            .waiting:
+                                                          return Container(
+                                                            height: 150,
+                                                            width: 200,
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10),
+                                                            padding:
+                                                                const EdgeInsets
                                                                     .only(
+                                                              top: 50,
+                                                            ),
+                                                            decoration: const BoxDecoration(
+                                                                color: Colors
+                                                                    .white24,
+                                                                borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10))),
+                                                          );
+                                                        case ConnectionState
+                                                            .done:
+                                                          return Container(
+                                                            height: 150,
+                                                            width: 400,
+                                                            margin:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10,
+                                                                    right: 10),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top: 50,
+                                                            ),
+                                                            decoration: BoxDecoration(
+                                                                image: DecorationImage(
+                                                                    image: NetworkImage(
+                                                                        imageUrl),
+                                                                    fit: BoxFit
+                                                                        .fill),
+                                                                borderRadius: const BorderRadius
+                                                                        .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            10),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            10))),
+                                                          );
+                                                        default:
+                                                          break;
+                                                      }
+                                                      return Container(
+                                                        height: 150,
+                                                        width: 200,
+                                                        margin: const EdgeInsets
+                                                            .only(left: 10),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 50,
+                                                        ),
+                                                        decoration: const BoxDecoration(
+                                                            color:
+                                                                Colors.white24,
+                                                            borderRadius: BorderRadius.only(
                                                                 topLeft: Radius
                                                                     .circular(
                                                                         10),
                                                                 topRight: Radius
                                                                     .circular(
                                                                         10))),
+                                                      );
+                                                    },
                                                   ),
                                                   Container(
                                                     height: 150,
@@ -551,10 +691,20 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                   false,
                                                             ),
                                                             const SizedBox(
-                                                              height: 10,
+                                                              height: 5,
                                                             ),
                                                             Text(
                                                                 "(${data.blocs![index].numberOfRating} number of reviews)"),
+                                                            const SizedBox(
+                                                              height: 15,
+                                                            ),
+                                                            Text(
+                                                              utf8.decode(data
+                                                                  .blocs![index]
+                                                                  .address!
+                                                                  .runes
+                                                                  .toList()),
+                                                            ),
                                                             const SizedBox(
                                                               height: 15,
                                                             ),

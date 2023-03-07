@@ -19,7 +19,7 @@ class FilterHomestayBloc {
   bool? _isInputAddress = true;
   String? _address = "";
   bool? _isGeometry = false;
-  int? _distanceValue;
+  int? _distanceValue = 1000;
   RangeValues? _ratingRangeValues = const RangeValues(0, 0);
   RangeValues? _priceRangeValues = const RangeValues(0, 0);
   String? _facilityName = "None";
@@ -117,7 +117,8 @@ class FilterHomestayBloc {
           event.context!, SearchHomestayScreen.searchHomestayScreenRoute,
           arguments: {
             "filterOption": event.searchFilterModel!.filterOption,
-            "homestayType": _homestayType
+            "homestayType": _homestayType,
+            "position": event.position
           });
     }
 

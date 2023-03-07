@@ -93,9 +93,10 @@ class ChooseHomestayServicePriceFilterEvent extends FilterHomestayEvent {
 
 class OnClickSearchHomestayEvent extends FilterHomestayEvent {
   OnClickSearchHomestayEvent(
-      {this.searchFilterModel, this.context, this.homestayType});
+      {this.searchFilterModel, this.context, this.homestayType, this.position});
 
   SearchFilterModel? searchFilterModel;
   String? homestayType;
   BuildContext? context;
+  Position? position;
 }

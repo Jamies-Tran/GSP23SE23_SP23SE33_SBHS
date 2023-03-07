@@ -350,7 +350,6 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                   Autocomplete<Prediction>(
                     displayStringForOption: displayStringForOption,
-
                     fieldViewBuilder: (context, textEditingController,
                             focusNode, onFieldSubmitted) =>
                         SizedBox(
@@ -397,7 +396,11 @@ class _FilterScreenState extends State<FilterScreen> {
                         }
                       });
                     },
-                    // onSelected: (option) => ,
+                    onSelected: (option) => filterHomestayBloc
+                        .eventController.sink
+                        .add(InputAddressFilterEvent(
+                            address: utf8
+                                .decode(option.description!.runes.toList()))),
                   ),
                   const SizedBox(
                     height: 20,
@@ -691,7 +694,8 @@ class _FilterScreenState extends State<FilterScreen> {
                                       context: context,
                                       searchFilterModel: snapshot.data!
                                           .generateSearchFilterModel(),
-                                      homestayType: homestayType));
+                                      homestayType: homestayType,
+                                      position: position));
                             },
                             child: const Text(
                               "Search",

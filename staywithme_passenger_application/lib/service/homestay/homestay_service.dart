@@ -6,8 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
+import 'package:staywithme_passenger_application/model/homestay_city_province_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
+import 'package:staywithme_passenger_application/service/image_service.dart';
+import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 abstract class IHomestayService {
   Future<dynamic> getHomestayListOrderByTotalAverageRating(
@@ -20,9 +23,13 @@ abstract class IHomestayService {
       int size, bool isNextPage, bool isPreviousPage);
 
   Future<dynamic> getHomestayFilterAdditionalInformation(String homestayType);
+
+  Future<dynamic> getAreaHomestayInfo();
 }
 
 class HomestayService extends IHomestayService {
+  final imageService = locator.get<IImageService>();
+
   @override
   Future getHomestayListOrderByTotalAverageRating(
       int page, int size, bool isNextPage, bool isPreviousPage) async {
@@ -117,6 +124,40 @@ class HomestayService extends IHomestayService {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));
         return serverExceptionModel;
+      }
+    } on SocketException catch (e) {
+      return e;
+    } on TimeoutException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getAreaHomestayInfo() async {
+    final client = http.Client();
+    final uri = Uri.parse(cityProvincesUrl);
+    try {
+      final response =
+          await client.get(uri, headers: {"content-type": "application/json"});
+      if (response.statusCode == 200) {
+        TotalHomestayFromLocationModel totalHomestayFromLocationModel =
+            TotalHomestayFromLocationModel.fromJson(json.decode(response.body));
+        if (totalHomestayFromLocationModel.totalHomestays!.isNotEmpty) {
+          for (var e in totalHomestayFromLocationModel.totalHomestays!) {
+            String avatarUrl = await imageService
+                .getAreaImage(utf8.decode(e.cityProvince!.runes.toList()));
+            e.avatarUrl = avatarUrl;
+          }
+        }
+
+        if (totalHomestayFromLocationModel.totalBlocs!.isNotEmpty) {
+          for (var e in totalHomestayFromLocationModel.totalBlocs!) {
+            String avatarUrl = await imageService
+                .getAreaImage(utf8.decode(e.cityProvince!.runes.toList()));
+            e.avatarUrl = avatarUrl;
+          }
+        }
+        return totalHomestayFromLocationModel;
       }
     } on SocketException catch (e) {
       return e;
