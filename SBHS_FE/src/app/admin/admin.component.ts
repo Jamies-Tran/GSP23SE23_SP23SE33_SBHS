@@ -16,7 +16,7 @@ export class AdminComponent implements OnInit {
     private route: ActivatedRoute,
     private image: ImageService,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
+    media: MediaMatcher
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -31,19 +31,14 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['/Login'], { relativeTo: this.route });
   }
 
-
   isExpanded = true;
   showSubmenu: boolean = false;
   isShowing = false;
   showSubSubMenu: boolean = false;
-
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-
-
-
 }
