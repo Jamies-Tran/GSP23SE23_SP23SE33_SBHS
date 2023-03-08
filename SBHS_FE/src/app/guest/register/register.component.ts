@@ -16,7 +16,6 @@ import {map, startWith} from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormField } from '@angular/material/form-field';
 
-// import { Address, AddressPrediction, predictions2 } from './register.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';

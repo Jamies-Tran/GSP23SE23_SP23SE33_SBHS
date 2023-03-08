@@ -1,81 +1,106 @@
-<section class="vh-100">
+<section class="body-page">
   <div class="container-fluid">
     <div class="row">
-      <div class="login col-12 col-sm-7 overflow-auto vh-100 d-flex align-items-center justify-content-center">
-        <div class="card border-0  login-card">
-          <div class="login-body card-body text-center">
-
-            <div class=" ms-xl-4">
-              <a routerLink="/Homepage"> <img class="logo" [src]="logoImageUrl"></a>
-            </div>
+      <div class="col p-0 vh-100">
+        <!-- Header -->
+        <nav class="navbar sticky-top navbar-expand-sm bg-white p-0 ">
+          <div class="container-fluid">
+            <a class="navbar-brand" routerLink="/Homepage">
+              <img class="logo" src="/assets/images/logo-2.png">
+            </a>
+            <div class=""></div>
             <div>
-              <h3 class=" mb-3 pb-3 align-items-center gradient-text-2 fw-bold font-monospace fs-1"
-                style="letter-spacing: 1px;">Login</h3>
+              <ul class="navbar-nav me-auto  mb-lg-0">
+                <li class="nav-item mx-4 li-login d-flex align-items-center">
+                  <button mat-button class="nav-link active fs-5" routerLink="/Login">Login</button>
+                  <!-- <a class="nav-link active fs-5" aria-current="page" href="#">Login</a> -->
+                </li>
+                <li class="nav-item d-flex align-items-center">
+                  <button mat-raised-button routerLink="/Register"
+                    class="btn-register btn btn-primary btn-block w-100 fa-lg gradient-custom-2 ">Register Your
+                    Accommodation</button>
+                </li>
+              </ul>
             </div>
-            <form (ngSubmit)="getProfile()">
-              <div class="login-input">
-                <div class="username">
-                  <mat-form-field class="input-username w-100" appearance="outline">
-                    <mat-label>Username</mat-label>
-                    <input matInput type="text" required="Please Enter Username" [formControl]="usernameFormControl"
-                      [errorStateMatcher]="matcher" name="txtUsername">
-                    <mat-icon matPrefix><i class="fa-solid fa-user"></i></mat-icon>
-                    <mat-error *ngIf="usernameFormControl.hasError('required')">
-                      Username is <strong>required</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="password">
-                  <mat-form-field class="input-password w-100" appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input matInput type="password" name="txtPassword" [formControl]="passwordFormControl"
-                      [errorStateMatcher]="matcher" required="Please Enter PaformControlssword"
-                      [type]="hide ? 'password' : 'text'">
-                    <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>
-                    <button type="button" class="border-0  " mat-icon-button matSuffix (click)="hide = !hide"
-                      [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                      <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                    <mat-error *ngIf="passwordFormControl.hasError('required')">
-                      Password is <strong>required</strong>
-                    </mat-error>
-
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="text-center pt-1  pb-1 login-button-div">
-                <p class=""><a class="gradient-text-1 fs-6" routerLink="/ForgotPassword">Forgot
-                    password?</a></p>
-                <button class="login-button btn btn-primary btn-block w-100 fa-lg gradient-custom-2 mb-3"
-                  mat-raised-button type="submit">
-                  Login</button>
-              </div>
-            </form>
-
-
-            <div class="login-gmail ">
-              <span class="font-monospace">Or</span>
-            </div>
-            <div class="w-100 d-flex align-items-center justify-content-center">
-              <asl-google-signin-button type='standard' size='large' data-theme="filled_blue" *ngIf="!user">
-              </asl-google-signin-button>
-            </div>
-
-
-
-            <p class="mt-3">Don't have an account? <a routerLink="/Register" routerLinkActive="active"
-                class="link-info gradient-text-1  fw-bold font-monospace fs-5">Register here</a></p>
-
-
-
           </div>
+        </nav>
+        <!-- First content -->
+        <section class=" first-content overflow-auto">
+          <div class="">
+            <div class="content-container">
+              <div class="row w-100">
+                <div class="col">
+                  <div class="content-box">
+                    <div class="content">
+                      <div class="card border-0  login-card">
+                        <div class="login-body card-body text-center">
+                          <div class=" ms-xl-4">
+                            <a routerLink="/Homepage"> <img class="logo" [src]="logoImageUrl"></a>
+                          </div>
+                          <div>
+                            <h3 class=" mb-3 pb-3 align-items-center gradient-text-2 fw-bold font-monospace fs-1"
+                              style="letter-spacing: 1px;">Login</h3>
+                          </div>
+                          <form (ngSubmit)="getProfile()">
+                            <div class="login-input">
+                              <div class="username">
+                                <mat-form-field class="input-username w-100" appearance="outline">
+                                  <mat-label>Username</mat-label>
+                                  <input matInput type="text" required="Please Enter Username"
+                                    [formControl]="usernameFormControl" [errorStateMatcher]="matcher"
+                                    name="txtUsername">
+                                  <mat-icon matPrefix><i class="fa-solid fa-user"></i></mat-icon>
+                                  <mat-error *ngIf="usernameFormControl.hasError('required')">
+                                    Username is <strong>required</strong>
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                              <div class="password">
+                                <mat-form-field class="input-password w-100" appearance="outline">
+                                  <mat-label>Password</mat-label>
+                                  <input matInput type="password" name="txtPassword" [formControl]="passwordFormControl"
+                                    [errorStateMatcher]="matcher" required="Please Enter PaformControlssword"
+                                    [type]="hide ? 'password' : 'text'">
+                                  <mat-icon matPrefix><i class="fa-solid fa-key"></i></mat-icon>
+                                  <button type="button" class="border-0  " mat-icon-button matSuffix
+                                    (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                    [attr.aria-pressed]="hide">
+                                    <mat-icon matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                  </button>
+                                  <mat-error *ngIf="passwordFormControl.hasError('required')">
+                                    Password is <strong>required</strong>
+                                  </mat-error>
 
-        </div>
-
-      </div>
-      <div class="col-sm-5 px-0 d-none d-sm-block">
-        <img [src]="loginRegisterImageUrl" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
-
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="text-center pt-1  pb-1 login-button-div">
+                              <p class=""><a class="gradient-text-1 fs-6" routerLink="/ForgotPassword">Forgot
+                                  password?</a></p>
+                              <button class="login-button btn btn-primary btn-block w-100 fa-lg gradient-custom-2 mb-3"
+                                mat-raised-button type="submit">
+                                Login</button>
+                            </div>
+                          </form>
+                          <div class="login-gmail ">
+                            <span class="font-monospace">Or</span>
+                          </div>
+                          <div class="w-100 d-flex align-items-center justify-content-center">
+                            <asl-google-signin-button type='standard' size='large' data-theme="filled_blue"
+                              *ngIf="!user">
+                            </asl-google-signin-button>
+                          </div>
+                          <p class="mt-3">Don't have an account? <a routerLink="/Register" routerLinkActive="active"
+                              class="link-info gradient-text-1  fw-bold font-monospace fs-5">Register here</a></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
