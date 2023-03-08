@@ -113,22 +113,33 @@ public class PaymentService implements IPaymentService {
         WalletType walletType = WalletType.valueOf(momoCaptureWalletDto.getOrderInfo());
         switch (walletType) {
             case PASSENGER_WALLET:
-                long currentBalance = user.getPassengerProperty().getBalanceWallet()
+                long currentPassengerBalance = user.getPassengerProperty().getBalanceWallet()
                         .getTotalBalance();
                 user.getPassengerProperty().getBalanceWallet()
-                        .setTotalBalance(currentBalance + momoCaptureWalletDto.getAmount());
+                        .setTotalBalance(currentPassengerBalance + momoCaptureWalletDto.getAmount());
                 PaymentHistory paymentHistory = new PaymentHistory();
                 paymentHistory.setAmount(momoCaptureWalletDto.getAmount());
                 paymentHistory.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
                 paymentHistory
                         .setPassengerWallet(user.getPassengerProperty().getBalanceWallet().getPassengerWallet());
-                paymentHistory.setPaymentMethod(PaymentType.MOMO.name());
+                paymentHistory.setPaymentMethod(PaymentType.SWM_WALLET.name());
                 PaymentHistory savedPaymentHistory = paymentRepo.save(paymentHistory);
                 user.getPassengerProperty().getBalanceWallet().getPassengerWallet()
                         .setPaymentHistories(List.of(savedPaymentHistory));
                 break;
-            default:
-                break;
+            case LANDLORD_WALLET:
+                long currentLandlordBalance = user.getLandlordProperty().getBalanceWallet().getTotalBalance();
+                user.getPassengerProperty().getBalanceWallet()
+                        .setTotalBalance(currentLandlordBalance + momoCaptureWalletDto.getAmount());
+                PaymentHistory paymentHistoryForLandlord = new PaymentHistory();
+                paymentHistoryForLandlord.setAmount(momoCaptureWalletDto.getAmount());
+                paymentHistoryForLandlord.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+                paymentHistoryForLandlord
+                        .setLandlordWallet(user.getLandlordProperty().getBalanceWallet().getLandlordWallet());
+                paymentHistoryForLandlord.setPaymentMethod(PaymentType.SWM_WALLET.name());
+                PaymentHistory savedPaymentHistoryForLandlord = paymentRepo.save(paymentHistoryForLandlord);
+                user.getLandlordProperty().getBalanceWallet().getLandlordWallet()
+                        .setPaymentHistories(List.of(savedPaymentHistoryForLandlord));
         }
         return null;
     }

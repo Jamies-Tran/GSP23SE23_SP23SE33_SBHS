@@ -27,4 +27,6 @@ public interface IUserService {
     public void changePassword(String newPassword, String email);
 
     public void deletePasswordOtp(String otp);
+
+    public Long getUserActualBalance(String role, SwmUser user);
 }

@@ -44,13 +44,16 @@ public class Booking extends BaseModel {
     @Column
     private @Setter String status;
 
+    @Column
+    private @Setter String paymentType;
+
     @ManyToOne
     private @Setter Passenger passenger;
 
     @ManyToOne
     private @Setter Homestay homestay;
 
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToOne(cascade = { CascadeType.REMOVE })
     private @Setter BookingDeposit deposit;
 
     @ManyToMany

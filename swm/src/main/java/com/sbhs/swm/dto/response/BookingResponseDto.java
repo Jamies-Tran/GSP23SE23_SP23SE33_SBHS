@@ -20,6 +20,7 @@ public class BookingResponseDto {
     private String bookingTo;
     private Long totalRoom;
     private Long totalPrice;
+    private String paymentType;
     private HomestayResponseDto homestay;
     private List<HomestayServiceDto> homestayServices;
     private BookingDepositDto deposit;

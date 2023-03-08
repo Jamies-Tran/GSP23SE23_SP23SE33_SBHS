@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.sbhs.swm.handlers.exceptions.EmailDuplicateException;
 import com.sbhs.swm.handlers.exceptions.EmailNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidBirthException;
+import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.InvalidUserStatusException;
 import com.sbhs.swm.handlers.exceptions.LoginFailException;
 import com.sbhs.swm.handlers.exceptions.PasswordDuplicateException;
@@ -30,6 +31,8 @@ import com.sbhs.swm.models.PasswordModificationOtp;
 import com.sbhs.swm.models.SwmRole;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.LandlordStatus;
+import com.sbhs.swm.repositories.BookingDepositRepo;
+import com.sbhs.swm.repositories.LandlordCommissionRepo;
 import com.sbhs.swm.repositories.PasswordModificationOtpRepo;
 import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IMailService;
@@ -42,6 +45,12 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private BookingDepositRepo bookingDepositRepo;
+
+    @Autowired
+    private LandlordCommissionRepo landlordCommissionRepo;
 
     @Autowired
     private PasswordModificationOtpRepo passwordModificationOtpRepo;
@@ -239,6 +248,34 @@ public class UserService implements IUserService {
 
         return userRepo.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(userDetails.getUsername()));
+    }
+
+    @Override
+    public Long getUserActualBalance(String role, SwmUser user) {
+        switch (role.toUpperCase()) {
+            case "PASSENGER":
+                if (user.getPassengerProperty() == null) {
+                    throw new InvalidException("Invalid user");
+                }
+                long currentPassengerWalletBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+                long currentPassengerBookingDeposit = bookingDepositRepo
+                        .getTotalUnpaidAmountFromUser(user.getUsername()) != null ? bookingDepositRepo
+                                .getTotalUnpaidAmountFromUser(user.getUsername()) : 0;
+                long actualPassengerWalletBalance = currentPassengerWalletBalance - currentPassengerBookingDeposit;
+                return actualPassengerWalletBalance;
+            case "LANDLORD":
+                if (user.getLandlordProperty() == null) {
+                    throw new InvalidException("Invalid user");
+                }
+                long currentLandlordWalletBalance = user.getLandlordProperty().getBalanceWallet().getTotalBalance();
+                long currentLandlordUnpaidCommission = landlordCommissionRepo
+                        .getLandlordTotalUnpaidAmountFromUser(user.getUsername()) != null ? landlordCommissionRepo
+                                .getLandlordTotalUnpaidAmountFromUser(user.getUsername()) : 0;
+                long actualLandlordWalletBalance = currentLandlordWalletBalance - currentLandlordUnpaidCommission;
+                return actualLandlordWalletBalance;
+            default:
+                return 0L;
+        }
     }
 
 }

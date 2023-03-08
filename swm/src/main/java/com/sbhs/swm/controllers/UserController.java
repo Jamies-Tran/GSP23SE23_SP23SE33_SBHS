@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,17 +66,23 @@ public class UserController {
         return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("/info-username")
-    public ResponseEntity<?> getUserInfo(@RequestParam String username) {
-        SwmUser user = userService.findUserByUsername(username);
+    @GetMapping("/info")
+    @PreAuthorize("hasAnyRole('ROLE_PASSENGER','ROLE_LANDLORD')")
+    public ResponseEntity<?> getUserInfo() {
+        SwmUser user = userService.authenticatedUser();
         SwmUserResponseDto responseUser = modelMapper.map(user, SwmUserResponseDto.class);
+
         user.getRoles().forEach(r -> {
             if (r.getName().equalsIgnoreCase("passenger")) {
                 responseUser
                         .setPassengerProperty(modelMapper.map(user.getPassengerProperty(), PassengerResponseDto.class));
+                Long actualPassengerWalletBalance = userService.getUserActualBalance(r.getName(), user);
+                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(actualPassengerWalletBalance);
             } else if (r.getName().equalsIgnoreCase("landlord")) {
                 responseUser
                         .setLandlordProperty(modelMapper.map(user.getLandlordProperty(), LandlordResponseDto.class));
+                Long actualLandlordWalletBalance = userService.getUserActualBalance(r.getName(), user);
+                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(actualLandlordWalletBalance);
             }
         });
         responseUser.setRoleIds(user.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));

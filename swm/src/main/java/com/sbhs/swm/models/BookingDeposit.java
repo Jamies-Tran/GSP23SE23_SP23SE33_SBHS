@@ -23,7 +23,10 @@ public class BookingDeposit extends BaseModel {
     private Long id;
 
     @Column
-    private @Setter Long amount;
+    private @Setter Long paidAmount;
+
+    @Column
+    private @Setter Long unpaidAmount;
 
     @ManyToOne
     private @Setter PassengerWallet passengerWallet;

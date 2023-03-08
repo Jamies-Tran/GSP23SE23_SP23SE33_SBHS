@@ -10,5 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingDepositDto {
-    private Long amount;
+    private Long paidAmount;
+    private Long unpaidAmount;
 }

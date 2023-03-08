@@ -2,8 +2,6 @@ package com.sbhs.swm.dto.request;
 
 import java.util.List;
 
-import com.sbhs.swm.dto.BookingDepositDto;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,8 @@ public class BookingRequestDto {
     private Long totalRoom;
     private Long totalPrice;
     private String homestayName;
+    private String paymentType;
     private List<String> homestayServicesString;
-    private BookingDepositDto deposit;
+    private Long depositPaidAmount;
     private String status;
 }

@@ -14,6 +14,7 @@ import lombok.Setter;
 public class BalanceWalletResponseDto extends BaseResponseDto {
     private Long id;
     private Long totalBalance;
+    private Long actualBalance;
     private PassengerWalletDto passengerWallet;
     private LandlordWalletResponseDto landlordWallet;
 
