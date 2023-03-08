@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,9 +66,8 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    @PreAuthorize("hasAnyRole('ROLE_PASSENGER','ROLE_LANDLORD')")
-    public ResponseEntity<?> getUserInfo() {
-        SwmUser user = userService.authenticatedUser();
+    public ResponseEntity<?> getUserInfo(String username) {
+        SwmUser user = userService.findUserByUsername(username);
         SwmUserResponseDto responseUser = modelMapper.map(user, SwmUserResponseDto.class);
 
         user.getRoles().forEach(r -> {
