@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.sbhs.swm.dto.request.FilterOption;
 import com.sbhs.swm.handlers.exceptions.HomestayNameDuplicateException;
@@ -286,11 +287,17 @@ public class HomestayService implements IHomestayService {
     }
 
     @Override
-    public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, int page, int size,
+    public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, String searchString, int page,
+            int size,
             boolean isNextPage,
             boolean isPreviousPage) {
         List<Homestay> homestays = homestayRepo.getAllAvailableHomestay();
+        if (StringUtils.hasLength(searchString)) {
+            homestays = filterHomestayService.filterBySearchString(homestays, searchString);
+
+        }
         if (filterOption != null) {
+
             if (filterOption.getFilterByAddress() != null) {
                 homestays = filterHomestayService.filterByAddress(homestays,
                         filterOption.getFilterByAddress().getAddress(),
@@ -346,23 +353,6 @@ public class HomestayService implements IHomestayService {
 
         return homestay;
     }
-
-    // @Override
-    // public List<Homestay> filterByAddress(List<Homestay> homestays, String
-    // address, boolean isGeometry) {
-    // List<String> destinations = homestays.stream().map(h -> h.getAddress())
-    // .collect(Collectors.toList());
-    // DistanceResultRows distanceResultRows =
-    // goongService.getDistanceFromLocation(address, destinations, isGeometry);
-    // List<DistanceElement> addressesSorted =
-    // distanceResultRows.getRows().get(0).getElements().stream()
-    // .sorted(Collections.reverseOrder())
-    // .collect(Collectors.toList());
-    // List<Homestay> homestaySortedList = addressesSorted.stream()
-    // .map(a ->
-    // this.findHomestayByAddress(a.getAddress())).collect(Collectors.toList());
-    // return homestaySortedList;
-    // }
 
     @Override
     public List<String> getAllHomestayFacilityNames(String homestayType) {
@@ -434,10 +424,15 @@ public class HomestayService implements IHomestayService {
     }
 
     @Override
-    public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, int page, int size,
+    public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, String searchString, int page,
+            int size,
             boolean isNextPage, boolean isPreviousPage) {
         List<BlocHomestay> blocs = blocHomestayRepo.getAllAvailableBlocs();
+        if (StringUtils.hasLength(searchString)) {
+            blocs = filterBlocHomestayService.filterBySearchString(blocs, searchString);
+        }
         if (filterOption != null) {
+
             if (filterOption.getFilterByBookingDateRange() != null) {
                 blocs = filterBlocHomestayService.filterBlocByBookingDateRange(blocs,
                         filterOption.getFilterByBookingDateRange().getStart(),

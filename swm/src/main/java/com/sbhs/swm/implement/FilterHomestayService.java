@@ -154,4 +154,19 @@ public class FilterHomestayService implements IFilterHomestayService {
         return homestays;
     }
 
+    @Override
+    public List<Homestay> filterBySearchString(List<Homestay> homestays, String searchString) {
+        homestays = homestays.stream().filter(h -> {
+            if (h.getCityProvince().equalsIgnoreCase(searchString)) {
+                return true;
+            } else if (h.getName().toLowerCase().contains(searchString.toLowerCase())
+                    || h.getAddress().toLowerCase().contains(searchString.toLowerCase())) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
+
+        return homestays;
+    }
+
 }

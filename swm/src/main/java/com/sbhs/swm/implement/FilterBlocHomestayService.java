@@ -185,4 +185,29 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
         return blocs;
     }
 
+    @Override
+    public List<BlocHomestay> filterBySearchString(List<BlocHomestay> blocs, String searchString) {
+        blocs = blocs.stream().filter(b -> {
+
+            if (this.isSearchStringFindHomestayInBloc(b, searchString)
+                    || b.getCityProvince().equalsIgnoreCase(searchString)
+                    || b.getName().toLowerCase().contains(searchString)
+                    || b.getAddress().toLowerCase().contains(searchString)) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
+
+        return blocs;
+    }
+
+    private boolean isSearchStringFindHomestayInBloc(BlocHomestay bloc, String searchString) {
+        for (Homestay h : bloc.getHomestays()) {
+            if (h.getName().toLowerCase().contains(searchString)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

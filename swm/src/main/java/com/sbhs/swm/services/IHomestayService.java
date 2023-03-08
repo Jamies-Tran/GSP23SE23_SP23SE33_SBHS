@@ -40,11 +40,13 @@ public interface IHomestayService {
         public Page<BlocHomestay> getBlocListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
                         boolean isPreviousPage);
 
-        public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, int page, int size,
+        public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, String searchString,
+                        int page, int size,
                         boolean isNextPage,
                         boolean isPreviousPage);
 
-        public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, int page, int size,
+        public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, String searchString,
+                        int page, int size,
                         boolean isNextPage, boolean isPreviousPage);
 
         // public List<Homestay> filterByAddress(List<Homestay> homestays, String
