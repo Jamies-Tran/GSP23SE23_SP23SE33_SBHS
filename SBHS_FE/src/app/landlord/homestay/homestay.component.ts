@@ -15,8 +15,9 @@ export class HomestayComponent implements OnInit {
   isDelete = "null"
   public username = localStorage.getItem('usernameLogined') as string;
   ngOnInit(): void {
-
-    this.http.getHomestay(this.username).subscribe(async  (data) =>{
+    this.username = localStorage.getItem('usernameLogined') as string;
+    console.log(this.username);
+    this.http.getListHomestay(this.username).subscribe(async  (data) =>{
       // this.value = data;
       // for(this.i of this.value ){
       //   console.log(this.i.homestayImages[0].url)
