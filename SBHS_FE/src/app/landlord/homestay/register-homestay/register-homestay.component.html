@@ -485,7 +485,7 @@
                     <hr>
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext (click)="flag = false">Continue</button>
                     </div>
                   </form>
                 </div>
@@ -583,11 +583,16 @@
                     </div>
 
                     <hr>
-                    <div class="add-btn d-flex flex-row ">
-                      <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext>Continue</button>
-                    </div>
-
+                    <ng-container [ngSwitch]="true">
+                      <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === false">
+                        <button class="btn-reset" mat-raised-button matStepperPrevious>Back</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button (click)="validImageHomestay()">Continue</button>
+                      </div>
+                      <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
+                        <button class="btn-reset" mat-raised-button matStepperPrevious>Reset</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext (click)="validImageHomestay();flag = false">Continue</button>
+                      </div>
+                    </ng-container>
                   </div>
                 </div>
               </div>
@@ -673,11 +678,16 @@
                       </div>
                       <br>
                       <hr>
-                      <div class="add-btn d-flex flex-row ">
-                        <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                        <button class="btn-next w-100" color="primary" mat-raised-button
-                          matStepperNext>Continue</button>
-                      </div>
+                      <ng-container [ngSwitch]="true">
+                        <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === false">
+                          <button class="btn-reset" mat-raised-button matStepperPrevious>Back</button>
+                          <button class="btn-next w-100" color="primary" mat-raised-button (click)="validPrice()">Continue</button>
+                        </div>
+                        <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
+                          <button class="btn-reset" mat-raised-button matStepperPrevious>Reset</button>
+                          <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext (click)="validPrice()">Continue</button>
+                        </div>
+                      </ng-container>
 
 
 

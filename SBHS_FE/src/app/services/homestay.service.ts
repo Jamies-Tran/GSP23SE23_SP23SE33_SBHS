@@ -104,7 +104,7 @@ export class ServerHttpService {
   }
   public rejectHomestay(name: string) {
     const url =
-      `${this.REST_API_SERVER}api/admin/homestay-reject?homestayStyle=HOMESTAY&name=` +
+      `${this.REST_API_SERVER}/api/admin/homestay-reject?homestayStyle=HOMESTAY&name=` +
       name +
       ``;
     return this.httpClient

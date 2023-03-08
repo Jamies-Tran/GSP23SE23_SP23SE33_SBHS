@@ -39,7 +39,7 @@ export class RequestHomestayComponent implements OnInit{
     console.log(this.valuesActive);
   });
   // Reject
-  this.http.getHomestayByStatus('RREJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
+  this.http.getHomestayByStatus('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
     this.valuesReject = data['homestays'];
     console.log(this.valuesReject);
   });
@@ -69,15 +69,9 @@ export class RequestHomestayComponent implements OnInit{
         console.log(data);
       },
       (error) => {
-        if (error['status'] == 500) {
-          // this.registerError = 'please check your information again!';
           this.message = error;
           this.openDialogMessage();
-        } else {
-          // this.registerError = error;
-          this.message = error;
-          this.openDialogMessage();
-        }
+        
       }
     );
   }

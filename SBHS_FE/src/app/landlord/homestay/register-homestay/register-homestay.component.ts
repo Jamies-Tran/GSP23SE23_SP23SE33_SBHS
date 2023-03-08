@@ -45,9 +45,8 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   });
   homestayName: string = '';
   address: string = '';
-  totalRoom: string = '';
+  totalRoom: number = 0;
   isHomestayLicense: boolean = false;
-  validateInformationForm() {}
   informationForm() {
     // Lay value
     this.flag = false;
@@ -56,25 +55,32 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     const formInformationFormGroupValue = this.informationFormGroup.controls;
     this.homestayName = formInformationFormGroupValue.homestayName.value!;
     this.address = formInformationFormGroupValue.address.value!;
-    this.totalRoom = formInformationFormGroupValue.number.value!;
+    this.totalRoom = parseInt(formInformationFormGroupValue.number.value!);
     this.isHomestayLicense =
       formInformationFormGroupValue.homestayLicense.value!;
     if (this.homestayName === '') {
-      this.result = "Please enter homestay's name";
+      this.message = "Please enter homestay's name";
+      this.openDialogMessage();
       return;
     } else if (this.address === '') {
-      this.result = 'Please enter address';
-      console.log(this.address);
+      this.message = 'Please enter address';
+      this.openDialogMessage();
       return;
-    } else if (this.totalRoom === '') {
-      this.result = 'Please enter total room';
+    } else if (this.totalRoom === 0) {
+      this.message = 'Please enter total room';
+      this.openDialogMessage();
       return;
     } else if (!this.isHomestayLicense) {
-      this.result =
-        'Please upload at a photo of your Homestay License' +
-        this.isHomestayLicense;
+      this.message =
+        'Please upload at a photo of your Homestay License';
+        this.openDialogMessage();
       return;
-    } else {
+    } else if(this.totalRoom >100){
+      this.message = 'Total room must be less than 100';
+      this.openDialogMessage();
+      return;
+    }
+    else {
       this.result = '';
       this.flag = true;
       this.stepper.selectedIndex = 1;
@@ -275,13 +281,23 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     console.log('onselect: ', files);
     // set files
     this.homestayImageFiles.push(...files.addedFiles);
+    this.validImageHomestay()
   }
-
+  // validate image
+  validImageHomestay(){
+    this.flag = false;
+    if(this.homestayImageFiles.length < 5){
+      this.message = "Upload at least 5 photos of your homestay"
+      this.openDialogMessage();
+      return
+    }else this.flag = true
+  }
   // xóa file hình
   onRemoveHomestayImage(event: File) {
     console.log(event);
     this.homestayImageFiles.splice(this.homestayImageFiles.indexOf(event), 1);
     console.log('xoa file:', this.homestayImageFiles);
+    this.validImageHomestay()
   }
 
   // Price
@@ -290,6 +306,14 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   calcPriceTax(event: any) {
     var priceToFixed = (this.price * 0.05).toFixed();
     this.priceTax = priceToFixed;
+    this.validPrice();
+  }
+  validPrice(){
+    if(this.price === 0){
+      this.message = "Please Set the price per night for this homestay and more than 0"
+      this.openDialogMessage();
+      return;
+    }else this.flag = true;
   }
 
   // register submit
@@ -361,7 +385,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         .registerHomestay(
           this.homestayName,
           this.address,
-          this.totalRoom,
+          this.totalRoom+"",
           this.homestayLicense,
           this.homestayImages,
           this.homestayServices,
