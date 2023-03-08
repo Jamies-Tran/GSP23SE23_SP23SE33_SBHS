@@ -73,9 +73,9 @@ class PassengerWalletModel {
   factory PassengerWalletModel.fromJson(Map<String, dynamic> json) =>
       PassengerWalletModel(
         id: json["id"],
-        depositForHomestays: json["depositForHomestays"] != null
-            ? List<PassengerDepositModel>.from(json["depositForHomestays"]
-                .map((e) => PassengerDepositModel.fromJson(e)))
+        depositForHomestays: json["deposits"] != null
+            ? List<PassengerDepositModel>.from(
+                json["deposits"].map((e) => PassengerDepositModel.fromJson(e)))
             : null,
       );
 
@@ -83,7 +83,7 @@ class PassengerWalletModel {
     int total = 0;
     depositForHomestays != null
         ? depositForHomestays?.forEach((element) {
-            total = total + element.deposit!;
+            total = total + element.unpaidAmount!;
           })
         : total = 0;
     return total;
@@ -91,28 +91,39 @@ class PassengerWalletModel {
 }
 
 class PassengerDepositModel {
-  PassengerDepositModel({this.id, this.deposit});
+  PassengerDepositModel({this.id, this.unpaidAmount, this.paidAmount});
 
   int? id;
-  int? deposit;
+  int? paidAmount;
+  int? unpaidAmount;
 
   factory PassengerDepositModel.fromJson(Map<String, dynamic> json) =>
-      PassengerDepositModel(id: json["id"], deposit: json["deposit"]);
+      PassengerDepositModel(
+          id: json["id"],
+          unpaidAmount: json["unpaidAmount"],
+          paidAmount: json["paidAmount"]);
 
-  Map<String, dynamic> toJson() => {"deposit": deposit};
+  Map<String, dynamic> toJson() =>
+      {"unpaidAmount": unpaidAmount, "paidAmount": paidAmount};
 }
 
 class BalanceWalletModel {
-  BalanceWalletModel({this.id, this.totalBalance, this.passengerWalletModel});
+  BalanceWalletModel(
+      {this.id,
+      this.totalBalance,
+      this.actualBalance,
+      this.passengerWalletModel});
 
   int? id;
   int? totalBalance;
+  int? actualBalance;
   PassengerWalletModel? passengerWalletModel;
 
   factory BalanceWalletModel.fromJson(Map<String, dynamic> json) =>
       BalanceWalletModel(
           id: json["id"],
           totalBalance: json["totalBalance"],
+          actualBalance: json["actualBalance"],
           passengerWalletModel:
               PassengerWalletModel.fromJson(json["passengerWallet"]));
 

@@ -5,6 +5,8 @@ import 'package:staywithme_passenger_application/bloc/event/add_balance_event.da
 import 'package:staywithme_passenger_application/bloc/state/add_balance_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/payment_model.dart';
+import 'package:staywithme_passenger_application/service/user/payment_service.dart';
+import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class AddBalanceScreen extends StatefulWidget {
   const AddBalanceScreen({super.key});
@@ -26,8 +28,9 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    // final username = contextArguments["username"];
+    final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final username = contextArguments["username"];
+    final paymentService = locator.get<IPaymentService>();
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -111,13 +114,13 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                                           width: 200,
                                           child: Center(
                                             child: FutureBuilder(
-                                                // future: _paymentService
-                                                //     .requestPayment(
-                                                //         username!,
-                                                //         snapshot
-                                                //             .data!.balance!),
-                                                future: Future.delayed(
-                                                    const Duration(days: 1)),
+                                                future: paymentService
+                                                    .requestPayment(
+                                                        username!,
+                                                        snapshot
+                                                            .data!.balance!),
+                                                // future: Future.delayed(
+                                                //     const Duration(days: 1)),
                                                 builder:
                                                     (context, futureSnapshot) {
                                                   final data =

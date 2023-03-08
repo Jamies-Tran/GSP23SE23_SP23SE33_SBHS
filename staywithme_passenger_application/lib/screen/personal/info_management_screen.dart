@@ -200,17 +200,17 @@ class _PassengerInfoManagementScreenState
                                     showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                        title: const Center(
-                                            child: Text(
-                                          "Your wallet",
-                                          style:
-                                              TextStyle(fontFamily: "Lobster"),
-                                        )),
                                         content: SizedBox(
                                             height: 500,
                                             child: Center(
                                               child: Column(children: [
-                                                const Text("total"),
+                                                const Text(
+                                                  "Total",
+                                                  style: TextStyle(
+                                                      fontFamily: "Lobster",
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                                 Container(
                                                   padding:
                                                       const EdgeInsets.all(50),
@@ -236,7 +236,13 @@ class _PassengerInfoManagementScreenState
                                                 const SizedBox(
                                                   height: 20,
                                                 ),
-                                                const Text("deposits"),
+                                                const Text(
+                                                  "Deposits",
+                                                  style: TextStyle(
+                                                      fontFamily: "Lobster",
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                                 Container(
                                                   width: 200,
                                                   padding:
@@ -263,7 +269,13 @@ class _PassengerInfoManagementScreenState
                                                 const SizedBox(
                                                   height: 20,
                                                 ),
-                                                const Text("available"),
+                                                const Text(
+                                                  "Availble",
+                                                  style: TextStyle(
+                                                      fontFamily: "Lobster",
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                                 Container(
                                                   width: 200,
                                                   padding:
@@ -281,7 +293,7 @@ class _PassengerInfoManagementScreenState
                                                   ),
                                                   child: Center(
                                                     child: Text(
-                                                      "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.totalBalance! - data.passengerPropertyModel!.balanceWalletModel!.passengerWalletModel!.totalDeposit())} VND",
+                                                      "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.actualBalance)} VND",
                                                       style: const TextStyle(
                                                           color: Colors.orange),
                                                     ),
