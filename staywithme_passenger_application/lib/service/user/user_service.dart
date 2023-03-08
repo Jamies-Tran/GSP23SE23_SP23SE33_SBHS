@@ -19,23 +19,19 @@ class UserService extends IUserService {
   @override
   Future getPassengerPersonalInformation(String username) async {
     final client = http.Client();
-    Uri uri = Uri.parse(userInfoUrl);
+    Uri uri = Uri.parse("$userInfoUrl?username=$username");
     try {
-      final token = await _firebaseService.getUserTokenByUsername(username);
-      if (token is String) {
-        final response = await client.get(uri, headers: {
-          "content-type": "application/json",
-          "Authorization": "Bearer $token"
-        }).timeout(Duration(seconds: connectionTimeOut));
-        if (response.statusCode == 200) {
-          PassengerModel passenger =
-              PassengerModel.fromJson(json.decode(response.body));
-          return passenger;
-        } else {
-          ServerExceptionModel serverExceptionModel =
-              ServerExceptionModel.fromJson(json.decode(response.body));
-          return serverExceptionModel;
-        }
+      final response = await client.get(uri, headers: {
+        "content-type": "application/json",
+      }).timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 200) {
+        PassengerModel passenger =
+            PassengerModel.fromJson(json.decode(response.body));
+        return passenger;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
       }
     } on TimeoutException catch (e) {
       return e;
