@@ -18,6 +18,14 @@ class HomestayBloc {
       Navigator.pushNamed(
           event.context!, SearchHomestayScreen.searchHomestayScreenRoute,
           arguments: {"position": event.position, "homestayType": "homestay"});
+    } else if (event is OnClickAreaEvent) {
+      Navigator.pushNamed(
+          event.context!, SearchHomestayScreen.searchHomestayScreenRoute,
+          arguments: {
+            "position": event.position,
+            "homestayType": event.homestayType,
+            "searchString": event.cityProvince
+          });
     }
   }
 }

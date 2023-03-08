@@ -810,43 +810,33 @@ class _RegisterScreen extends State<RegisterScreen> {
                               duration: const Duration(seconds: 4),
                               builder: (context, value, child) =>
                                   Opacity(opacity: value, child: child),
-                              child: TweenAnimationBuilder(
-                                tween: Tween<double>(begin: 300, end: 0),
-                                duration: const Duration(seconds: 4),
-                                builder: (context, value, child) => Container(
-                                    margin: EdgeInsets.only(left: value),
-                                    child: child),
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      if (formState.currentState!.validate()) {
-                                        registerBloc.eventController.sink.add(
-                                            SubmitRegisterAccountEvent(
-                                                address: snapshot.data!.address,
-                                                avatarUrl:
-                                                    snapshot.data!.avatarUrl,
-                                                idCardNumber:
-                                                    snapshot.data!.idCardNumber,
-                                                dob: snapshot.data!.dob,
-                                                email: snapshot.data!.email,
-                                                gender: snapshot.data!.gender,
-                                                password:
-                                                    snapshot.data!.password,
-                                                phone: snapshot.data!.phone,
-                                                username:
-                                                    snapshot.data!.username,
-                                                context: context));
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Colors.deepOrangeAccent,
-                                        minimumSize: const Size(300, 50),
-                                        maximumSize: const Size(300, 50)),
-                                    child: const Text(
-                                      "Register",
-                                      style: TextStyle(fontFamily: "Lobster"),
-                                    )),
-                              ),
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    if (formState.currentState!.validate()) {
+                                      registerBloc.eventController.sink.add(
+                                          SubmitRegisterAccountEvent(
+                                              address: snapshot.data!.address,
+                                              avatarUrl:
+                                                  snapshot.data!.avatarUrl,
+                                              idCardNumber:
+                                                  snapshot.data!.idCardNumber,
+                                              dob: snapshot.data!.dob,
+                                              email: snapshot.data!.email,
+                                              gender: snapshot.data!.gender,
+                                              password: snapshot.data!.password,
+                                              phone: snapshot.data!.phone,
+                                              username: snapshot.data!.username,
+                                              context: context));
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.deepOrangeAccent,
+                                      minimumSize: const Size(300, 50),
+                                      maximumSize: const Size(300, 50)),
+                                  child: const Text(
+                                    "Register",
+                                    style: TextStyle(fontFamily: "Lobster"),
+                                  )),
                             ),
                             const SizedBox(
                               height: 10,
@@ -868,27 +858,20 @@ class _RegisterScreen extends State<RegisterScreen> {
                               duration: const Duration(seconds: 4),
                               builder: (context, value, child) =>
                                   Opacity(opacity: value, child: child),
-                              child: TweenAnimationBuilder(
-                                tween: Tween<double>(begin: 300, end: 0),
-                                duration: const Duration(seconds: 4),
-                                builder: (context, value, child) => Container(
-                                    margin: EdgeInsets.only(right: value),
-                                    child: child),
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      registerBloc.eventController.sink.add(
-                                          ChooseGoogleAccountEvent(
-                                              context: context));
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        minimumSize: const Size(300, 50),
-                                        maximumSize: const Size(300, 50)),
-                                    child: const Text(
-                                      "Google Account",
-                                      style: TextStyle(fontFamily: "Lobster"),
-                                    )),
-                              ),
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    registerBloc.eventController.sink.add(
+                                        ChooseGoogleAccountEvent(
+                                            context: context));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      minimumSize: const Size(300, 50),
+                                      maximumSize: const Size(300, 50)),
+                                  child: const Text(
+                                    "Google Account",
+                                    style: TextStyle(fontFamily: "Lobster"),
+                                  )),
                             ),
                             const SizedBox(
                               height: 15,

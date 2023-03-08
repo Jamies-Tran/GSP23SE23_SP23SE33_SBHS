@@ -10,3 +10,13 @@ class OnClickSearchTextFieldEvent extends HomestayEvent {
   String? homestayType;
   BuildContext? context;
 }
+
+class OnClickAreaEvent extends HomestayEvent {
+  OnClickAreaEvent(
+      {this.position, this.homestayType, this.cityProvince, this.context});
+
+  Position? position;
+  String? homestayType;
+  String? cityProvince;
+  BuildContext? context;
+}

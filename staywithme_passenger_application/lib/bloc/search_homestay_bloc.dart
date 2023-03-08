@@ -17,12 +17,16 @@ class SearchHomestayBloc {
   }
 
   String? _homestayType;
+  String? _searchString;
 
-  SearchHomestayState initData(
-      FilterOptionModel? filterOption, String? homestayType) {
+  SearchHomestayState initData(FilterOptionModel? filterOption,
+      String? homestayType, String? searchString) {
     _homestayType = homestayType;
+    _searchString = searchString;
     return SearchHomestayState(
-        homestayType: _homestayType, filterOptionModel: filterOption);
+        homestayType: _homestayType,
+        searchString: _searchString,
+        filterOptionModel: filterOption);
   }
 
   SearchHomestayBloc() {
