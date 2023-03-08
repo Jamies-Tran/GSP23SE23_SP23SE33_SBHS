@@ -4,6 +4,7 @@ import { ServerHttpService } from 'src/app/services/verify-landlord.service';
 import { ActionPendingComponent } from '../../pop-up/action-pending/action-pending.component';
 import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-request-account-landlord',
@@ -17,7 +18,7 @@ export class RequestAccountLandlordComponent implements OnInit {
   valuesReject: data[] = [];
   message!: string;
   registerError: string = '';
-  constructor(private http: ServerHttpService, public dialog: MatDialog) {}
+  constructor(private http: ServerHttpService, public dialog: MatDialog,private image: ImageService,) {}
   ngOnInit(): void {
     this.getStatusLandlord();
     console.log('length:', this.valuesPending.length);
@@ -44,6 +45,9 @@ export class RequestAccountLandlordComponent implements OnInit {
       console.log(this.valuesReject);
     });
   }
+
+
+
 
   public Id = 0;
   public createBy = '';
@@ -173,4 +177,6 @@ export interface data {
   createdDate: string;
   type: string;
   status: string;
+  avatarUrl:string;
+  email:string;
 }

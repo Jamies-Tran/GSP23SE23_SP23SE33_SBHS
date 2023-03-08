@@ -26,13 +26,19 @@
               currentPage: page,
               totalItems: count
               };
-              let i = index" >
+              let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
+                    (click)="onItemSelector(post.id, post.username)">
+                    {{post.id}}
+                  </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
+                    (click)="onItemSelector(post.id, post.username)">
+                    {{post.username}}
+                  </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                    (click)="onItemSelector(post.id, post.username)">
+                    {{post.createdDate}}
+                  </td>
                   <!-- <td>
                 <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                   routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
@@ -50,7 +56,9 @@
 
                 <tr *ngIf="valuesPending.length < 1">
                   <td></td>
-                  <td></td>
+                  <td>
+
+                  </td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -110,13 +118,24 @@
             totalItems: count}
 
           ;
-          let i = index" >
+          let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
+                    (click)="onItemSelector(post.id, post.username)">
+                    {{post.id}}
+
+                  </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
+                    (click)="onItemSelector(post.id, post.username)">
+                    <div class="d-flex align-items-center">
+                      <!-- <img [src]="getImageLandlord(post.avatarUrl)" alt="" style="width: 45px; height: 45px" class="rounded-circle" /> -->
+                      <div class="ms-3">
+                        <p class="fw-bold mb-1">{{post.username}}</p>
+                        <p class="text-muted mb-0">{{post.email}}</p>
+                      </div>
+                    </div>
+                  </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
 
 
                   <td class="">
@@ -189,13 +208,13 @@
             itemsPerPage: tableSize,
             currentPage: page,
             totalItems: count};
-            let i = index" >
+            let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
                   <td class="">
                     <!-- <button mat-icon-button color="primary" (click)="onItemSelector(post.id, post.username);"
                       routerLink="/Admin/Request/RequestAccount" routerLinkActive="active"><i
@@ -268,13 +287,13 @@
             totalItems: count}
 
           ;
-          let i = index" >
+          let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                  (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
+                    (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
 
 
                   <td class="">

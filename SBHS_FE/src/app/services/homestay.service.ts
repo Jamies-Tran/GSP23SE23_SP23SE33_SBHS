@@ -25,13 +25,13 @@ export class ServerHttpService {
   constructor(private httpClient: HttpClient) { }
 
   public getHomestay(status: string){
-    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_STATUS&isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=1000&status=`;
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_OWNER&isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=1000&status=`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
   public getHomestayDetail(){
-    const url = `${this.REST_API_SERVER}/api/homestay/permit-all/details/`+ localStorage.getItem('homestayName')+``;
+    const url = `${this.REST_API_SERVER}/api/homestay/permit-all/details/`+ localStorage.getItem('homestayName');
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -47,7 +47,7 @@ export class ServerHttpService {
       .pipe(catchError(this.handleError));
   }
   public deleteHomestay(id:string) {
-    const url = `${this.REST_API_SERVER}/api/homestay/removal/`+id+``;
+    const url = `${this.REST_API_SERVER}/api/homestay/removal/`+id;
     return this.httpClient
       .delete<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -87,8 +87,8 @@ export class ServerHttpService {
       .get<any>(url, this.httpOptionsAutocomplete)
       .pipe(catchError(this.handleError));
   }
-  public getListHomestay() {
-    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=Pending&isNextPage=true&isPreviousPage=true&page=0&param=a&size=100`;
+  public getHomestayByStatus(status:any) {
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_STATUS&isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=100`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -97,7 +97,7 @@ export class ServerHttpService {
     name :string
   ) {
     const url =
-      `${this.REST_API_SERVER}/api/admin/homestay-activate?homestayStyle=HOMESTAY&name=`+name+``;
+      `${this.REST_API_SERVER}/api/admin/homestay-activate?homestayStyle=HOMESTAY&name=`+name;
     return this.httpClient
       .put<any>(url, "accept",this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -106,7 +106,7 @@ export class ServerHttpService {
     name: string
   ) {
     const url =
-      `${this.REST_API_SERVER}api/admin/homestay-reject?homestayStyle=HOMESTAY&name=`+name+``;
+      `${this.REST_API_SERVER}api/admin/homestay-reject?homestayStyle=HOMESTAY&name=`+name;
     return this.httpClient
       .put<any>(url, "false",this.httpOptions)
       .pipe(catchError(this.handleError));

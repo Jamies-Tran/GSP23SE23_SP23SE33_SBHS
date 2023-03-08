@@ -2,6 +2,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImageService } from '../services/image.service';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { AccountService } from '../services/account.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MessageComponent } from '../pop-up/message/message.component';
 
 @Component({
   selector: 'app-admin',
@@ -9,14 +12,17 @@ import { MediaMatcher } from '@angular/cdk/layout';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  public username = localStorage.getItem('usernameLogined');
+  public username = localStorage.getItem('usernameLogined') as string;
   public role = localStorage.getItem('role');
+  message !:any;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private image: ImageService,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
+    public dialog: MatDialog,
+    private http: AccountService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -24,11 +30,40 @@ export class AdminComponent implements OnInit {
   }
   public avatarUrl = '';
   ngOnInit(): void {
-    this.username = localStorage.getItem('usernameLogined');
+    this.username = localStorage.getItem('usernameLogined') as string;
+    this.role = localStorage.getItem('role');
+
+    this.http.getProfile(this.username?.toString()).subscribe(
+      async (data) => {
+        this.avatarUrl= data['avatarUrl'];
+        console.log(this.avatarUrl);
+        if(this.avatarUrl === "default" || !data['avatarUrl']){
+          this.avatarUrl = await this.image.getImage('admin/avatar/'+ 'default.png');
+          console.log(this.avatarUrl);
+        }else {
+          try {
+            this.avatarUrl = await this.image.getImage('admin/avatar/'+ data['avatarUrl']);
+          console.log(this.avatarUrl);
+          } catch (error) {
+            this.avatarUrl = await this.image.getImage('admin/avatar/'+ 'default.png');
+            console.log(this.avatarUrl);
+            console.log(error);
+          }
+
+        }
+      },
+      (error) => {
+        console.log(error.message);
+        this.message = error.message;
+        this.openDialogMessage();
+      }
+    );
   }
   public logout() {
     localStorage.clear();
+    console.log('token' , localStorage.getItem('userToken'));
     this.router.navigate(['/Login'], { relativeTo: this.route });
+
   }
 
   isExpanded = true;
@@ -41,4 +76,12 @@ export class AdminComponent implements OnInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+
+  openDialogMessage() {
+    this.dialog.open(MessageComponent, {
+      data: this.message,
+    });
+  }
+
+
 }

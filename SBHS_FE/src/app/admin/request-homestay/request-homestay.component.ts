@@ -24,22 +24,22 @@ export class RequestHomestayComponent implements OnInit{
 
   public getStatusLandlord() {
   // Pending
-  this.http.getHomestay('PENDING').subscribe((data) => {
+  this.http.getHomestayByStatus('PENDING').subscribe((data) => {
     this.valuesPending = data['homestays'];
     console.log(this.valuesPending);
   });
   // Banned
-  this.http.getHomestay('BAN').subscribe((data) => {
+  this.http.getHomestayByStatus('BAN').subscribe((data) => {
     this.valuesBanned = data['homestays'];
     console.log(this.valuesBanned);
   });
   // Active
-  this.http.getHomestay('ACTIVE').subscribe((data) => {
+  this.http.getHomestayByStatus('ACTIVE').subscribe((data) => {
     this.valuesActive = data['homestays'];
     console.log(this.valuesActive);
   });
   // Reject
-  this.http.getHomestay('RREJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
+  this.http.getHomestayByStatus('RREJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
     this.valuesReject = data['homestays'];
     console.log(this.valuesReject);
   });

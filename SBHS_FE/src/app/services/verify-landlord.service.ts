@@ -27,8 +27,8 @@ export class ServerHttpService {
   public getLanlord(status: string) {
     const url =
       `${this.REST_API_SERVER}/api/admin/landlord-list?isNextPage=true&isPreviousPage=true&page=0&size=1000&status=` +
-      status +
-      ``;
+      status ;
+
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -55,7 +55,7 @@ export class ServerHttpService {
 
   public getLandlordDetail() {
     const url =
-      `${this.REST_API_SERVER}/api/user/info-username?username=` +localStorage.getItem("createdBy") +``;
+      `${this.REST_API_SERVER}/api/user/info-username?username=` +localStorage.getItem("createdBy");
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));

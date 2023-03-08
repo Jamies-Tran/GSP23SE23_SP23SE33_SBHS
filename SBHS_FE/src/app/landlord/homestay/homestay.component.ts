@@ -10,21 +10,27 @@ import { ServerHttpService } from 'src/app/services/homestay.service';
 })
 export class HomestayComponent implements OnInit {
   constructor( private image: ImageService,public dialog: MatDialog, private http: ServerHttpService) { }
-  value : any[]=[];
+  value : any[] = [];
   i : any;
   isDelete = "null"
+  public username = localStorage.getItem('usernameLogined') as string;
   ngOnInit(): void {
-    this.http.getHomestay('ACTIVE').subscribe(async  (data) =>{
+
+    this.http.getHomestay(this.username).subscribe(async  (data) =>{
       // this.value = data;
       // for(this.i of this.value ){
       //   console.log(this.i.homestayImages[0].url)
       // }
       console.log("data:" ,data['homestays']);
+      // this.value= data['homestays'];
+      // console.log('value:' , this.value);
+
       for(this.i of data['homestays']){
 
-        var imgUrl = await this.image.getImage('homestay/'  +  this.i.homestayImages[0].imageUrl)
+        var imgUrl = await this.image.getImage('homestay/'  + this.i.name + ' '+  this.i.homestayImages[0].imageUrl);
+
         this.value.push({imgURL:imgUrl, name:this.i.name, id:this.i.id })
-        console.log(imgUrl);
+        console.log(this.value);
       }
 
     })
