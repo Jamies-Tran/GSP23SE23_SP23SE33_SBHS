@@ -1,7 +1,7 @@
 <div class="container">
 
   <mat-stepper linear #stepper>
-  <!-- <mat-stepper #stepper> -->
+    <!-- <mat-stepper #stepper> -->
     <!-- Basic Information -->
     <mat-step editable [stepControl]="informationFormGroup">
       <form [formGroup]="informationFormGroup" (ngSubmit)="informationForm()" #formone="ngForm">
@@ -83,7 +83,8 @@
                       </div>
                       <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
                         <button class="btn-reset" mat-raised-button type="reset">Reset</button>
-                        <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext >Continue</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button
+                          matStepperNext>Continue</button>
                       </div>
                     </ng-container>
 
@@ -143,20 +144,21 @@
                   <form [formGroup]="facilityFormGroup" (ngSubmit)="facilityForm()" #formtwo="ngForm">
                     <!-- TV -->
                     <div class="row mb-2">
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                         <i class="fas fa-tv"></i>
                       </div>
                       <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
                         <span>TV</span>
                       </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                         <mat-checkbox color="primary" formControlName="tv" (change)="enableInputTv()"></mat-checkbox>
                       </div>
                       <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
                         <div class="col-input">
                           <input name="tvInput" type="number" pattern="[0~9]*" min="1" class="form-control"
                             minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="tvAmount"
-
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                         </div>
                       </div>
@@ -166,12 +168,14 @@
 
                     <!-- Wifi -->
                     <div class="row mb-2">
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center"><i
-                          class="fas fa-tv"></i></div>
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <i class="fas fa-tv"></i></div>
                       <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
                         <span>Wifi</span>
                       </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                         <mat-checkbox color="primary" formControlName="wifi"
                           (change)="enableInputWifi()"></mat-checkbox>
                       </div>
@@ -179,7 +183,6 @@
                         <div class="col-input">
                           <input name="wifiInput" type="number" pattern="[0~9]*" min="1" class="form-control"
                             minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="wifiAmount"
-
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                         </div>
                       </div>
@@ -194,14 +197,15 @@
                   <div class="additional-facility">
                     <div *ngFor="let value of newFacility; let i = index">
                       <div class="row mb-2">
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center justify-content-center p-0"><i
-                            class="fa-solid fa-plus"></i></div>
+                        <div
+                          class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center justify-content-center p-0">
+                          <i class="fa-solid fa-plus"></i></div>
                         <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4">
                           <input name="newFacility" type="text" class="form-control" placeholder="New Facility"
-                            [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" #value{{i}}="ngModel"
-                            />
+                            [(ngModel)]="value.name" autocomplete="off" name="value{{i}}" #value{{i}}="ngModel" />
                         </div>
-                        <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <div
+                          class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
                           <mat-checkbox color="primary" [(ngModel)]="value.status" name="value{{i}}"></mat-checkbox>
                         </div>
 
@@ -210,7 +214,6 @@
                             <input name="amount{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
                               minlength="1" maxlength="3" pattern="[0~9]*" min="1" class="form-control" matInput
                               max="999" placeholder="Amount" [(ngModel)]="value.price"
-
                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                           </div>
                         </div>
@@ -224,7 +227,8 @@
                     <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
                       (click)="addFacility()">
                       <div class="row w-100">
-                        <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-2 d-flex align-items-center justify-content-center p-0">
+                        <div
+                          class="col-xxl-2 col-xl-2 col-lg-2 col-md-2 d-flex align-items-center justify-content-center p-0">
                           <i class="fa-solid fa-plus"></i>
                         </div>
                         <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 d-flex align-items-center  ">
@@ -430,64 +434,67 @@
                       </div>
                       <div class="col-xxl-1 col-xl-1 col-lg-1"></div>
                     </div>
+                  </form>
+                  <br>
+                  <hr>
 
-                    <br>
-                    <hr>
-
-                    <!-- Additional Service -->
-                    <h5 class="mb-2">Additional Service</h5>
-                    <div class="additional-facility">
-                      <div *ngFor="let value of newService; let i = index">
-                        <div class="row mb-2">
-                          <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center justify-content-center p-0">
-                            <i class="fa-solid fa-plus"></i></div>
-                          <div class="col-xxl-4 col-xl-4 col-lg-4 ">
-                            <input name="newService" type="text" class="form-control" placeholder="New Service"
-                              [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"
-                              (required)="value.status ? 'required' : ''" />
-                          </div>
-                          <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
-                            <mat-checkbox color="primary" [(ngModel)]="value.status"
-                              name="valueStatus{{i}}"></mat-checkbox>
-                          </div>
-                          <div class="col-xxl-5 col-xl-5 col-lg-5 ">
-                            <div class="col-input">
-                              <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
-                                minlength="4" maxlength="10" pattern="[0~9]*" min="1" class="form-control" matInput
-                                placeholder="Price" [(ngModel)]="value.price"
-                                (required)="value.status ? 'true' : 'false'"
-                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
-                            </div>
-                          </div>
-                          <div
-                            class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
-                            matRipple (click)="removeService(i)">
-                            <i class="fa-solid fa-xmark"></i>
+                  <!-- Additional Service -->
+                  <h5 class="mb-2">Additional Service</h5>
+                  <div class="additional-facility">
+                    <div *ngFor="let value of newService; let i = index">
+                      <div class="row mb-2">
+                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center justify-content-center p-0">
+                          <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <div class="col-xxl-4 col-xl-4 col-lg-4 ">
+                          <input name="newService" type="text" class="form-control" placeholder="New Service"
+                            [(ngModel)]="value.name" autocomplete="off" name="valueName{{i}}"
+                            (required)="value.status ? 'required' : ''" />
+                        </div>
+                        <div class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center">
+                          <mat-checkbox color="primary" [(ngModel)]="value.status"
+                            name="valueStatus{{i}}"></mat-checkbox>
+                        </div>
+                        <div class="col-xxl-5 col-xl-5 col-lg-5 ">
+                          <div class="col-input">
+                            <input name="price{{i}}" type="number" autocomplete="off" [disabled]="!value.status"
+                              minlength="4" maxlength="10" pattern="[0~9]*" min="1" class="form-control" matInput
+                              placeholder="Price" [(ngModel)]="value.price" (required)="value.status ? 'true' : 'false'"
+                              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
                           </div>
                         </div>
-                      </div>
-
-                      <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
-                        (click)="addService()">
-                        <div class="row w-100">
-                          <div class="col-xxl-2 col-xl-2 col-lg-2 d-flex align-items-center justify-content-center p-0">
-                            <i class="fa-solid fa-plus"></i>
-                          </div>
-                          <div class="col-xxl-8 col-xl-8 col-lg-8 d-flex align-items-center  ">
-                            <h6 class="m-0">Add Service</h6>
-                          </div>
+                        <div
+                          class="col-xxl-1 col-xl-1 col-lg-1 d-flex align-items-center p-0 justify-content-center click rounded-2"
+                          matRipple (click)="removeService(i)">
+                          <i class="fa-solid fa-xmark"></i>
                         </div>
                       </div>
                     </div>
 
+                    <div class="click mb-2 rounded-3 btn-add-facility w-50 d-flex align-items-center" matRipple
+                      (click)="addService()">
+                      <div class="row w-100">
+                        <div class="col-xxl-2 col-xl-2 col-lg-2 d-flex align-items-center justify-content-center p-0">
+                          <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <div class="col-xxl-8 col-xl-8 col-lg-8 d-flex align-items-center  ">
+                          <h6 class="m-0">Add Service</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <form [formGroup]="serviceFormGroup" (ngSubmit)="serviceForm()" #formour="ngForm">
                     <!-- Button -->
                     <br>
                     <hr>
                     <div class="add-btn d-flex flex-row ">
                       <button class="btn-back" mat-raised-button matStepperPrevious>Back</button>
-                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext (click)="flag = false">Continue</button>
+                      <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext
+                        >Continue</button>
                     </div>
                   </form>
+
                 </div>
               </div>
             </div>
@@ -586,11 +593,13 @@
                     <ng-container [ngSwitch]="true">
                       <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === false">
                         <button class="btn-reset" mat-raised-button matStepperPrevious>Back</button>
-                        <button class="btn-next w-100" color="primary" mat-raised-button (click)="validImageHomestay()">Continue</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button
+                          (click)="validImageHomestay()">Continue</button>
                       </div>
                       <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
                         <button class="btn-reset" mat-raised-button matStepperPrevious>Reset</button>
-                        <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext (click)="validImageHomestay();flag = false">Continue</button>
+                        <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext
+                          (click)="validImageHomestay();flag = false">Continue</button>
                       </div>
                     </ng-container>
                   </div>
@@ -663,8 +672,7 @@
                           <input type="number" min="1000" class="form-control" name="price" [(ngModel)]="price"
                             [ngModelOptions]="{standalone: true}" (input)="calcPriceTax($event)"
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                            maxlength="9" minlength="4"
-                            />
+                            maxlength="9" minlength="4" />
                         </div>
                         <p class="text-muted fs-6">Including taxes, commission and charges</p>
 
@@ -673,7 +681,8 @@
                         <span class="fs-5"> <span class="text-muted ">5.00%</span> Staywithme.com commisson</span>
                         <br>
                         <hr>
-                        <span class="fs-5"><span class="text-muted">VNĐ {{ priceTax | number:'4.1-4' }}</span> Your earnings (including
+                        <span class="fs-5"><span class="text-muted">VNĐ {{ priceTax | number:'4.1-4' }}</span> Your
+                          earnings (including
                           taxes)</span>
                       </div>
                       <br>
@@ -681,11 +690,13 @@
                       <ng-container [ngSwitch]="true">
                         <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === false">
                           <button class="btn-reset" mat-raised-button matStepperPrevious>Back</button>
-                          <button class="btn-next w-100" color="primary" mat-raised-button (click)="validPrice()">Continue</button>
+                          <button class="btn-next w-100" color="primary" mat-raised-button
+                            (click)="validPrice()">Continue</button>
                         </div>
                         <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
                           <button class="btn-reset" mat-raised-button matStepperPrevious>Reset</button>
-                          <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext (click)="validPrice()">Continue</button>
+                          <button class="btn-next w-100" color="primary" mat-raised-button matStepperNext
+                            (click)="validPrice()">Continue</button>
                         </div>
                       </ng-container>
 

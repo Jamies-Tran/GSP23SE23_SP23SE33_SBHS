@@ -97,11 +97,19 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   homestayFacilities: Array<{ name: string; quantity: string }> = [];
   facilityForm() {
     console.log(this.facilityFormGroup.value);
+    if(this.facilityFormGroup.controls.tv.value == true){
+      this.homestayFacilities.push({name:'tv', quantity:this.facilityFormGroup.controls['tvAmount'].value as string})
+    }
+    if(this.facilityFormGroup.controls.wifi.value == true){
+      this.homestayFacilities.push({name:'wifi', quantity:this.facilityFormGroup.controls['wifiAmount'].value as string})
+    }
+    console.log('facilities:' , this.homestayFacilities)
+
     // console.log(this.homestayFacilities)
     this.stepper.selectedIndex = 2;
   }
   enableInputTv() {
-    if (this.facilityFormGroup.controls.tv.value === true) {
+    if (this.facilityFormGroup.controls.tv.value == true) {
       this.facilityFormGroup.controls.tvAmount.enable();
       this.facilityFormGroup.controls.tvAmount.clearValidators();
     } else {
@@ -109,7 +117,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     }
   }
   enableInputWifi() {
-    if (this.facilityFormGroup.controls.wifi.value === true) {
+    if (this.facilityFormGroup.controls.wifi.value == true) {
       this.facilityFormGroup.controls.wifiAmount.enable();
       this.facilityFormGroup.controls.wifiAmount.clearValidators();
     } else {
@@ -165,20 +173,23 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     swimming: false,
     swimmingPrice: [{ value: '', disabled: true }],
   });
-  homestayServices: any[] = [];
+  homestayServices:Array<{ name: string; price: string }> = [];
   serviceForm() {
     console.log(this.serviceFormGroup.value);
     console.log(this.newService);
-    if (this.serviceFormGroup.value['breakfast'] === true) {
+
+
+
+    if (this.serviceFormGroup.controls['breakfast'].value === true) {
       this.homestayServices.push({
         name: 'Breakfast',
-        price: this.serviceFormGroup.value['breakfastPrice'],
+        price: this.serviceFormGroup.controls['breakfastPrice'].value as string,
       });
     }
-    if (this.serviceFormGroup.value['swimming'] === true) {
+    if (this.serviceFormGroup.controls['swimming'].value === true) {
       this.homestayServices.push({
         name: 'Swimming',
-        price: this.serviceFormGroup.value['swimmingPrice'],
+        price: this.serviceFormGroup.controls['swimmingPrice'].value as string,
       });
     }
   }
