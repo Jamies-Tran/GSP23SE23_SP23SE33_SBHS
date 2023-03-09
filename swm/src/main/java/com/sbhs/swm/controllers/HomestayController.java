@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -32,7 +33,9 @@ import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromLocationResponseDto;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
+import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
+import com.sbhs.swm.util.DateFormatUtil;
 
 @RestController
 @RequestMapping("/api/homestay")
@@ -42,7 +45,13 @@ public class HomestayController {
         private IHomestayService homestayService;
 
         @Autowired
+        private IBookingService bookingService;
+
+        @Autowired
         private ModelMapper modelMapper;
+
+        @Autowired
+        private DateFormatUtil dateFormatUtil;
 
         @PostMapping("/new-homestay")
         @PreAuthorize("hasAuthority('homestay:create')")
@@ -77,6 +86,9 @@ public class HomestayController {
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
                 homestayDtos.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+                homestayDtos.forEach(h -> h.setRemainRooms(bookingService.checkBookingDate(
+                                dateFormatUtil.formatDateTimeNowToString(), dateFormatUtil.formatDateTimeNowToString(),
+                                h.getName(), 0)));
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
                                 new ArrayList<>(),
                                 homestays.getPageable().getPageNumber());
@@ -104,6 +116,9 @@ public class HomestayController {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
                 responseHomestay.setAddress(responseHomestay.getAddress().split("_")[0]);
+                responseHomestay.setRemainRooms(bookingService.checkBookingDate(
+                                dateFormatUtil.formatDateTimeNowToString(), dateFormatUtil.formatDateTimeNowToString(),
+                                responseHomestay.getName(), 0));
 
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
         }
@@ -139,6 +154,9 @@ public class HomestayController {
                 List<HomestayResponseDto> responseHomestayList = homestays.getContent().stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
                 responseHomestayList.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+                responseHomestayList.forEach(h -> h.setRemainRooms(
+                                bookingService.checkBookingDate(dateFormatUtil.formatDateTimeNowToString(),
+                                                dateFormatUtil.formatDateTimeNowToString(), h.getName(), 0)));
                 HomestayListPagingDto responseHomestays = new HomestayListPagingDto(responseHomestayList,
                                 new ArrayList<>(),
                                 homestays.getNumber());
@@ -169,6 +187,21 @@ public class HomestayController {
                 HomestayListPagingDto homestayListPagingDto = new HomestayListPagingDto();
                 switch (filter.getHomestayType().toUpperCase()) {
                         case "HOMESTAY":
+                                String startDateSearchString = filter != null ? filter.getFilterOption() != null
+                                                ? filter.getFilterOption().getFilterByBookingDateRange() != null
+                                                                ? filter.getFilterOption().getFilterByBookingDateRange()
+                                                                                .getStart()
+                                                                : dateFormatUtil.formatDateTimeNowToString()
+                                                : dateFormatUtil.formatDateTimeNowToString()
+                                                : dateFormatUtil.formatDateTimeNowToString();
+                                String endDateSearchString = filter != null ? filter.getFilterOption() != null ? filter
+                                                .getFilterOption()
+                                                .getFilterByBookingDateRange() != null
+                                                                ? filter.getFilterOption().getFilterByBookingDateRange()
+                                                                                .getEnd()
+                                                                : dateFormatUtil.formatDateTimeNowToString()
+                                                : dateFormatUtil.formatDateTimeNowToString()
+                                                : dateFormatUtil.formatDateTimeNowToString();
                                 PagedListHolder<Homestay> homestays = homestayService.getHomestayListFiltered(
                                                 filter.getFilterOption(), filter.getSearchString(), page, size,
                                                 isNextPage,
@@ -178,6 +211,10 @@ public class HomestayController {
                                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                                 .collect(Collectors.toList());
                                 homestayResponseList.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+
+                                homestayResponseList.forEach(h -> h.setRemainRooms(bookingService.checkBookingDate(
+                                                startDateSearchString,
+                                                endDateSearchString, h.getName(), 0)));
                                 homestayListPagingDto.setHomestays(homestayResponseList);
                                 homestayListPagingDto.setBlocs(new ArrayList<>());
                                 homestayListPagingDto.setPageNumber(homestays.getPage());

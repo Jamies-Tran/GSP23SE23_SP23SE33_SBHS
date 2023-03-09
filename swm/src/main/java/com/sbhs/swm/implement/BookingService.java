@@ -91,11 +91,11 @@ public class BookingService implements IBookingService {
                     .collect(Collectors.toList());
             booking.setHomestayServices(homestayServiceList);
             homestayServiceList.forEach(h -> h.setBookings(List.of(booking)));
+            booking.getHomestayServices().forEach(s -> s.setBookings(List.of(booking)));
         }
         booking.setPassenger(user.getPassengerProperty());
         booking.setHomestay(homestay);
 
-        booking.getHomestayServices().forEach(s -> s.setBookings(List.of(booking)));
         booking.setCreatedBy(user.getUsername());
         booking.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         booking.setStatus(BookingStatus.PENDING.name());

@@ -25,6 +25,9 @@ public class PaymentHistory {
     @Column
     private @Setter String createdDate;
 
+    @Column(unique = true)
+    private @Setter String orderId;
+
     @Column
     private @Setter Long amount;
 
