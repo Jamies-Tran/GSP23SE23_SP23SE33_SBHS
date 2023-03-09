@@ -7,6 +7,7 @@ class HomestayModel {
       this.address,
       this.cityProvince,
       this.availableRooms,
+      this.remainRooms,
       this.totalAverageRating,
       this.numberOfRating,
       this.status,
@@ -20,6 +21,7 @@ class HomestayModel {
   String? address;
   String? cityProvince;
   int? availableRooms;
+  int? remainRooms;
   double? totalAverageRating;
   int? numberOfRating;
   String? status;
@@ -36,6 +38,7 @@ class HomestayModel {
       availableRooms: json["availableRooms"],
       totalAverageRating: json["totalAverageRating"],
       numberOfRating: json["numberOfRating"],
+      remainRooms: json["remainRooms"],
       status: json["status"],
       homestayImages: json["homestayImages"] != null
           ? List<HomestayImageModel>.from(

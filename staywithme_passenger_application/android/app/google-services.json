@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "593303082715-qhvjun77jp5s7qblkhnk8ufj92j0a8pi.apps.googleusercontent.com",
+          "client_id": "593303082715-igru96sr2p6qra07fp2qmu9a1sho6gsd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.staywithme_passenger_application",
-            "certificate_hash": "c2ed7348bfc57ee6df92f7c3acaa2023fd1aba10"
+            "certificate_hash": "7459870dbec8c4c3e303d10cd5f14ebaf8024aec"
           }
         },
         {

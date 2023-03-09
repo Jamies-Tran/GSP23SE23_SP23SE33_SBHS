@@ -483,7 +483,7 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                                 1,
                                                                             child:
                                                                                 Text(
-                                                                              "${data.homestays![index].availableRooms} rooms",
+                                                                              "${data.homestays![index].remainRooms}/${data.homestays![index].availableRooms} rooms",
                                                                               style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
                                                                             ),
                                                                           ),
@@ -499,13 +499,19 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                       ],
                                     );
                                   } else {
-                                    return const Center(
-                                      child: Text(
-                                        "Oop, we can't find the homestay which you're looking for.",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: const [
+                                        Text(
+                                          "Oop, we can't find the homestay which you're looking for.",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
                                     );
                                   }
 
