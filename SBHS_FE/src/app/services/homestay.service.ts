@@ -74,10 +74,16 @@ export class ServerHttpService {
       name,
       price,
     };
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      })
+    }
     console.log(value);
     const url = `${this.REST_API_SERVER}/api/homestay/new-homestay`;
     return this.httpClient
-      .post<any>(url, value, this.httpOptions)
+      .post<any>(url, value, httpOptions)
       .pipe(catchError(this.handleError));
   }
 
