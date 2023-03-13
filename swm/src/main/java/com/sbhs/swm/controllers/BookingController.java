@@ -1,5 +1,8 @@
 package com.sbhs.swm.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbhs.swm.dto.request.BookingRequestDto;
 import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
 import com.sbhs.swm.dto.response.BookingResponseDto;
+import com.sbhs.swm.dto.response.HomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
 import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.services.IBookingService;
 
 @RestController
@@ -33,8 +38,9 @@ public class BookingController {
     @PreAuthorize("hasAuthority('booking:create')")
     public ResponseEntity<?> createBooking(@RequestBody BookingRequestDto bookingRequest) {
         Booking booking = modelMapper.map(bookingRequest, Booking.class);
-        Booking savedBooking = bookingService.createBookingForHomestay(booking, bookingRequest.getHomestayName(),
-                bookingRequest.getHomestayServicesString(), bookingRequest.getDepositPaidAmount());
+        Booking savedBooking = bookingService.createBookingForHomestay(booking,
+                bookingRequest.getHomestayServicesString(),
+                bookingRequest.getDepositPaidAmount(), bookingRequest.getHomestayNames());
         BookingResponseDto responseBooking = modelMapper.map(savedBooking, BookingResponseDto.class);
         responseBooking.getHomestay().setAddress(responseBooking.getHomestay().getAddress().split("_")[0]);
 
@@ -43,11 +49,14 @@ public class BookingController {
 
     @PostMapping("/validate-booking-date")
     public ResponseEntity<?> checkBookingDate(@RequestBody BookingDateValidationRequestDto validationBookingRequest) {
-        int avaiblableRoom = bookingService.checkBookingDate(validationBookingRequest.getBookingStart(),
-                validationBookingRequest.getBookingEnd(), validationBookingRequest.getHomestayName(),
-                validationBookingRequest.getTotalBookingRoom());
+        List<Homestay> avaiblableHomestayList = bookingService.checkBlocBookingDate(
+                validationBookingRequest.getBlocName(),
+                validationBookingRequest.getBookingStart(), validationBookingRequest.getBookingEnd(),
+                validationBookingRequest.getTotalBookingHomestays());
+        List<HomestayResponseDto> responseHomestayList = avaiblableHomestayList.stream()
+                .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
         BookingDateValidationResponseDto responseValidationBookingDate = new BookingDateValidationResponseDto(
-                avaiblableRoom);
+                responseHomestayList);
 
         return new ResponseEntity<BookingDateValidationResponseDto>(responseValidationBookingDate, HttpStatus.OK);
     }

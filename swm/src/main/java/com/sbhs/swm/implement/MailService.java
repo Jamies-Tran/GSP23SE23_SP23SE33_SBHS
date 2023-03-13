@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Homestay;
+import com.sbhs.swm.models.Landlord;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.services.IMailService;
@@ -152,11 +153,13 @@ public class MailService implements IMailService {
     }
 
     private String generateInformBookingMailSubject(Booking booking) {
+        Landlord landlordProperty = booking.getHomestays().stream().map(h -> h.getLandlord()).findAny().get();
         StringBuilder informMailBuilder = new StringBuilder();
-        informMailBuilder.append("<h1>Dear ").append(booking.getHomestay().getLandlord().getUser().getUsername())
-                .append("</h1>").append("</br>").append("<p> you have a new booking from ")
-                .append(booking.getPassenger().getUser().getUsername()).append(" for homestay ")
-                .append(booking.getHomestay().getName()).append(" at ").append(booking.getCreatedDate())
+        informMailBuilder.append("<h1>Dear ").append(landlordProperty.getUser().getUsername())
+                .append("</h1>").append("</br>").append("<p> you have ").append(booking.getHomestays().size())
+                .append("new booking from ")
+                .append(booking.getPassenger().getUser().getUsername()).append(" for ")
+                .append(" at ").append(booking.getCreatedDate())
                 .append(". </p>").append("</br>").append("<p>").append("The booking will start from ")
                 .append(booking.getBookingFrom()).append(" ,so please go to www.google.com for more details.</p>")
                 .append("</br>").append("<h2>Good luck</h2>");
@@ -239,10 +242,11 @@ public class MailService implements IMailService {
 
     @Override
     public void informBookingToLandlord(Booking booking) {
+        Landlord landlordProperty = booking.getHomestays().stream().map(h -> h.getLandlord()).findAny().get();
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
         try {
-            helper.setTo(new InternetAddress(booking.getHomestay().getLandlord().getUser().getEmail()));
+            helper.setTo(new InternetAddress(landlordProperty.getUser().getEmail()));
             helper.setFrom("no-reply@swm.com", "stay_with_me");
             helper.setSubject("New booking");
             helper.setText(generateInformBookingMailSubject(booking), true);

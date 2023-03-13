@@ -3,10 +3,11 @@ package com.sbhs.swm.services;
 import java.util.List;
 
 import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.Homestay;
 
 public interface IBookingService {
-    Booking createBookingForHomestay(Booking booking, String homestayName, List<String> homestayServices,
-            long depositAmount);
+    Booking createBookingForHomestay(Booking booking, List<String> homestayServices,
+            long depositAmount, List<String> homestayNames);
 
     List<Booking> findBookingsByUsername(String username);
 
@@ -14,6 +15,9 @@ public interface IBookingService {
 
     Booking findBookingById(Long id);
 
-    int checkBookingDate(String bookingStart, String bookingEnd, String homestayName, int totalBookingRoom);
+    List<Homestay> checkBlocBookingDate(String blocName, String bookingStart, String bookingEnd, int totalHomestay);
+
+    // int checkBookingDate(String bookingStart, String bookingEnd, String
+    // homestayName, int totalBookingRoom);
 
 }

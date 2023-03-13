@@ -36,7 +36,7 @@ public class Booking extends BaseModel {
     private @Setter String bookingTo;
 
     @Column
-    private @Setter Long totalRoom;
+    private @Setter Long totalReservation;
 
     @Column
     private @Setter Long totalPrice;
@@ -47,11 +47,15 @@ public class Booking extends BaseModel {
     @Column
     private @Setter String paymentType;
 
+    @Column
+    private @Setter String homestayType;
+
     @ManyToOne
     private @Setter Passenger passenger;
 
-    @ManyToOne
-    private @Setter Homestay homestay;
+    @ManyToMany
+    @JoinTable(name = "booking_homestay", joinColumns = @JoinColumn(name = "booking_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "homestay_id", referencedColumnName = "id"))
+    private @Setter List<Homestay> homestays;
 
     @OneToOne(cascade = { CascadeType.REMOVE })
     private @Setter BookingDeposit deposit;

@@ -14,9 +14,9 @@ import lombok.Setter;
 public class BookingRequestDto {
     private String bookingFrom;
     private String bookingTo;
-    private Long totalRoom;
+    private Long totalReservation;
     private Long totalPrice;
-    private String homestayName;
+    private List<String> homestayNames;
     private String paymentType;
     private List<String> homestayServicesString;
     private Long depositPaidAmount;
