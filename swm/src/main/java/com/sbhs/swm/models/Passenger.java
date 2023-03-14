@@ -38,6 +38,9 @@ public class Passenger extends BaseModel {
     @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
     private @Setter BalanceWallet balanceWallet;
 
+    @OneToMany(mappedBy = "passenger")
+    private @Setter List<TravelCart> travelCart;
+
     @OneToMany(mappedBy = "passenger", fetch = FetchType.LAZY)
     private @Setter List<Rating> ratings;
 

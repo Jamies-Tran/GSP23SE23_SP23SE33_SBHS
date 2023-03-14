@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -65,11 +64,11 @@ public class Homestay extends BaseModel {
     @OneToMany(mappedBy = "homestay", cascade = { CascadeType.REMOVE })
     private @Setter List<Rating> ratings;
 
-    @ManyToMany(mappedBy = "homestays")
-    private @Setter List<Booking> bookings;
-
     @OneToMany(mappedBy = "homestay", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private @Setter List<HomestayRule> homestayRules;
+
+    @OneToMany(mappedBy = "homestay")
+    private @Setter List<HomestayTravelCart> homestayTravelCarts;
 
     @ManyToOne
     private @Setter Landlord landlord;

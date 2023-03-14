@@ -152,19 +152,24 @@ public class MailService implements IMailService {
         return otpGenerator.nextString();
     }
 
-    private String generateInformBookingMailSubject(Booking booking) {
-        Landlord landlordProperty = booking.getHomestays().stream().map(h -> h.getLandlord()).findAny().get();
-        StringBuilder informMailBuilder = new StringBuilder();
-        informMailBuilder.append("<h1>Dear ").append(landlordProperty.getUser().getUsername())
-                .append("</h1>").append("</br>").append("<p> you have ").append(booking.getHomestays().size())
-                .append("new booking from ")
-                .append(booking.getPassenger().getUser().getUsername()).append(" for ")
-                .append(" at ").append(booking.getCreatedDate())
-                .append(". </p>").append("</br>").append("<p>").append("The booking will start from ")
-                .append(booking.getBookingFrom()).append(" ,so please go to www.google.com for more details.</p>")
-                .append("</br>").append("<h2>Good luck</h2>");
-        return informMailBuilder.toString();
-    }
+    // private String generateInformBookingMailSubject(Booking booking) {
+    // Landlord landlordProperty = booking.getBookingHomestays().stream().map(h ->
+    // h.getHomestay().getLandlord())
+    // .findAny().get();
+    // StringBuilder informMailBuilder = new StringBuilder();
+    // informMailBuilder.append("<h1>Dear
+    // ").append(landlordProperty.getUser().getUsername())
+    // .append("</h1>").append("</br>").append("<p> you have
+    // ").append(booking.getBookingHomestays().size())
+    // .append("new booking from ")
+    // .append(booking.getPassenger().getUser().getUsername()).append(" for ")
+    // .append(" at ").append(booking.getCreatedDate())
+    // .append(". </p>").append("</br>").append("<p>").append("The booking will
+    // start from ")
+    // .append("so please go to www.google.com for more details.</p>")
+    // .append("</br>").append("<h2>Good luck</h2>");
+    // return informMailBuilder.toString();
+    // }
 
     @Override
     public void approveLandlordAccount(SwmUser user) {
@@ -242,18 +247,20 @@ public class MailService implements IMailService {
 
     @Override
     public void informBookingToLandlord(Booking booking) {
-        Landlord landlordProperty = booking.getHomestays().stream().map(h -> h.getLandlord()).findAny().get();
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        try {
-            helper.setTo(new InternetAddress(landlordProperty.getUser().getEmail()));
-            helper.setFrom("no-reply@swm.com", "stay_with_me");
-            helper.setSubject("New booking");
-            helper.setText(generateInformBookingMailSubject(booking), true);
-            mailSender.send(mimeMessage);
+        // Landlord landlordProperty = booking.getBookingHomestays().stream().map(h ->
+        // h.getHomestay().getLandlord())
+        // .findAny().get();
+        // MimeMessage mimeMessage = mailSender.createMimeMessage();
+        // MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        // try {
+        // helper.setTo(new InternetAddress(landlordProperty.getUser().getEmail()));
+        // helper.setFrom("no-reply@swm.com", "stay_with_me");
+        // helper.setSubject("New booking");
+        // helper.setText(generateInformBookingMailSubject(booking), true);
+        // mailSender.send(mimeMessage);
 
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        // } catch (MessagingException | UnsupportedEncodingException e) {
+        // throw new RuntimeException(e.getMessage());
+        // }
     }
 }

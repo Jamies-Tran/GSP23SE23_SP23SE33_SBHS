@@ -30,6 +30,7 @@ import com.sbhs.swm.models.PassengerWallet;
 import com.sbhs.swm.models.PasswordModificationOtp;
 import com.sbhs.swm.models.SwmRole;
 import com.sbhs.swm.models.SwmUser;
+
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.BookingDepositRepo;
 import com.sbhs.swm.repositories.LandlordCommissionRepo;
@@ -103,6 +104,7 @@ public class UserService implements IUserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         SwmUser savedUser = userRepo.save(user);
+
         return savedUser;
     }
 

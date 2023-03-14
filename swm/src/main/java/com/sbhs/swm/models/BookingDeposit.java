@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +29,5 @@ public class BookingDeposit extends BaseModel {
 
     @ManyToOne
     private @Setter PassengerWallet passengerWallet;
-
-    @OneToOne(mappedBy = "deposit")
-    private @Setter Booking booking;
 
 }

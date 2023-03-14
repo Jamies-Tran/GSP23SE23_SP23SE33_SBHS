@@ -9,8 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerResponseDto extends BaseResponseDto {
-    private Long id;
-    private BalanceWalletResponseDto balanceWallet;
-    private TravelCartResponseDto travelCart;
+public class HomestayTravelCartResponseDto {
+    private HomestayResponseDto homestay;
+    private String bookingFrom;
+    private String bookingTo;
+    private Long price;
+    private Long deposit;
 }

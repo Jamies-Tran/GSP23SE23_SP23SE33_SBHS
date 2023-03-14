@@ -9,17 +9,16 @@ import org.springframework.data.repository.query.Param;
 import com.sbhs.swm.models.Booking;
 
 public interface BookingRepo extends JpaRepository<Booking, Long> {
-    @Query(value = "select b from Booking b where b.passenger.user.username = :username")
-    List<Booking> findBookingListByUsername(@Param("username") String username);
+    // @Query(value = "select b from Booking b where b.passenger.user.username =
+    // :username")
+    // List<Booking> findBookingListByUsername(@Param("username") String username);
 
-    @Query(value = "select b from Booking b where b.homestay.name = :name")
-    List<Booking> findAllHomestayBooking(@Param("name") String homestay);
+    // @Query(value = "select b from Booking b where b.homestay.name = :name")
+    // List<Booking> findAllHomestayBooking(@Param("name") String homestay);
 
-    @Query(value = "select sum(b.totalRoom) from Booking b where b.homestay.name = :name")
-    Integer totalHomestayRoomBooked(@Param("name") String homestayName);
-
-    @Query(value = "select sum(b.totalReservation) from Booking b where b.homestays.bloc.name = :name")
-    Integer totalHomestayInBlocBooked(@Param("name") String blocName);
+    // @Query(value = "select sum(b.totalRoom) from Booking b where b.homestay.name
+    // = :name")
+    // Integer totalHomestayRoomBooked(@Param("name") String homestayName);
 
     // @Query(value = "select sum(b.totalRoom) from Booking b where b.homestay.name
     // = :name and b.bookingTo = :checkout")

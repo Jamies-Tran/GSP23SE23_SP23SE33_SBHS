@@ -1,15 +1,14 @@
 package com.sbhs.swm.models;
 
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,27 +19,28 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class HomestayService extends BaseModel {
+public class TravelCart extends BaseModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "nvarchar(500)")
-    private @Setter String name;
+    @Column
+    private @Setter Long totalPrice = 0L;
 
     @Column
-    private @Setter Long price;
+    private @Setter Long totalDeposit = 0L;
 
-    @Column
-    private @Setter String status;
+    @OneToOne
+    private @Setter Booking booking;
 
-    @ManyToOne
-    private @Setter BlocHomestay bloc;
+    @OneToMany(mappedBy = "travelCart")
+    private @Setter List<HomestayTravelCart> homestayTravelCarts;
 
-    @ManyToOne
-    private @Setter Homestay homestay;
-
-    @OneToMany(mappedBy = "homestayService")
+    @OneToMany(mappedBy = "travelCart")
     private @Setter List<ServiceTravelCart> serviceTravelCarts;
+
+    @ManyToOne
+    private @Setter Passenger passenger;
 
 }
