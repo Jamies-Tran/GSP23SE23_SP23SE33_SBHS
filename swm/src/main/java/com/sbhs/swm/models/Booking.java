@@ -1,13 +1,15 @@
 package com.sbhs.swm.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,20 +25,24 @@ public class Booking extends BaseModel {
     private Long id;
 
     @Column
-    private @Setter Long totalPrice;
+    private @Setter Long totalBookingPrice = 0L;
 
     @Column
-    private @Setter Long totalBookingDeposit;
+    private @Setter Long totalBookingDeposit = 0L;
 
     @Column
     private @Setter String status;
 
-    @OneToOne(mappedBy = "booking")
-    private @Setter TravelCart travelCart;
-
     @ManyToOne
     private @Setter Passenger passenger;
 
-    @Column
-    private @Setter String homestayType;
+    @OneToMany(mappedBy = "booking", cascade = { CascadeType.REMOVE })
+    private @Setter List<BookingHomestay> bookingHomestays;
+
+    @OneToMany(mappedBy = "booking", cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    private @Setter List<BookingHomestayService> bookingHomestayServices;
+
+    @OneToMany(mappedBy = "booking")
+    private @Setter List<BookingDeposit> bookingDeposits;
+
 }

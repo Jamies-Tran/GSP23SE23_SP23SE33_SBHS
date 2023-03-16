@@ -157,10 +157,10 @@ public class AdminService implements IAdminService {
         SwmUser updator = userService.authenticatedUser();
         SwmUser user = userRepo.findLandlordByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-        if (user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATED.name())) {
+        if (user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATING.name())) {
             throw new InvalidException("Landlord account has already been activated");
         }
-        user.getLandlordProperty().setStatus(LandlordStatus.ACTIVATED.name());
+        user.getLandlordProperty().setStatus(LandlordStatus.ACTIVATING.name());
         user.getLandlordProperty().setUpdatedBy(updator.getUsername());
         user.getLandlordProperty().setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.approveLandlordAccount(user);
@@ -176,7 +176,7 @@ public class AdminService implements IAdminService {
         if (homestay.getBloc() != null) {
             throw new InvalidException("Homestay in bloc ".concat(homestay.getBloc().getName()));
         }
-        homestay.setStatus(HomestayStatus.ACTIVE.name());
+        homestay.setStatus(HomestayStatus.ACTIVATING.name());
         homestay.setUpdatedBy(updator.getUsername());
         homestay.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.approveHomestay(homestay, null);
@@ -213,8 +213,8 @@ public class AdminService implements IAdminService {
     public BlocHomestay activateBlocHomestay(String name) {
         SwmUser updator = userService.authenticatedUser();
         BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
-        bloc.setStatus(HomestayStatus.ACTIVE.name());
-        bloc.getHomestays().forEach(h -> h.setStatus(HomestayStatus.ACTIVE.name()));
+        bloc.setStatus(HomestayStatus.ACTIVATING.name());
+        bloc.getHomestays().forEach(h -> h.setStatus(HomestayStatus.ACTIVATING.name()));
         bloc.setUpdatedBy(updator.getUsername());
         bloc.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.approveHomestay(null, bloc);

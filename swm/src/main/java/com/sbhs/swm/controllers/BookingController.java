@@ -16,16 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbhs.swm.dto.request.BookingRequestDto;
-import com.sbhs.swm.dto.request.TravelCartRequestDto;
 import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
-import com.sbhs.swm.dto.response.BookingResponseDto;
+import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
-import com.sbhs.swm.dto.response.TravelCartResponseDto;
 import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
+import com.sbhs.swm.dto.response.BookingHomestayResponseDto;
+import com.sbhs.swm.dto.response.BookingResponseDto;
 import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
-import com.sbhs.swm.models.TravelCart;
 import com.sbhs.swm.services.IBookingService;
 
 @RestController
@@ -54,14 +53,33 @@ public class BookingController {
     // HttpStatus.CREATED);
     // }
 
-    @PutMapping("/new-travel-cart")
+    @PostMapping("/new-booking")
+    @PreAuthorize("hasAuthority('booking:create')")
+    public ResponseEntity<?> createBookingByPassenger() {
+        Booking bookingSave = bookingService.createBookingByPassenger();
+        BookingResponseDto responseBookingSave = modelMapper.map(bookingSave, BookingResponseDto.class);
+
+        return new ResponseEntity<BookingResponseDto>(responseBookingSave, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/save")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> addHomestayToTravelCart(@RequestBody TravelCartRequestDto travelCartRequest) {
-        TravelCart travelCart = bookingService.addHomestayToPassengerTravelCart(travelCartRequest);
-        TravelCartResponseDto responseTravelCart = modelMapper.map(travelCart, TravelCartResponseDto.class);
+    public ResponseEntity<?> createBookingHomestay(@RequestBody BookingHomestayRequestDto bookingHomestayRequest) {
+        BookingHomestay bookingHomestay = bookingService.createSaveBookingForHomestay(bookingHomestayRequest);
+        BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
+                BookingHomestayResponseDto.class);
 
-        return new ResponseEntity<TravelCartResponseDto>(responseTravelCart, HttpStatus.OK);
+        return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
 
+    @PutMapping("/submit")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> submitBooking(Long bookingId) {
+        Booking booking = bookingService.submitBookingByPassenger(bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 
     @PostMapping("/validate-booking-date")
@@ -84,5 +102,26 @@ public class BookingController {
         Boolean canPassengerMakeBooking = bookingService.canPassengerMakeBooking(totalBookingPrice);
 
         return new ResponseEntity<Boolean>(canPassengerMakeBooking, HttpStatus.OK);
+    }
+
+    @GetMapping("/homestay-list")
+    @PreAuthorize("hasRole(ROLE_LANDLORD)")
+    public ResponseEntity<?> getBookingByHomestayNameAndStatus(String homestayName, String status) {
+        List<Booking> bookings = bookingService.findBookingsByHomestayNameAndStatus(status, homestayName);
+        List<BookingResponseDto> responseBookingList = bookings.stream()
+                .map(b -> modelMapper.map(b, BookingResponseDto.class)).collect(Collectors.toList());
+
+        return new ResponseEntity<List<BookingResponseDto>>(responseBookingList, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/user-list")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> getBookingByUsernameAndStatus(String status) {
+        List<Booking> bookings = bookingService.findBookingsByUsernameAndStatus(status);
+        List<BookingResponseDto> responseBookingList = bookings.stream()
+                .map(b -> modelMapper.map(b, BookingResponseDto.class)).collect(Collectors.toList());
+
+        return new ResponseEntity<List<BookingResponseDto>>(responseBookingList, HttpStatus.OK);
     }
 }

@@ -27,7 +27,7 @@ public class PassengerWallet extends BaseModel {
     private @Setter BalanceWallet passengerBalanceWallet;
 
     @OneToMany(mappedBy = "passengerWallet")
-    private @Setter List<BookingDeposit> deposits;
+    private @Setter List<Deposit> deposits;
 
     @OneToMany(mappedBy = "passengerWallet")
     private @Setter List<PaymentHistory> paymentHistories;

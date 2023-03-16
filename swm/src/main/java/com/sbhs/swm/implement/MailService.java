@@ -14,11 +14,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.models.BlocHomestay;
-import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Homestay;
-import com.sbhs.swm.models.Landlord;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.LandlordStatus;
+import com.sbhs.swm.models.type.HomestayType;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IUserService;
 
@@ -152,24 +151,35 @@ public class MailService implements IMailService {
         return otpGenerator.nextString();
     }
 
-    // private String generateInformBookingMailSubject(Booking booking) {
-    // Landlord landlordProperty = booking.getBookingHomestays().stream().map(h ->
-    // h.getHomestay().getLandlord())
-    // .findAny().get();
-    // StringBuilder informMailBuilder = new StringBuilder();
-    // informMailBuilder.append("<h1>Dear
-    // ").append(landlordProperty.getUser().getUsername())
-    // .append("</h1>").append("</br>").append("<p> you have
-    // ").append(booking.getBookingHomestays().size())
-    // .append("new booking from ")
-    // .append(booking.getPassenger().getUser().getUsername()).append(" for ")
-    // .append(" at ").append(booking.getCreatedDate())
-    // .append(". </p>").append("</br>").append("<p>").append("The booking will
-    // start from ")
-    // .append("so please go to www.google.com for more details.</p>")
-    // .append("</br>").append("<h2>Good luck</h2>");
-    // return informMailBuilder.toString();
-    // }
+    private String generateInformBookingMailSubject(String landlordName, String passengerName,
+            String createdDate, String homestayType, int numberOfHomestayBooked, String blocName) {
+        StringBuilder informMailBuilder = new StringBuilder();
+        switch (HomestayType.valueOf(homestayType)) {
+            case HOMESTAY:
+                informMailBuilder.append("<h1>Dear ").append(landlordName)
+                        .append("</h1>").append("</br>").append("<p> you have")
+                        .append("new booking from ")
+                        .append(passengerName)
+                        .append(" at ").append(createdDate)
+                        .append(". </p>").append("</br>").append("<p>").append("The booking will start from ")
+                        .append("so please go to www.google.com for more details.</p>")
+                        .append("</br>").append("<h2>Good luck</h2>");
+                break;
+            case BLOC:
+                informMailBuilder.append("<h1>Dear ").append(landlordName)
+                        .append("</h1>").append("</br>").append("<p> you have")
+                        .append("new booking from ")
+                        .append(passengerName).append(" for ").append(numberOfHomestayBooked).append(" on bloc ")
+                        .append(blocName)
+                        .append(" at ").append(createdDate)
+                        .append(". </p>").append("</br>").append("<p>").append("The booking will start from ")
+                        .append("so please go to www.google.com for more details.</p>")
+                        .append("</br>").append("<h2>Good luck</h2>");
+                break;
+
+        }
+        return informMailBuilder.toString();
+    }
 
     @Override
     public void approveLandlordAccount(SwmUser user) {
@@ -246,21 +256,24 @@ public class MailService implements IMailService {
     }
 
     @Override
-    public void informBookingToLandlord(Booking booking) {
-        // Landlord landlordProperty = booking.getBookingHomestays().stream().map(h ->
-        // h.getHomestay().getLandlord())
-        // .findAny().get();
-        // MimeMessage mimeMessage = mailSender.createMimeMessage();
-        // MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        // try {
-        // helper.setTo(new InternetAddress(landlordProperty.getUser().getEmail()));
-        // helper.setFrom("no-reply@swm.com", "stay_with_me");
-        // helper.setSubject("New booking");
-        // helper.setText(generateInformBookingMailSubject(booking), true);
-        // mailSender.send(mimeMessage);
+    public void informBookingToLandlord(String landlordName, String passengerName, String createdDate,
+            String landlordMail, String homestayType,
+            Integer numberOfHomestayBooked, String blocName) {
 
-        // } catch (MessagingException | UnsupportedEncodingException e) {
-        // throw new RuntimeException(e.getMessage());
-        // }
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        try {
+            helper.setTo(new InternetAddress(landlordMail));
+            helper.setFrom("no-reply@swm.com", "stay_with_me");
+            helper.setSubject("New booking");
+            helper.setText(
+                    generateInformBookingMailSubject(landlordName, passengerName, createdDate, homestayType,
+                            numberOfHomestayBooked, blocName),
+                    true);
+            mailSender.send(mimeMessage);
+
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

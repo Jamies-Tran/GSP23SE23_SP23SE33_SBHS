@@ -1,6 +1,4 @@
-package com.sbhs.swm.dto.response;
-
-import com.sbhs.swm.dto.HomestayServiceDto;
+package com.sbhs.swm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ServiceTravelCartResponseDto {
-    private Long id;
+public class BookingHomestayServiceDto {
     private HomestayServiceDto homestayService;
-    private Long price;
-
+    private Long totalServicePrice;
 }

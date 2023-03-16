@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,19 +16,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class HomestayTravelCart {
+public class BookingHomestay {
     @EmbeddedId
-    private HomestayTravelCartId homestayTravelCardId = new HomestayTravelCartId();
+    private BookingHomestayId bookingSaveHomestayId = new BookingHomestayId();
+
+    @MapsId("bookingId")
+    @ManyToOne
+    @JoinColumn
+    private Booking booking;
 
     @MapsId("homestayId")
     @ManyToOne
     @JoinColumn
     private Homestay homestay;
-
-    @MapsId("travelCartId")
-    @ManyToOne
-    @JoinColumn
-    private TravelCart travelCart;
 
     @Column
     private String bookingFrom;
@@ -41,6 +40,12 @@ public class HomestayTravelCart {
     private Long price;
 
     @Column
-    private Long deposit;
+    private String paymentMethod;
+
+    @Column
+    private String homestayType;
+
+    @Column
+    private Long totalReservation;
 
 }

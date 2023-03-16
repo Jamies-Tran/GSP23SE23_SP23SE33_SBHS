@@ -1,8 +1,9 @@
 package com.sbhs.swm.models.status;
 
 public enum BookingStatus {
+    SAVED,
     PENDING,
-    ACCEPT,
-    REJECT,
-    CANCEL
+    ACCEPTING,
+    REJECTED,
+    CANCELED
 }

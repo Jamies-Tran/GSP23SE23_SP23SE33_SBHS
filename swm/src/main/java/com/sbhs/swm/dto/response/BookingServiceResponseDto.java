@@ -1,6 +1,6 @@
 package com.sbhs.swm.dto.response;
 
-import java.util.List;
+import com.sbhs.swm.dto.HomestayServiceDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerResponseDto extends BaseResponseDto {
-    private Long id;
-    private BalanceWalletResponseDto balanceWallet;
-    private List<BookingResponseDto> bookings;
+public class BookingServiceResponseDto {
+    private Long totalServicePrice;
+    private HomestayServiceDto homestayService;
 }

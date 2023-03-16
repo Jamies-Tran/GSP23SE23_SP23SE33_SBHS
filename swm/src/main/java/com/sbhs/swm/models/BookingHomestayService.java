@@ -1,7 +1,9 @@
 package com.sbhs.swm.models;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
@@ -15,17 +17,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ServiceTravelCart {
+public class BookingHomestayService {
     @EmbeddedId
-    private ServiceTravelCartId serviceTravelCartId = new ServiceTravelCartId();
+    private BookingHomestayServiceId bookingSaveServiceId = new BookingHomestayServiceId();
+
+    @MapsId("bookingId")
+    @ManyToOne
+    @JoinColumn
+    private Booking booking;
 
     @MapsId("homestayServiceId")
     @ManyToOne
+    @JoinColumn
     private HomestayService homestayService;
 
-    @MapsId("travelCartId")
-    @ManyToOne
-    private TravelCart travelCart;
+    @Column(columnDefinition = "nvarchar(500)")
+    private String homestayname;
 
-    private Long price = 0L;
+    @Column
+    private Long totalServicePrice;
 }

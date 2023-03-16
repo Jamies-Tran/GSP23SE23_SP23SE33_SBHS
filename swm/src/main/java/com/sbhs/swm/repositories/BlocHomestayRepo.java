@@ -13,7 +13,7 @@ import com.sbhs.swm.models.BlocHomestay;
 
 public interface BlocHomestayRepo extends JpaRepository<BlocHomestay, Long> {
 
-    @Query(value = "select b from BlocHomestay b where b.status = 'ACTIVE'")
+    @Query(value = "select b from BlocHomestay b where b.status = 'ACTIVATING'")
     List<BlocHomestay> getAllAvailableBlocs();
 
     @Query(value = "select b from BlocHomestay b where b.address = :address")
@@ -28,7 +28,7 @@ public interface BlocHomestayRepo extends JpaRepository<BlocHomestay, Long> {
     @Query(value = "select b from BlocHomestay b where b.status = :status")
     Page<BlocHomestay> findBlocHomestaysByStatus(Pageable pageable, @Param("status") String status);
 
-    @Query(value = "select b from BlocHomestay b where b.status = 'ACTIVE' order by b.totalAverageRating desc")
+    @Query(value = "select b from BlocHomestay b where b.status = 'ACTIVATING' order by b.totalAverageRating desc")
     Page<BlocHomestay> getBlocListOrderByTotalAverageRatingPoint(Pageable pageable);
 
 }

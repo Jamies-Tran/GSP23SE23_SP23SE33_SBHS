@@ -73,7 +73,7 @@ public class HomestayService implements IHomestayService {
         SwmUser user = userService.authenticatedUser();
         if (user.getLandlordProperty() == null) {
             throw new UsernameNotFoundException(user.getUsername());
-        } else if (!user.getLandlordProperty().getStatus().equals(LandlordStatus.ACTIVATED.name())) {
+        } else if (!user.getLandlordProperty().getStatus().equals(LandlordStatus.ACTIVATING.name())) {
             throw new InvalidAccountOperatorException();
         } else if (homestayRepo.findHomestayByName(homestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();
@@ -116,7 +116,7 @@ public class HomestayService implements IHomestayService {
         SwmUser user = userService.authenticatedUser();
         if (user.getLandlordProperty() == null) {
             throw new UsernameNotFoundException(user.getUsername());
-        } else if (!user.getLandlordProperty().getStatus().equals(LandlordStatus.ACTIVATED.name())) {
+        } else if (!user.getLandlordProperty().getStatus().equals(LandlordStatus.ACTIVATING.name())) {
             throw new InvalidAccountOperatorException();
         } else if (blocHomestayRepo.findBlocHomestayByName(blocHomestay.getName()).isPresent()) {
             throw new HomestayNameDuplicateException();

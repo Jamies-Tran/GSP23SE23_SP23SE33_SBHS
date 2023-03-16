@@ -1,12 +1,8 @@
 package com.sbhs.swm.util;
 
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.repositories.BookingRepo;
 
 @Configuration

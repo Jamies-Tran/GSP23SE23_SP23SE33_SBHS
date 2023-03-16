@@ -3,7 +3,6 @@ package com.sbhs.swm.dto.response;
 import java.util.List;
 
 import com.sbhs.swm.dto.BookingDepositDto;
-import com.sbhs.swm.dto.HomestayServiceDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,14 +15,10 @@ import lombok.Setter;
 @Setter
 public class BookingResponseDto {
     private Long id;
-    private String bookingFrom;
-    private String bookingTo;
-    private Long totalRoom;
-    private Long totalPrice;
-    private String paymentType;
-    private HomestayResponseDto homestay;
-    private List<HomestayServiceDto> homestayServices;
-    private BookingDepositDto deposit;
-    private PassengerResponseDto passenger;
+    private Long totalBookingPrice;
+    private Long totalBookingDeposit;
     private String status;
+    private List<BookingHomestayResponseDto> bookingHomestays;
+    private List<BookingServiceResponseDto> bookingHomestayServices;
+    private List<BookingDepositDto> bookingDeposits;
 }

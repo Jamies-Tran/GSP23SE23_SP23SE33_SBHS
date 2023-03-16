@@ -11,10 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TravelCartRequestDto {
-    private String homestayName;
-    private List<String> serviceNames;
+public class BookingHomestayRequestDto {
     private String bookingFrom;
     private String bookingTo;
-
+    private String paymentMethod;
+    private Long totalReservation;
+    private String homestayName;
+    private List<String> homestayServiceList;
 }

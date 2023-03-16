@@ -60,9 +60,9 @@ public class PromotionService implements IPromotionService {
                         .before(dateFormatUtil.formatGivenDate(promotion.getEndDate()))) {
             if (dateFormatUtil.formatDateTimeNow()
                     .before(dateFormatUtil.formatGivenDate(promotion.getStartDate()))) {
-                promotion.setStatus(PromotionStatus.NOT_ACTIVATE.name());
+                promotion.setStatus(PromotionStatus.NOT_ACTIVATING.name());
             } else {
-                promotion.setStatus(PromotionStatus.ACTIVATED.name());
+                promotion.setStatus(PromotionStatus.ACTIVATING.name());
             }
         } else {
             throw new InvalidPromotionDateException();

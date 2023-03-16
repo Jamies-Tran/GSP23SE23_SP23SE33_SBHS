@@ -1,14 +1,16 @@
 package com.sbhs.swm.models;
 
 import java.util.List;
-import javax.persistence.Column;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import com.sbhs.swm.models.status.DepositStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,28 +21,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class TravelCart extends BaseModel {
-
+public class Deposit extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private @Setter Long totalPrice = 0L;
+    private @Setter String status = DepositStatus.UNPAID.name();
 
-    @Column
-    private @Setter Long totalDeposit = 0L;
-
-    @OneToOne
-    private @Setter Booking booking;
-
-    @OneToMany(mappedBy = "travelCart")
-    private @Setter List<HomestayTravelCart> homestayTravelCarts;
-
-    @OneToMany(mappedBy = "travelCart")
-    private @Setter List<ServiceTravelCart> serviceTravelCarts;
+    @OneToMany(mappedBy = "deposit", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private @Setter List<BookingDeposit> bookingDeposits;
 
     @ManyToOne
-    private @Setter Passenger passenger;
+    private @Setter PassengerWallet passengerWallet;
 
 }

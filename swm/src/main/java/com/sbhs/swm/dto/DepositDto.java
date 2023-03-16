@@ -1,5 +1,7 @@
 package com.sbhs.swm.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingDepositDto {
-    private Long paidAmount;
-    private Long unpaidAmount;
-    private String depositForHomestay;
+public class DepositDto {
+    private Long id;
+    private List<BookingDepositDto> bookingDeposits;
 }

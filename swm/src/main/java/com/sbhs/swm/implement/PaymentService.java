@@ -18,7 +18,7 @@ import com.sbhs.swm.dto.MomoCaptureWalletDto;
 import com.sbhs.swm.handlers.exceptions.DuplicateException;
 import com.sbhs.swm.models.PaymentHistory;
 import com.sbhs.swm.models.SwmUser;
-import com.sbhs.swm.models.type.PaymentType;
+import com.sbhs.swm.models.type.PaymentMethod;
 import com.sbhs.swm.models.type.WalletType;
 import com.sbhs.swm.repositories.PaymentRepo;
 import com.sbhs.swm.services.IPaymentService;
@@ -132,7 +132,7 @@ public class PaymentService implements IPaymentService {
                                 paymentHistory
                                                 .setPassengerWallet(user.getPassengerProperty().getBalanceWallet()
                                                                 .getPassengerWallet());
-                                paymentHistory.setPaymentMethod(PaymentType.SWM_WALLET.name());
+                                paymentHistory.setPaymentMethod(PaymentMethod.SWM_WALLET.name());
                                 PaymentHistory savedPaymentHistory = paymentRepo.save(paymentHistory);
                                 paymentHistory.setOrderId(momoCaptureWalletDto.getOrderId());
                                 user.getPassengerProperty().getBalanceWallet().getPassengerWallet()
@@ -150,7 +150,7 @@ public class PaymentService implements IPaymentService {
                                 paymentHistoryForLandlord
                                                 .setLandlordWallet(user.getLandlordProperty().getBalanceWallet()
                                                                 .getLandlordWallet());
-                                paymentHistoryForLandlord.setPaymentMethod(PaymentType.SWM_WALLET.name());
+                                paymentHistoryForLandlord.setPaymentMethod(PaymentMethod.SWM_WALLET.name());
                                 PaymentHistory savedPaymentHistoryForLandlord = paymentRepo
                                                 .save(paymentHistoryForLandlord);
                                 user.getLandlordProperty().getBalanceWallet().getLandlordWallet()

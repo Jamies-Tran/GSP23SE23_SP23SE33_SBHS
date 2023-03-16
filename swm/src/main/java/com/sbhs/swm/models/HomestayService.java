@@ -41,6 +41,6 @@ public class HomestayService extends BaseModel {
     private @Setter Homestay homestay;
 
     @OneToMany(mappedBy = "homestayService")
-    private @Setter List<ServiceTravelCart> serviceTravelCarts;
+    private @Setter List<BookingHomestayService> bookingServices;
 
 }

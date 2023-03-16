@@ -1,7 +1,6 @@
-package com.sbhs.swm.dto.request;
+package com.sbhs.swm.dto.response;
 
-import java.util.List;
-
+import com.sbhs.swm.dto.BookingDepositDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingRequestDto {
+public class BookingHomestayResponseDto {
     private String bookingFrom;
     private String bookingTo;
+    private Long price;
     private String paymentMethod;
+    private String homestayType;
     private Long totalReservation;
-    private List<String> homestayNameList;
-    private List<String> homestayServiceList;
+    private HomestayResponseDto homestay;
+    private BookingDepositDto bookingDeposit;
 }

@@ -1,7 +1,7 @@
 package com.sbhs.swm.models.status;
 
 public enum LandlordStatus {
-    ACTIVATED,
+    ACTIVATING,
     PENDING,
     BANNED,
     REJECTED_ID_NUMBER_NOT_MATCHED_IMAGE,

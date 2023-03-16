@@ -32,7 +32,7 @@ import com.sbhs.swm.models.SwmRole;
 import com.sbhs.swm.models.SwmUser;
 
 import com.sbhs.swm.models.status.LandlordStatus;
-import com.sbhs.swm.repositories.BookingDepositRepo;
+import com.sbhs.swm.repositories.DepositRepo;
 import com.sbhs.swm.repositories.LandlordCommissionRepo;
 import com.sbhs.swm.repositories.PasswordModificationOtpRepo;
 import com.sbhs.swm.repositories.UserRepo;
@@ -48,7 +48,7 @@ public class UserService implements IUserService {
     private UserRepo userRepo;
 
     @Autowired
-    private BookingDepositRepo bookingDepositRepo;
+    private DepositRepo bookingDepositRepo;
 
     @Autowired
     private LandlordCommissionRepo landlordCommissionRepo;
@@ -160,7 +160,7 @@ public class UserService implements IUserService {
         if (checkUsername.isPresent()) {
             SwmUser user = checkUsername.get();
             if (user.getLandlordProperty() != null
-                    && !user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATED.name())) {
+                    && !user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATING.name())) {
                 throw new InvalidUserStatusException();
             } else {
                 if (passwordEncoder.matches(password, user.getPassword())) {

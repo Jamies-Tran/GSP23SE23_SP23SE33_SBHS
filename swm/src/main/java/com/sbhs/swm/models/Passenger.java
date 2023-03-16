@@ -29,20 +29,17 @@ public class Passenger extends BaseModel {
     private Long id;
 
     @OneToMany(mappedBy = "passenger")
-    private @Setter List<Booking> bookings;
-
-    @OneToMany(mappedBy = "passenger")
     private @Setter List<Promotion> promotionWallet;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
     private @Setter BalanceWallet balanceWallet;
 
-    @OneToMany(mappedBy = "passenger")
-    private @Setter List<TravelCart> travelCart;
-
     @OneToMany(mappedBy = "passenger", fetch = FetchType.LAZY)
     private @Setter List<Rating> ratings;
+
+    @OneToMany(mappedBy = "passenger")
+    private @Setter List<Booking> bookings;
 
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;

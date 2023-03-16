@@ -2,17 +2,23 @@ package com.sbhs.swm.services;
 
 import java.util.List;
 
-import com.sbhs.swm.dto.request.BookingRequestDto;
-import com.sbhs.swm.dto.request.TravelCartRequestDto;
+import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
+
 import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
-import com.sbhs.swm.models.TravelCart;
 
 public interface IBookingService {
-    // Booking createBookingForHomestay(List<BookingRequestDto> bookingRequestList);
-    TravelCart addHomestayToPassengerTravelCart(TravelCartRequestDto travelCartRequest);
 
-    List<Booking> findBookingsByUsername(String username);
+    BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest);
+
+    Booking createBookingByPassenger();
+
+    Booking submitBookingByPassenger(Long bookingId);
+
+    List<Booking> findBookingsByUsernameAndStatus(String bookingStatus);
+
+    List<Booking> findBookingsByHomestayNameAndStatus(String bookingStatus, String homestayName);
 
     Boolean canPassengerMakeBooking(long totalBookingPrice);
 

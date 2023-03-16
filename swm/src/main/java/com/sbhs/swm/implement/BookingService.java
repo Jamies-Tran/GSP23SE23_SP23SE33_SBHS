@@ -9,25 +9,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sbhs.swm.dto.request.TravelCartRequestDto;
+import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.handlers.exceptions.BookingNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidBookingException;
+import com.sbhs.swm.handlers.exceptions.InvalidException;
+import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.BookingDeposit;
+import com.sbhs.swm.models.Deposit;
+import com.sbhs.swm.models.BookingHomestay;
+import com.sbhs.swm.models.BookingHomestayService;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayService;
-import com.sbhs.swm.models.HomestayTravelCart;
-import com.sbhs.swm.models.ServiceTravelCart;
+import com.sbhs.swm.models.LandlordCommission;
 import com.sbhs.swm.models.SwmUser;
-import com.sbhs.swm.models.TravelCart;
-import com.sbhs.swm.repositories.BookingDepositRepo;
-
+import com.sbhs.swm.models.status.BookingStatus;
+import com.sbhs.swm.models.status.DepositStatus;
+import com.sbhs.swm.models.type.CommissionType;
+import com.sbhs.swm.models.type.HomestayType;
+import com.sbhs.swm.models.type.PaymentMethod;
+import com.sbhs.swm.repositories.DepositRepo;
+import com.sbhs.swm.repositories.BookingHomestayRepo;
 import com.sbhs.swm.repositories.BookingRepo;
 import com.sbhs.swm.repositories.HomestayServiceRepo;
-import com.sbhs.swm.repositories.HomestayTravelCartRepo;
 import com.sbhs.swm.repositories.LandlordCommissionRepo;
-import com.sbhs.swm.repositories.ServiceTravelCartRepo;
-import com.sbhs.swm.repositories.TravelCartRepo;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IMailService;
@@ -40,22 +46,19 @@ import com.sbhs.swm.util.DateFormatUtil;
 public class BookingService implements IBookingService {
 
     @Autowired
-    private BookingRepo bookingRepo;
-
-    @Autowired
     private HomestayServiceRepo homestayServiceRepo;
 
     @Autowired
     private LandlordCommissionRepo landlordCommissionRepo;
 
     @Autowired
-    private ServiceTravelCartRepo serviceTravelCartRepo;
+    private BookingRepo bookingRepo;
 
     @Autowired
-    private BookingDepositRepo bookingDepositRepo;
+    private BookingHomestayRepo bookingHomestayRepo;
 
     @Autowired
-    private TravelCartRepo travelCartRepo;
+    private DepositRepo depositRepo;
 
     @Autowired
     private IUserService userService;
@@ -70,14 +73,12 @@ public class BookingService implements IBookingService {
     private DateFormatUtil dateFormatUtil;
 
     @Autowired
-    private HomestayTravelCartRepo homestayTravelCartRepo;
-
-    @Autowired
     private BookingDateValidationUtil bookingDateValidationUtil;
 
     @Override
-    public List<Booking> findBookingsByUsername(String username) {
-        List<Booking> bookings = bookingRepo.findAll();
+    public List<Booking> findBookingsByUsernameAndStatus(String status) {
+        SwmUser user = userService.authenticatedUser();
+        List<Booking> bookings = bookingRepo.findBookingByUsernameAndStatus(user.getUsername(), status);
 
         return bookings;
     }
@@ -89,101 +90,12 @@ public class BookingService implements IBookingService {
         return booking;
     }
 
-    // @Override
-    // @Transactional
-    // public Booking createBookingForHomestay(Booking booking, List<String>
-    // homestayServices,
-    // long depositAmount, List<String> homestayNames) {
-    // SwmUser user = userService.authenticatedUser();
-    // BookingHomestay bookingHomestay = new BookingHomestay();
-    // List<BookingHomestay> bookingHomestayList = new ArrayList<>();
-    // List<Homestay> homestayListByName = homestayNames.stream().map(h ->
-    // homestayService.findHomestayByName(h))
-    // .collect(Collectors.toList());
-    // for (Homestay h : homestayListByName) {
-    // if (h.getBloc() != null) {
-    // booking.setHomestayType(HomestayType.BLOC.name());
-    // } else {
-    // booking.setHomestayType(HomestayType.HOMESTAY.name());
-    // }
-    // bookingHomestay.setHomestay(h);
-    // bookingHomestayList.add(bookingHomestay);
-    // }
-    // if (homestayServices != null) {
-    // List<HomestayService> homestayServiceList = homestayServices.stream()
-    // .map(s -> homestayServiceRepo.findHomestayServiceByName(s).orElseThrow())
-    // .collect(Collectors.toList());
-    // booking.setHomestayServices(homestayServiceList);
-    // homestayServiceList.forEach(h -> h.setBookings(List.of(booking)));
-    // booking.getHomestayServices().forEach(s -> s.setBookings(List.of(booking)));
-    // }
-    // booking.setPassenger(user.getPassengerProperty());
-    // booking.setHomestays(homestayListByName);
-
-    // booking.setCreatedBy(user.getUsername());
-    // booking.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-    // booking.setStatus(BookingStatus.PENDING.name());
-
-    // user.getPassengerProperty().setBookings(List.of(booking));
-    // Booking savedBooking = bookingRepo.save(booking);
-    // switch (PaymentType.valueOf(booking.getPaymentType())) {
-    // case SWM_WALLET:
-    // long unpaidAmount = savedBooking.getTotalPrice() - depositAmount;
-    // long currentPassengerWalletBalance =
-    // user.getPassengerProperty().getBalanceWallet().getTotalBalance();
-    // BookingDeposit bookingDeposit = new BookingDeposit();
-    // bookingDeposit.setPaidAmount(depositAmount);
-    // bookingDeposit.setUnpaidAmount(unpaidAmount);
-    // bookingDeposit.setBooking(savedBooking);
-    // bookingDeposit.setCreatedBy(user.getUsername());
-    // bookingDeposit.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-    // bookingDeposit.setPassengerWallet(user.getPassengerProperty().getBalanceWallet().getPassengerWallet());
-
-    // user.getPassengerProperty().getBalanceWallet().getPassengerWallet()
-    // .setDeposits(List.of(bookingDeposit));
-    // BookingDeposit savedBookingDeposit = bookingDepositRepo.save(bookingDeposit);
-    // savedBooking.setDeposit(savedBookingDeposit);
-    // user.getPassengerProperty().getBalanceWallet()
-    // .setTotalBalance(currentPassengerWalletBalance -
-    // savedBookingDeposit.getPaidAmount());
-
-    // break;
-    // case CASH:
-    // Landlord ownerProperty = homestayListByName.stream().map(h ->
-    // h.getLandlord()).findAny().get();
-
-    // long commissiontAmount =
-    // this.landlordCommissionAmount(savedBooking.getTotalPrice());
-    // LandlordCommission landlordCommission = new LandlordCommission();
-    // landlordCommission.setCommission(commissiontAmount);
-    // landlordCommission.setCommissionType(CommissionType.UNPAID_COMMISSION.name());
-    // landlordCommission.setLandlordWallet(ownerProperty.getBalanceWallet().getLandlordWallet());
-    // landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-
-    // LandlordCommission savedLandlordCommission =
-    // landlordCommissionRepo.save(landlordCommission);
-    // ownerProperty.getBalanceWallet().getLandlordWallet()
-    // .setLandlordCommissions(List.of(savedLandlordCommission));
-
-    // break;
-
-    // }
-
-    // mailService.informBookingToLandlord(savedBooking);
-    // return savedBooking;
-    // }
-
-    private long landlordCommissionAmount(long totalBookingPrice) {
-        long amount = (totalBookingPrice * 5) / 100;
-        return amount;
-    }
-
     @Override
     public Boolean canPassengerMakeBooking(long totalBookingPrice) {
         SwmUser user = userService.authenticatedUser();
         long currentTotalPassengerWalletBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
-        long totalUnpaidDeposit = bookingDepositRepo.getTotalUnpaidAmountFromUser(user.getUsername()) != null
-                ? bookingDepositRepo.getTotalUnpaidAmountFromUser(user.getUsername())
+        long totalUnpaidDeposit = depositRepo.getTotalUnpaidAmountFromUser(user.getUsername()) != null
+                ? depositRepo.getTotalUnpaidAmountFromUser(user.getUsername())
                 : 0;
 
         long actualPassengerWalletBalance = currentTotalPassengerWalletBalance - totalUnpaidDeposit;
@@ -223,107 +135,226 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public TravelCart addHomestayToPassengerTravelCart(TravelCartRequestDto travelCartRequest) {
-        Long homestayServicePrice = 0L;
+    public Booking createBookingByPassenger() {
         SwmUser user = userService.authenticatedUser();
-        TravelCart travelCart = new TravelCart();
-        HomestayTravelCart homestayTravelCart = new HomestayTravelCart();
-        Homestay homestay = homestayService.findHomestayByName(travelCartRequest.getHomestayName());
-        List<HomestayService> homestayServices = travelCartRequest.getServiceNames().stream()
+        if (user.getPassengerProperty().getBookings().stream()
+                .anyMatch(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))) {
+            throw new InvalidException("User still have save booking");
+        }
+        Booking booking = new Booking();
+        booking.setPassenger(user.getPassengerProperty());
+        booking.setStatus(BookingStatus.SAVED.name());
+        booking.setCreatedBy(user.getUsername());
+        booking.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        user.getPassengerProperty().setBookings(List.of(booking));
+        Booking savedBooking = bookingRepo.save(booking);
+
+        return savedBooking;
+    }
+
+    @Override
+    @Transactional
+    public BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest) {
+        SwmUser passengerUser = userService.authenticatedUser();
+        Booking userSaveBooking = passengerUser.getPassengerProperty().getBookings().stream()
+                .filter(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())).findFirst()
+                .orElseThrow(() -> new NotFoundException("user didn't create any booking"));
+        BookingHomestay bookingHomestay = new BookingHomestay();
+        Homestay homestayBooking = homestayService.findHomestayByName(bookingHomestayRequest.getHomestayName());
+        List<HomestayService> homestayServiceBookingList = bookingHomestayRequest.getHomestayServiceList().stream()
                 .map(s -> homestayServiceRepo.findHomestayServiceByName(s).get()).collect(Collectors.toList());
-        List<ServiceTravelCart> serviceTravelCarts = new ArrayList<>();
-        for (HomestayService s : homestayServices) {
-            homestayServicePrice = homestayServicePrice + s.getPrice();
-            ServiceTravelCart serviceTravelCart = new ServiceTravelCart();
-            serviceTravelCart.setHomestayService(s);
-            serviceTravelCart.setPrice(s.getPrice());
-            serviceTravelCart.setTravelCart(travelCart);
-            ServiceTravelCart savedServiceTravelCart = serviceTravelCartRepo.save(serviceTravelCart);
-            serviceTravelCarts.add(savedServiceTravelCart);
+        List<BookingHomestayService> bookingHomestayServiceList = new ArrayList<>();
+        Long homestayBookingPrice = homestayBooking.getPrice();
+        Long totalHomestayServicePrice = 0L;
+        Long totalBookingPrice = 0L;
+        Long currentBookingTotalPrice = userSaveBooking.getTotalBookingPrice();
+        Long currentBookingTotalDeposit = userSaveBooking.getTotalBookingDeposit();
+
+        for (HomestayService s : homestayServiceBookingList) {
+            totalHomestayServicePrice = totalHomestayServicePrice + s.getPrice();
+            BookingHomestayService bookingHomestayService = new BookingHomestayService();
+            bookingHomestayService.setHomestayService(s);
+            bookingHomestayService.setBooking(userSaveBooking);
+            bookingHomestayService.setTotalServicePrice(s.getPrice());
+            bookingHomestayServiceList.add(bookingHomestayService);
+        }
+        totalBookingPrice = homestayBookingPrice + totalHomestayServicePrice;
+        currentBookingTotalPrice = currentBookingTotalPrice + totalBookingPrice;
+        if (passengerUser.getPassengerProperty().getBalanceWallet().getTotalBalance() < currentBookingTotalPrice) {
+            throw new InvalidException("You don't have enough balance. Please add more or choose pay by cash.");
+        }
+        homestayBooking.setBookingHomestays(List.of(bookingHomestay));
+        userSaveBooking.setBookingHomestays(List.of(bookingHomestay));
+        userSaveBooking.setBookingHomestayServices(bookingHomestayServiceList);
+        userSaveBooking.setTotalBookingPrice(currentBookingTotalPrice);
+        switch (PaymentMethod.valueOf(bookingHomestayRequest.getPaymentMethod().toUpperCase())) {
+            case SWM_WALLET:
+
+                Long paidDeposit = this.getBookingDeposit(totalBookingPrice);
+                Long unpaidDeposit = totalBookingPrice - paidDeposit;
+                currentBookingTotalDeposit = currentBookingTotalDeposit + paidDeposit;
+                userSaveBooking.setTotalBookingDeposit(currentBookingTotalDeposit);
+                Deposit deposit = new Deposit();
+
+                BookingDeposit bookingDeposit = new BookingDeposit();
+                deposit.setBookingDeposits(List.of(bookingDeposit));
+                deposit.setCreatedBy(passengerUser.getUsername());
+                deposit.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+                deposit.setPassengerWallet(
+                        passengerUser.getPassengerProperty().getBalanceWallet().getPassengerWallet());
+                passengerUser.getPassengerProperty().getBalanceWallet().getPassengerWallet()
+                        .setDeposits(List.of(deposit));
+
+                bookingDeposit.setPaidAmount(paidDeposit);
+                bookingDeposit.setUnpaidAmount(unpaidDeposit);
+                bookingDeposit.setDepositForHomestay(homestayBooking.getName());
+                bookingDeposit.setBooking(userSaveBooking);
+                bookingDeposit.setDeposit(deposit);
+                userSaveBooking.setBookingDeposits(List.of(bookingDeposit));
+                depositRepo.save(deposit);
+
+                break;
+            case CASH:
+                break;
+        }
+        bookingHomestay.setBookingFrom(bookingHomestayRequest.getBookingFrom());
+        bookingHomestay.setBookingTo(bookingHomestayRequest.getBookingTo());
+        bookingHomestay.setPrice(totalBookingPrice);
+        bookingHomestay.setPaymentMethod(bookingHomestayRequest.getPaymentMethod());
+        if (homestayBooking.getBloc() != null) {
+            bookingHomestay.setHomestayType(HomestayType.BLOC.name());
+        } else {
+            bookingHomestay.setHomestayType(HomestayType.HOMESTAY.name());
+        }
+        bookingHomestay.setTotalReservation(bookingHomestayRequest.getTotalReservation());
+        bookingHomestay.setHomestay(homestayBooking);
+        bookingHomestay.setBooking(userSaveBooking);
+        BookingHomestay savedBookingHomestay = bookingHomestayRepo.save(bookingHomestay);
+
+        return savedBookingHomestay;
+
+    }
+
+    @Override
+    public List<Booking> findBookingsByHomestayNameAndStatus(String bookingStatus, String homestayName) {
+        List<BookingHomestay> bookingHomestays = bookingHomestayRepo.findBookingHomestaysByHomestayName(bookingStatus);
+        List<Booking> bookings = bookingHomestays.stream().map(b -> b.getBooking())
+                .filter(b -> b.getStatus().equalsIgnoreCase(bookingStatus)).collect(Collectors.toList());
+
+        return bookings;
+    }
+
+    @Override
+    @Transactional
+    public Booking submitBookingByPassenger(Long bookingId) {
+        Booking booking = this.findBookingById(bookingId);
+        SwmUser passengerUser = booking.getPassenger().getUser();
+        List<Homestay> homestaysInBloc = booking.getBookingHomestays().stream()
+                .filter(b -> b.getHomestayType().equalsIgnoreCase(HomestayType.BLOC.name()))
+                .map(b -> b.getHomestay()).collect(Collectors.toList());
+        List<Homestay> homestays = booking.getBookingHomestays().stream()
+                .filter(b -> b.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name()))
+                .map(b -> b.getHomestay())
+                .collect(Collectors.toList());
+        List<SwmUser> homestayOwners = homestays.stream().map(b -> b.getLandlord().getUser())
+                .collect(Collectors.toList());
+
+        List<String> getBlocHomestayOwnerNames = homestaysInBloc.stream()
+                .map(h -> h.getLandlord().getUser().getUsername()).distinct().collect(Collectors.toList());
+
+        List<SwmUser> blocHomestayOwners = getBlocHomestayOwnerNames.stream()
+                .map(n -> userService.findUserByUsername(n)).collect(Collectors.toList());
+        for (BookingHomestay b : booking.getBookingHomestays()) {
+
+            Long currentPassengerWalletBalance = passengerUser.getPassengerProperty().getBalanceWallet()
+                    .getTotalBalance();
+            Long landlordTotalCommission = this.getLandlordCommission(booking.getTotalBookingPrice());
+            LandlordCommission landlordCommission = new LandlordCommission();
+            switch (PaymentMethod.valueOf(b.getPaymentMethod().toUpperCase())) {
+                case CASH:
+
+                    blocHomestayOwners.forEach(landlordUser -> {
+                        Long currentLandlordWalletBalance = landlordUser.getLandlordProperty().getBalanceWallet()
+                                .getTotalBalance();
+                        // kiểm tra nếu số dư đủ trả tiền hoa hồng thì trừ luôn còn không thì ghi nợ
+                        if (currentLandlordWalletBalance >= landlordTotalCommission) {
+                            Long newLandlordWalletBalance = currentLandlordWalletBalance -
+                                    landlordTotalCommission;
+                            landlordUser.getLandlordProperty().getBalanceWallet()
+                                    .setTotalBalance(newLandlordWalletBalance);
+
+                            landlordCommission.setCommission(landlordTotalCommission);
+                            landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
+                            landlordCommission.setLandlordWallet(
+                                    landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
+                            landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
+                                    .setLandlordCommissions(List.of(landlordCommission));
+                            landlordCommission.setCreatedBy(landlordUser.getUsername());
+                            landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+                            landlordCommissionRepo.save(landlordCommission);
+                        } else {
+                            landlordCommission.setCommission(landlordTotalCommission);
+                            landlordCommission.setCommissionType(CommissionType.UNPAID_COMMISSION.name());
+                            landlordCommission.setLandlordWallet(
+                                    landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
+                            landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
+                                    .setLandlordCommissions(List.of(landlordCommission));
+                            landlordCommission.setCreatedBy(landlordUser.getUsername());
+                            landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+                            landlordCommissionRepo.save(landlordCommission);
+                        }
+
+                    });
+
+                    break;
+                case SWM_WALLET:
+                    currentPassengerWalletBalance = currentPassengerWalletBalance
+                            - booking.getTotalBookingDeposit();
+                    // cộng tiền cọc(deposit) vào tk landlord
+                    for (BookingDeposit bookingDeposit : b.getBooking().getBookingDeposits()) {
+                        Homestay depositForHomestay = homestayService
+                                .findHomestayByName(bookingDeposit.getDepositForHomestay());
+                        SwmUser owner = depositForHomestay.getLandlord().getUser();
+                        Long currentOwnerBalanceWallet = owner.getLandlordProperty().getBalanceWallet()
+                                .getTotalBalance();
+                        currentOwnerBalanceWallet = currentOwnerBalanceWallet + bookingDeposit.getPaidAmount();
+                        owner.getLandlordProperty().getBalanceWallet().setTotalBalance(currentOwnerBalanceWallet);
+                    }
+                    passengerUser.getPassengerProperty().getBalanceWallet()
+                            .setTotalBalance(currentPassengerWalletBalance);
+                    booking.getBookingDeposits()
+                            .forEach(d -> d.getDeposit().setStatus(DepositStatus.PAID.name()));
+                    break;
+
+            }
+            if (b.getHomestayType().equalsIgnoreCase(HomestayType.BLOC.name())) {
+                blocHomestayOwners.forEach(landlordUser -> {
+                    mailService.informBookingToLandlord(landlordUser.getUsername(),
+                            passengerUser.getUsername(),
+                            booking.getCreatedDate(), landlordUser.getEmail(), HomestayType.BLOC.name(),
+                            booking.getBookingHomestays().size(),
+                            homestaysInBloc.get(0).getBloc().getName());
+                });
+            } else {
+                homestayOwners.forEach(landlordUser -> {
+                    mailService.informBookingToLandlord(landlordUser.getUsername(), passengerUser.getUsername(),
+                            booking.getCreatedDate(), landlordUser.getEmail(), HomestayType.HOMESTAY.name(), 0,
+                            "");
+                });
+            }
         }
 
-        travelCart.setServiceTravelCarts(serviceTravelCarts);
-        travelCart.setPassenger(user.getPassengerProperty());
-        homestayTravelCart.setHomestay(homestay);
-        homestayTravelCart.setTravelCart(travelCart);
-        homestayTravelCart.setBookingFrom(travelCartRequest.getBookingFrom());
-        homestayTravelCart.setBookingTo(travelCartRequest.getBookingTo());
-        homestayTravelCart.setDeposit(this.getTravelCartDeposit(homestay.getPrice()));
-        homestayTravelCart.setPrice(homestayServicePrice);
-        HomestayTravelCart savedHomestayTravelCart = homestayTravelCartRepo.save(homestayTravelCart);
-        homestay.setHomestayTravelCarts(List.of(savedHomestayTravelCart));
+        booking.setStatus(BookingStatus.PENDING.name());
 
-        travelCart.setHomestayTravelCarts(List.of(homestayTravelCart));
-        TravelCart savedTravelCart = travelCartRepo.save(travelCart);
-        user.getPassengerProperty().setTravelCart(List.of(travelCart));
-        return savedTravelCart;
+        return booking;
     }
 
-    private Long getTravelCartDeposit(Long price) {
-        return (price * 20) / 100;
+    private Long getLandlordCommission(Long totalBookingPrice) {
+        return (totalBookingPrice * 5) / 100;
     }
 
-    private Long getTotalTravelDeposit(Long homestayPrice, Long homestayServicePrice) {
-        Long total = homestayPrice + homestayServicePrice;
-        return (total * 20) / 100;
+    private Long getBookingDeposit(Long totalBookingPrice) {
+        return (totalBookingPrice * 20) / 100;
     }
-
-    // @Override
-    // public Booking createBookingForHomestay(List<BookingRequestDto>
-    // bookingRequestList) {
-    // List<BookingHomestay> bookingHomestayList = new ArrayList<>();
-    // List<BookingDeposit> bookingDepositList = new ArrayList<>();
-    // SwmUser user = userService.authenticatedUser();
-    // Booking booking = new Booking();
-    // booking.setStatus(BookingStatus.PENDING.name());
-    // booking.setPassenger(user.getPassengerProperty());
-    // booking.setCreatedBy(user.getUsername());
-    // booking.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-    // user.getPassengerProperty().setBookings(List.of(booking));
-    // Long totalBookingPrice = 0L;
-    // Long totalBookingDeposit = 0L;
-    // for (BookingRequestDto b : bookingRequestList) {
-    // totalBookingPrice = totalBookingPrice + b.getTotalPrice();
-    // BookingHomestay bookingHomestay = new BookingHomestay();
-    // BookingDeposit deposit = new BookingDeposit();
-    // Homestay homestay = homestayService.findHomestayByName(b.getHomestayName());
-    // if (homestay.getBloc() != null) {
-    // booking.setHomestayType(HomestayType.BLOC.name());
-    // } else {
-    // booking.setHomestayType(HomestayType.HOMESTAY.name());
-    // }
-    // deposit.setPaidAmount(b.getDepositPaidAmount());
-    // deposit.setUnpaidAmount(b.getTotalPrice() - b.getDepositPaidAmount());
-    // deposit.setPassengerWallet(user.getPassengerProperty().getBalanceWallet().getPassengerWallet());
-    // deposit.setCreatedBy(user.getUsername());
-    // deposit.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-    // totalBookingDeposit = totalBookingDeposit + deposit.getUnpaidAmount();
-    // bookingDepositList.add(deposit);
-    // bookingHomestay.setBookingFrom(b.getBookingFrom());
-    // bookingHomestay.setBookingTo(b.getBookingTo());
-    // bookingHomestay.setDeposit(deposit);
-    // bookingHomestay.setHomestay(homestay);
-    // bookingHomestay.setBooking(booking);
-    // bookingHomestay.setHomestayServices(b.getHomestayServicesName().stream()
-    // .map(s ->
-    // homestayServiceRepo.findHomestayServiceByName(s).get()).collect(Collectors.toList()));
-    // bookingHomestay.setPrice(b.getTotalPrice());
-    // bookingHomestay.setTotalReservation(b.getTotalReservation());
-    // bookingHomestay.setPaymentType(b.getPaymentType());
-    // bookingHomestayList.add(bookingHomestay);
-    // }
-    // user.getPassengerProperty().getBalanceWallet().getPassengerWallet().setDeposits(bookingDepositList);
-    // booking.setTotalBookingDeposit(totalBookingDeposit);
-    // booking.setTotalPrice(totalBookingPrice);
-    // booking.setBookingHomestays(bookingHomestayList);
-    // bookingHomestayList.forEach(b -> {
-    // b.getHomestay().setBookingHomestays(bookingHomestayList);
-    // b.getHomestayServices().forEach(s ->
-    // s.setBookingHomestays(bookingHomestayList));
-    // });
-    // Booking savedBooking = bookingRepo.save(booking);
-
-    // return savedBooking;
-    // }
 
 }
