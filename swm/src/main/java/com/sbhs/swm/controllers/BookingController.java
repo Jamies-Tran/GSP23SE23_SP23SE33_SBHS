@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
@@ -63,7 +64,7 @@ public class BookingController {
 
     }
 
-    @PostMapping("/save")
+    @PostMapping("/save-homestay")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> createBookingHomestay(@RequestBody BookingHomestayRequestDto bookingHomestayRequest) {
         BookingHomestay bookingHomestay = bookingService.createSaveBookingForHomestay(bookingHomestayRequest);
@@ -71,6 +72,16 @@ public class BookingController {
                 BookingHomestayResponseDto.class);
 
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @PostMapping("/save-bloc")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> createBookingBloc(@RequestBody BookingBlocHomestayRequestDto bookingBlocHomestayRequest) {
+        List<BookingHomestay> bookingHomestayList = bookingService.createSaveBookingForBloc(bookingBlocHomestayRequest);
+        List<BookingHomestayResponseDto> responseBookingHomestayList = bookingHomestayList.stream()
+                .map(b -> modelMapper.map(b, BookingHomestayResponseDto.class)).collect(Collectors.toList());
+
+        return new ResponseEntity<List<BookingHomestayResponseDto>>(responseBookingHomestayList, HttpStatus.OK);
     }
 
     @PutMapping("/submit")

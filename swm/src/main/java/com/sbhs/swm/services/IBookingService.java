@@ -2,6 +2,7 @@ package com.sbhs.swm.services;
 
 import java.util.List;
 
+import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 
 import com.sbhs.swm.models.Booking;
@@ -11,6 +12,8 @@ import com.sbhs.swm.models.Homestay;
 public interface IBookingService {
 
     BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest);
+
+    List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
 
     Booking createBookingByPassenger();
 

@@ -1,5 +1,7 @@
 package com.sbhs.swm.dto.request;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingRequestDto {
-    private String bookingFrom;
-    private String bookingTo;
-    private String paymentMethod;
-    private Long totalReservation;
-    private String homestayName;
-
+public class BookingBlocHomestayRequestDto {
+    private List<BookingRequestDto> bookingRequestList;
+    private List<String> homestayServiceNameList;
 }
