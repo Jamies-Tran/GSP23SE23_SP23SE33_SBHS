@@ -15,7 +15,6 @@ import { MatPaginatedTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatButtonModule } from '@angular/material/button';
 import { LandlordRoutingModule } from './landlord-routing.module';
-import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
 import { RegisterHomestayComponent } from './homestay/register-homestay/register-homestay.component';
 import { RegisterBlocHomestayComponent } from './homestay/register-bloc-homestay/register-bloc-homestay.component';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -28,15 +27,14 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RegisterHomestayImageComponent } from './homestay/register-homestay-image/register-homestay-image.component';
-import { RegisterHomestayOverviewComponent } from './homestay/register-homestay-overview/register-homestay-overview.component';
+
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { RegisterHomestayPriceComponent } from './homestay/register-homestay-price/register-homestay-price.component';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
 
 @NgModule({
   declarations: [
@@ -45,9 +43,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     CategoryHomestayComponent,
     RegisterHomestayComponent,
     RegisterBlocHomestayComponent,
-    RegisterHomestayImageComponent,
-    RegisterHomestayOverviewComponent,
-    RegisterHomestayPriceComponent,
   ],
   imports: [
     CommonModule,
@@ -73,7 +68,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSlideToggleModule,
     MatSidenavModule,
     MatListModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    CdkStepperModule
   ],
 })
 export class LandlordModule {}

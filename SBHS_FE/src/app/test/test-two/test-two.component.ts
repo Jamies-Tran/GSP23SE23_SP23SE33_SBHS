@@ -1,4 +1,5 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { ServerHttpService } from './../../services/homestay.service';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 
 @Component({
@@ -6,30 +7,22 @@ import {MediaMatcher} from '@angular/cdk/layout';
   templateUrl: './test-two.component.html',
   styleUrls: ['./test-two.component.scss']
 })
-export class TestTwoComponent {
+export class TestTwoComponent implements OnInit{
+name:any;
+age:any;
+address:any;
 
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
-
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+  constructor(private http: ServerHttpService){
+    // this.name = this.http.getValue();
   }
+  ngOnInit(): void {
+      this.http.getValue().subscribe(data =>{
+        console.log("data" , data);
+        this.name = data;
+        // var value = data.value;
+        // this.age = value[0].age;
+        // this.address = value[0].address;
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+      })
   }
-
-
-  isExpanded = true;
-
-  showSubmenu: boolean = false;
-  isShowing = false;
-  showSubSubMenu: boolean = false;
-
-  username="Quang";
-  role="Admin"
-  avatarUrl=""
-  logout(){}
 }

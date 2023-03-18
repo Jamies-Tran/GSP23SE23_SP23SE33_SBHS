@@ -4,6 +4,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
@@ -110,5 +111,31 @@ export class ServerHttpService {
     return this.httpClient
       .put<any>(url, 'false', this.httpOptions)
       .pipe(catchError(this.handleError));
+  }
+
+  private myBehaviorSubject = new BehaviorSubject<string>('default value');
+  setValue(value: string) {
+    this.myBehaviorSubject.next(value);
+    console.log(value);
+    console.log(this.myBehaviorSubject);
+  }
+
+  getValue() {
+    return this.myBehaviorSubject.asObservable();
+  }
+
+  // POST
+  // /api/homestay/new-bloc  createBloc
+  public createBloc(data:any){
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url = `${this.REST_API_SERVER}/api/homestay/new-bloc`;
+  return this.httpClient
+    .post<any>(url, data, this.httpOptions)
+    .pipe(catchError(this.handleError));
   }
 }

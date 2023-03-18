@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/homestay.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormField } from '@angular/material/form-field';
 import { MessageComponent } from '../../../pop-up/message/message.component';
