@@ -12,6 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingBlocHomestayRequestDto {
-    private List<BookingRequestDto> bookingRequestList;
+    private List<BookingBlocRequestDto> bookingRequestList;
     private List<String> homestayServiceNameList;
 }

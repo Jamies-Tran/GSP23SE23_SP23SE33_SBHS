@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingHomestayResponseDto {
+    private Long id;
     private String bookingFrom;
     private String bookingTo;
     private Long price;

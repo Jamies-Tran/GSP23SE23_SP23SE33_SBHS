@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingRequestDto {
+public class BookingBlocRequestDto {
     private String bookingFrom;
     private String bookingTo;
     private String paymentMethod;

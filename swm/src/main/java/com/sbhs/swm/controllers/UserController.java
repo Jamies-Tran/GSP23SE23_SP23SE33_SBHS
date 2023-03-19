@@ -80,7 +80,7 @@ public class UserController {
                 responseUser
                         .setLandlordProperty(modelMapper.map(user.getLandlordProperty(), LandlordResponseDto.class));
                 Long actualLandlordWalletBalance = userService.getUserActualBalance(r.getName(), user);
-                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(actualLandlordWalletBalance);
+                responseUser.getLandlordProperty().getBalanceWallet().setActualBalance(actualLandlordWalletBalance);
             }
         });
         responseUser.setRoleIds(user.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));

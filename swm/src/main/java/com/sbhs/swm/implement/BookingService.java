@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
-import com.sbhs.swm.dto.request.BookingRequestDto;
+import com.sbhs.swm.dto.request.BookingBlocRequestDto;
 import com.sbhs.swm.handlers.exceptions.BookingNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidBookingException;
 import com.sbhs.swm.handlers.exceptions.InvalidException;
@@ -109,8 +109,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public List<Homestay> checkBlocBookingDate(String blocName, String bookingStart, String bookingEnd,
-            int totalHomestay) {
+    public List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd) {
         BlocHomestay bloc = homestayService.findBlocHomestayByName(blocName);
         List<Homestay> availableHomestays = new ArrayList<>();
         for (Homestay h : bloc.getHomestays()) {
@@ -397,7 +396,7 @@ public class BookingService implements IBookingService {
 
         Long currentBookingTotalPrice = userSaveBooking.getTotalBookingPrice();
         Long currentBookingTotalDeposit = userSaveBooking.getTotalBookingDeposit();
-        for (BookingRequestDto bookingHomestayRequest : bookingBlocHomestayRequest.getBookingRequestList()) {
+        for (BookingBlocRequestDto bookingHomestayRequest : bookingBlocHomestayRequest.getBookingRequestList()) {
             BookingHomestay bookingHomestay = new BookingHomestay();
             Homestay homestayBooking = homestayService.findHomestayByName(bookingHomestayRequest.getHomestayName());
             Long homestayBookingPrice = homestayBooking.getPrice();
@@ -443,7 +442,7 @@ public class BookingService implements IBookingService {
         currentBookingTotalPrice = currentBookingTotalPrice + totalHomestayServicePrice;
         userSaveBooking.setTotalBookingPrice(currentBookingTotalPrice);
         userSaveBooking.setBookingHomestayServices(bookingHomestayServiceList);
-        BookingRequestDto bookingHomestayRequest = bookingBlocHomestayRequest.getBookingRequestList().stream()
+        BookingBlocRequestDto bookingHomestayRequest = bookingBlocHomestayRequest.getBookingRequestList().stream()
                 .findFirst().get();
         Homestay homestayBooking = homestayService.findHomestayByName(bookingHomestayRequest.getHomestayName());
         BlocHomestay blocHomestayBooking = homestayBooking.getBloc();

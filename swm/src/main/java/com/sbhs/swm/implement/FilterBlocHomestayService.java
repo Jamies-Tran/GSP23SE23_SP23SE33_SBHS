@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sbhs.swm.dto.goong.DistanceElement;
 import com.sbhs.swm.dto.goong.DistanceResultRows;
 import com.sbhs.swm.handlers.exceptions.InvalidBookingException;
+import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
 
 import com.sbhs.swm.models.Homestay;
@@ -19,6 +20,7 @@ import com.sbhs.swm.repositories.BlocHomestayRepo;
 
 import com.sbhs.swm.services.IFilterBlocHomestayService;
 import com.sbhs.swm.services.IGoongService;
+
 import com.sbhs.swm.util.BookingDateValidationString;
 import com.sbhs.swm.util.BookingDateValidationUtil;
 
@@ -46,9 +48,9 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
     private boolean checkValidBookingBloc(BlocHomestay bloc, String bookingStart, String bookingEnd,
             int totalHomestay) {
         int totalBookedBloc = this.totalHomestayInBlockBooked(bloc.getName(), bookingStart, bookingEnd);
-        int availableHomestay = blocHomestayRepo.getAllAvailableBlocs().size() - totalBookedBloc;
+        int availableHomestay = bloc.getHomestays().size() - totalBookedBloc;
 
-        if (availableHomestay == 0 || availableHomestay > totalHomestay) {
+        if (availableHomestay == 0 || availableHomestay < totalHomestay) {
             return false;
         }
 
@@ -56,18 +58,11 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
     }
 
     private Integer totalHomestayInBlockBooked(String name, String bookingStart, String bookingEnd) {
-        List<Homestay> homestaysInBlockBooked = blocHomestayRepo.getAllAvailableBlocs().stream().filter(b -> {
-            if (b.getName().equals(name)) {
-                if (b.getHomestays().stream().anyMatch(h -> this.isHomestayBooked(h, bookingStart, bookingEnd))) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
-        }).map(b -> b.getHomestays()).findFirst().get();
-
-        return homestaysInBlockBooked.size();
+        BlocHomestay bloc = blocHomestayRepo.findBlocHomestayByName(name)
+                .orElseThrow(() -> new NotFoundException("can't find bloc"));
+        List<Homestay> homestayList = bloc.getHomestays().stream()
+                .filter(h -> isHomestayBooked(h, bookingStart, bookingEnd)).collect(Collectors.toList());
+        return homestayList.size();
     }
 
     private boolean isHomestayBooked(Homestay homestay, String bookingStart, String bookingEnd) {

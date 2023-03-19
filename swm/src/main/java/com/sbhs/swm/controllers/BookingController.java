@@ -38,22 +38,6 @@ public class BookingController {
     @Autowired
     private ModelMapper modelMapper;
 
-    // @PostMapping("/new-booking")
-    // @PreAuthorize("hasAuthority('booking:create')")
-    // public ResponseEntity<?> createBooking(@RequestBody BookingRequestDto
-    // bookingRequest) {
-    // Booking booking = modelMapper.map(bookingRequest, Booking.class);
-    // Booking savedBooking = bookingService.createBookingForHomestay(booking,
-    // bookingRequest.getHomestayServicesString(),
-    // bookingRequest.getDepositPaidAmount(), bookingRequest.getHomestayNames());
-    // BookingResponseDto responseBooking = modelMapper.map(savedBooking,
-    // BookingResponseDto.class);
-    // responseBooking.getHomestay().setAddress(responseBooking.getHomestay().getAddress().split("_")[0]);
-
-    // return new ResponseEntity<BookingResponseDto>(responseBooking,
-    // HttpStatus.CREATED);
-    // }
-
     @PostMapping("/new-booking")
     @PreAuthorize("hasAuthority('booking:create')")
     public ResponseEntity<?> createBookingByPassenger() {
@@ -93,12 +77,12 @@ public class BookingController {
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 
-    @PostMapping("/validate-booking-date")
+    @PostMapping("/bloc-available-homestays")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> checkBookingDate(@RequestBody BookingDateValidationRequestDto validationBookingRequest) {
-        List<Homestay> avaiblableHomestayList = bookingService.checkBlocBookingDate(
+        List<Homestay> avaiblableHomestayList = bookingService.getAvailableHomestayListFromBloc(
                 validationBookingRequest.getBlocName(),
-                validationBookingRequest.getBookingStart(), validationBookingRequest.getBookingEnd(),
-                validationBookingRequest.getTotalBookingHomestays());
+                validationBookingRequest.getBookingStart(), validationBookingRequest.getBookingEnd());
         List<HomestayResponseDto> responseHomestayList = avaiblableHomestayList.stream()
                 .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
         BookingDateValidationResponseDto responseValidationBookingDate = new BookingDateValidationResponseDto(

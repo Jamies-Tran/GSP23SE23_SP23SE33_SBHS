@@ -101,7 +101,7 @@ public class HomestayController {
                 return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
         }
 
-        @GetMapping("/user/homestay-detail")
+        @GetMapping("/user/detail")
         public ResponseEntity<?> findHomestayByName(@RequestParam String name) {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);

@@ -27,7 +27,7 @@ public interface IBookingService {
 
     Booking findBookingById(Long id);
 
-    List<Homestay> checkBlocBookingDate(String blocName, String bookingStart, String bookingEnd, int totalHomestay);
+    List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd);
 
     // int checkBookingDate(String bookingStart, String bookingEnd, String
     // homestayName, int totalBookingRoom);
