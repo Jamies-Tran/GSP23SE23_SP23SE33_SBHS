@@ -326,31 +326,37 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                         imageUrl =
                                                                         imageSnapshot.data ??
                                                                             'https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg';
-                                                                    return Container(
-                                                                      height:
-                                                                          150,
-                                                                      width:
-                                                                          400,
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              10,
-                                                                          right:
-                                                                              10),
-                                                                      padding:
-                                                                          const EdgeInsets
-                                                                              .only(
-                                                                        top: 50,
+                                                                    return GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        searchHomestayBloc
+                                                                            .eventController
+                                                                            .sink
+                                                                            .add(OnViewHomestayDetailEvent(
+                                                                                context: context,
+                                                                                homestayName: data.homestays![index].name));
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            150,
+                                                                        width:
+                                                                            400,
+                                                                        margin: const EdgeInsets.only(
+                                                                            left:
+                                                                                10,
+                                                                            right:
+                                                                                10),
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          top:
+                                                                              50,
+                                                                        ),
+                                                                        decoration: BoxDecoration(
+                                                                            image:
+                                                                                DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.fill),
+                                                                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                                                                       ),
-                                                                      decoration: BoxDecoration(
-                                                                          image: DecorationImage(
-                                                                              image: NetworkImage(
-                                                                                  imageUrl),
-                                                                              fit: BoxFit
-                                                                                  .fill),
-                                                                          borderRadius: const BorderRadius.only(
-                                                                              topLeft: Radius.circular(10),
-                                                                              topRight: Radius.circular(10))),
                                                                     );
                                                                   default:
                                                                     break;
@@ -396,100 +402,100 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                               10)),
                                                                   color: Colors
                                                                       .white),
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                  left: 10,
-                                                                ),
-                                                                child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      ),
-                                                                      Text(
-                                                                        data.homestays![index]
-                                                                            .name!,
-                                                                        style: const TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize: 25),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Text(
-                                                                        "Address: ${utf8.decode(data.homestays![index].address!.runes.toList())}",
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      ),
-                                                                      RatingStars(
-                                                                        animationDuration:
-                                                                            const Duration(seconds: 4),
-                                                                        maxValue:
-                                                                            5.0,
-                                                                        starColor:
-                                                                            secondaryColor,
-                                                                        value: data
-                                                                            .homestays![index]
-                                                                            .totalAverageRating!,
-                                                                        starOffColor:
-                                                                            Colors.lightBlueAccent,
-                                                                        starCount:
-                                                                            5,
-                                                                        valueLabelMargin:
-                                                                            const EdgeInsets.only(
-                                                                          right:
-                                                                              1.0,
+                                                              child:
+                                                                  GestureDetector(
+                                                                onTap: () => {},
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    left: 10,
+                                                                  ),
+                                                                  child: Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
                                                                         ),
-                                                                        valueLabelVisibility:
-                                                                            true,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        width:
-                                                                            5,
-                                                                      ),
-                                                                      Text(
-                                                                          "(${data.homestays![index].numberOfRating} number of reviews)"),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            10,
-                                                                      ),
-                                                                      Row(
-                                                                        children: [
-                                                                          Expanded(
-                                                                            flex:
-                                                                                3,
-                                                                            child:
-                                                                                Text(
-                                                                              "VND: ${currencyFormat.format(data.homestays![index].price)} / day",
-                                                                              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-                                                                            ),
+                                                                        Text(
+                                                                          data.homestays![index]
+                                                                              .name!,
+                                                                          style: const TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 25),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              2,
+                                                                        ),
+                                                                        Text(
+                                                                          "Address: ${utf8.decode(data.homestays![index].address!.runes.toList())}",
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                        RatingStars(
+                                                                          animationDuration:
+                                                                              const Duration(seconds: 4),
+                                                                          maxValue:
+                                                                              5.0,
+                                                                          starColor:
+                                                                              secondaryColor,
+                                                                          value: data
+                                                                              .homestays![index]
+                                                                              .totalAverageRating!,
+                                                                          starOffColor:
+                                                                              Colors.lightBlueAccent,
+                                                                          starCount:
+                                                                              5,
+                                                                          valueLabelMargin:
+                                                                              const EdgeInsets.only(
+                                                                            right:
+                                                                                1.0,
                                                                           ),
-                                                                          Expanded(
-                                                                            flex:
-                                                                                1,
-                                                                            child:
-                                                                                Text(
-                                                                              "${data.homestays![index].remainRooms}/${data.homestays![index].availableRooms} rooms",
-                                                                              style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
+                                                                          valueLabelVisibility:
+                                                                              true,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                            "(${data.homestays![index].numberOfRating} number of reviews)"),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                        Row(
+                                                                          children: [
+                                                                            Expanded(
+                                                                              flex: 3,
+                                                                              child: Text(
+                                                                                "VND: ${currencyFormat.format(data.homestays![index].price)} / day",
+                                                                                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ],
-                                                                      )
-                                                                    ]),
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: Text(
+                                                                                "${data.homestays![index].remainRooms}/${data.homestays![index].availableRooms} rooms",
+                                                                                style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        )
+                                                                      ]),
+                                                                ),
                                                               ),
                                                             ),
                                                           ],

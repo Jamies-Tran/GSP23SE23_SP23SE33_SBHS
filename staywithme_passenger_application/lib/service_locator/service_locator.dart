@@ -6,6 +6,7 @@ import 'package:staywithme_passenger_application/service/image_service.dart';
 import 'package:staywithme_passenger_application/service/location/location_service.dart';
 import 'package:staywithme_passenger_application/service/user/auto_complete_service.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
+import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service/user/payment_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 
@@ -24,4 +25,5 @@ void setup() {
   locator.registerLazySingleton<IHomestayService>(() => HomestayService());
   locator.registerLazySingleton<ILocationService>(() => LocationService());
   locator.registerLazySingleton<IImageService>(() => ImageService());
+  locator.registerLazySingleton<IBookingService>(() => BookingService());
 }

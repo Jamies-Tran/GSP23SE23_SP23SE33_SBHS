@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:staywithme_passenger_application/bloc/event/main_screen_event.dart';
@@ -21,6 +22,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final mainscreenBloc = MainScreenBloc();
   final locationService = locator.get<ILocationService>();
+
   List<Widget> widgets(Position? position) =>
       [HomestayScreen(position: position), const AuthenticateWrapperScreen()];
 

@@ -19,3 +19,10 @@ class OnTabChooseHomestayTypeEvent extends SearchHomestayEvent {
   Position? position;
   BuildContext? context;
 }
+
+class OnViewHomestayDetailEvent extends SearchHomestayEvent {
+  OnViewHomestayDetailEvent({this.context, this.homestayName});
+
+  BuildContext? context;
+  String? homestayName;
+}

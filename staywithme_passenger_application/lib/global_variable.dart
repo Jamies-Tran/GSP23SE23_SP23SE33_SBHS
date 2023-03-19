@@ -46,6 +46,22 @@ final homestayByFilterUrl =
 final homestayFilterAddtionalUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["FILTER_ADDITIONAL"]}";
 
+final createBookingUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["NEW_BOOKING"]}";
+
+final saveHomestayUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["SAVE_HOMESTAY"]}";
+
+final saveBlocUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["SAVE_BLOC"]}";
+
+final submitBookingUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["SUBMIT_BOOKING"]}";
+
+final homestayDetailUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_DETAIL"]}";
+
+final homestayBookingDateValidationUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_BOOKING_VALIDATE"]}";
+
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final dateFormat = DateFormat("yyyy-MM-dd");

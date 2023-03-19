@@ -5,6 +5,7 @@ import 'package:staywithme_passenger_application/bloc/event/search_homestay_even
 import 'package:staywithme_passenger_application/bloc/state/search_homestay_state.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 
 class SearchHomestayBloc {
@@ -51,6 +52,10 @@ class SearchHomestayBloc {
             "position": event.position,
             "homestayType": _homestayType
           });
+    } else if (event is OnViewHomestayDetailEvent) {
+      Navigator.pushNamed(
+          event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
+          arguments: {"homestayName": event.homestayName});
     }
     stateController.sink.add(SearchHomestayState(homestayType: _homestayType));
   }

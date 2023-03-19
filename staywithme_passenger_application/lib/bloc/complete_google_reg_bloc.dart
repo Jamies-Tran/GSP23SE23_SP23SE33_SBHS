@@ -65,7 +65,7 @@ class CompleteGoogleRegBloc {
     );
   }
 
-  void eventHandler(CompleteGoogleRegisterEvent event) {
+  Future<void> eventHandler(CompleteGoogleRegisterEvent event) async {
     if (event is ForwardCompleteGoogleRegisterScreenEvent) {
       usernameTextEditingCtl.text =
           event.googleSignIn!.currentUser!.displayName!;
@@ -134,40 +134,42 @@ class CompleteGoogleRegBloc {
           password: event.googleSignIn!.currentUser!.id,
           phone: event.phone,
           username: event.username);
-      googleAuthService.registerGoogleAccount(passenger).then((value) {
-        if (value is PassengerModel) {
-          Navigator.pushReplacementNamed(
-              event.context!, MainScreen.mainScreenRoute,
-              arguments: {
-                "message":
-                    "Now you can login with ${utf8.decode(value.username!.runes.toList())}.",
-                "startingIndex": 1
-              });
-        } else if (value is ServerExceptionModel) {
-          usernameTextEditingCtl.text =
-              event.googleSignIn!.currentUser!.displayName!;
-          emailTextEditingCtl.text = event.googleSignIn!.currentUser!.email;
-          Navigator.pushNamed(event.context!,
-              CompleteGoogleRegisterScreen.completeGoogleRegisterScreenRoute,
-              arguments: {
-                "isExceptionOccured": true,
-                "message": value.message,
-                "usernameTextEditingCtl": usernameTextEditingCtl,
-                "emailTextEditingCtl": emailTextEditingCtl,
-                "googleSignIn": event.googleSignIn
-              });
-        } else if (value is TimeoutException || value is SocketException) {
-          Navigator.pushNamed(event.context!,
-              CompleteGoogleRegisterScreen.completeGoogleRegisterScreenRoute,
-              arguments: {
-                "isExceptionOccured": true,
-                "message": "Network error",
-                "usernameTextEditingCtl": usernameTextEditingCtl,
-                "emailTextEditingCtl": emailTextEditingCtl,
-                "googleSignIn": event.googleSignIn
-              });
-        }
-      });
+
+      final registerData =
+          await googleAuthService.registerGoogleAccount(passenger);
+      if (registerData is PassengerModel) {
+        Navigator.pushReplacementNamed(
+            event.context!, MainScreen.mainScreenRoute,
+            arguments: {
+              "message":
+                  "Now you can login with ${utf8.decode(registerData.username!.runes.toList())}.",
+              "startingIndex": 1
+            });
+      } else if (registerData is ServerExceptionModel) {
+        usernameTextEditingCtl.text =
+            event.googleSignIn!.currentUser!.displayName!;
+        emailTextEditingCtl.text = event.googleSignIn!.currentUser!.email;
+        Navigator.pushNamed(event.context!,
+            CompleteGoogleRegisterScreen.completeGoogleRegisterScreenRoute,
+            arguments: {
+              "isExceptionOccured": true,
+              "message": registerData.message,
+              "usernameTextEditingCtl": usernameTextEditingCtl,
+              "emailTextEditingCtl": emailTextEditingCtl,
+              "googleSignIn": event.googleSignIn
+            });
+      } else if (registerData is TimeoutException ||
+          registerData is SocketException) {
+        Navigator.pushNamed(event.context!,
+            CompleteGoogleRegisterScreen.completeGoogleRegisterScreenRoute,
+            arguments: {
+              "isExceptionOccured": true,
+              "message": "Network error",
+              "usernameTextEditingCtl": usernameTextEditingCtl,
+              "emailTextEditingCtl": emailTextEditingCtl,
+              "googleSignIn": event.googleSignIn
+            });
+      }
     }
 
     stateController.sink.add(CompleteGoogleRegisterState(

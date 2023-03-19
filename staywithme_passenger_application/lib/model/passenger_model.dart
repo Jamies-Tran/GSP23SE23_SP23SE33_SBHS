@@ -1,3 +1,5 @@
+import 'package:staywithme_passenger_application/model/booking_model.dart';
+
 class PassengerModel {
   PassengerModel(
       {this.username,
@@ -65,46 +67,32 @@ class PassengerPropertyModel {
 }
 
 class PassengerWalletModel {
-  PassengerWalletModel({this.id, this.depositForHomestays});
+  PassengerWalletModel({this.id, this.deposits});
 
   int? id;
-  List<PassengerDepositModel>? depositForHomestays;
+  List<DepositModel>? deposits;
 
   factory PassengerWalletModel.fromJson(Map<String, dynamic> json) =>
       PassengerWalletModel(
         id: json["id"],
-        depositForHomestays: json["deposits"] != null
-            ? List<PassengerDepositModel>.from(
-                json["deposits"].map((e) => PassengerDepositModel.fromJson(e)))
+        deposits: json["deposits"] != null
+            ? List<DepositModel>.from(
+                json["deposits"].map((e) => DepositModel.fromJson(e)))
             : null,
       );
 
   int totalDeposit() {
     int total = 0;
-    depositForHomestays != null
-        ? depositForHomestays?.forEach((element) {
-            total = total + element.unpaidAmount!;
+    deposits != null
+        ? deposits?.forEach((deposit) {
+            for (BookingDepositModel bookingDeposit
+                in deposit.bookingDeposits!) {
+              total = total + bookingDeposit.unpaidAmount!;
+            }
           })
         : total = 0;
     return total;
   }
-}
-
-class PassengerDepositModel {
-  PassengerDepositModel({this.id, this.unpaidAmount, this.paidAmount});
-
-  int? id;
-  int? paidAmount;
-  int? unpaidAmount;
-
-  factory PassengerDepositModel.fromJson(Map<String, dynamic> json) =>
-      PassengerDepositModel(
-          id: json["id"],
-          unpaidAmount: json["unpaidAmount"],
-          paidAmount: json["paidAmount"]);
-
-  Map<String, dynamic> toJson() =>
-      {"unpaidAmount": unpaidAmount, "paidAmount": paidAmount};
 }
 
 class BalanceWalletModel {

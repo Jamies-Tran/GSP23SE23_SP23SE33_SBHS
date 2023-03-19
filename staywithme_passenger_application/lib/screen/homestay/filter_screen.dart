@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:staywithme_passenger_application/bloc/event/filter_homestay_event.dart';
@@ -63,6 +64,7 @@ class _FilterScreenState extends State<FilterScreen> {
     int homestayHighestPrice = 100000;
     int homestayServiceHighestPrice = 100000;
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final username = contextArguments["username"];
     FilterAddtionalInformationModel? filterAdditional =
         contextArguments["filterAddtionalInformation"];
     Position? position = contextArguments["position"];
@@ -121,58 +123,6 @@ class _FilterScreenState extends State<FilterScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  // const Text(
-                  //   "Choose homestay",
-                  //   style: TextStyle(
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.black,
-                  //       fontSize: 20),
-                  // ),
-                  // const SizedBox(
-                  //   height: 5,
-                  // ),
-                  // Row(
-                  //   children: [
-                  //     Expanded(
-                  //       flex: 1,
-                  //       child: ListTile(
-                  //         title: Text(HomestayType.homestay.name),
-                  //         leading: Radio<HomestayType>(
-                  //           activeColor: primaryColor,
-                  //           value: HomestayType.homestay,
-                  //           groupValue: snapshot.data!.homestayType,
-                  //           onChanged: (value) {
-                  //             filterHomestayBloc.eventController.sink.add(
-                  //                 ChooseHomestayTypeFilterEvent(
-                  //                     homestayType: value));
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     const SizedBox(
-                  //       width: 30,
-                  //     ),
-                  //     Expanded(
-                  //       flex: 1,
-                  //       child: ListTile(
-                  //         title: Text(HomestayType.bloc.name),
-                  //         leading: Radio<HomestayType>(
-                  //           activeColor: primaryColor,
-                  //           value: HomestayType.bloc,
-                  //           groupValue: snapshot.data!.homestayType,
-                  //           onChanged: (value) {
-                  //             filterHomestayBloc.eventController.sink.add(
-                  //                 ChooseHomestayTypeFilterEvent(
-                  //                     homestayType: value));
-                  //           },
-                  //         ),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
-                  // const SizedBox(
-                  //   height: 30,
-                  // ),
                   const Text(
                     "Booking date filter",
                     style: TextStyle(

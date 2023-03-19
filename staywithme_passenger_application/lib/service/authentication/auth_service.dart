@@ -98,15 +98,16 @@ class AuthenticateService extends IAuthenticateService {
       }).timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 200) {
         LoginModel loginModel = LoginModel.fromJson(json.decode(response.body));
-        _authByGoogleService
-            .authenticateByGoogle(googleSignInAccount)
-            .then((value) {
-          if (value is TimeoutException || value is SocketException) {
-            return value;
-          } else {
-            _firebaseService.saveLoginInfo(loginModel);
-          }
-        });
+        final authenticateByGoogleData = await _authByGoogleService
+            .authenticateByGoogle(googleSignInAccount);
+        if (authenticateByGoogleData is TimeoutException ||
+            authenticateByGoogleData is SocketException) {
+          return authenticateByGoogleData;
+        } else {
+          await _authByGoogleService
+              .updateFirebaseUsername(loginModel.username!);
+          await _firebaseService.saveLoginInfo(loginModel);
+        }
         return loginModel;
       } else {
         ServerExceptionModel serverExceptionModel =

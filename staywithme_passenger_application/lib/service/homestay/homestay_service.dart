@@ -22,6 +22,8 @@ abstract class IHomestayService {
   Future<dynamic> getHomestayByFilter(SearchFilterModel filter, int page,
       int size, bool isNextPage, bool isPreviousPage);
 
+  Future<dynamic> getHomestayDetailByName(String name);
+
   Future<dynamic> getHomestayFilterAdditionalInformation(String homestayType);
 
   Future<dynamic> getAreaHomestayInfo();
@@ -162,6 +164,30 @@ class HomestayService extends IHomestayService {
     } on SocketException catch (e) {
       return e;
     } on TimeoutException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getHomestayDetailByName(String name) async {
+    final client = http.Client();
+    final uri = Uri.parse("$homestayDetailUrl?name=$name");
+    try {
+      final response = await client.get(uri, headers: {
+        "content-type": "application/json"
+      }).timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 200) {
+        HomestayModel homestayModel =
+            HomestayModel.fromJson(json.decode(response.body));
+        return homestayModel;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
       return e;
     }
   }
