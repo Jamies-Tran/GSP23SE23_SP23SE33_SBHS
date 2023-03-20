@@ -94,7 +94,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                             imageUrl),
                                                         fit: BoxFit.fill)),
                                                 padding: const EdgeInsets.only(
-                                                    right: 225),
+                                                    left: 225),
                                                 child: Opacity(
                                                   opacity: 0.5,
                                                   child: Container(
@@ -104,7 +104,10 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                         "+${data.homestayImages!.length} more",
                                                         style: const TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 25),
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ),
                                                   ),
@@ -259,10 +262,42 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                 color: streamSnapshot
                                                     .data!.msgFontColor),
                                           )
-                                        : const SizedBox()
+                                        : const SizedBox(),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Center(
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              minimumSize: const Size(200, 50),
+                                              maximumSize: const Size(200, 50),
+                                              backgroundColor: streamSnapshot
+                                                          .data!
+                                                          .isBookingValid ==
+                                                      true
+                                                  ? primaryColor
+                                                  : Colors.grey),
+                                          onPressed: () {
+                                            if (streamSnapshot
+                                                    .data!.isBookingValid ==
+                                                true) {
+                                              homestayDetailBloc
+                                                  .eventController.sink
+                                                  .add(CreateBookingEvent(
+                                                      context: context,
+                                                      homestayName: data.name));
+                                            }
+                                          },
+                                          child: const Text(
+                                            "Book",
+                                            style: TextStyle(
+                                                fontFamily: "Lobster",
+                                                fontWeight: FontWeight.bold),
+                                          )),
+                                    )
                                   ],
                                 ),
-                              )
+                              ),
                             ]),
                           );
                         } else if (data is ServerExceptionModel) {

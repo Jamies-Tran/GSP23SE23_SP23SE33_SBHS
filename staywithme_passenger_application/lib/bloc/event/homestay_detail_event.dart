@@ -11,3 +11,10 @@ class OnCheckValidBookingDateEvent extends HomestayDetailEvent {
   String? homestayName;
   String? msg;
 }
+
+class CreateBookingEvent extends HomestayDetailEvent {
+  CreateBookingEvent({this.context, this.homestayName});
+
+  BuildContext? context;
+  String? homestayName;
+}
