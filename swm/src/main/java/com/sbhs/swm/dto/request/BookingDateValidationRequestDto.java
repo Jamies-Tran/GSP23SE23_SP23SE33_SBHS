@@ -12,6 +12,6 @@ import lombok.Setter;
 public class BookingDateValidationRequestDto {
     private String bookingStart;
     private String bookingEnd;
-    private String blocName;
-    private Integer totalBookingHomestays;
+    private String homestayName;
+    private Integer totalReservation;
 }

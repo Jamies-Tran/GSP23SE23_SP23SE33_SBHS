@@ -1,5 +1,6 @@
 package com.sbhs.swm.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,9 @@ public class BookingController {
     public ResponseEntity<?> createBookingByPassenger() {
         Booking bookingSave = bookingService.createBookingByPassenger();
         BookingResponseDto responseBookingSave = modelMapper.map(bookingSave, BookingResponseDto.class);
+        responseBookingSave.setBookingHomestays(new ArrayList<>());
+        responseBookingSave.setBookingHomestayServices(new ArrayList<>());
+        responseBookingSave.setBookingDeposits(new ArrayList<>());
 
         return new ResponseEntity<BookingResponseDto>(responseBookingSave, HttpStatus.OK);
 
@@ -77,11 +81,11 @@ public class BookingController {
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 
-    @PostMapping("/bloc-available-homestays")
-    @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> checkBookingDate(@RequestBody BookingDateValidationRequestDto validationBookingRequest) {
+    @PostMapping("/user/bloc-available-homestays")
+    public ResponseEntity<?> getAvalableHomestayInBloc(
+            @RequestBody BookingDateValidationRequestDto validationBookingRequest) {
         List<Homestay> avaiblableHomestayList = bookingService.getAvailableHomestayListFromBloc(
-                validationBookingRequest.getBlocName(),
+                validationBookingRequest.getHomestayName(),
                 validationBookingRequest.getBookingStart(), validationBookingRequest.getBookingEnd());
         List<HomestayResponseDto> responseHomestayList = avaiblableHomestayList.stream()
                 .map(h -> modelMapper.map(h, HomestayResponseDto.class)).collect(Collectors.toList());
@@ -89,6 +93,19 @@ public class BookingController {
                 responseHomestayList);
 
         return new ResponseEntity<BookingDateValidationResponseDto>(responseValidationBookingDate, HttpStatus.OK);
+    }
+
+    @PostMapping("/user/available-date")
+    public ResponseEntity<?> checkHomestayAvalableAtBookingDate(
+            @RequestBody BookingDateValidationRequestDto bookingValidateRequest) {
+        Boolean isValid = bookingService.checkValidBookingForHomestay(bookingValidateRequest.getHomestayName(),
+                bookingValidateRequest.getBookingStart(),
+                bookingValidateRequest.getBookingEnd(), bookingValidateRequest.getTotalReservation());
+        if (isValid) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("/booking-condition")

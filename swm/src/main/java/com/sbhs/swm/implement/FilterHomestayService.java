@@ -12,10 +12,9 @@ import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayFacility;
 import com.sbhs.swm.models.HomestayService;
 import com.sbhs.swm.repositories.HomestayRepo;
+import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IFilterHomestayService;
 import com.sbhs.swm.services.IGoongService;
-import com.sbhs.swm.util.BookingDateValidationString;
-import com.sbhs.swm.util.BookingDateValidationUtil;
 
 @Service
 public class FilterHomestayService implements IFilterHomestayService {
@@ -24,10 +23,7 @@ public class FilterHomestayService implements IFilterHomestayService {
     private HomestayRepo homestayRepo;
 
     @Autowired
-    private BookingDateValidationUtil bookingDateValidationUtil;
-
-    // @Autowired
-    // private DateFormatUtil dateFormatUtil;
+    private IBookingService bookingService;
 
     @Autowired
     private IGoongService goongService;
@@ -44,39 +40,10 @@ public class FilterHomestayService implements IFilterHomestayService {
     public List<Homestay> filterByBookingDateRange(List<Homestay> homestays, String bookingStart, String bookingEnd,
             int totalBookingRoom) {
         List<Homestay> homestaySortedList = homestays.stream()
-                .filter(h -> this.checkValidBooking(h, bookingStart, bookingEnd, totalBookingRoom))
+                .filter(h -> bookingService.checkValidBookingForHomestay(h.getName(), bookingStart, bookingEnd,
+                        totalBookingRoom))
                 .collect(Collectors.toList());
         return homestaySortedList;
-    }
-
-    private boolean checkValidBooking(Homestay homestay, String bookingStart, String bookingEnd, int totalRoom) {
-        // int totalBookedRoom = bookingRepo.totalHomestayRoomBooked(homestay.getName())
-        // != null
-        // ? bookingRepo.totalHomestayRoomBooked(homestay.getName())
-        // : 0;
-        // int availableRoom = homestay.getAvailableRooms() - totalBookedRoom;
-        String getBookingValidationgString = bookingDateValidationUtil.bookingValidateString(bookingStart, bookingEnd,
-                homestay.getName());
-        switch (BookingDateValidationString.valueOf(getBookingValidationgString)) {
-            case INVALID:
-                return false;
-            case CURRENT_END_ON_BOOKED_END:
-
-                return false;
-            case CURRENT_START_ON_BOOKED_END:
-
-                return true;
-            case CURRENT_START_ON_BOOKED_START:
-
-                return false;
-            case ON_BOOKING_PERIOD:
-
-                return false;
-            case OK:
-
-                return true;
-        }
-        return false;
     }
 
     @Override

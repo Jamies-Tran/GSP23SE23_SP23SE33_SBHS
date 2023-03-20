@@ -20,4 +20,5 @@ public interface IFilterHomestayService {
         public List<Homestay> filterByHomestayService(List<Homestay> homestays, String name, long price);
 
         public List<Homestay> filterBySearchString(List<Homestay> homestays, String searchString);
+
 }

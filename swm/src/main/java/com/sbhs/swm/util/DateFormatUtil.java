@@ -34,6 +34,14 @@ public class DateFormatUtil {
         return Period.between(birthdate, now).getYears();
     }
 
+    public int calculateDurationBooking(String bookingStart, String bookingEnd) {
+        LocalDate localStartDate = LocalDate.of(Integer.parseInt(bookingStart.split("-")[0]),
+                Integer.parseInt(bookingStart.split("-")[1]), Integer.parseInt(bookingStart.split("-")[2]));
+        LocalDate localEndDate = LocalDate.of(Integer.parseInt(bookingEnd.split("-")[0]),
+                Integer.parseInt(bookingEnd.split("-")[1]), Integer.parseInt(bookingEnd.split("-")[2]));
+        return Period.between(localStartDate, localEndDate).getDays();
+    }
+
     public Date formatGivenDate(String date) {
         try {
             return simpleDateFormat.parse(date);

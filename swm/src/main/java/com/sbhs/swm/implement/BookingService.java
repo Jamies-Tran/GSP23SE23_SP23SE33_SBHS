@@ -140,7 +140,8 @@ public class BookingService implements IBookingService {
         SwmUser user = userService.authenticatedUser();
         if (user.getPassengerProperty().getBookings().stream()
                 .anyMatch(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))) {
-            throw new InvalidException("User still have save booking");
+            return user.getPassengerProperty().getBookings().stream()
+                    .filter(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())).findFirst().get();
         }
         Booking booking = new Booking();
         booking.setPassenger(user.getPassengerProperty());
@@ -159,12 +160,13 @@ public class BookingService implements IBookingService {
         SwmUser passengerUser = userService.authenticatedUser();
         Booking userSaveBooking = passengerUser.getPassengerProperty().getBookings().stream()
                 .filter(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())).findFirst()
-                .orElseThrow(() -> new NotFoundException("user didn't create any booking"));
+                .orElse(this.createBookingByPassenger());
         BookingHomestay bookingHomestay = new BookingHomestay();
         Homestay homestayBooking = homestayService.findHomestayByName(bookingHomestayRequest.getHomestayName());
         List<HomestayService> homestayServiceBookingList = bookingHomestayRequest.getHomestayServiceList().stream()
                 .map(s -> homestayServiceRepo.findHomestayServiceByName(s).get()).collect(Collectors.toList());
         List<BookingHomestayService> bookingHomestayServiceList = new ArrayList<>();
+
         Long homestayBookingPrice = homestayBooking.getPrice();
         Long totalHomestayServicePrice = 0L;
         Long totalBookingPrice = 0L;
@@ -177,6 +179,7 @@ public class BookingService implements IBookingService {
             bookingHomestayService.setHomestayService(s);
             bookingHomestayService.setBooking(userSaveBooking);
             bookingHomestayService.setTotalServicePrice(s.getPrice());
+            bookingHomestayService.setHomestayname(bookingHomestayRequest.getHomestayName());
             bookingHomestayServiceList.add(bookingHomestayService);
         }
         totalBookingPrice = homestayBookingPrice + totalHomestayServicePrice;
@@ -482,4 +485,36 @@ public class BookingService implements IBookingService {
         return savedBookingHomestayList;
     }
 
+    @Override
+    public boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
+            int totalRoom) {
+
+        String getBookingValidationgString = bookingDateValidationUtil.bookingValidateString(bookingStart, bookingEnd,
+                homestayName);
+        Homestay homestay = homestayService.findHomestayByName(homestayName);
+        switch (BookingDateValidationString.valueOf(getBookingValidationgString)) {
+            case INVALID:
+                return false;
+            case CURRENT_END_ON_BOOKED_END:
+
+                return false;
+            case CURRENT_START_ON_BOOKED_END:
+                if (homestay.getAvailableRooms() >= totalRoom) {
+                    return true;
+                }
+                return false;
+            case CURRENT_START_ON_BOOKED_START:
+
+                return false;
+            case ON_BOOKING_PERIOD:
+
+                return false;
+            case OK:
+                if (homestay.getAvailableRooms() >= totalRoom) {
+                    return true;
+                }
+                return false;
+        }
+        return false;
+    }
 }

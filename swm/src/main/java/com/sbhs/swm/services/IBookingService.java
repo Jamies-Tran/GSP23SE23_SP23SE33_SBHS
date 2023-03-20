@@ -29,7 +29,7 @@ public interface IBookingService {
 
     List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd);
 
-    // int checkBookingDate(String bookingStart, String bookingEnd, String
-    // homestayName, int totalBookingRoom);
+    public boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
+            int totalRoom);
 
 }

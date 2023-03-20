@@ -13,5 +13,6 @@ import lombok.Setter;
 @Setter
 public class BookingServiceResponseDto {
     private Long totalServicePrice;
+    private String homestayName;
     private HomestayServiceDto homestayService;
 }
