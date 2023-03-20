@@ -14,6 +14,7 @@ class HomestayModel {
       this.homestayImages,
       this.homestayFacilities,
       this.homestayServices,
+      this.homestayRules,
       this.ratings});
 
   String? name;
@@ -28,6 +29,7 @@ class HomestayModel {
   List<HomestayImageModel>? homestayImages;
   List<HomestayFacilityModel>? homestayFacilities;
   List<HomestayServiceModel>? homestayServices;
+  List<HomestayRule>? homestayRules;
   List<RatingModel>? ratings;
 
   factory HomestayModel.fromJson(Map<String, dynamic> json) => HomestayModel(
@@ -38,20 +40,20 @@ class HomestayModel {
       availableRooms: json["availableRooms"],
       totalAverageRating: json["totalAverageRating"],
       numberOfRating: json["numberOfRating"],
-      remainRooms: json["remainRooms"],
       status: json["status"],
       homestayImages: json["homestayImages"] != null
           ? List<HomestayImageModel>.from(
               json["homestayImages"].map((e) => HomestayImageModel.fromJson(e)))
           : <HomestayImageModel>[],
-      homestayFacilities: json["HomestayFacilityModel"] != null
-          ? List<HomestayFacilityModel>.from(json["HomestayFacilityModel"]
+      homestayFacilities: json["homestayFacilities"] != null
+          ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
               .map((e) => HomestayFacilityModel.fromJson(e)))
           : <HomestayFacilityModel>[],
       homestayServices: json["homestayServices"] != null
           ? List<HomestayServiceModel>.from(json["homestayServices"]
               .map((e) => HomestayServiceModel.fromJson(e)))
           : <HomestayServiceModel>[],
+      homestayRules: json["homestayRules"] != null ? List<HomestayRule>.from(json["homestayRules"].map((e) => HomestayRule.fromJson(e))) : <HomestayRule>[],
       ratings: json["ratings"] != null
           ? List<RatingModel>.from(
               json["ratings"].map((e) => RatingModel.fromJson(e)))
@@ -122,4 +124,14 @@ class HomestayListPagingModel {
           blocs: List<BlocHomestayModel>.from(
               json["blocs"].map((e) => BlocHomestayModel.fromJson(e))),
           pageNumber: json["pageNumber"]);
+}
+
+class HomestayRule {
+  HomestayRule({this.id, this.description});
+
+  int? id;
+  String? description;
+
+  factory HomestayRule.fromJson(Map<String, dynamic> json) =>
+      HomestayRule(id: json["id"], description: json["description"]);
 }

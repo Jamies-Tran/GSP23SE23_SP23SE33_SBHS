@@ -285,7 +285,13 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                   .eventController.sink
                                                   .add(CreateBookingEvent(
                                                       context: context,
-                                                      homestayName: data.name));
+                                                      homestayName: data.name,
+                                                      bookingStart:
+                                                          bookingStartDateTextEditingController
+                                                              .text,
+                                                      bookingEnd:
+                                                          bookingEndDateTextEditingController
+                                                              .text));
                                             }
                                           },
                                           child: const Text(

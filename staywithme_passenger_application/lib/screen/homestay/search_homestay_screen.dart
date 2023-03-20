@@ -390,7 +390,8 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                   const EdgeInsets
                                                                           .only(
                                                                       left: 10,
-                                                                      right:
+                                                                      right: 10,
+                                                                      bottom:
                                                                           10),
                                                               decoration: const BoxDecoration(
                                                                   borderRadius: BorderRadius.only(
@@ -488,7 +489,7 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                             Expanded(
                                                                               flex: 1,
                                                                               child: Text(
-                                                                                "${data.homestays![index].remainRooms}/${data.homestays![index].availableRooms} rooms",
+                                                                                "${data.homestays![index].availableRooms} rooms",
                                                                                 style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
                                                                               ),
                                                                             ),

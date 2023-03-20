@@ -151,15 +151,18 @@ class BookingModel {
 }
 
 class BookingServiceModel {
-  BookingServiceModel({this.totalServicePrice, this.homestayService});
+  BookingServiceModel(
+      {this.totalServicePrice, this.homestayService, this.homestayName});
 
   int? totalServicePrice;
+  String? homestayName;
   HomestayServiceModel? homestayService;
 
   factory BookingServiceModel.fromJson(Map<String, dynamic> json) =>
       BookingServiceModel(
           totalServicePrice: json["totalServicePrice"],
-          homestayService: json["homestayService"]);
+          homestayService: json["homestayService"],
+          homestayName: json["homestayName"]);
 }
 
 class BookingValidateModel {

@@ -89,7 +89,11 @@ class HomestayDetailBloc {
         if (bookingData is BookingModel) {
           Navigator.pushNamed(
               event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
-              arguments: {"homestayName": event.homestayName});
+              arguments: {
+                "homestayName": event.homestayName,
+                "bookingStart": event.bookingStart,
+                "bookingEnd": event.bookingEnd
+              });
         } else if (bookingData is ServerExceptionModel) {
           showDialog(
             context: event.context!,
