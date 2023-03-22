@@ -80,12 +80,13 @@ import { RegisterHomestayComponent } from './landlord/homestay/register-homestay
 
 import { TestComponent } from './test/test/test.component';
 import { TestTwoComponent } from './test/test-two/test-two.component';
-import { TestThreeComponent } from './test/test/test-three/test-three.component';
+import { TestThreeComponent } from './test/test-three/test-three.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { A11yModule } from '@angular/cdk/a11y';
 import { SuccessComponent } from './pop-up/success/success.component';
 import { MessageComponent } from './pop-up/message/message.component';
 import { PendingHomestayComponent } from './pop-up/pending-homestay/pending-homestay.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -113,6 +114,7 @@ export const MY_DATE_FORMATS = {
     SuccessComponent,
     MessageComponent,
     PendingHomestayComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

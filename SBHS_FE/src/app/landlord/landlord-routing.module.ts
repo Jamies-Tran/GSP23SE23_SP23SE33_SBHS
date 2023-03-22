@@ -6,6 +6,7 @@ import { LandlordComponent } from './landlord.component';
 import { RegisterBlocHomestayComponent } from './homestay/register-bloc-homestay/register-bloc-homestay.component';
 import { RegisterHomestayComponent } from './homestay/register-homestay/register-homestay.component';
 import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
+import { ProfileComponent } from '../profile/profile.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
             ],
           },
         ],
+      },
+      {
+        path: 'Profile',
+        component: ProfileComponent
       },
     ],
   },

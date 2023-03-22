@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageService } from 'src/app/services/image.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ServerHttpService } from 'src/app/services/verify-landlord.service';
+
 import { MessageComponent } from '../../../pop-up/message/message.component';
 import { SuccessComponent } from '../../../pop-up/success/success.component';
+import { AdminService } from '../../../services/admin.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-account-landlord-detail',
@@ -15,7 +17,8 @@ export class AccountLandlordDetailComponent implements OnInit {
   registerError: string = '';
   message!: string;
   constructor(
-    private http: ServerHttpService,
+    private httpUser: UserService,
+    private httpAdmin: AdminService ,
     public dialog: MatDialog,
     private image: ImageService,
     private router: Router,
@@ -33,7 +36,8 @@ export class AccountLandlordDetailComponent implements OnInit {
   public citizenIdentificationUrlBack = '';
   ngOnInit(): void {
     try {
-      this.http.getLandlordDetail().subscribe(
+      const name = localStorage.getItem('createdBy') as string;
+      this.httpUser.getUserInfo(name).subscribe(
         async (data) => {
           this.username = data['username'];
           this.dob = data['dob'];
@@ -98,7 +102,8 @@ export class AccountLandlordDetailComponent implements OnInit {
   public isReject = false;
   public rejectMessage = '';
   public accept() {
-    this.http.acceptLandlord(localStorage.getItem('username') + '').subscribe(
+    const name = localStorage.getItem('username') as string;
+    this.httpAdmin.activateLandlordAccount(name).subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have accept';
@@ -126,8 +131,10 @@ export class AccountLandlordDetailComponent implements OnInit {
     );
   }
   public reject() {
-    this.http
-      .rejectLandlord(localStorage.getItem('username') + '', 'NOT_MATCHED')
+    this.httpAdmin
+      const name = localStorage.getItem('username') as string;
+
+      this.httpAdmin.rejectLandlordAccount(name, 'NOT_MATCHED')
       .subscribe(
         (data) => {
           if (data != null) {

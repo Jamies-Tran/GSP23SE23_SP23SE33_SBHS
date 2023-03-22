@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ImageService } from '../../services/image.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ServerHttpService } from 'src/app/services/homestay.service';
+import { HomestayService } from 'src/app/services/homestay.service';
 
 @Component({
   selector: 'app-homestay',
@@ -9,7 +9,7 @@ import { ServerHttpService } from 'src/app/services/homestay.service';
   styleUrls: ['./homestay.component.scss']
 })
 export class HomestayComponent implements OnInit {
-  constructor( private image: ImageService,public dialog: MatDialog, private http: ServerHttpService) { }
+  constructor( private image: ImageService,public dialog: MatDialog, private http: HomestayService) { }
   value : any[] = [];
   i : any;
   isDelete = "null"
@@ -17,7 +17,7 @@ export class HomestayComponent implements OnInit {
   ngOnInit(): void {
     this.username = localStorage.getItem('usernameLogined') as string;
     console.log(this.username);
-    this.http.getListHomestay(this.username).subscribe(async  (data) =>{
+    this.http.getHomestayByLandlord(this.username).subscribe(async  (data) =>{
       // this.value = data;
       // for(this.i of this.value ){
       //   console.log(this.i.homestayImages[0].url)
@@ -27,10 +27,16 @@ export class HomestayComponent implements OnInit {
       // console.log('value:' , this.value);
 
       for(this.i of data['homestays']){
-        var imgUrl = await this.image.getImage('homestay/'  + this.i.name + ' '+  this.i.homestayImages[0].imageUrl);
+        var imgUrl ;
+        await this.image.getImage('homestay/'  + this.i.name + ' '+  this.i.homestayImages[0].imageUrl).then(url =>{
+          imgUrl = url;
 
         this.value.push({imgURL:imgUrl, name:this.i.name, id:this.i.id ,status:this.i.status})
         console.log(this.value);
+        }).catch(error =>{
+          console.log(error);
+        });
+
       }
 
     })
@@ -43,14 +49,7 @@ export class HomestayComponent implements OnInit {
   getHomestayId(id: string){
     this.id = id
   }
-  deleteHomestay(){
-    this.http.deleteHomestay(this.id).subscribe((data =>{
-      this.isDelete = "true"
-    }),
-    error =>{
-      this.isDelete = "false"
-    })
-  }
+
   openDialog() {
     // this.dialog.open(DeleteHomestayDialogComponent,{
     //   data : this.id

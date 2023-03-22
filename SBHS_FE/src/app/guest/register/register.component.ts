@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServerHttpService } from 'src/app/services/register.service';
 import { ImageService } from '../../services/image.service';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -19,6 +18,8 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';
+import { UserService } from '../../services/user.service';
+import { GoongService } from '../../services/goong.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -26,7 +27,8 @@ import { SuccessComponent } from '../../pop-up/success/success.component';
 })
 export class RegisterComponent implements OnInit , AfterViewInit{
   constructor(
-    private http: ServerHttpService,
+    private httpUser: UserService,
+    private httpGoong: GoongService,
     private router: Router,
     private route: ActivatedRoute,
     private storage: AngularFireStorage,
@@ -199,8 +201,7 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     //console.log(this.lastest_date);
     this.convert(this.dob);
     if (this.valid() == true) {
-    this.http
-      .registerLandlord(
+    this.httpUser.registerLandlordAccount(
         this.addressFormControl.value!,
         this.dob,
         this.emailFormControl.value!,
@@ -297,7 +298,7 @@ export class RegisterComponent implements OnInit , AfterViewInit{
   public getAutocomplete(event:any):void{
     type predictions = Array<{description:string}>;
     this.place = event.target.value;
-    this.http.getAutoComplete(this.place).subscribe((data) =>{
+    this.httpGoong.getAutoCompletePlaces(this.place).subscribe((data) =>{
       console.log(data);
       const predictions:predictions    = data['predictions'];
       this.predictions = predictions

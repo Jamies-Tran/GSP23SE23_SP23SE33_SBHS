@@ -23,7 +23,21 @@ export class AdminService {
 
   // 1 PUT
   // /api/admin/homestay-activate
- public activeHomestay(){
+ public activeHomestay(name:string){
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json ',
+      'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+    }),
+  };
+  const url =
+      `${this.REST_API_SERVER}/api/admin/homestay-activate?homestayStyle=HOMESTAY&name=${name}`;
+    return this.httpClient
+      .put<any>(url, 'accept', this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+ public activeBlocHomestay(name:string){
   this.httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json ',
@@ -40,6 +54,20 @@ export class AdminService {
   // 2 PUT
   // /api/admin/homestay-reject
   public rejectHomestay(name: string) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url =
+      `${this.REST_API_SERVER}/api/admin/homestay-reject?homestayStyle=HOMESTAY&name=${name}`;
+    return this.httpClient
+      .put<any>(url, 'false', this.httpOptions)
+      .pipe(catchError(this.handleError));
+ }
+
+  public rejectBlocHomestay(name: string) {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json ',

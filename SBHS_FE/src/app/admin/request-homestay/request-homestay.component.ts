@@ -4,7 +4,8 @@ import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';
 
 import { PendingHomestayComponent } from '../../pop-up/pending-homestay/pending-homestay.component';
-import { ServerHttpService } from 'src/app/services/homestay.service';
+import { HomestayService } from '../../services/homestay.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-request-homestay',
@@ -17,29 +18,29 @@ export class RequestHomestayComponent implements OnInit{
   valuesActive: data[] = [];
   valuesReject: data[] = [];
   message!: string;
-  constructor(public dialog: MatDialog,private http: ServerHttpService){}
+  constructor(public dialog: MatDialog,private httpHomestay: HomestayService, private httpAdmin: AdminService ){}
   ngOnInit(): void {
-    this.getStatusLandlord();
+    this.getStatusHomestay();
   }
 
-  public getStatusLandlord() {
+  public getStatusHomestay() {
   // Pending
-  this.http.getHomestayByStatus('PENDING').subscribe((data) => {
+  this.httpHomestay.getHomestayByStatus('PENDING').subscribe((data) => {
     this.valuesPending = data['homestays'];
     console.log(this.valuesPending);
   });
   // Banned
-  this.http.getHomestayByStatus('BAN').subscribe((data) => {
+  this.httpHomestay.getHomestayByStatus('BAN').subscribe((data) => {
     this.valuesBanned = data['homestays'];
     console.log(this.valuesBanned);
   });
   // Active
-  this.http.getHomestayByStatus('ACTIVE').subscribe((data) => {
+  this.httpHomestay.getHomestayByStatus('ACTIVE').subscribe((data) => {
     this.valuesActive = data['homestays'];
     console.log(this.valuesActive);
   });
   // Reject
-  this.http.getHomestayByStatus('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
+  this.httpHomestay.getHomestayByStatus('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
     this.valuesReject = data['homestays'];
     console.log(this.valuesReject);
   });
@@ -59,7 +60,7 @@ export class RequestHomestayComponent implements OnInit{
   }
   public accept() {
     console.log('Accept');
-    this.http.acceptHomestay(this.name).subscribe(
+    this.httpAdmin.activeHomestay(this.name).subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have accept';
@@ -71,14 +72,14 @@ export class RequestHomestayComponent implements OnInit{
       (error) => {
           this.message = error;
           this.openDialogMessage();
-        
+
       }
     );
   }
 
   public reject() {
     console.log('Reject');
-    this.http.rejectHomestay(this.name).subscribe(
+    this.httpAdmin.rejectHomestay(this.name).subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have reject';

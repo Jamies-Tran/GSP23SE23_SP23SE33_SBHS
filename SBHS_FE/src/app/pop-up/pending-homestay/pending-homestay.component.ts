@@ -2,7 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from '../message/message.component';
 import { SuccessComponent } from '../success/success.component';
-import { ServerHttpService } from 'src/app/services/homestay.service';
+
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-pending-homestay',
@@ -14,12 +15,12 @@ export class PendingHomestayComponent {
     @Inject(MAT_DIALOG_DATA)
     public data: { id: StaticRangeInit; name: string },
     public dialog: MatDialog,
-    private http: ServerHttpService
+    private http: AdminService
   ) {}
   message: any;
   public accept() {
     console.log('Accept');
-    this.http.acceptHomestay(this.data.name).subscribe(
+    this.http.activeHomestay(this.data.name).subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have accept';

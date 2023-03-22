@@ -8,11 +8,11 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageService } from 'src/app/services/image.service';
-import { ServerHttpService } from 'src/app/services/login.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { MatDialog } from '@angular/material/dialog';
 import { SuccessComponent } from '../../pop-up/success/success.component';
 import { MessageComponent } from '../../pop-up/message/message.component';
+import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-login-landlord',
   templateUrl: './login.component.html',
@@ -20,7 +20,7 @@ import { MessageComponent } from '../../pop-up/message/message.component';
 })
 export class LoginLandlordComponent {
   constructor(
-    private http: ServerHttpService,
+    private http: UserService,
     private router: Router,
     private route: ActivatedRoute,
     private image: ImageService,
@@ -74,6 +74,7 @@ export class LoginLandlordComponent {
         localStorage.setItem('userToken', data['token']);
         localStorage.setItem('usernameLogined', data['username']);
         localStorage.setItem('role', data['roles']);
+        localStorage.setItem('password', this.passwordFormControl.value as string );
         console.log(data);
         if (data['roles'][0] === 'LANDLORD') {
           this.router.navigate(['/Landlord'], {

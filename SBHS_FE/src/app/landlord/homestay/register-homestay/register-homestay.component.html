@@ -26,7 +26,7 @@
                       <div class="mb-3">
                         <h6 class="mb-0">Available Rooms <span class="text-danger">*</span></h6>
                         <input type="number" name="homestayTotalRoomInput" class="form-control" required mdbInput
-                          mdbValidate formControlName="number" min="1" max="100" maxlength="3" minlength="1"
+                          mdbValidate formControlName="number" min="1" max="99" maxlength="2" minlength="1"
                           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                       </div>
                       <!-- Address -->
@@ -78,11 +78,11 @@
                     <hr>
                     <ng-container [ngSwitch]="true">
                       <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === false">
-                        <button class="btn-reset" mat-raised-button type="reset">Reset</button>
+                        <!-- <button class="btn-reset" mat-raised-button type="reset">Reset</button> -->
                         <button class="btn-next w-100" color="primary" mat-raised-button>Continue</button>
                       </div>
                       <div class="add-btn d-flex flex-row " *ngSwitchCase="flag === true">
-                        <button class="btn-reset" mat-raised-button type="reset">Reset</button>
+                        <!-- <button class="btn-reset" mat-raised-button type="reset">Reset</button> -->
                         <button class="btn-next w-100" color="primary" mat-raised-button
                           matStepperNext>Continue</button>
                       </div>

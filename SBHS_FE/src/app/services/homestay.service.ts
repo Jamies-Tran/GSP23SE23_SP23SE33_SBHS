@@ -1,59 +1,86 @@
+import { Injectable } from '@angular/core';
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
-import { catchError } from 'rxjs/internal/operators/catchError';
+import { catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ServerHttpService {
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
-    }),
-  };
+export class HomestayService {
 
-  public model: any = {};
   private REST_API_SERVER = 'http://localhost:8081';
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
   constructor(private httpClient: HttpClient) {}
+  private handleError(error: HttpErrorResponse) {
+    return throwError(error.error['message']);
+  }
 
+
+  // 1 GET
+  //  /api/homestay/homestay-list findHomestayList
   public getHomestayByStatus(status: string) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
     const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_STATUS&isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=1000`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  public getHomestayDetail() {
-    const url =
-      `${this.REST_API_SERVER}/api/homestay/permit-all/details/` +
-      localStorage.getItem('homestayName') +
-      ``;
+
+  public getHomestayByLandlord(username: any) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_OWNER&isNextPage=true&isPreviousPage=true&page=0&param=${username}&size=100`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  private handleError(error: HttpErrorResponse) {
-    return throwError(error.error['message']);
-  }
-  public getSpecialDay() {
-    const url = `${this.REST_API_SERVER}/api/homestay/get/all/special-day`;
+
+  public getHomestayByBlocHomestay(name: any) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_BLOC&isNextPage=true&isPreviousPage=true&page=0&param=${name}&size=100`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
-  public deleteHomestay(id: string) {
-    const url = `${this.REST_API_SERVER}/api/homestay/removal/` + id + ``;
-    return this.httpClient
-      .delete<any>(url, this.httpOptions)
-      .pipe(catchError(this.handleError));
+
+  // 2 POST
+  // /api/homestay/new-bloc  createBloc
+  public createBloc(data:any){
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url = `${this.REST_API_SERVER}/api/homestay/new-bloc`;
+  return this.httpClient
+    .post<any>(url, data, this.httpOptions)
+    .pipe(catchError(this.handleError));
   }
-  public registerHomestay(
+
+  // 3 POST
+  // /api/homestay/new-homestay
+  public createHomestay(
     name: string,
     address: string,
     availableRooms: string,
@@ -82,60 +109,34 @@ export class ServerHttpService {
       .pipe(catchError(this.handleError));
   }
 
-  public getAutoComplete(place: string) {
-    const url = `${this.REST_API_SERVER}/api/map?place=${place}`;
-    return this.httpClient
-      .get<any>(url, this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-  public getListHomestay(username: any) {
-    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=homestay_owner&isNextPage=true&isPreviousPage=true&page=0&param=${username}&size=100`;
-    return this.httpClient
-      .get<any>(url, this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-  public acceptHomestay(name: string) {
-    const url =
-      `${this.REST_API_SERVER}/api/admin/homestay-activate?homestayStyle=HOMESTAY&name=` +
-      name +
-      ``;
-    return this.httpClient
-      .put<any>(url, 'accept', this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-  public rejectHomestay(name: string) {
-    const url =
-      `${this.REST_API_SERVER}/api/admin/homestay-reject?homestayStyle=HOMESTAY&name=` +
-      name +
-      ``;
-    return this.httpClient
-      .put<any>(url, 'false', this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-
-  private myBehaviorSubject = new BehaviorSubject<string>('default value');
-  setValue(value: string) {
-    this.myBehaviorSubject.next(value);
-    console.log(value);
-    console.log(this.myBehaviorSubject);
-  }
-
-  getValue() {
-    return this.myBehaviorSubject.asObservable();
-  }
-
-  // POST
-  // /api/homestay/new-bloc  createBloc
-  public createBloc(data:any){
-    this.httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json ',
-        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
-      }),
-    };
-    const url = `${this.REST_API_SERVER}/api/homestay/new-bloc`;
+  // 4 GET
+  // /api/homestay/user/bloc-list
+public findBlocList(status:string){
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json ',
+      'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+    }),
+  };
+  const url = `${this.REST_API_SERVER}/api/homestay/user/bloc-list?isNextPage=true&isPreviousPage=true&page=0&size=1000&status=${status}`;
   return this.httpClient
-    .post<any>(url, data, this.httpOptions)
+    .get<any>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
-  }
+}
+
+// 5 GET
+//  /api/homestay/user/detail
+public findHomestayByName(name:string){
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json ',
+      'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+    }),
+  };
+  const url = `${this.REST_API_SERVER}/api/homestay/user/detail?name=${name}`;
+  return this.httpClient
+    .get<any>(url, this.httpOptions)
+    .pipe(catchError(this.handleError));
+}
+
 }

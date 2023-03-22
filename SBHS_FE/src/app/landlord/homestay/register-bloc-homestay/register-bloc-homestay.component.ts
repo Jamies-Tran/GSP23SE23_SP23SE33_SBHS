@@ -3,13 +3,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServerHttpService } from 'src/app/services/homestay.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormField } from '@angular/material/form-field';
 import { MessageComponent } from '../../../pop-up/message/message.component';
 import { SuccessComponent } from '../../../pop-up/success/success.component';
+import { GoongService } from '../../../services/goong.service';
+import { HomestayService } from '../../../services/homestay.service';
 
 @Component({
   selector: 'app-register-bloc-homestay',
@@ -24,7 +25,8 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private http: ServerHttpService,
+    private httpGoong: GoongService ,
+    private httpHomestay: HomestayService  ,
     private storage: AngularFireStorage
   ) {}
 
@@ -398,12 +400,13 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   // validate image
   validImageHomestay() {
     this.flag = false;
-    if (this.homestayImageFiles.length < 1) {
-      this.message = 'Upload at least 1 photos of your homestay';
+    if (this.homestayImageFiles.length < 5) {
+      this.message = 'Upload at least 5 photos of your homestay';
       this.openDialogMessage();
       return;
     } else {
       this.flag = true;
+      return true;
     }
   }
   // xóa file hình
@@ -442,7 +445,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   public getAutocomplete(event: any): void {
     type predictions = Array<{ description: string }>;
     this.place = event.target.value;
-    this.http.getAutoComplete(this.place).subscribe((data) => {
+    this.httpGoong.getAutoCompletePlaces(this.place).subscribe((data) => {
       const predictions: predictions = data['predictions'];
       this.predictions = predictions;
     });
@@ -508,93 +511,97 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     imageUrl: File;
   }[] = [];
   setHomestay() {
-    this.blocShow = false;
-    this.overviewShow = true;
-    this.homestayShow = false;
-    if (this.isEdit == false) {
-      if (this.homestayImageFiles.length != 0) {
-        for (this.file of this.homestayImageFiles) {
-          this.homestayImages.push({ imageUrl: this.file.name });
+    if (this.validImageHomestay() == true) {
+      this.blocShow = false;
+      this.overviewShow = true;
+      this.homestayShow = false;
+      if (this.isEdit == false) {
+        if (this.homestayImageFiles.length != 0) {
+          for (this.file of this.homestayImageFiles) {
+            this.homestayImages.push({ imageUrl: this.file.name });
+          }
+          this.homestays.push({
+            name: this.homestayInformationFormGroup.controls.name.value + '',
+            availableRooms: parseInt(
+              this.homestayInformationFormGroup.controls.room.value!
+            ),
+            price: parseInt(
+              this.homestayInformationFormGroup.controls.price.value!
+            ),
+            homestayFacilities: this.homestayFacilities,
+            homestayImages: this.homestayImages,
+          });
+
+          this.overviewHomestays.push({
+            name: this.homestayInformationFormGroup.controls.name.value + '',
+            room: parseInt(
+              this.homestayInformationFormGroup.controls.room.value!
+            ),
+            price: parseInt(
+              this.homestayInformationFormGroup.controls.price.value!
+            ),
+            imageUrl: this.homestayImageFiles[0],
+          });
+          this.homestaysDetail.push({
+            name: this.homestayInformationFormGroup.controls.name.value + '',
+            room: parseInt(
+              this.homestayInformationFormGroup.controls.room.value!
+            ),
+            price: parseInt(
+              this.homestayInformationFormGroup.controls.price.value!
+            ),
+            commonFacility: this.commonFacilities,
+            addFacility: this.newFacility,
+            imageFile: this.homestayImageFiles,
+          });
+
+          console.log('homestay:', this.homestays);
+          console.log('homestaysDetail:', this.homestaysDetail);
+        } else {
+          this.validImageHomestay();
         }
-        this.homestays.push({
-          name: this.homestayInformationFormGroup.controls.name.value + '',
-          availableRooms: parseInt(
-            this.homestayInformationFormGroup.controls.room.value!
-          ),
-          price: parseInt(
-            this.homestayInformationFormGroup.controls.price.value!
-          ),
-          homestayFacilities: this.homestayFacilities,
-          homestayImages: this.homestayImages,
-        });
-
-        this.overviewHomestays.push({
-          name: this.homestayInformationFormGroup.controls.name.value + '',
-          room: parseInt(
-            this.homestayInformationFormGroup.controls.room.value!
-          ),
-          price: parseInt(
-            this.homestayInformationFormGroup.controls.price.value!
-          ),
-          imageUrl: this.homestayImageFiles[0],
-        });
-        this.homestaysDetail.push({
-          name: this.homestayInformationFormGroup.controls.name.value + '',
-          room: parseInt(
-            this.homestayInformationFormGroup.controls.room.value!
-          ),
-          price: parseInt(
-            this.homestayInformationFormGroup.controls.price.value!
-          ),
-          commonFacility: this.commonFacilities,
-          addFacility: this.newFacility,
-          imageFile: this.homestayImageFiles,
-        });
-
-        console.log('homestay:', this.homestays);
-        console.log('homestaysDetail:', this.homestaysDetail);
       } else {
-        this.validImageHomestay();
-      }
-    } else {
-      if (this.homestayImageFiles.length != 0) {
-        this.homestays[this.index].name = this.homestayInformationFormGroup
-          .controls.name.value as string;
-        this.homestays[this.index].availableRooms = this
-          .homestayInformationFormGroup.controls.room
-          .value as unknown as number;
-        this.homestays[this.index].price = this.homestayInformationFormGroup
-          .controls.price.value as unknown as number;
-        this.homestays[this.index].homestayFacilities = this.homestayFacilities;
-        this.homestays[this.index].homestayImages = this.homestayImages;
+        if (this.homestayImageFiles.length != 0) {
+          this.homestays[this.index].name = this.homestayInformationFormGroup
+            .controls.name.value as string;
+          this.homestays[this.index].availableRooms = this
+            .homestayInformationFormGroup.controls.room
+            .value as unknown as number;
+          this.homestays[this.index].price = this.homestayInformationFormGroup
+            .controls.price.value as unknown as number;
+          this.homestays[this.index].homestayFacilities =
+            this.homestayFacilities;
+          this.homestays[this.index].homestayImages = this.homestayImages;
 
-        this.overviewHomestays[this.index].name = this
-          .homestayInformationFormGroup.controls.name.value as string;
-        this.overviewHomestays[this.index].room = this
-          .homestayInformationFormGroup.controls.room
-          .value as unknown as number;
-        this.overviewHomestays[this.index].price = this
-          .homestayInformationFormGroup.controls.price
-          .value as unknown as number;
-        this.overviewHomestays[this.index].imageUrl =
-          this.homestayImageFiles[0];
+          this.overviewHomestays[this.index].name = this
+            .homestayInformationFormGroup.controls.name.value as string;
+          this.overviewHomestays[this.index].room = this
+            .homestayInformationFormGroup.controls.room
+            .value as unknown as number;
+          this.overviewHomestays[this.index].price = this
+            .homestayInformationFormGroup.controls.price
+            .value as unknown as number;
+          this.overviewHomestays[this.index].imageUrl =
+            this.homestayImageFiles[0];
 
-        this.homestaysDetail[this.index].name = this
-          .homestayInformationFormGroup.controls.name.value as string;
-        this.homestaysDetail[this.index].room = this
-          .homestayInformationFormGroup.controls.room
-          .value as unknown as number;
-        this.homestaysDetail[this.index].price = this
-          .homestayInformationFormGroup.controls.price
-          .value as unknown as number;
-        this.homestaysDetail[this.index].commonFacility = this.commonFacilities;
-        this.homestaysDetail[this.index].addFacility = this.newFacility;
-        this.homestaysDetail[this.index].imageFile = this.homestayImageFiles;
+          this.homestaysDetail[this.index].name = this
+            .homestayInformationFormGroup.controls.name.value as string;
+          this.homestaysDetail[this.index].room = this
+            .homestayInformationFormGroup.controls.room
+            .value as unknown as number;
+          this.homestaysDetail[this.index].price = this
+            .homestayInformationFormGroup.controls.price
+            .value as unknown as number;
+          this.homestaysDetail[this.index].commonFacility =
+            this.commonFacilities;
+          this.homestaysDetail[this.index].addFacility = this.newFacility;
+          this.homestaysDetail[this.index].imageFile = this.homestayImageFiles;
 
-        console.log('homestay:', this.homestays);
-        console.log('homestaysDetail:', this.homestaysDetail);
-      } else {
-        this.validImageHomestay();
+          console.log('homestay:', this.homestays);
+          console.log('homestaysDetail:', this.homestaysDetail);
+        } else {
+          this.validImageHomestay();
+        }
       }
     }
   }
@@ -683,8 +690,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.data.homestayServices = this.homestayServices;
     this.data.homestays = this.homestays;
     console.log('data', this.data);
-    if (this.flag === true) {
-      this.http.createBloc(this.data).subscribe(
+    if (this.flag === true && this.data.homestays.length >0) {
+
+      this.httpHomestay.createBloc(this.data).subscribe(
         (data) => {
           for (this.file of this.homestayLicenseFiles) {
             const path =
@@ -711,6 +719,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           this.openDialogMessage();
         }
       );
+    } else if(this.data.homestays.length ==0){
+      this.message = 'Please add more one homestay';
+      this.openDialogMessage();
     }
   }
 

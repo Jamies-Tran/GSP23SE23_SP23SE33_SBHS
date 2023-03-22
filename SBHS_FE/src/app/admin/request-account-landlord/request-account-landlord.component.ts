@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ServerHttpService } from 'src/app/services/verify-landlord.service';
 import { ActionPendingComponent } from '../../pop-up/action-pending/action-pending.component';
 import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';
 import { ImageService } from '../../services/image.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-request-account-landlord',
@@ -18,29 +18,29 @@ export class RequestAccountLandlordComponent implements OnInit {
   valuesReject: data[] = [];
   message!: string;
   registerError: string = '';
-  constructor(private http: ServerHttpService, public dialog: MatDialog,private image: ImageService,) {}
+  constructor(private http: AdminService, public dialog: MatDialog,private image: ImageService,) {}
   ngOnInit(): void {
     this.getStatusLandlord();
     console.log('length:', this.valuesPending.length);
   }
   public getStatusLandlord() {
     // Pending
-    this.http.getLanlord('PENDING').subscribe((data) => {
+    this.http.getLandlordListFilterByStatus('PENDING').subscribe((data) => {
       this.valuesPending = data['userList'];
       console.log(this.valuesPending);
     });
     // Banned
-    this.http.getLanlord('BANNED').subscribe((data) => {
+    this.http.getLandlordListFilterByStatus('BANNED').subscribe((data) => {
       this.valuesBanned = data['userList'];
       console.log(this.valuesBanned);
     });
     // Active
-    this.http.getLanlord('ACTIVATED').subscribe((data) => {
+    this.http.getLandlordListFilterByStatus('ACTIVATED').subscribe((data) => {
       this.valuesActive = data['userList'];
       console.log(this.valuesActive);
     });
     // Reject
-    this.http.getLanlord('REJECT').subscribe((data) => {
+    this.http.getLandlordListFilterByStatus('REJECT').subscribe((data) => {
       this.valuesReject = data['userList'];
       console.log(this.valuesReject);
     });
@@ -63,7 +63,7 @@ export class RequestAccountLandlordComponent implements OnInit {
 
   public accept() {
     console.log('Accept');
-    this.http.acceptLandlord(this.username).subscribe(
+    this.http.activateLandlordAccount(this.username).subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have accept';
@@ -87,7 +87,7 @@ export class RequestAccountLandlordComponent implements OnInit {
   }
   public reject() {
     console.log('Reject');
-    this.http.rejectLandlord(this.username, 'NOT_MATCHED').subscribe(
+    this.http.rejectLandlordAccount(this.username, 'NOT_MATCHED').subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have reject';
@@ -162,7 +162,6 @@ export class RequestAccountLandlordComponent implements OnInit {
   openDialogAction() {
     this.dialog.open(ActionPendingComponent, {
       data: {
-        id: this.Id,
         username: this.username,
       },
       disableClose: true
