@@ -25,12 +25,12 @@ export class MessageComponent implements OnInit {
     if (localStorage.getItem('action-pending') === 'true') {
       this.dialogRef.close();
       localStorage.setItem('action-pending', '');
-      location.reload();
+
     }
     else if (localStorage.getItem('account-landlord-detail') === 'true') {
       this.dialogRef.close();
       localStorage.setItem('account-landlord-detail', '');
-      location.reload();
+
     }
     else this.dialogRef.close();
   }

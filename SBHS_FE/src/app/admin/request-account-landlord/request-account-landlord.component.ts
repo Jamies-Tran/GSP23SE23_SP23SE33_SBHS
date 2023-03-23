@@ -20,8 +20,23 @@ export class RequestAccountLandlordComponent implements OnInit {
   registerError: string = '';
   constructor(private http: AdminService, public dialog: MatDialog,private image: ImageService,) {}
   ngOnInit(): void {
+    this.valuesPending = [];
+    this.valuesBanned  = [];
+    this.valuesActive = [];
+    this.valuesReject =[];
     this.getStatusLandlord();
     console.log('length:', this.valuesPending.length);
+    if(localStorage.getItem('isAccept') == 'true'   ){
+      this.message = 'Account have accept';
+          this.openDialogSuccess();
+          localStorage.setItem('isAccept' , 'false');
+    }
+    if(localStorage.getItem('isReject') == 'true'   ){
+      this.message = 'Account have reject';
+          this.openDialogSuccess();
+          localStorage.setItem('isReject' , 'false');
+    }
+
   }
   public getStatusLandlord() {
     // Pending
@@ -35,7 +50,7 @@ export class RequestAccountLandlordComponent implements OnInit {
       console.log(this.valuesBanned);
     });
     // Active
-    this.http.getLandlordListFilterByStatus('ACTIVATED').subscribe((data) => {
+    this.http.getLandlordListFilterByStatus('ACTIVATING').subscribe((data) => {
       this.valuesActive = data['userList'];
       console.log(this.valuesActive);
     });
@@ -66,42 +81,16 @@ export class RequestAccountLandlordComponent implements OnInit {
     this.http.activateLandlordAccount(this.username).subscribe(
       (data) => {
         if (data != null) {
-          this.message = 'Account have accept';
-          this.openDialogSuccess();
+          localStorage.setItem('isAccept' , 'true');
           location.reload();
         }
         console.log(data);
       },
       (error) => {
         if (error['status'] == 500) {
-          this.registerError = 'please check your information again!';
-          this.message = this.registerError;
+          this.message = 'please check your information again!';
           this.openDialogMessage();
         } else {
-          this.registerError = error;
-          this.message = error;
-          this.openDialogMessage();
-        }
-      }
-    );
-  }
-  public reject() {
-    console.log('Reject');
-    this.http.rejectLandlordAccount(this.username, 'NOT_MATCHED').subscribe(
-      (data) => {
-        if (data != null) {
-          this.message = 'Account have reject';
-          this.openDialogSuccess();
-          location.reload();
-        }
-      },
-      (error) => {
-        if (error['status'] == 500) {
-          this.registerError = 'please check your information again!';
-          this.message = this.registerError;
-          this.openDialogMessage();
-        } else {
-          this.registerError = error;
           this.message = error;
           this.openDialogMessage();
         }
@@ -109,14 +98,10 @@ export class RequestAccountLandlordComponent implements OnInit {
     );
   }
 
+
+
   isChecked!: boolean;
-  isCheckedAction() {
-    if (this.isChecked) {
-      this.accept();
-    } else {
-      this.reject();
-    }
-  }
+
 
   title = 'pagination';
   page: number = 1;
@@ -166,7 +151,6 @@ export class RequestAccountLandlordComponent implements OnInit {
       },
       disableClose: true
     });
-
   }
 }
 

@@ -254,7 +254,6 @@ export class RegisterComponent implements OnInit , AfterViewInit{
     dialogRef.afterOpened().subscribe(_ => {
       setTimeout(() => {
          dialogRef.close();
-         location.reload();
       }, timeout)
     })
   }

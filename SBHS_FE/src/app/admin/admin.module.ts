@@ -22,10 +22,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
 import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
+import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bloc-homestay.component';
 
 
 @NgModule({
-  declarations: [AdminComponent, RequestAccountLandlordComponent, AccountLandlordDetailComponent, RequestHomestayComponent, HomestayDetailComponent],
+  declarations: [AdminComponent, RequestAccountLandlordComponent, AccountLandlordDetailComponent, RequestHomestayComponent, HomestayDetailComponent, RequestBlocHomestayComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

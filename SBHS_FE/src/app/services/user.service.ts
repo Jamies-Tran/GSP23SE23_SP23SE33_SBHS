@@ -43,12 +43,12 @@ export class UserService {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json ',
-        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+        // 'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
     const value = {password,username};
     const url =
-        `${this.REST_API_SERVER}/api/user/info?username=${username}`;
+        `${this.REST_API_SERVER}/api/user/login`;
       return this.httpClient
         .post<any>(url,value, this.httpOptions)
         .pipe(catchError(this.handleError));

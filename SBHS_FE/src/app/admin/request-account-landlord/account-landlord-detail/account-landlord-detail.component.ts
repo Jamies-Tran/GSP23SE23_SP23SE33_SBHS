@@ -7,6 +7,7 @@ import { MessageComponent } from '../../../pop-up/message/message.component';
 import { SuccessComponent } from '../../../pop-up/success/success.component';
 import { AdminService } from '../../../services/admin.service';
 import { UserService } from '../../../services/user.service';
+import { ActionPendingComponent } from '../../../pop-up/action-pending/action-pending.component';
 
 @Component({
   selector: 'app-account-landlord-detail',
@@ -34,6 +35,7 @@ export class AccountLandlordDetailComponent implements OnInit {
   public avatarUrl = '';
   public citizenIdentificationUrlFont = '';
   public citizenIdentificationUrlBack = '';
+  status !: string;
   ngOnInit(): void {
     try {
       const name = localStorage.getItem('createdBy') as string;
@@ -47,6 +49,7 @@ export class AccountLandlordDetailComponent implements OnInit {
           this.gender = data['gender'];
           this.phone = data['phone'];
           this.address = data['address'];
+          this.status = data.landlordProperty.status;
           console.log('avatar', data['avataUrl']);
           if (data['avataUrl']) {
             this.avatarUrl = await this.image.getImage(
@@ -102,8 +105,8 @@ export class AccountLandlordDetailComponent implements OnInit {
   public isReject = false;
   public rejectMessage = '';
   public accept() {
-    const name = localStorage.getItem('username') as string;
-    this.httpAdmin.activateLandlordAccount(name).subscribe(
+
+    this.httpAdmin.activateLandlordAccount(this.username).subscribe(
       (data) => {
         if (data != null) {
           this.message = 'Account have accept';
@@ -130,34 +133,12 @@ export class AccountLandlordDetailComponent implements OnInit {
       }
     );
   }
-  public reject() {
-    this.httpAdmin
-      const name = localStorage.getItem('username') as string;
-
-      this.httpAdmin.rejectLandlordAccount(name, 'NOT_MATCHED')
-      .subscribe(
-        (data) => {
-          if (data != null) {
-            this.message = 'Account have reject';
-            this.openDialogSuccess();
-            // location.reload();
-            this.router.navigate(['/Admin/RequestAccountLandlord'], {
-              relativeTo: this.route,
-            });
-          }
-        },
-        (error) => {
-          if (error['status'] == 500) {
-            this.registerError = 'please check your information again!';
-            this.message = error;
-            this.openDialogMessage();
-          } else {
-            this.registerError = error;
-            this.message = error;
-
-            this.openDialogMessage();
-          }
-        }
-      );
+  openDialogAction() {
+    this.dialog.open(ActionPendingComponent, {
+      data: {
+        username: this.username,
+      },
+      disableClose: true
+    });
   }
 }

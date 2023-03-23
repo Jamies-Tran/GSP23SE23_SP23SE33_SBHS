@@ -6,13 +6,12 @@ import { SuccessComponent } from '../../pop-up/success/success.component';
 import { PendingHomestayComponent } from '../../pop-up/pending-homestay/pending-homestay.component';
 import { HomestayService } from '../../services/homestay.service';
 import { AdminService } from '../../services/admin.service';
-
 @Component({
-  selector: 'app-request-homestay',
-  templateUrl: './request-homestay.component.html',
-  styleUrls: ['./request-homestay.component.scss']
+  selector: 'app-request-bloc-homestay',
+  templateUrl: './request-bloc-homestay.component.html',
+  styleUrls: ['./request-bloc-homestay.component.scss']
 })
-export class RequestHomestayComponent implements OnInit{
+export class RequestBlocHomestayComponent {
   valuesPending: data[] = [];
   valuesBanned: data[] = [];
   valuesActive: data[] = [];
@@ -20,33 +19,28 @@ export class RequestHomestayComponent implements OnInit{
   message!: string;
   constructor(public dialog: MatDialog,private httpHomestay: HomestayService, private httpAdmin: AdminService ){}
   ngOnInit(): void {
-    this.getStatusHomestay();
-    if(localStorage.getItem('isAccept') == 'true'){
-      this.message = 'Account have accept';
-      this.openDialogSuccess();
-      localStorage.setItem('isAccept' , '');
-    }
+    this.getStatusBlocHomestay();
   }
 
-  public getStatusHomestay() {
+  public getStatusBlocHomestay() {
   // Pending
-  this.httpHomestay.getHomestayByStatus('PENDING').subscribe((data) => {
-    this.valuesPending = data['homestays'];
+  this.httpHomestay.findBlocList('PENDING').subscribe((data) => {
+    this.valuesPending = data['blocs'];
     console.log(this.valuesPending);
   });
   // Banned
-  this.httpHomestay.getHomestayByStatus('BANNED').subscribe((data) => {
-    this.valuesBanned = data['homestays'];
+  this.httpHomestay.findBlocList('BANNED').subscribe((data) => {
+    this.valuesBanned = data['blocs'];
     console.log(this.valuesBanned);
   });
   // Active
-  this.httpHomestay.getHomestayByStatus('ACTIVATING').subscribe((data) => {
-    this.valuesActive = data['homestays'];
+  this.httpHomestay.findBlocList('ACTIVATING').subscribe((data) => {
+    this.valuesActive = data['blocs'];
     console.log(this.valuesActive);
   });
   // Reject
-  this.httpHomestay.getHomestayByStatus('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
-    this.valuesReject = data['homestays'];
+  this.httpHomestay.findBlocList('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
+    this.valuesReject = data['blocs'];
     console.log(this.valuesReject);
   });
 
@@ -65,11 +59,15 @@ export class RequestHomestayComponent implements OnInit{
   }
   public accept() {
     console.log('Accept');
-    this.httpAdmin.activeHomestay(this.name).subscribe(
+    this.httpAdmin.activeBlocHomestay(this.name).subscribe(
       (data) => {
         if (data != null) {
-                    localStorage.setItem('isAccept' , 'true');
-          location.reload();
+          this.message = 'Bloc Homestay have accept';
+          this.openDialogSuccess();
+          setTimeout(function(){
+            window.location.reload();
+         }, 2000);
+
         }
         console.log(data);
       },
@@ -83,12 +81,14 @@ export class RequestHomestayComponent implements OnInit{
 
   public reject() {
     console.log('Reject');
-    this.httpAdmin.rejectHomestay(this.name).subscribe(
+    this.httpAdmin.rejectBlocHomestay(this.name).subscribe(
       (data) => {
         if (data != null) {
-          this.message = 'Account have reject';
+          this.message = 'Bloc Homestay have reject';
           this.openDialogSuccess();
-          location.reload();
+          setTimeout(function () {
+            window.location.reload();
+          }, 2000);
         }
       },
       (error) => {
@@ -150,8 +150,10 @@ export class RequestHomestayComponent implements OnInit{
   }
 
   openDialogAction() {
+    localStorage.setItem('blocHomestay', 'true');
     this.dialog.open(PendingHomestayComponent, {
       data: {
+        id: this.Id,
         name: this.name,
       },
       disableClose: true,

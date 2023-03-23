@@ -20,30 +20,7 @@ export class ActionPendingComponent {
   message: any;
   status: any;
 
-  public accept() {
-    console.log('Accept');
-    this.http.activateLandlordAccount(this.data.username).subscribe(
-      (data) => {
-        if (data != null) {
-          this.message = 'Account have accept';
 
-          this.openDialogSuccess();
-          location.reload();
-
-        }
-        console.log(data);
-      },
-      (error) => {
-        if (error['status'] == 500) {
-          this.message = 'please check your information again!';
-          this.openDialogMessage();
-        } else {
-          this.message = error;
-          this.openDialogMessage();
-        }
-      }
-    );
-  }
 
   public reject() {
     console.log('Reject');

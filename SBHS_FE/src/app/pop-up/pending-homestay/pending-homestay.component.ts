@@ -13,57 +13,62 @@ import { AdminService } from '../../services/admin.service';
 export class PendingHomestayComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { id: StaticRangeInit; name: string },
+    public data: { name: string },
     public dialog: MatDialog,
     private http: AdminService
   ) {}
   message: any;
-  public accept() {
-    console.log('Accept');
-    this.http.activeHomestay(this.data.name).subscribe(
-      (data) => {
-        if (data != null) {
-          this.message = 'Account have accept';
-          this.openDialogSuccess();
-          location.reload();
-        }
-        console.log(data);
-      },
-      (error) => {
-        if (error['status'] == 500) {
-          // this.registerError = 'please check your information again!';
-          this.message = error;
-          this.openDialogMessage();
-        } else {
-          // this.registerError = error;
-          this.message = error;
-          this.openDialogMessage();
-        }
-      }
-    );
-  }
+
   public reject() {
     console.log('Reject');
-    this.http.rejectHomestay(this.data.name).subscribe(
-      (data) => {
-        if (data != null) {
-          this.message = 'Account have reject';
-          this.openDialogSuccess();
-          location.reload();
+    if (localStorage.getItem('blocHomestay') == 'true') {
+      this.http.rejectBlocHomestay(this.data.name).subscribe(
+        (data) => {
+          if (data != null) {
+            localStorage.setItem('blocHomestay', '');
+            this.message = 'Bloc Homestay have reject';
+            this.openDialogSuccess();
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000);
+          }
+        },
+        (error) => {
+          if (error['status'] == 500) {
+            // this.registerError = 'please check your information again!';
+            this.message = error;
+            this.openDialogMessage();
+          } else {
+            // this.registerError = error;
+            this.message = error;
+            this.openDialogMessage();
+          }
         }
-      },
-      (error) => {
-        if (error['status'] == 500) {
-          // this.registerError = 'please check your information again!';
-          this.message = error;
-          this.openDialogMessage();
-        } else {
-          // this.registerError = error;
-          this.message = error;
-          this.openDialogMessage();
+      );
+    } else {
+      this.http.rejectHomestay(this.data.name).subscribe(
+        (data) => {
+          if (data != null) {
+            this.message = 'Homestay have reject';
+            this.openDialogSuccess();
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000);
+          }
+        },
+        (error) => {
+          if (error['status'] == 500) {
+            // this.registerError = 'please check your information again!';
+            this.message = error;
+            this.openDialogMessage();
+          } else {
+            // this.registerError = error;
+            this.message = error;
+            this.openDialogMessage();
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   openDialogMessage() {
