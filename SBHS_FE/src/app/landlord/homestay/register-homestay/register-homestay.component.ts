@@ -3,14 +3,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServerHttpService } from 'src/app/services/homestay.service';
+import { HomestayService } from 'src/app/services/homestay.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormField } from '@angular/material/form-field';
 import { MessageComponent } from '../../../pop-up/message/message.component';
 import { SuccessComponent } from '../../../pop-up/success/success.component';
+import { GoongService } from '../../../services/goong.service';
 
 @Component({
   selector: 'app-register-homestay',
@@ -24,7 +24,8 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private http: ServerHttpService,
+    private httpHomestay: HomestayService,
+    private httpGoong: GoongService,
     private storage: AngularFireStorage
   ) {}
 
@@ -315,7 +316,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   public price = 0;
   public priceTax: any;
   calcPriceTax(event: any) {
-    var priceToFixed = (this.price * 0.05).toFixed();
+    var priceToFixed = (this.price * 0.95).toFixed();
     this.priceTax = priceToFixed;
     this.validPrice();
   }
@@ -340,7 +341,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   public getAutocomplete(event: any): void {
     type predictions = Array<{ description: string }>;
     this.place = event.target.value;
-    this.http.getAutoComplete(this.place).subscribe((data) => {
+    this.httpGoong.getAutoCompletePlaces(this.place).subscribe((data) => {
       console.log(data);
       const predictions: predictions = data['predictions'];
       this.predictions = predictions;
@@ -392,8 +393,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     console.log(this.homestayImages);
 
     if (this.flag === true) {
-      this.http
-        .registerHomestay(
+      this.httpHomestay.createHomestay(
           this.homestayName,
           this.address,
           this.totalRoom+"",

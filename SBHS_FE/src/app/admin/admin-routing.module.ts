@@ -5,6 +5,7 @@ import { RequestAccountLandlordComponent } from './request-account-landlord/requ
 import { AccountLandlordDetailComponent } from './request-account-landlord/account-landlord-detail/account-landlord-detail.component';
 import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
 import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
+import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bloc-homestay.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,19 @@ const routes: Routes = [
           }
         ]
       },
+      {
+        path: 'BlocHomestay',
+        component: RequestBlocHomestayComponent,
+      },
+      // {
+      //   path:'BlocHomestay',
+      //   children:[
+      //     {
+      //       path: 'HomestayDetail',
+      //       component: HomestayDetailComponent
+      //     }
+      //   ]
+      // },
     ],
   },
 ];

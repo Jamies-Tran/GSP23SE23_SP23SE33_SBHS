@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ImageService } from '../services/image.service';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { AccountService } from '../services/account.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from '../pop-up/message/message.component';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -22,7 +22,7 @@ export class AdminComponent implements OnInit {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     public dialog: MatDialog,
-    private http: AccountService
+    private http: UserService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -33,7 +33,7 @@ export class AdminComponent implements OnInit {
     this.username = localStorage.getItem('usernameLogined') as string;
     this.role = localStorage.getItem('role');
 
-    this.http.getProfile(this.username?.toString()).subscribe(
+    this.http.getUserInfo(this.username).subscribe(
       async (data) => {
         this.avatarUrl= data['avatarUrl'];
         console.log(this.avatarUrl);

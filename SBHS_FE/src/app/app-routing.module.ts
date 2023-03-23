@@ -9,7 +9,8 @@ import { LandlordComponent } from './landlord/landlord.component';
 import { LandlordModule } from './landlord/landlord.module';
 import { TestComponent } from './test/test/test.component';
 import { TestTwoComponent } from './test/test-two/test-two.component';
-import { TestThreeComponent } from './test/test/test-three/test-three.component';
+import { TestThreeComponent } from './test/test-three/test-three.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent },
@@ -50,6 +51,10 @@ const routes: Routes = [
   {
     path: 'Test3',
     component: TestThreeComponent
+  },
+  {
+    path: 'Profile',
+    component: ProfileComponent
   },
 ];
 
