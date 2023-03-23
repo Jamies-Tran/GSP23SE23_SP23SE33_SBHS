@@ -12,7 +12,7 @@ class FilterHomestayState {
       this.isGeometry,
       this.bookingStartDate,
       this.bookingEndDate,
-      this.totalBookingRoom,
+      this.totalBookingReservation,
       this.ratingRangeValue,
       this.priceRangeValue,
       this.facilityName,
@@ -30,7 +30,7 @@ class FilterHomestayState {
   bool? isInputAddress;
   String? bookingStartDate;
   String? bookingEndDate;
-  int? totalBookingRoom;
+  int? totalBookingReservation;
   RangeValues? ratingRangeValue;
   RangeValues? priceRangeValue;
   String? facilityName;
@@ -61,7 +61,7 @@ class FilterHomestayState {
       filterByBookingDate = FilterByBookingDate(
           start: bookingStartDate,
           end: bookingEndDate,
-          totalRoom: totalBookingRoom);
+          totalReservation: totalBookingReservation);
     }
 
     if (address == "" || address == null) {

@@ -14,6 +14,7 @@ import 'package:staywithme_passenger_application/screen/homestay/booking_homesta
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/intro_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
@@ -87,6 +88,8 @@ class MyApp extends StatelessWidget {
             const HomestayDetailScreen(),
         BookingHomestayScreen.bookingHomestayScreenRoute: (context) =>
             const BookingHomestayScreen(),
+        ProcessBookingScreen.processBookingScreenRoute: (context) =>
+            const ProcessBookingScreen(),
         IntroScreen.instroScreenRoute: (context) => const IntroScreen()
       },
     );

@@ -22,6 +22,8 @@ abstract class IBookingService {
 
   Future<dynamic> checkValidBookingDateForHomestay(
       BookingValidateModel bookingValidateModel);
+
+  Future<dynamic> getBookingHomestsayById(String username, int homestayId);
 }
 
 class BookingService extends IBookingService {
@@ -170,6 +172,34 @@ class BookingService extends IBookingService {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));
         return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getBookingHomestsayById(String username, int homestayId) async {
+    final client = http.Client();
+    final uri = Uri.parse("$bookingHomestayUrl?homestayId=$homestayId");
+    try {
+      final token = await firebaseService.getUserTokenByUsername(username);
+      if (token is String) {
+        final response = await client.get(uri, headers: {
+          "content-type": "application/json",
+          "Authorization": "Bearer $token"
+        }).timeout(Duration(seconds: connectionTimeOut));
+        if (response.statusCode == 200) {
+          BookingHomestayModel? bookingHomestayModel =
+              BookingHomestayModel.fromJson(json.decode(response.body));
+          return bookingHomestayModel;
+        } else {
+          ServerExceptionModel serverExceptionModel =
+              ServerExceptionModel.fromJson(json.decode(response.body));
+          return serverExceptionModel;
+        }
       }
     } on TimeoutException catch (e) {
       return e;

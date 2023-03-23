@@ -15,7 +15,7 @@ class FilterHomestayBloc {
   Distance? _distance = Distance.one;
   String? _bookingStartDate = "";
   String? _bookingEndDate = "";
-  int? _totalBookingRoom = 0;
+  int? _totalBookingReservation = 0;
   bool? _isInputAddress = true;
   String? _address = "";
   bool? _isGeometry = false;
@@ -60,7 +60,7 @@ class FilterHomestayBloc {
     } else if (event is ChooseBookingEndDateFilterEvent) {
       _bookingEndDate = event.end;
     } else if (event is InputTotalBookingRoomEvent) {
-      _totalBookingRoom = event.totalBookingRoom;
+      _totalBookingReservation = event.totalReservation;
     } else if (event is ChooseLocationTypeFilterEvent) {
       _locationType = event.locationType;
       switch (_locationType) {
@@ -139,7 +139,7 @@ class FilterHomestayBloc {
         ratingRangeValue: _ratingRangeValues,
         serviceName: _serviceName,
         servicePrice: _servicePrice,
-        totalBookingRoom: _totalBookingRoom,
+        totalBookingReservation: _totalBookingReservation,
       ),
     );
   }

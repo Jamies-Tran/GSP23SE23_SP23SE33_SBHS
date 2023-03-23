@@ -57,14 +57,14 @@ class FilterByRatingRange {
 }
 
 class FilterByBookingDate {
-  FilterByBookingDate({this.start, this.end, this.totalRoom});
+  FilterByBookingDate({this.start, this.end, this.totalReservation});
 
   String? start;
   String? end;
-  int? totalRoom;
+  int? totalReservation;
 
   Map<String, dynamic> toJson() =>
-      {"start": start, "end": end, "totalRoom": totalRoom};
+      {"start": start, "end": end, "totalReservation": totalReservation};
 }
 
 class FilterByAddress {

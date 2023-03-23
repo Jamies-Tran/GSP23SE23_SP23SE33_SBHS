@@ -1,10 +1,10 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
-abstract class ViewHomestayFacilityEvent {}
+abstract class ViewHomestayRuleEvent {}
 
-class OnNextStepToHomestayRuleEvent extends ViewHomestayFacilityEvent {
-  OnNextStepToHomestayRuleEvent(
+class OnNextStepToOverviewEvent extends ViewHomestayRuleEvent {
+  OnNextStepToOverviewEvent(
       {this.context,
       this.homestayName,
       this.bookingId,

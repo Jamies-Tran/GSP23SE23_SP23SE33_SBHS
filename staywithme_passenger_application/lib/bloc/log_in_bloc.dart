@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class LoginBloc {
 
   void eventHandler(LogInEvent event) {
     if (event is InputUsernameLoginEvent) {
-      _username = event.username;
+      _username = utf8.decode(event.username!.runes.toList());
     } else if (event is InputPasswordLoginEvent) {
       _password = event.password;
     } else if (event is FocusTextFieldLoginEvent) {
@@ -73,10 +74,14 @@ class LoginBloc {
     } else if (event is LogInSuccessEvent) {
       Navigator.pushNamed(
           event.context!, LoginLoadingScreen.loginLoadingScreenRoute,
-          arguments: {"email": event.email, "username": event.username});
+          arguments: {
+            "email": event.email,
+            "username": utf8.decode(event.username!.runes.toList())
+          });
     } else if (event is InformLoginToFireAuthEvent) {
-      _firebaseAuth.updateFirebaseUsername(event.username!).then((value) =>
-          Navigator.pushReplacementNamed(
+      _firebaseAuth
+          .updateFirebaseUsername(utf8.decode(event.username!.runes.toList()))
+          .then((value) => Navigator.pushReplacementNamed(
               event.context!, MainScreen.mainScreenRoute,
               arguments: {"startingIndex": 1}));
     } else if (event is LogInFailEvent) {
@@ -120,7 +125,9 @@ class LoginBloc {
         } else {
           Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
               arguments: {
-                "username": event.googleSignIn!.currentUser!.displayName,
+                "username": utf8.decode(event
+                    .googleSignIn!.currentUser!.displayName!.runes
+                    .toList()),
                 "startingIndex": 1
               });
         }

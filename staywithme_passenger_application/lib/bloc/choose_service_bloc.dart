@@ -10,8 +10,13 @@ class ChooseHomestayServiceBloc {
   final eventController = StreamController<ChooseServiceEvent>();
   final stateController = StreamController<ChooseServiceState>();
 
-  ChooseServiceState initData() => ChooseServiceState(homestayServiceList: []);
-  List<HomestayServiceModel> _homestayServiceList = [];
+  final List<HomestayServiceModel> _homestayServiceList = [];
+
+  ChooseServiceState initData(String homestayName) {
+    return ChooseServiceState(
+        homestayServiceList: <HomestayServiceModel>[],
+        homestayName: homestayName);
+  }
 
   void dispose() {
     eventController.close();
@@ -43,6 +48,7 @@ class ChooseHomestayServiceBloc {
           arguments: {
             "selectedIndex": 1,
             "homestayName": event.homestayName,
+            "bookingId": event.bookingId,
             "homestayServiceList": event.homestayServiceList,
             "totalServicePrice": event.totalServicePrice,
             "bookingStart": event.bookingStart,

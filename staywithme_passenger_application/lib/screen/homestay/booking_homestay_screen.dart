@@ -1,12 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/booking_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/choose_service_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/choose_service_event.dart';
+import 'package:staywithme_passenger_application/bloc/event/overview_booking_event.dart';
 import 'package:staywithme_passenger_application/bloc/event/view_facility_event.dart';
+import 'package:staywithme_passenger_application/bloc/event/view_rule_event.dart';
+import 'package:staywithme_passenger_application/bloc/overview_booking_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/booking_state.dart';
 import 'package:staywithme_passenger_application/bloc/state/choose_service_state.dart';
+import 'package:staywithme_passenger_application/bloc/state/overview_booking_state.dart';
 import 'package:staywithme_passenger_application/bloc/view_facility_bloc.dart';
+import 'package:staywithme_passenger_application/bloc/view_rule_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
@@ -27,6 +34,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
 
   List<Widget> widgetList(
           HomestayModel homestay,
+          int? bookingId,
           String bookingStart,
           String bookingEnd,
           List<HomestayServiceModel> homestayServiceList,
@@ -34,6 +42,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
       [
         ChooseServiceScreen(
           homestayServiceList: homestay.homestayServices,
+          bookingId: bookingId,
           homestayName: homestay.name,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
@@ -41,6 +50,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
         ViewHomestayFacilityScreen(
           homestayFacilityList: homestay.homestayFacilities,
           homestayName: homestay.name,
+          bookingId: bookingId,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
           homestayServiceList: homestayServiceList,
@@ -49,6 +59,15 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
         ViewHomestayRuleScreen(
           homestayRuleList: homestay.homestayRules,
           homestayName: homestay.name,
+          bookingId: bookingId,
+          bookingStart: bookingStart,
+          bookingEnd: bookingEnd,
+          homestayServiceList: homestayServiceList,
+          totalServicePrice: totalServicePrice,
+        ),
+        OverviewBookingScreen(
+          homestay: homestay,
+          bookingId: bookingId,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
           homestayServiceList: homestayServiceList,
@@ -75,16 +94,23 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
               child: BottomNavigationBar(
                 items: const [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.room_service), label: "Services"),
+                      icon: Icon(Icons.room_service),
+                      label: "Services",
+                      backgroundColor: primaryColor),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.chair), label: "Facilities"),
+                      icon: Icon(Icons.chair),
+                      label: "Facilities",
+                      backgroundColor: primaryColor),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.rule), label: "Rules"),
+                      icon: Icon(Icons.rule),
+                      label: "Rules",
+                      backgroundColor: primaryColor),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.alarm), label: "Overview")
+                      icon: Icon(Icons.alarm),
+                      label: "Overview",
+                      backgroundColor: primaryColor)
                 ],
                 currentIndex: streamSnapshot.data!.selectedIndex!,
-                backgroundColor: primaryColor,
                 selectedItemColor: Colors.black,
                 selectedLabelStyle: const TextStyle(
                     fontFamily: "Lobster", fontWeight: FontWeight.bold),
@@ -98,6 +124,8 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: const [
                         SpinKitCircle(
                           color: primaryColor,
@@ -111,6 +139,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
                       if (data is HomestayModel) {
                         return widgetList(
                                 data,
+                                streamSnapshot.data!.bookingId,
                                 streamSnapshot.data!.bookingStart!,
                                 streamSnapshot.data!.bookingEnd!,
                                 streamSnapshot.data!.homestayServiceList!,
@@ -188,10 +217,12 @@ class ChooseServiceScreen extends StatefulWidget {
       {super.key,
       this.homestayServiceList,
       this.homestayName,
+      this.bookingId,
       this.bookingStart,
       this.bookingEnd});
   final List<HomestayServiceModel>? homestayServiceList;
   final String? homestayName;
+  final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
 
@@ -213,7 +244,7 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
   Widget build(BuildContext context) {
     return StreamBuilder<ChooseServiceState>(
         stream: chooseHomestayServiceBloc.stateController.stream,
-        initialData: chooseHomestayServiceBloc.initData(),
+        initialData: chooseHomestayServiceBloc.initData(widget.homestayName!),
         builder: (context, streamSnapshot) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -302,6 +333,7 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
                         OnNextStepToHomestayFacilityEvent(
                             context: context,
                             homestayName: widget.homestayName,
+                            bookingId: widget.bookingId,
                             homestayServiceList:
                                 streamSnapshot.data!.homestayServiceList,
                             totalServicePrice:
@@ -327,12 +359,14 @@ class ViewHomestayFacilityScreen extends StatefulWidget {
       {super.key,
       this.homestayFacilityList,
       this.homestayName,
+      this.bookingId,
       this.bookingStart,
       this.bookingEnd,
       this.homestayServiceList,
       this.totalServicePrice});
   final List<HomestayFacilityModel>? homestayFacilityList;
   final String? homestayName;
+  final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
   final List<HomestayServiceModel>? homestayServiceList;
@@ -417,6 +451,7 @@ class _ViewHomestayFacilityScreenState
                 viewHomestayFacilityBloc.eventController.sink.add(
                     OnNextStepToHomestayRuleEvent(
                         homestayName: widget.homestayName,
+                        bookingId: widget.bookingId,
                         bookingStart: widget.bookingStart,
                         bookingEnd: widget.bookingEnd,
                         context: context,
@@ -440,6 +475,7 @@ class ViewHomestayRuleScreen extends StatefulWidget {
   const ViewHomestayRuleScreen(
       {super.key,
       this.homestayName,
+      this.bookingId,
       this.homestayRuleList,
       this.bookingStart,
       this.bookingEnd,
@@ -447,6 +483,7 @@ class ViewHomestayRuleScreen extends StatefulWidget {
       this.totalServicePrice});
   final List<HomestayRule>? homestayRuleList;
   final String? homestayName;
+  final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
   final List<HomestayServiceModel>? homestayServiceList;
@@ -457,26 +494,459 @@ class ViewHomestayRuleScreen extends StatefulWidget {
 }
 
 class _ViewHomestayRuleScreenState extends State<ViewHomestayRuleScreen> {
+  final viewHomestayRuleBloc = ViewHomestayRuleBloc();
+
+  @override
+  void dispose() {
+    viewHomestayRuleBloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "View Homestay Rules",
-          style: TextStyle(
-              fontSize: 25, fontWeight: FontWeight.bold, color: primaryColor),
-        ),
-        SizedBox(
-          height: 500,
-          child: ListView.builder(
-            itemCount: widget.homestayRuleList!.length,
-            itemBuilder: (context, index) {
-              return Container();
-            },
+    return StreamBuilder(builder: (context, snapshot) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "View Homestay Rules",
+            style: TextStyle(
+                fontSize: 25, fontWeight: FontWeight.bold, color: primaryColor),
           ),
-        )
-      ],
-    );
+          SizedBox(
+            height: 500,
+            child: ListView.builder(
+              itemCount: widget.homestayRuleList!.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 200,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("${index + 1}",
+                            style: const TextStyle(
+                                fontFamily: "Lobster",
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor)),
+                        const SizedBox(
+                          width: 100,
+                        ),
+                        Text("${widget.homestayRuleList![index].description}")
+                      ]),
+                );
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  minimumSize: const Size(200, 50),
+                  maximumSize: const Size(200, 50)),
+              onPressed: () {
+                viewHomestayRuleBloc.eventController.sink.add(
+                    OnNextStepToOverviewEvent(
+                        context: context,
+                        homestayName: widget.homestayName,
+                        bookingId: widget.bookingId,
+                        bookingStart: widget.bookingStart,
+                        bookingEnd: widget.bookingEnd,
+                        homestayServiceList: widget.homestayServiceList,
+                        totalServicePrice: widget.totalServicePrice));
+              },
+              child: const Text(
+                "Next",
+                style: TextStyle(
+                    fontFamily: "Lobster",
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ))
+        ],
+      );
+    });
+  }
+}
+
+// ignore: constant_identifier_names
+enum PaymentMethod { swm_wallet, cash }
+
+class OverviewBookingScreen extends StatefulWidget {
+  const OverviewBookingScreen(
+      {super.key,
+      this.homestay,
+      this.bookingId,
+      this.bookingStart,
+      this.bookingEnd,
+      this.homestayServiceList,
+      this.totalServicePrice});
+  final HomestayModel? homestay;
+  final int? bookingId;
+  final String? bookingStart;
+  final String? bookingEnd;
+  final List<HomestayServiceModel>? homestayServiceList;
+  final int? totalServicePrice;
+
+  @override
+  State<OverviewBookingScreen> createState() => _OverviewBookingScreenState();
+}
+
+class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
+  final overviewBookingBloc = OverviewBookingBloc();
+
+  @override
+  void dispose() {
+    overviewBookingBloc.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<OverviewBookingState>(
+        stream: overviewBookingBloc.stateController.stream,
+        initialData: overviewBookingBloc.initData(
+            widget.homestay!,
+            widget.bookingStart!,
+            widget.bookingEnd!,
+            widget.homestay!.availableRooms!,
+            widget.homestayServiceList!,
+            widget.totalServicePrice!),
+        builder: (context, snapshot) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white24,
+                      boxShadow: const [
+                        BoxShadow(
+                            blurRadius: 2.0,
+                            blurStyle: BlurStyle.outer,
+                            offset: Offset(0.5, 0.5),
+                            color: Colors.black45)
+                      ]),
+                  margin: const EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "BOOKING INFORMATION",
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              letterSpacing: 1.0),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(children: [
+                            SizedBox(
+                              height: 200,
+                              child: Column(children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Homestay:",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(utf8.decode(snapshot
+                                        .data!.homestay!.name!.runes
+                                        .toList()))
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Address:",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        utf8.decode(snapshot
+                                            .data!.homestay!.address!.runes
+                                            .toList()),
+                                        maxLines: 2,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Booking from:",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data!.bookingStart!)
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Booking to:",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data!.bookingEnd!)
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Total reservation:",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data!.totalReservation
+                                        .toString())
+                                  ],
+                                ),
+                              ]),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Total booking price(VND):",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(currencyFormat
+                                    .format(snapshot.data!.totalBookingPrice()))
+                              ],
+                            )
+                          ]),
+                        ),
+                      ]),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white24,
+                      boxShadow: const [
+                        BoxShadow(
+                            blurRadius: 2.0,
+                            blurStyle: BlurStyle.outer,
+                            offset: Offset(0.5, 0.5),
+                            color: Colors.black45)
+                      ]),
+                  margin: const EdgeInsets.only(left: 10, right: 10),
+                  child: Column(children: [
+                    const Text(
+                      "SERVICE LIST",
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          letterSpacing: 1.0),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(children: [
+                        snapshot.data!.homestayServiceList!.isNotEmpty
+                            ? SizedBox(
+                                height: 100,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: snapshot
+                                      .data!.homestayServiceList!.length,
+                                  itemBuilder: (context, index) => Container(
+                                    margin: const EdgeInsets.only(bottom: 5),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            snapshot
+                                                .data!
+                                                .homestayServiceList![index]
+                                                .name!,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(
+                                            width: 100,
+                                          ),
+                                          Text(
+                                            "Price(VND): ${snapshot.data!.homestayServiceList![index].price}",
+                                            style: const TextStyle(
+                                                fontFamily: "Lobster",
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ]),
+                                  ),
+                                ),
+                              )
+                            : const Center(
+                                child: SizedBox(
+                                    height: 100,
+                                    child: Text(
+                                        "You haven't choose any service"))),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              overviewBookingBloc.eventController.sink.add(
+                                  EditHomestayServiceBookingEvent(
+                                      conext: context,
+                                      homestayServiceList:
+                                          widget.homestayServiceList,
+                                      homestayName: widget.homestay!.name,
+                                      bookingStart: widget.bookingStart,
+                                      bookingEnd: widget.bookingEnd,
+                                      totalServicePrice:
+                                          widget.totalServicePrice));
+                            },
+                            child: const Text("Edit",
+                                style: TextStyle(fontWeight: FontWeight.bold))),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Total service price(VND): ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(currencyFormat
+                                .format(snapshot.data!.totalServicePrice))
+                          ],
+                        )
+                      ]),
+                    )
+                  ]),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: [
+                    const Text(
+                      "Choose payment method: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: const Text("SWM Wallet"),
+                            leading: Radio<PaymentMethod>(
+                              value: PaymentMethod.swm_wallet,
+                              groupValue: snapshot.data!.paymentMethod!,
+                              onChanged: (value) => overviewBookingBloc
+                                  .eventController.sink
+                                  .add(ChoosePaymentMethodEvent(
+                                      paymentMethod: value)),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: ListTile(
+                            title: const Text("Cash"),
+                            leading: Radio<PaymentMethod>(
+                              value: PaymentMethod.cash,
+                              groupValue: snapshot.data!.paymentMethod!,
+                              onChanged: (value) => overviewBookingBloc
+                                  .eventController.sink
+                                  .add(ChoosePaymentMethodEvent(
+                                      paymentMethod: value)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        minimumSize: const Size(200, 50),
+                        maximumSize: const Size(200, 50)),
+                    onPressed: () {
+                      overviewBookingBloc.eventController.sink.add(
+                          SaveBookingHomestayEvent(
+                              bookingHomestay:
+                                  snapshot.data!.bookingHomestayModel(),
+                              bookingId: widget.bookingId,
+                              context: context));
+                    },
+                    child: const Text(
+                      "Proceed",
+                      style: TextStyle(
+                          fontFamily: "Lobster",
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ))
+              ],
+            ),
+          );
+        });
   }
 }

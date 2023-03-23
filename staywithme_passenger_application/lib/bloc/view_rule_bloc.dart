@@ -1,28 +1,28 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
-import 'package:staywithme_passenger_application/bloc/event/view_facility_event.dart';
+import 'package:flutter/material.dart';
+import 'package:staywithme_passenger_application/bloc/event/view_rule_event.dart';
 import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
 
-class ViewHomestayFacilityBloc {
-  final eventController = StreamController<ViewHomestayFacilityEvent>();
+class ViewHomestayRuleBloc {
+  final eventController = StreamController<ViewHomestayRuleEvent>();
 
   void dispose() {
     eventController.close();
   }
 
-  ViewHomestayFacilityBloc() {
+  ViewHomestayRuleBloc() {
     eventController.stream.listen((event) {
       eventHandler(event);
     });
   }
 
-  void eventHandler(ViewHomestayFacilityEvent event) {
-    if (event is OnNextStepToHomestayRuleEvent) {
+  void eventHandler(ViewHomestayRuleEvent event) {
+    if (event is OnNextStepToOverviewEvent) {
       Navigator.pushNamed(
           event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
-            "selectedIndex": 2,
+            "selectedIndex": 3,
             "homestayName": event.homestayName,
             "bookingId": event.bookingId,
             "bookingStart": event.bookingStart,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -32,7 +34,8 @@ class AuthenticateWrapperScreen extends StatelessWidget {
           default:
             if (snapshot.hasData) {
               return PassengerInfoManagementScreen(
-                username: snapshot.data!.displayName,
+                username:
+                    utf8.decode(snapshot.data!.displayName!.runes.toList()),
               );
             } else {
               return const LoginScreen();

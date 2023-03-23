@@ -286,6 +286,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                   .add(CreateBookingEvent(
                                                       context: context,
                                                       homestayName: data.name,
+                                                      homestayId: data.id,
                                                       bookingStart:
                                                           bookingStartDateTextEditingController
                                                               .text,

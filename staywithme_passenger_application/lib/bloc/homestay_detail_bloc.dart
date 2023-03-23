@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_detail_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
@@ -84,51 +86,141 @@ class HomestayDetailBloc {
           ),
         );
       } else {
-        final bookingData = await _bookingService
-            .createBooking(_firebaseAuth.currentUser!.displayName!);
-        if (bookingData is BookingModel) {
-          Navigator.pushNamed(
-              event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
-              arguments: {
-                "homestayName": event.homestayName,
-                "bookingStart": event.bookingStart,
-                "bookingEnd": event.bookingEnd
-              });
-        } else if (bookingData is ServerExceptionModel) {
+        final bookingHomestayData =
+            await _bookingService.getBookingHomestsayById(
+                utf8.decode(
+                    _firebaseAuth.currentUser!.displayName!.runes.toList()),
+                event.homestayId!);
+        if (bookingHomestayData is BookingHomestayModel) {
           showDialog(
             context: event.context!,
             builder: (context) => AlertDialog(
-              title: const Center(child: Text("Notice")),
-              content: SizedBox(
-                  height: 200,
+                title: const Center(
+                  child: Text("Notice"),
+                ),
+                content: Container(
                   width: 200,
-                  child: Text("${bookingData.message}")),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Cancel")),
-              ],
-            ),
+                  height: 150,
+                  child: Text(
+                      "${event.homestayName} has been saved to your booking that haven't been submitted,if you proceed we will replace with the new save?"),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "No",
+                        style: TextStyle(color: Colors.red),
+                      )),
+                  TextButton(
+                      onPressed: () async {
+                        final bookingData = await _bookingService.createBooking(
+                            utf8.decode(_firebaseAuth
+                                .currentUser!.displayName!.runes
+                                .toList()));
+                        if (bookingData is BookingModel) {
+                          Navigator.pushNamed(event.context!,
+                              BookingHomestayScreen.bookingHomestayScreenRoute,
+                              arguments: {
+                                "homestayName": event.homestayName,
+                                "bookingId": bookingData.id,
+                                "bookingStart": event.bookingStart,
+                                "bookingEnd": event.bookingEnd
+                              });
+                        } else if (bookingData is ServerExceptionModel) {
+                          showDialog(
+                            context: event.context!,
+                            builder: (context) => AlertDialog(
+                              title: const Center(child: Text("Notice")),
+                              content: SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Text("${bookingData.message}")),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Cancel")),
+                              ],
+                            ),
+                          );
+                        } else if (bookingData is TimeoutException ||
+                            bookingData is SocketException) {
+                          showDialog(
+                            context: event.context!,
+                            builder: (context) => AlertDialog(
+                              title: const Center(child: Text("Notice")),
+                              content: const SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Text("Network error")),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Cancel")),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text(
+                        "Yes",
+                        style: TextStyle(color: primaryColor),
+                      ))
+                ]),
           );
-        } else if (bookingData is TimeoutException ||
-            bookingData is SocketException) {
-          showDialog(
-            context: event.context!,
-            builder: (context) => AlertDialog(
-              title: const Center(child: Text("Notice")),
-              content: const SizedBox(
-                  height: 200, width: 200, child: Text("Network error")),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Cancel")),
-              ],
-            ),
-          );
+        } else {
+          final bookingData = await _bookingService.createBooking(utf8
+              .decode(_firebaseAuth.currentUser!.displayName!.runes.toList()));
+          if (bookingData is BookingModel) {
+            Navigator.pushNamed(event.context!,
+                BookingHomestayScreen.bookingHomestayScreenRoute,
+                arguments: {
+                  "homestayName": event.homestayName,
+                  "bookingId": bookingData.id,
+                  "bookingStart": event.bookingStart,
+                  "bookingEnd": event.bookingEnd
+                });
+          } else if (bookingData is ServerExceptionModel) {
+            showDialog(
+              context: event.context!,
+              builder: (context) => AlertDialog(
+                title: const Center(child: Text("Notice")),
+                content: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: Text("${bookingData.message}")),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel")),
+                ],
+              ),
+            );
+          } else if (bookingData is TimeoutException ||
+              bookingData is SocketException) {
+            showDialog(
+              context: event.context!,
+              builder: (context) => AlertDialog(
+                title: const Center(child: Text("Notice")),
+                content: const SizedBox(
+                    height: 200, width: 200, child: Text("Network error")),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel")),
+                ],
+              ),
+            );
+          }
         }
       }
     }

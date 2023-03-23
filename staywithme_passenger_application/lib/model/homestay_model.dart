@@ -2,7 +2,8 @@ import 'package:staywithme_passenger_application/model/bloc_model.dart';
 
 class HomestayModel {
   HomestayModel(
-      {this.name,
+      {this.id,
+      this.name,
       this.price,
       this.address,
       this.cityProvince,
@@ -17,6 +18,7 @@ class HomestayModel {
       this.homestayRules,
       this.ratings});
 
+  int? id;
   String? name;
   int? price;
   String? address;
@@ -33,6 +35,7 @@ class HomestayModel {
   List<RatingModel>? ratings;
 
   factory HomestayModel.fromJson(Map<String, dynamic> json) => HomestayModel(
+      id: json["id"],
       name: json["name"],
       price: json["price"],
       address: json["address"],
@@ -53,7 +56,10 @@ class HomestayModel {
           ? List<HomestayServiceModel>.from(json["homestayServices"]
               .map((e) => HomestayServiceModel.fromJson(e)))
           : <HomestayServiceModel>[],
-      homestayRules: json["homestayRules"] != null ? List<HomestayRule>.from(json["homestayRules"].map((e) => HomestayRule.fromJson(e))) : <HomestayRule>[],
+      homestayRules: json["homestayRules"] != null
+          ? List<HomestayRule>.from(
+              json["homestayRules"].map((e) => HomestayRule.fromJson(e)))
+          : <HomestayRule>[],
       ratings: json["ratings"] != null
           ? List<RatingModel>.from(
               json["ratings"].map((e) => RatingModel.fromJson(e)))

@@ -225,7 +225,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     controller: bookingTotalRoomTextEditingController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                        hintText: "Total room",
+                        hintText: "Total reservation",
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: const BorderSide(
@@ -237,7 +237,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     onChanged: (value) {
                       filterHomestayBloc.eventController.sink.add(
                           InputTotalBookingRoomEvent(
-                              totalBookingRoom: int.parse(value)));
+                              totalReservation: int.parse(value)));
                     },
                   ),
                   const SizedBox(

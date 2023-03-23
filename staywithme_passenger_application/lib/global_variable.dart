@@ -62,6 +62,9 @@ final homestayDetailUrl =
 final homestayBookingDateValidationUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_BOOKING_VALIDATE"]}";
 
+final bookingHomestayUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_HOMESTAY"]}";
+
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final dateFormat = DateFormat("yyyy-MM-dd");

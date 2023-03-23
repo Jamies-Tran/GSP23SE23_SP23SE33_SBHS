@@ -43,7 +43,8 @@ class BookingHomestayModel {
       this.bookingFrom,
       this.bookingTo,
       this.paymentMethod,
-      this.price,
+      this.totalBookingPrice,
+      this.totalServicePrice,
       this.totalReservation,
       this.homestayType,
       this.homestayName,
@@ -55,6 +56,8 @@ class BookingHomestayModel {
   String? bookingFrom;
   String? bookingTo;
   String? paymentMethod;
+  int? totalBookingPrice;
+  int? totalServicePrice;
   int? price;
   int? totalReservation;
   String? homestayName;
@@ -68,16 +71,21 @@ class BookingHomestayModel {
           id: json["id"],
           bookingFrom: json["bookingFrom"],
           bookingTo: json["bookingTo"],
-          price: json["price"],
           paymentMethod: json["paymentMethod"],
+          totalBookingPrice: json["totalBookingPrice"],
           totalReservation: json["totalReservation"],
           homestay: HomestayModel.fromJson(json["homestay"]),
-          bookingDeposit: BookingDepositModel.fromJson(json["bookingDeposit"]));
+          bookingDeposit: json["bookingDeposit"] != null
+              ? BookingDepositModel.fromJson(json["bookingDeposit"])
+              : null);
 
   Map<String, dynamic> toJson() => {
         "bookingFrom": bookingFrom,
         "bookingTo": bookingTo,
         "paymentMethod": paymentMethod,
+        "homestayServiceList": homestayServiceList,
+        "totalBookingPrice": totalBookingPrice,
+        "totalServicePrice": totalServicePrice,
         "totalReservation": totalReservation,
         "homestayName": homestayName
       };

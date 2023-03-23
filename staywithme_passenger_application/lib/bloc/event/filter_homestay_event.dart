@@ -36,9 +36,9 @@ class InputAddressFilterEvent extends FilterHomestayEvent {
 }
 
 class InputTotalBookingRoomEvent extends FilterHomestayEvent {
-  InputTotalBookingRoomEvent({this.totalBookingRoom});
+  InputTotalBookingRoomEvent({this.totalReservation});
 
-  int? totalBookingRoom;
+  int? totalReservation;
 }
 
 class ChooseNearByFilterEvent extends FilterHomestayEvent {

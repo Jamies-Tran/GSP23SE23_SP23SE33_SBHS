@@ -642,7 +642,9 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                   width: 200,
                                                                   margin: const EdgeInsets
                                                                           .only(
-                                                                      left: 10),
+                                                                      left: 10,
+                                                                      right:
+                                                                          10),
                                                                   padding:
                                                                       const EdgeInsets
                                                                           .only(
@@ -665,7 +667,9 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                               margin:
                                                                   const EdgeInsets
                                                                           .only(
-                                                                      left: 10),
+                                                                      left: 10,
+                                                                      right:
+                                                                          10),
                                                               decoration: const BoxDecoration(
                                                                   borderRadius: BorderRadius.only(
                                                                       bottomLeft:
