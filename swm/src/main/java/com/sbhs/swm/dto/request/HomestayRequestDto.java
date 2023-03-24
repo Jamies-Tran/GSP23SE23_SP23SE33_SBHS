@@ -22,6 +22,7 @@ public class HomestayRequestDto {
     private String address;
     private String businessLicense;
     private Integer availableRooms;
+    private Integer roomCapacity;
     private String status;
     private List<HomestayImageDto> homestayImages;
     private List<HomestayFacilityDto> homestayFacilities;

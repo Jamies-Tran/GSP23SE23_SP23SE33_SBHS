@@ -19,6 +19,8 @@ public interface IBookingService {
 
     Booking submitBookingByPassenger(Long bookingId);
 
+    BookingHomestay getBookingHomestayById(Long homestayId);
+
     List<Booking> findBookingsByUsernameAndStatus(String bookingStatus);
 
     List<Booking> findBookingsByHomestayNameAndStatus(String bookingStatus, String homestayName);
@@ -30,6 +32,6 @@ public interface IBookingService {
     List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd);
 
     public boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
-            int totalRoom);
+            int totalReservation);
 
 }

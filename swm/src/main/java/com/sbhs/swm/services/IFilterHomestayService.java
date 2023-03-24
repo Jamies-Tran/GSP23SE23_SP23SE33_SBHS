@@ -8,7 +8,7 @@ public interface IFilterHomestayService {
         public List<Homestay> filterByRatingRange(List<Homestay> homestays, double highest, double lowest);
 
         public List<Homestay> filterByBookingDateRange(List<Homestay> homestays, String bookingStart, String bookingEnd,
-                        int totalBookingRoom);
+                        int getTotalReservation);
 
         public List<Homestay> filterByAddress(List<Homestay> homestays, String address, int distance,
                         boolean isGeometry);

@@ -15,6 +15,7 @@ public class HomestayInBlocDto {
     private String name;
     private Long price;
     private Integer availableRooms;
+    private Integer roomCapacity;
     private List<HomestayImageDto> homestayImages;
     private List<HomestayFacilityDto> homestayFacilities;
 }

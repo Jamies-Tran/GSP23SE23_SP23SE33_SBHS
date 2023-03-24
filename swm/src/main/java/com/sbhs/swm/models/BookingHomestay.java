@@ -37,7 +37,7 @@ public class BookingHomestay {
     private String bookingTo;
 
     @Column
-    private Long price;
+    private Long totalBookingPrice;
 
     @Column
     private String paymentMethod;

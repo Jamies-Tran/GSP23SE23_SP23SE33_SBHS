@@ -17,5 +17,7 @@ public class BookingHomestayRequestDto {
     private String paymentMethod;
     private Long totalReservation;
     private String homestayName;
+    private Long totalBookingPrice;
+    private Long totalServicePrice;
     private List<String> homestayServiceList;
 }

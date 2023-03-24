@@ -310,7 +310,7 @@ public class HomestayService implements IHomestayService {
                 homestays = filterHomestayService.filterByBookingDateRange(homestays,
                         filterOption.getFilterByBookingDateRange().getStart(),
                         filterOption.getFilterByBookingDateRange().getEnd(),
-                        filterOption.getFilterByBookingDateRange().getTotalRoom());
+                        filterOption.getFilterByBookingDateRange().getTotalReservation());
             }
             if (filterOption.getFilterByFacility() != null) {
                 homestays = filterHomestayService.filterByFacility(homestays,
@@ -437,7 +437,7 @@ public class HomestayService implements IHomestayService {
                 blocs = filterBlocHomestayService.filterBlocByBookingDateRange(blocs,
                         filterOption.getFilterByBookingDateRange().getStart(),
                         filterOption.getFilterByBookingDateRange().getEnd(),
-                        filterOption.getFilterByBookingDateRange().getTotalRoom());
+                        filterOption.getFilterByBookingDateRange().getTotalReservation());
             }
             if (filterOption.getFilterByAddress() != null) {
                 blocs = filterBlocHomestayService.filterByAddress(blocs, filterOption.getFilterByAddress().getAddress(),

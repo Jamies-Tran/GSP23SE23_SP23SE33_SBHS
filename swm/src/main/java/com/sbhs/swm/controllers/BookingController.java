@@ -52,6 +52,16 @@ public class BookingController {
 
     }
 
+    @GetMapping("/booking-homestay")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> getBookingHomestayById(Long homestayId) {
+        BookingHomestay bookingHomestay = bookingService.getBookingHomestayById(homestayId);
+        BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
+                BookingHomestayResponseDto.class);
+
+        return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
     @PostMapping("/save-homestay")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> createBookingHomestay(@RequestBody BookingHomestayRequestDto bookingHomestayRequest) {

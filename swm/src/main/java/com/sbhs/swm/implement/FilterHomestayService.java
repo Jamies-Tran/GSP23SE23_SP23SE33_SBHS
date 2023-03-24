@@ -38,10 +38,10 @@ public class FilterHomestayService implements IFilterHomestayService {
 
     @Override
     public List<Homestay> filterByBookingDateRange(List<Homestay> homestays, String bookingStart, String bookingEnd,
-            int totalBookingRoom) {
+            int totalReservation) {
         List<Homestay> homestaySortedList = homestays.stream()
                 .filter(h -> bookingService.checkValidBookingForHomestay(h.getName(), bookingStart, bookingEnd,
-                        totalBookingRoom))
+                        totalReservation))
                 .collect(Collectors.toList());
         return homestaySortedList;
     }

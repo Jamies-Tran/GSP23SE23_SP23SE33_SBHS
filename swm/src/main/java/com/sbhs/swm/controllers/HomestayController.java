@@ -101,13 +101,20 @@ public class HomestayController {
                 return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
         }
 
-        @GetMapping("/user/detail")
-        public ResponseEntity<?> findHomestayByName(@RequestParam String name) {
+        @GetMapping("/user/homestay-detail")
+        public ResponseEntity<?> getHomestayDetailByName(@RequestParam String name) {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
                 responseHomestay.setAddress(responseHomestay.getAddress().split("_")[0]);
 
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
+        }
+
+        @GetMapping("/user/bloc-detail")
+        public ResponseEntity<?> getBlocHomestayDetailByName(@RequestParam String name) {
+                BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
+                BlocHomestayResponseDto responseBloc = modelMapper.map(bloc, BlocHomestayResponseDto.class);
+                return new ResponseEntity<BlocHomestayResponseDto>(responseBloc, HttpStatus.OK);
         }
 
         @GetMapping("/user/city-provinces")

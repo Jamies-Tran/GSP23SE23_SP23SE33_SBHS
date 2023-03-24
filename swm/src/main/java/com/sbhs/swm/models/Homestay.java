@@ -44,6 +44,9 @@ public class Homestay extends BaseModel {
     private @Setter int availableRooms;
 
     @Column
+    private @Setter int roomCapacity;
+
+    @Column
     private @Setter double totalAverageRating = 0.0;
 
     @Column

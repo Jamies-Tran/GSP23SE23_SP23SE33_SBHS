@@ -11,7 +11,7 @@ import com.sbhs.swm.dto.goong.DistanceResultRows;
 import com.sbhs.swm.handlers.exceptions.InvalidBookingException;
 import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
-
+import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayFacility;
 import com.sbhs.swm.models.HomestayService;
@@ -38,51 +38,58 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
 
     @Override
     public List<BlocHomestay> filterBlocByBookingDateRange(List<BlocHomestay> blocs, String bookingStart,
-            String bookingEnd, int totalBookingRoom) {
-        blocs = blocs.stream().filter(b -> checkValidBookingBloc(b, bookingStart, bookingEnd, totalBookingRoom))
+            String bookingEnd, int getTotalReservation) {
+        blocs = blocs.stream().filter(b -> checkValidBookingBloc(b, bookingStart, bookingEnd, getTotalReservation))
                 .collect(Collectors.toList());
         return blocs;
     }
 
     /* check if bloc still have homestay free schedule - start */
     private boolean checkValidBookingBloc(BlocHomestay bloc, String bookingStart, String bookingEnd,
-            int totalHomestay) {
-        int totalBookedBloc = this.totalHomestayInBlockBooked(bloc.getName(), bookingStart, bookingEnd);
-        int availableHomestay = bloc.getHomestays().size() - totalBookedBloc;
-
-        if (availableHomestay == 0 || availableHomestay < totalHomestay) {
+            int totalReservation) {
+        List<Homestay> availableHomestayList = this.getAllAvailableHomestayInBlock(bloc.getName(), bookingStart,
+                bookingEnd);
+        int totalCurrentCapacityOfBloc = 0;
+        for (Homestay h : availableHomestayList) {
+            int totalHomestayCapacity = h.getAvailableRooms() * h.getRoomCapacity();
+            totalCurrentCapacityOfBloc = totalCurrentCapacityOfBloc + totalHomestayCapacity;
+        }
+        if (totalCurrentCapacityOfBloc == 0 || totalCurrentCapacityOfBloc < totalReservation) {
             return false;
         }
 
         return true;
     }
 
-    private Integer totalHomestayInBlockBooked(String name, String bookingStart, String bookingEnd) {
+    private List<Homestay> getAllAvailableHomestayInBlock(String name, String bookingStart, String bookingEnd) {
         BlocHomestay bloc = blocHomestayRepo.findBlocHomestayByName(name)
                 .orElseThrow(() -> new NotFoundException("can't find bloc"));
         List<Homestay> homestayList = bloc.getHomestays().stream()
-                .filter(h -> isHomestayBooked(h, bookingStart, bookingEnd)).collect(Collectors.toList());
-        return homestayList.size();
+                .filter(h -> isHomestayAvailable(h, bookingStart, bookingEnd)).collect(Collectors.toList());
+        return homestayList;
     }
 
-    private boolean isHomestayBooked(Homestay homestay, String bookingStart, String bookingEnd) {
-        String validateHomestayBookingString = bookingDateValidationUtil.bookingValidateString(bookingStart, bookingEnd,
-                homestay.getName());
-        switch (BookingDateValidationString.valueOf(validateHomestayBookingString)) {
-            case CURRENT_END_ON_BOOKED_END:
-                return true;
-            case CURRENT_START_ON_BOOKED_END:
-                return false;
-            case CURRENT_START_ON_BOOKED_START:
-                return true;
-            case ON_BOOKING_PERIOD:
-                return true;
-            case OK:
-                return false;
-            case INVALID:
-                throw new InvalidBookingException("Invalid booking date");
+    private boolean isHomestayAvailable(Homestay homestay, String bookingStart, String bookingEnd) {
+        for (BookingHomestay b : homestay.getBookingHomestays()) {
+            String validateHomestayBookingString = bookingDateValidationUtil.bookingValidateString(bookingStart,
+                    bookingEnd, b);
+            switch (BookingDateValidationString.valueOf(validateHomestayBookingString)) {
+                case CURRENT_END_ON_BOOKED_END:
+                    return false;
+                case CURRENT_START_ON_BOOKED_END:
+                    break;
+                case CURRENT_START_ON_BOOKED_START:
+                    return false;
+                case ON_BOOKING_PERIOD:
+                    return false;
+                case OK:
+                    break;
+                case INVALID:
+                    throw new InvalidBookingException("Invalid booking date");
+            }
         }
-        return false;
+
+        return true;
     }
 
     /* check if bloc still have homestay free schedule - end */
