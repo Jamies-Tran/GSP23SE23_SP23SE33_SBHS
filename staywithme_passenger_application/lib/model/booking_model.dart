@@ -18,6 +18,7 @@ class BookingBlocModel {
   BookingBlocModel(
       {this.bookingFrom,
       this.bookingTo,
+      this.totalBookingPrice,
       this.paymentMethod,
       this.totalReservation,
       this.homestayName});
@@ -26,11 +27,13 @@ class BookingBlocModel {
   String? bookingTo;
   String? paymentMethod;
   int? totalReservation;
+  int? totalBookingPrice;
   String? homestayName;
 
   Map<String, dynamic> toJson() => {
         "bookingFrom": bookingFrom,
         "bookingTo": bookingTo,
+        "totalBookingPrice": totalBookingPrice,
         "paymentMethod": paymentMethod,
         "totalReservation": totalReservation,
         "homestayName": homestayName
@@ -191,4 +194,17 @@ class BookingValidateModel {
         "homestayName": homestayName,
         "totalReservation": totalReservation
       };
+}
+
+class BlocBookingDateValidationModel {
+  BlocBookingDateValidationModel({this.homestays});
+
+  List<HomestayModel>? homestays;
+
+  factory BlocBookingDateValidationModel.fromJson(Map<String, dynamic> json) =>
+      BlocBookingDateValidationModel(
+          homestays: json["homestays"] != null
+              ? List<HomestayModel>.from(
+                  json["homestays"].map((e) => HomestayModel.fromJson(e)))
+              : <HomestayModel>[]);
 }

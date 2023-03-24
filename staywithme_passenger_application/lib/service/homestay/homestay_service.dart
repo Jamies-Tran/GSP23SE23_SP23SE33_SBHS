@@ -24,6 +24,8 @@ abstract class IHomestayService {
 
   Future<dynamic> getHomestayDetailByName(String name);
 
+  Future<dynamic> getBlocDetailByName(String name);
+
   Future<dynamic> getHomestayFilterAdditionalInformation(String homestayType);
 
   Future<dynamic> getAreaHomestayInfo();
@@ -180,6 +182,29 @@ class HomestayService extends IHomestayService {
         HomestayModel homestayModel =
             HomestayModel.fromJson(json.decode(response.body));
         return homestayModel;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getBlocDetailByName(String name) async {
+    final client = http.Client();
+    final uri = Uri.parse("$blocDetailUrl?name=$name");
+    try {
+      final response =
+          await client.get(uri, headers: {"content-type": "application/json"});
+      if (response.statusCode == 200) {
+        BlocHomestayModel bloc =
+            BlocHomestayModel.fromJson(json.decode(response.body));
+        return bloc;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

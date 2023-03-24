@@ -3,65 +3,67 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:staywithme_passenger_application/bloc/event/homestay_detail_event.dart';
-import 'package:staywithme_passenger_application/bloc/homestay_detail_bloc.dart';
-import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:staywithme_passenger_application/bloc/bloc_detail_bloc.dart';
+import 'package:staywithme_passenger_application/bloc/event/bloc_detail_event.dart';
+import 'package:staywithme_passenger_application/bloc/state/bloc_detail_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
+import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/image_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
-class HomestayDetailScreen extends StatefulWidget {
-  const HomestayDetailScreen({super.key});
-  static const String homestayDetailScreenRoute = "/homestay-detail";
+class BlocDetailScreen extends StatefulWidget {
+  const BlocDetailScreen({super.key});
+  static const blocDetailScreenRoute = "/bloc-detail";
 
   @override
-  State<HomestayDetailScreen> createState() => _HomestayDetailScreenState();
+  State<BlocDetailScreen> createState() => _BlocDetailScreenState();
 }
 
-class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
+class _BlocDetailScreenState extends State<BlocDetailScreen> {
+  final blocHomestayDetailBloc = BlocHomestayDetailBloc();
   final firebaseAuth = FirebaseAuth.instance;
   final homestayService = locator.get<IHomestayService>();
   final imageService = locator.get<IImageService>();
-  final homestayDetailBloc = HomestayDetailBloc();
+
+  final bookingStartDateTextEditingController = TextEditingController();
+  final bookingEndDateTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    String homestayName = contextArguments["homestayName"];
-    final bookingStartDateTextEditingController = TextEditingController();
-    final bookingEndDateTextEditingController = TextEditingController();
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: StreamBuilder<HomestayDetailState>(
-          stream: homestayDetailBloc.stateController.stream,
-          initialData: homestayDetailBloc.iniData(),
-          builder: (context, streamSnapshot) {
-            return SafeArea(
-              child: FutureBuilder(
-                future: homestayService.getHomestayDetailByName(homestayName),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return TweenAnimationBuilder(
-                        tween: Tween<double>(begin: 0, end: 1),
-                        duration: const Duration(seconds: 2),
-                        builder: (context, value, child) => Opacity(
-                          opacity: value,
-                          child: child,
-                        ),
-                        child: Center(child: Image.asset("images/swm.png")),
-                      );
-                    case ConnectionState.done:
-                      if (snapshot.hasData) {
-                        final data = snapshot.data;
-                        if (data is HomestayModel) {
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Column(children: [
+      body: StreamBuilder<BlocHomestayDetailState>(
+        stream: blocHomestayDetailBloc.stateController.stream,
+        initialData: blocHomestayDetailBloc.initData(context),
+        builder: (context, streamSnapshot) {
+          return SafeArea(
+            child: FutureBuilder(
+              future: homestayService
+                  .getBlocDetailByName(streamSnapshot.data!.name!),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return TweenAnimationBuilder(
+                      tween: Tween<double>(begin: 0, end: 1),
+                      duration: const Duration(seconds: 2),
+                      builder: (context, value, child) => Opacity(
+                        opacity: value,
+                        child: child,
+                      ),
+                      child: Center(child: Image.asset("images/swm.png")),
+                    );
+                  case ConnectionState.done:
+                    if (snapshot.hasData) {
+                      final blocData = snapshot.data;
+                      if (blocData is BlocHomestayModel) {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: [
                               SizedBox(
                                 height: 200,
                                 child: Row(
@@ -70,7 +72,11 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                       flex: 1,
                                       child: FutureBuilder(
                                         future: imageService.getHomestayImage(
-                                            data.homestayImages!.first
+                                            blocData
+                                                .homestays!
+                                                .first
+                                                .homestayImages!
+                                                .first
                                                 .imageUrl!),
                                         builder: (context, imgSnapshot) {
                                           switch (snapshot.connectionState) {
@@ -101,7 +107,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                     color: Colors.black,
                                                     child: Center(
                                                       child: Text(
-                                                        "+${data.homestayImages!.length} more",
+                                                        "+${blocData.homestays!.length} more",
                                                         style: const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 25,
@@ -138,7 +144,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      data.name!,
+                                      blocData.name!,
                                       style: const TextStyle(
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold,
@@ -238,17 +244,17 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                 bookingEndDateTextEditingController
                                                         .text =
                                                     dateFormat.format(value!);
-                                                homestayDetailBloc
+                                                blocHomestayDetailBloc
                                                     .eventController.sink
-                                                    .add(OnCheckValidBookingDateEvent(
+                                                    .add(OnGetBlocAvailableHomestayListEvent(
                                                         bookingStart:
                                                             bookingStartDateTextEditingController
                                                                 .text,
                                                         bookingEnd:
                                                             bookingEndDateTextEditingController
                                                                 .text,
-                                                        homestayName:
-                                                            data.name));
+                                                        blocName:
+                                                            blocData.name));
                                               });
                                             },
                                           ),
@@ -281,18 +287,32 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                             if (streamSnapshot
                                                     .data!.isBookingValid ==
                                                 true) {
-                                              homestayDetailBloc
+                                              blocHomestayDetailBloc
                                                   .eventController.sink
                                                   .add(CreateBookingEvent(
                                                       context: context,
-                                                      homestayName: data.name,
-                                                      homestayId: data.id,
+                                                      bloc: blocData,
+                                                      blocBookingDateValidation:
+                                                          streamSnapshot.data!
+                                                              .blocBookingDateValidation,
                                                       bookingStart:
                                                           bookingStartDateTextEditingController
                                                               .text,
                                                       bookingEnd:
                                                           bookingEndDateTextEditingController
                                                               .text));
+                                              // homestayDetailBloc
+                                              //     .eventController.sink
+                                              //     .add(CreateBookingEvent(
+                                              //         context: context,
+                                              //         homestayName: data.name,
+                                              //         homestayId: data.id,
+                                              //         bookingStart:
+                                              //             bookingStartDateTextEditingController
+                                              //                 .text,
+                                              //         bookingEnd:
+                                              //             bookingEndDateTextEditingController
+                                              //                 .text));
                                             }
                                           },
                                           child: const Text(
@@ -305,54 +325,46 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                   ],
                                 ),
                               ),
-                            ]),
-                          );
-                        } else if (data is ServerExceptionModel) {
-                          return AlertDialog(
-                            content: const Center(
-                                child: Text(
-                                    "our server currently on maintainance schedule, please comeback later...")),
-                            actions: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text("Try again"),
-                              )
                             ],
-                          );
-                        } else if (data is SocketException ||
-                            data is TimeoutException) {
-                          return AlertDialog(
-                            content: const Center(child: Text("Network error")),
-                            actions: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text("Try again"),
-                              )
-                            ],
-                          );
-                        }
-                      } else {
+                          ),
+                        );
+                      } else if (blocData is ServerExceptionModel) {
                         return AlertDialog(
                           content: const Center(
                               child: Text(
-                                  "We can't get your data. Please try again later")),
+                                  "our server currently on maintainance schedule, please comeback later...")),
                           actions: [
                             TextButton(
-                                onPressed: () {},
-                                child: const Text("Try again"))
+                              onPressed: () {},
+                              child: const Text("Try again"),
+                            )
+                          ],
+                        );
+                      } else if (blocData is SocketException ||
+                          blocData is TimeoutException) {
+                        return AlertDialog(
+                          content: const Center(child: Text("Network error")),
+                          actions: [
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text("Try again"),
+                            )
                           ],
                         );
                       }
-                      break;
-
-                    default:
-                      break;
-                  }
-                  return const SizedBox();
-                },
-              ),
-            );
-          }),
+                    } else {
+                      return const SizedBox();
+                    }
+                    break;
+                  default:
+                    break;
+                }
+                return const SizedBox();
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:staywithme_passenger_application/bloc/event/search_homestay_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/search_homestay_state.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
+import 'package:staywithme_passenger_application/screen/homestay/bloc_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
@@ -56,6 +57,10 @@ class SearchHomestayBloc {
       Navigator.pushNamed(
           event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
           arguments: {"homestayName": event.homestayName});
+    } else if (event is OnViewBlocHomestayDetailEvent) {
+      Navigator.pushNamed(
+          event.context!, BlocDetailScreen.blocDetailScreenRoute,
+          arguments: {"blocName": event.blocName});
     }
     stateController.sink.add(SearchHomestayState(homestayType: _homestayType));
   }

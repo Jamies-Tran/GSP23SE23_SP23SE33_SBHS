@@ -26,3 +26,10 @@ class OnViewHomestayDetailEvent extends SearchHomestayEvent {
   BuildContext? context;
   String? homestayName;
 }
+
+class OnViewBlocHomestayDetailEvent extends SearchHomestayEvent {
+  OnViewBlocHomestayDetailEvent({this.context, this.blocName});
+
+  BuildContext? context;
+  String? blocName;
+}

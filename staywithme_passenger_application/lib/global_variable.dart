@@ -59,8 +59,13 @@ final submitBookingUrl =
 final homestayDetailUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_DETAIL"]}";
 
+final blocDetailUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_DETAIL"]}";
+
 final homestayBookingDateValidationUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_BOOKING_VALIDATE"]}";
+
+final blocAvailableHomestaysUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_AVAILABLE_HOMESTAYS"]}";
 
 final bookingHomestayUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_HOMESTAY"]}";

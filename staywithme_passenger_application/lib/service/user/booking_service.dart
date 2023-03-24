@@ -23,6 +23,9 @@ abstract class IBookingService {
   Future<dynamic> checkValidBookingDateForHomestay(
       BookingValidateModel bookingValidateModel);
 
+  Future<dynamic> getBlocAvailableHomestayList(
+      BookingValidateModel bookingValidateModel);
+
   Future<dynamic> getBookingHomestsayById(String username, int homestayId);
 }
 
@@ -200,6 +203,31 @@ class BookingService extends IBookingService {
               ServerExceptionModel.fromJson(json.decode(response.body));
           return serverExceptionModel;
         }
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getBlocAvailableHomestayList(
+      BookingValidateModel bookingValidateModel) async {
+    final client = http.Client();
+    final uri = Uri.parse(blocAvailableHomestaysUrl);
+    try {
+      final response = await client.post(uri,
+          headers: {"content-type": "application/json"},
+          body: json.encode(bookingValidateModel.toJson()));
+      if (response.statusCode == 200) {
+        BlocBookingDateValidationModel blocBookingValidation =
+            BlocBookingDateValidationModel.fromJson(json.decode(response.body));
+        return blocBookingValidation;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
       }
     } on TimeoutException catch (e) {
       return e;

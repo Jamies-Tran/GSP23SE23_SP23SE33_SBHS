@@ -249,12 +249,18 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Choose your service",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: primaryColor),
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: 0, end: 1),
+                duration: const Duration(seconds: 1),
+                builder: (context, value, child) =>
+                    Opacity(opacity: value, child: child),
+                child: const Text(
+                  "Choose your service",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor),
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -264,53 +270,60 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
                 child: ListView.builder(
                   itemCount: widget.homestayServiceList!.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        chooseHomestayServiceBloc.eventController.sink.add(
-                            OnTabHomestayServiceEvent(
-                                homestayServiceModel:
-                                    widget.homestayServiceList![index]));
-                      },
-                      child: Container(
-                        height: 100,
-                        margin: const EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            color: streamSnapshot.data!.isServiceChoose(widget
-                                        .homestayServiceList![index].name!) ==
-                                    true
-                                ? primaryColor
-                                : Colors.white),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.homestayServiceList![index].name!,
-                                style: const TextStyle(
-                                    fontFamily: "Lobster",
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                width: 100,
-                              ),
-                              Text(
-                                "Price(VND): ${currencyFormat.format(widget.homestayServiceList![index].price!)}",
-                                style: TextStyle(
-                                    fontFamily: "Lobster",
-                                    letterSpacing: 1.0,
-                                    color: streamSnapshot.data!.isServiceChoose(
-                                                widget
-                                                    .homestayServiceList![index]
-                                                    .name!) ==
-                                            true
-                                        ? Colors.black
-                                        : secondaryColor,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ]),
+                    return TweenAnimationBuilder(
+                      tween: Tween<double>(begin: 0, end: 1),
+                      duration: Duration(seconds: index + 1),
+                      builder: (context, value, child) =>
+                          Opacity(opacity: value, child: child),
+                      child: GestureDetector(
+                        onTap: () {
+                          chooseHomestayServiceBloc.eventController.sink.add(
+                              OnTabHomestayServiceEvent(
+                                  homestayServiceModel:
+                                      widget.homestayServiceList![index]));
+                        },
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20)),
+                              color: streamSnapshot.data!.isServiceChoose(widget
+                                          .homestayServiceList![index].name!) ==
+                                      true
+                                  ? primaryColor
+                                  : Colors.white),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.homestayServiceList![index].name!,
+                                  style: const TextStyle(
+                                      fontFamily: "Lobster",
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 100,
+                                ),
+                                Text(
+                                  "Price(VND): ${currencyFormat.format(widget.homestayServiceList![index].price!)}",
+                                  style: TextStyle(
+                                      fontFamily: "Lobster",
+                                      letterSpacing: 1.0,
+                                      color: streamSnapshot.data!
+                                                  .isServiceChoose(widget
+                                                      .homestayServiceList![
+                                                          index]
+                                                      .name!) ==
+                                              true
+                                          ? Colors.black
+                                          : secondaryColor,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ]),
+                        ),
                       ),
                     );
                   },
@@ -393,10 +406,20 @@ class _ViewHomestayFacilityScreenState
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "Homestay Facility List",
-            style: TextStyle(
-                fontSize: 25, fontWeight: FontWeight.bold, color: primaryColor),
+          TweenAnimationBuilder(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(seconds: 1),
+            builder: (context, value, child) => Opacity(
+              opacity: value,
+              child: child,
+            ),
+            child: const Text(
+              "Homestay Facility List",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor),
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -406,35 +429,43 @@ class _ViewHomestayFacilityScreenState
             child: ListView.builder(
               itemCount: widget.homestayFacilityList!.length,
               itemBuilder: (context, index) {
-                return Container(
-                  height: 100,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.homestayFacilityList![index].name!,
-                          style: const TextStyle(
-                              fontFamily: "Lobster",
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 100,
-                        ),
-                        Text(
-                          "Quantity: ${widget.homestayFacilityList![index].quantity!}",
-                          style: const TextStyle(
-                              fontFamily: "Lobster",
-                              letterSpacing: 1.0,
-                              color: secondaryColor,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ]),
+                return TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: Duration(seconds: index + 1),
+                  builder: (context, value, child) => Opacity(
+                    opacity: value,
+                    child: child,
+                  ),
+                  child: Container(
+                    height: 100,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: Colors.white),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.homestayFacilityList![index].name!,
+                            style: const TextStyle(
+                                fontFamily: "Lobster",
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            width: 100,
+                          ),
+                          Text(
+                            "Quantity: ${widget.homestayFacilityList![index].quantity!}",
+                            style: const TextStyle(
+                                fontFamily: "Lobster",
+                                letterSpacing: 1.0,
+                                color: secondaryColor,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ),
                 );
               },
             ),
@@ -508,33 +539,54 @@ class _ViewHomestayRuleScreenState extends State<ViewHomestayRuleScreen> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "View Homestay Rules",
-            style: TextStyle(
-                fontSize: 25, fontWeight: FontWeight.bold, color: primaryColor),
+          TweenAnimationBuilder(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(seconds: 1),
+            builder: (context, value, child) =>
+                Opacity(opacity: value, child: child),
+            child: const Text(
+              "View Homestay Rules",
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor),
+            ),
           ),
           SizedBox(
             height: 500,
             child: ListView.builder(
               itemCount: widget.homestayRuleList!.length,
               itemBuilder: (context, index) {
-                return Container(
-                  height: 200,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("${index + 1}",
+                return TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: Duration(seconds: index + 1),
+                  builder: (context, value, child) => Opacity(
+                    opacity: value,
+                    child: child,
+                  ),
+                  child: Container(
+                    height: 200,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("${index + 1}",
+                              style: const TextStyle(
+                                  fontFamily: "Lobster",
+                                  fontWeight: FontWeight.bold,
+                                  color: primaryColor)),
+                          const SizedBox(
+                            width: 100,
+                          ),
+                          Text(
+                            "${widget.homestayRuleList![index].description}",
                             style: const TextStyle(
                                 fontFamily: "Lobster",
-                                fontWeight: FontWeight.bold,
-                                color: primaryColor)),
-                        const SizedBox(
-                          width: 100,
-                        ),
-                        Text("${widget.homestayRuleList![index].description}")
-                      ]),
+                                fontWeight: FontWeight.bold),
+                          )
+                        ]),
+                  ),
                 );
               },
             ),
@@ -622,328 +674,441 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white24,
-                      boxShadow: const [
-                        BoxShadow(
-                            blurRadius: 2.0,
-                            blurStyle: BlurStyle.outer,
-                            offset: Offset(0.5, 0.5),
-                            color: Colors.black45)
-                      ]),
-                  margin: const EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "BOOKING INFORMATION",
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, child) => Opacity(
+                    opacity: value,
+                    child: child,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white24,
+                        boxShadow: const [
+                          BoxShadow(
+                              blurRadius: 2.0,
+                              blurStyle: BlurStyle.outer,
+                              offset: Offset(0.5, 0.5),
+                              color: Colors.black45)
+                        ]),
+                    margin: const EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TweenAnimationBuilder(
+                            tween: Tween<double>(begin: 0, end: 1),
+                            duration: const Duration(seconds: 2),
+                            builder: (context, value, child) => Opacity(
+                              opacity: value,
+                              child: child,
+                            ),
+                            child: const Text(
+                              "BOOKING INFORMATION",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                  letterSpacing: 1.0),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          TweenAnimationBuilder(
+                            tween: Tween<double>(begin: 0, end: 1),
+                            duration: const Duration(seconds: 3),
+                            builder: (context, value, child) => Opacity(
+                              opacity: value,
+                              child: child,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(children: [
+                                SizedBox(
+                                  height: 200,
+                                  child: Column(children: [
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Homestay:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(utf8.decode(snapshot
+                                            .data!.homestay!.name!.runes
+                                            .toList()))
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Address:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                            utf8.decode(snapshot
+                                                .data!.homestay!.address!.runes
+                                                .toList()),
+                                            maxLines: 2,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Booking from:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(snapshot.data!.bookingStart!)
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Booking to:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(snapshot.data!.bookingEnd!)
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Total reservation:",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(snapshot.data!.totalReservation
+                                            .toString())
+                                      ],
+                                    ),
+                                  ]),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Total booking price(VND):",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(currencyFormat.format(
+                                        snapshot.data!.totalBookingPrice()))
+                                  ],
+                                )
+                              ]),
+                            ),
+                          ),
+                        ]),
+                  ),
+                ),
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 50),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, child) => SizedBox(
+                    height: value,
+                    child: child,
+                  ),
+                  child: const SizedBox(),
+                ),
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, child) => Opacity(
+                    opacity: value,
+                    child: child,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white24,
+                        boxShadow: const [
+                          BoxShadow(
+                              blurRadius: 2.0,
+                              blurStyle: BlurStyle.outer,
+                              offset: Offset(0.5, 0.5),
+                              color: Colors.black45)
+                        ]),
+                    margin: const EdgeInsets.only(left: 10, right: 10),
+                    child: Column(children: [
+                      TweenAnimationBuilder(
+                        tween: Tween<double>(begin: 0, end: 1),
+                        duration: const Duration(seconds: 2),
+                        builder: (context, value, child) =>
+                            Opacity(opacity: value, child: child),
+                        child: const Text(
+                          "SERVICE LIST",
                           style: TextStyle(
                               color: primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 25,
                               letterSpacing: 1.0),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(children: [
-                            SizedBox(
-                              height: 200,
-                              child: Column(children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Homestay:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(utf8.decode(snapshot
-                                        .data!.homestay!.name!.runes
-                                        .toList()))
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Address:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        utf8.decode(snapshot
-                                            .data!.homestay!.address!.runes
-                                            .toList()),
-                                        maxLines: 2,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(children: [
+                          snapshot.data!.homestayServiceList!.isNotEmpty
+                              ? SizedBox(
+                                  height: 100,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: snapshot
+                                        .data!.homestayServiceList!.length,
+                                    itemBuilder: (context, index) => Container(
+                                      margin: const EdgeInsets.only(bottom: 5),
+                                      child: TweenAnimationBuilder(
+                                        tween: Tween<double>(begin: 0, end: 1),
+                                        duration: Duration(seconds: index + 1),
+                                        builder: (context, value, child) =>
+                                            Opacity(
+                                                opacity: value, child: child),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                snapshot
+                                                    .data!
+                                                    .homestayServiceList![index]
+                                                    .name!,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                width: 100,
+                                              ),
+                                              TweenAnimationBuilder(
+                                                tween: Tween<double>(
+                                                    begin: 0, end: 1),
+                                                duration:
+                                                    const Duration(seconds: 3),
+                                                builder:
+                                                    (context, value, child) =>
+                                                        Opacity(
+                                                            opacity: value,
+                                                            child: child),
+                                                child: Text(
+                                                  "Price(VND): ${snapshot.data!.homestayServiceList![index].price}",
+                                                  style: const TextStyle(
+                                                      fontFamily: "Lobster",
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              )
+                                            ]),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Booking from:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(snapshot.data!.bookingStart!)
-                                  ],
+                                  ),
+                                )
+                              : TweenAnimationBuilder(
+                                  tween: Tween<double>(begin: 0, end: 1),
+                                  duration: const Duration(seconds: 2),
+                                  builder: (context, value, child) =>
+                                      Opacity(opacity: value, child: child),
+                                  child: const Center(
+                                      child: SizedBox(
+                                          height: 100,
+                                          child: Text(
+                                              "You haven't choose any service"))),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Booking to:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(snapshot.data!.bookingEnd!)
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Total reservation:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(snapshot.data!.totalReservation
-                                        .toString())
-                                  ],
-                                ),
-                              ]),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TweenAnimationBuilder(
+                            tween: Tween<double>(begin: 0, end: 1),
+                            duration: const Duration(seconds: 2),
+                            builder: (context, value, child) =>
+                                Opacity(opacity: value, child: child),
+                            child: TextButton(
+                                onPressed: () {
+                                  overviewBookingBloc.eventController.sink.add(
+                                      EditHomestayServiceBookingEvent(
+                                          conext: context,
+                                          homestayServiceList:
+                                              widget.homestayServiceList,
+                                          homestayName: widget.homestay!.name,
+                                          bookingStart: widget.bookingStart,
+                                          bookingEnd: widget.bookingEnd,
+                                          totalServicePrice:
+                                              widget.totalServicePrice));
+                                },
+                                child: const Text("Edit",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold))),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TweenAnimationBuilder(
+                            tween: Tween<double>(begin: 0, end: 1),
+                            duration: const Duration(seconds: 3),
+                            builder: (context, value, child) =>
+                                Opacity(opacity: value, child: child),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
-                                  "Total booking price(VND):",
+                                  "Total service price(VND): ",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Text(currencyFormat
-                                    .format(snapshot.data!.totalBookingPrice()))
+                                    .format(snapshot.data!.totalServicePrice))
                               ],
-                            )
-                          ]),
-                        ),
-                      ]),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white24,
-                      boxShadow: const [
-                        BoxShadow(
-                            blurRadius: 2.0,
-                            blurStyle: BlurStyle.outer,
-                            offset: Offset(0.5, 0.5),
-                            color: Colors.black45)
-                      ]),
-                  margin: const EdgeInsets.only(left: 10, right: 10),
-                  child: Column(children: [
-                    const Text(
-                      "SERVICE LIST",
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          letterSpacing: 1.0),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(children: [
-                        snapshot.data!.homestayServiceList!.isNotEmpty
-                            ? SizedBox(
-                                height: 100,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: snapshot
-                                      .data!.homestayServiceList!.length,
-                                  itemBuilder: (context, index) => Container(
-                                    margin: const EdgeInsets.only(bottom: 5),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            snapshot
-                                                .data!
-                                                .homestayServiceList![index]
-                                                .name!,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          const SizedBox(
-                                            width: 100,
-                                          ),
-                                          Text(
-                                            "Price(VND): ${snapshot.data!.homestayServiceList![index].price}",
-                                            style: const TextStyle(
-                                                fontFamily: "Lobster",
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        ]),
-                                  ),
-                                ),
-                              )
-                            : const Center(
-                                child: SizedBox(
-                                    height: 100,
-                                    child: Text(
-                                        "You haven't choose any service"))),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              overviewBookingBloc.eventController.sink.add(
-                                  EditHomestayServiceBookingEvent(
-                                      conext: context,
-                                      homestayServiceList:
-                                          widget.homestayServiceList,
-                                      homestayName: widget.homestay!.name,
-                                      bookingStart: widget.bookingStart,
-                                      bookingEnd: widget.bookingEnd,
-                                      totalServicePrice:
-                                          widget.totalServicePrice));
-                            },
-                            child: const Text("Edit",
-                                style: TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Total service price(VND): ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(currencyFormat
-                                .format(snapshot.data!.totalServicePrice))
-                          ],
-                        )
-                      ]),
-                    )
-                  ]),
+                          )
+                        ]),
+                      )
+                    ]),
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 10),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, child) =>
+                      SizedBox(height: value, child: child),
+                  child: const SizedBox(),
                 ),
                 Column(
                   children: [
-                    const Text(
-                      "Choose payment method: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    TweenAnimationBuilder(
+                      tween: Tween<double>(begin: 0, end: 1),
+                      duration: const Duration(seconds: 1),
+                      builder: (context, value, child) =>
+                          Opacity(opacity: value, child: child),
+                      child: const Text(
+                        "Choose payment method: ",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: const Text("SWM Wallet"),
-                            leading: Radio<PaymentMethod>(
-                              value: PaymentMethod.swm_wallet,
-                              groupValue: snapshot.data!.paymentMethod!,
-                              onChanged: (value) => overviewBookingBloc
-                                  .eventController.sink
-                                  .add(ChoosePaymentMethodEvent(
-                                      paymentMethod: value)),
+                    TweenAnimationBuilder(
+                      tween: Tween<double>(begin: 0, end: 1),
+                      duration: const Duration(seconds: 2),
+                      builder: (context, value, child) =>
+                          Opacity(opacity: value, child: child),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: ListTile(
+                              title: const Text("SWM Wallet"),
+                              leading: Radio<PaymentMethod>(
+                                value: PaymentMethod.swm_wallet,
+                                groupValue: snapshot.data!.paymentMethod!,
+                                onChanged: (value) => overviewBookingBloc
+                                    .eventController.sink
+                                    .add(ChoosePaymentMethodEvent(
+                                        paymentMethod: value)),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: ListTile(
-                            title: const Text("Cash"),
-                            leading: Radio<PaymentMethod>(
-                              value: PaymentMethod.cash,
-                              groupValue: snapshot.data!.paymentMethod!,
-                              onChanged: (value) => overviewBookingBloc
-                                  .eventController.sink
-                                  .add(ChoosePaymentMethodEvent(
-                                      paymentMethod: value)),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: ListTile(
+                              title: const Text("Cash"),
+                              leading: Radio<PaymentMethod>(
+                                value: PaymentMethod.cash,
+                                groupValue: snapshot.data!.paymentMethod!,
+                                onChanged: (value) => overviewBookingBloc
+                                    .eventController.sink
+                                    .add(ChoosePaymentMethodEvent(
+                                        paymentMethod: value)),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 20),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, child) =>
+                      SizedBox(height: value, child: child),
+                  child: const SizedBox(),
                 ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        minimumSize: const Size(200, 50),
-                        maximumSize: const Size(200, 50)),
-                    onPressed: () {
-                      overviewBookingBloc.eventController.sink.add(
-                          SaveBookingHomestayEvent(
-                              bookingHomestay:
-                                  snapshot.data!.bookingHomestayModel(),
-                              bookingId: widget.bookingId,
-                              context: context));
-                    },
-                    child: const Text(
-                      "Proceed",
-                      style: TextStyle(
-                          fontFamily: "Lobster",
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ))
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: const Duration(seconds: 1),
+                  builder: (context, value, child) =>
+                      Opacity(opacity: value, child: child),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            minimumSize: const Size(200, 50),
+                            maximumSize: const Size(200, 50)),
+                        onPressed: () {
+                          overviewBookingBloc.eventController.sink.add(
+                              SaveBookingHomestayEvent(
+                                  bookingHomestay:
+                                      snapshot.data!.bookingHomestayModel(),
+                                  bookingId: widget.bookingId,
+                                  context: context));
+                        },
+                        child: const Text(
+                          "Proceed",
+                          style: TextStyle(
+                              fontFamily: "Lobster",
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ),
+                )
               ],
             ),
           );
