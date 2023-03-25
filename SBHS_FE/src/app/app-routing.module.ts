@@ -11,6 +11,7 @@ import { TestComponent } from './test/test/test.component';
 import { TestTwoComponent } from './test/test-two/test-two.component';
 import { TestThreeComponent } from './test/test-three/test-three.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'Login', component: LoginLandlordComponent },
   { path: 'Register', component: RegisterComponent },
   { path: 'ForgotPassword', component: ForgotPassComponent },
-  { path: 'Admin', component: AdminComponent },
+  { path: 'Admin', component: AdminComponent, canActivate: [AuthGuard] },
   {
     path: 'Admin',
     loadChildren: () =>
@@ -29,7 +30,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./admin/admin-routing.module').then((m) => m.AdminRoutingModule),
   },
-  { path: 'Landlord', component: LandlordComponent },
+  { path: 'Landlord', component: LandlordComponent, canActivate: [AuthGuard] },
   {
     path: 'Landlord',
     loadChildren: () =>

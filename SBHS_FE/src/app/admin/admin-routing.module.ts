@@ -6,11 +6,12 @@ import { AccountLandlordDetailComponent } from './request-account-landlord/accou
 import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
 import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
 import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bloc-homestay.component';
+import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent,
+    component: AdminComponent,canActivateChild: [AuthGuard],
     children: [
       {
         path: 'RequestAccountLandlord',

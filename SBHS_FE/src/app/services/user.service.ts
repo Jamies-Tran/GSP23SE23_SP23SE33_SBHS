@@ -92,4 +92,7 @@ export class UserService {
       .post<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
+  setToken(token: string){
+    localStorage.setItem('token',token);
+  }
 }

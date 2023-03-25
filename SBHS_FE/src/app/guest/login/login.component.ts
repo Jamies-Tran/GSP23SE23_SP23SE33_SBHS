@@ -67,8 +67,8 @@ export class LoginLandlordComponent {
   public getProfile() {
     this.http
       .login(
-        this.usernameFormControl.value + '',
-        this.passwordFormControl.value + ''
+        this.usernameFormControl.value!,
+        this.passwordFormControl.value!
       )
       .subscribe((data) => {
         localStorage.setItem('userToken', data['token']);
@@ -76,6 +76,7 @@ export class LoginLandlordComponent {
         localStorage.setItem('role', data['roles']);
         localStorage.setItem('password', this.passwordFormControl.value as string );
         console.log(data);
+        console.log(localStorage.getItem('role'));
         if (data['roles'][0] === 'LANDLORD') {
           this.router.navigate(['/Landlord'], {
             relativeTo: this.route,

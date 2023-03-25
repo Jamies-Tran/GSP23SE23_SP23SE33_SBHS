@@ -7,12 +7,13 @@ import { RegisterBlocHomestayComponent } from './homestay/register-bloc-homestay
 import { RegisterHomestayComponent } from './homestay/register-homestay/register-homestay.component';
 import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
 import { ProfileComponent } from '../profile/profile.component';
+import { AuthGuard } from '../auth.guard';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: LandlordComponent,
+    component: LandlordComponent,canActivateChild: [AuthGuard],
     children: [
       {
         path: 'Homestay',
