@@ -89,6 +89,7 @@ export class HomestayService {
     homestayServices: Array<any>,
     homestayFacilities: Array<any>,
     price: string,
+    roomCapacity:number,
     homestayRules: Array<any>
   ) {
     var value = {
@@ -101,6 +102,7 @@ export class HomestayService {
       homestayServices,
       name,
       price,
+      roomCapacity
     };
     let httpOptions = {
       headers: new HttpHeaders({

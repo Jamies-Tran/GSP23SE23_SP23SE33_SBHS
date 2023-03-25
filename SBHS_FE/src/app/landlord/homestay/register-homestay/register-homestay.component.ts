@@ -42,11 +42,13 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     homestayName: ['', Validators.required],
     address: ['', Validators.required],
     number: ['', Validators.required],
+    roomCapacity: ['', Validators.required],
     homestayLicense: [false, Validators.requiredTrue],
   });
   homestayName: string = '';
   address: string = '';
   totalRoom: number = 0;
+  roomCapacity: number = 0;
   isHomestayLicense: boolean = false;
   informationForm() {
     // Lay value
@@ -57,6 +59,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     this.homestayName = formInformationFormGroupValue.homestayName.value!;
     this.address = formInformationFormGroupValue.address.value!;
     this.totalRoom = parseInt(formInformationFormGroupValue.number.value!);
+    this.roomCapacity = parseInt(formInformationFormGroupValue.roomCapacity.value!);
     this.isHomestayLicense =
       formInformationFormGroupValue.homestayLicense.value!;
     if (this.homestayName === '') {
@@ -78,6 +81,10 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       return;
     } else if(this.totalRoom >100){
       this.message = 'Total room must be less than 100';
+      this.openDialogMessage();
+      return;
+    }else if(this.roomCapacity >20){
+      this.message = 'Room Capacity must be less than 20';
       this.openDialogMessage();
       return;
     }
@@ -376,7 +383,9 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
-      this.homestayImages.push({ imageUrl: this.file.name });
+      this.homestayImages.push({ imageUrl: this.informationFormGroup.controls.homestayName.value +
+        ' ' +
+        this.file.name });
     }
 
     // homestayLicenseFiles
@@ -388,7 +397,9 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
-      this.homestayLicense = this.file.name;
+      this.homestayLicense = this.informationFormGroup.controls.homestayName.value +
+      ' ' +
+      this.file.name;
     }
     console.log(this.homestayImages);
 
@@ -402,6 +413,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
           this.homestayServices,
           this.homestayFacilities,
           this.priceTax.toString(),
+          this.roomCapacity,
           this.homestayRules
         )
         .subscribe(

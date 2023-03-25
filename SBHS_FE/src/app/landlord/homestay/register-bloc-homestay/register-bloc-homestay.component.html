@@ -594,12 +594,22 @@
                       </div>
 
                       <!-- available Rooms -->
-                      <div class="mb-3">
-                        <h6 class="mb-0">Available Rooms<span class="text-danger">*</span></h6>
-                        <input type="number" min="0" class="form-control" name="room" formControlName="room"
-                          pattern="[0-9]*"
-                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                          maxlength="2" minlength="1" />
+                      <div class="mb-3 row">
+                        <div class="col-6">
+                          <h6 class="mb-0">Available Rooms<span class="text-danger">*</span></h6>
+                          <input type="number" min="0" class="form-control" name="room" formControlName="room"
+                            pattern="[0-9]*"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            maxlength="2" minlength="1" />
+                        </div>
+                        <div class="col-6">
+                          <h6 class="mb-0">Room Capacity<span class="text-danger">*</span></h6>
+                          <input type="number" min="0" class="form-control" name="roomCapacity" formControlName="roomCapacity"
+                            pattern="[0-9]*"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            maxlength="2" minlength="1" />
+                        </div>
+
                       </div>
 
 

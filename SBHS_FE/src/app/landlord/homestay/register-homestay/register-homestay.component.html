@@ -23,11 +23,20 @@
                           formControlName="homestayName" [(ngModel)]="homestayName">
                       </div>
                       <!-- Available Rooms -->
-                      <div class="mb-3">
-                        <h6 class="mb-0">Available Rooms <span class="text-danger">*</span></h6>
-                        <input type="number" name="homestayTotalRoomInput" class="form-control" required mdbInput
-                          mdbValidate formControlName="number" min="1" max="99" maxlength="2" minlength="1"
-                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                      <div class="mb-3 row">
+                        <div class="col-6">
+                          <h6 class="mb-0">Available Rooms <span class="text-danger">*</span></h6>
+                          <input type="number" name="homestayTotalRoomInput" class="form-control" required mdbInput
+                            mdbValidate formControlName="number" min="1" max="99" maxlength="2" minlength="1"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                        </div>
+                        <div class="col-6">
+                          <h6 class="mb-0">Room Capacity <span class="text-danger">*</span></h6>
+                          <input type="number" name="homestayRoomCapacityInput" class="form-control" required mdbInput
+                            mdbValidate formControlName="roomCapacity" min="1" max="10" maxlength="2" minlength="1"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                        </div>
+
                       </div>
                       <!-- Address -->
                       <div class="mb-3">

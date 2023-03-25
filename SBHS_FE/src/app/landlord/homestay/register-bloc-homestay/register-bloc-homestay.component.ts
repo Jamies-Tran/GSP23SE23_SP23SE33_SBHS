@@ -25,8 +25,8 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private httpGoong: GoongService ,
-    private httpHomestay: HomestayService  ,
+    private httpGoong: GoongService,
+    private httpHomestay: HomestayService,
     private storage: AngularFireStorage
   ) {}
 
@@ -72,6 +72,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     name: ['', Validators.required],
     room: ['', Validators.required],
     price: ['', Validators.required],
+    roomCapacity: ['', Validators.required],
   });
 
   //  homestay
@@ -86,13 +87,15 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       this.message = 'Please enter Available rooms';
       this.openDialogMessage();
       return;
-    } else if (
-      parseInt(this.homestayInformationFormGroup.controls.room.value!) > 100
-    ) {
+    } else if ( parseInt(this.homestayInformationFormGroup.controls.room.value!) > 100) {
       this.message = 'Total room must be less than 100';
       this.openDialogMessage();
       return;
-    } else if (this.homestayInformationFormGroup.controls.price.value == '') {
+    } else if ( parseInt(this.homestayInformationFormGroup.controls.roomCapacity.value!) > 20) {
+      this.message = 'Room capacity must be less than 20';
+      this.openDialogMessage();
+      return;
+    }else if (this.homestayInformationFormGroup.controls.price.value == '') {
       this.message = 'Please enter price';
       this.openDialogMessage();
       return;
@@ -469,6 +472,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   homestays: {
     name: string;
     availableRooms: number;
+    roomCapacity: number;
     price: number;
     homestayFacilities: any[];
     homestayImages: any[];
@@ -478,6 +482,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     name: string;
     room: number;
     price: number;
+    roomCapacity: number;
     commonFacility: any;
     addFacility: any[];
     imageFile: File[];
@@ -508,6 +513,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     name: string;
     room: number;
     price: number;
+    roomCapacity: number;
     imageUrl: File;
   }[] = [];
   setHomestay() {
@@ -518,12 +524,15 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       if (this.isEdit == false) {
         if (this.homestayImageFiles.length != 0) {
           for (this.file of this.homestayImageFiles) {
-            this.homestayImages.push({ imageUrl: this.file.name });
+            this.homestayImages.push({ imageUrl:  this.homestayInformationFormGroup.controls.name.value + ' ' + this.file.name });
           }
           this.homestays.push({
             name: this.homestayInformationFormGroup.controls.name.value + '',
             availableRooms: parseInt(
               this.homestayInformationFormGroup.controls.room.value!
+            ),
+            roomCapacity: parseInt(
+              this.homestayInformationFormGroup.controls.roomCapacity.value!
             ),
             price: parseInt(
               this.homestayInformationFormGroup.controls.price.value!
@@ -537,6 +546,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
             room: parseInt(
               this.homestayInformationFormGroup.controls.room.value!
             ),
+            roomCapacity: parseInt(
+              this.homestayInformationFormGroup.controls.roomCapacity.value!
+            ),
             price: parseInt(
               this.homestayInformationFormGroup.controls.price.value!
             ),
@@ -546,6 +558,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
             name: this.homestayInformationFormGroup.controls.name.value + '',
             room: parseInt(
               this.homestayInformationFormGroup.controls.room.value!
+            ),
+            roomCapacity: parseInt(
+              this.homestayInformationFormGroup.controls.roomCapacity.value!
             ),
             price: parseInt(
               this.homestayInformationFormGroup.controls.price.value!
@@ -567,6 +582,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           this.homestays[this.index].availableRooms = this
             .homestayInformationFormGroup.controls.room
             .value as unknown as number;
+          this.homestays[this.index].roomCapacity = this
+            .homestayInformationFormGroup.controls.roomCapacity
+            .value as unknown as number;
           this.homestays[this.index].price = this.homestayInformationFormGroup
             .controls.price.value as unknown as number;
           this.homestays[this.index].homestayFacilities =
@@ -578,6 +596,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           this.overviewHomestays[this.index].room = this
             .homestayInformationFormGroup.controls.room
             .value as unknown as number;
+          this.overviewHomestays[this.index].roomCapacity = this
+            .homestayInformationFormGroup.controls.roomCapacity
+            .value as unknown as number;
           this.overviewHomestays[this.index].price = this
             .homestayInformationFormGroup.controls.price
             .value as unknown as number;
@@ -588,6 +609,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
             .homestayInformationFormGroup.controls.name.value as string;
           this.homestaysDetail[this.index].room = this
             .homestayInformationFormGroup.controls.room
+            .value as unknown as number;
+          this.homestaysDetail[this.index].roomCapacity = this
+            .homestayInformationFormGroup.controls.roomCapacity
             .value as unknown as number;
           this.homestaysDetail[this.index].price = this
             .homestayInformationFormGroup.controls.price
@@ -627,6 +651,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.homestayInformationFormGroup.controls.room.setValue(
       detail.room as unknown as string
     );
+    this.homestayInformationFormGroup.controls.roomCapacity.setValue(
+      detail.roomCapacity as unknown as string
+    );
     this.homestayInformationFormGroup.controls.price.setValue(
       detail.price as unknown as string
     );
@@ -664,6 +691,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     // }
 
     // homestayLicenseFiles
+    for( this.file of this.homestayLicenseFiles){
+      this.homestayLicense = this.file.name;
+    }
 
     this.data = {
       address: '',
@@ -677,6 +707,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           homestayImages: [{ imageUrl: '' }],
           name: '',
           price: 0,
+          roomCapacity:0
         },
       ],
       name: '',
@@ -686,12 +717,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       .value as string;
     this.data.address = this.informationFormGroup.controls.address
       .value as string;
+      this.data.businessLicense = this.homestayLicense;
     this.data.homestayRules = this.homestayRules;
     this.data.homestayServices = this.homestayServices;
     this.data.homestays = this.homestays;
     console.log('data', this.data);
-    if (this.flag === true && this.data.homestays.length >0) {
-
+    if (this.flag === true && this.data.homestays.length > 0) {
       this.httpHomestay.createBloc(this.data).subscribe(
         (data) => {
           for (this.file of this.homestayLicenseFiles) {
@@ -719,7 +750,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           this.openDialogMessage();
         }
       );
-    } else if(this.data.homestays.length ==0){
+    } else if (this.data.homestays.length == 0) {
       this.message = 'Please add more one homestay';
       this.openDialogMessage();
     }
@@ -767,6 +798,7 @@ export interface Data {
     homestayImages: Array<{ imageUrl: string }>;
     name: string;
     price: number;
+    roomCapacity: number;
   }>;
   name: string;
 }
