@@ -20,4 +20,6 @@ public interface IMailService {
     public void informBookingToLandlord(String landlordName, String passengerName,
             String createdDate, String landlordMail, String homestayType, @Nullable Integer numberOfHomestayBooked,
             @Nullable String blocName);
+
+    public void lowBalanceInformToLandlord(String username);
 }

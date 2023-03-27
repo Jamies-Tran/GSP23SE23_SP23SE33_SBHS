@@ -13,6 +13,8 @@ import lombok.Setter;
 @Setter
 public class BookingBlocHomestayRequestDto {
     private String blocName;
+    private String bookingFrom;
+    private String bookingTo;
     private List<BookingBlocRequestDto> bookingRequestList;
     private List<String> homestayServiceNameList;
     private String paymentMethod;

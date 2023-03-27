@@ -181,6 +181,15 @@ public class MailService implements IMailService {
         return informMailBuilder.toString();
     }
 
+    private String generateLowBalanceInformLandlordMailSubject(String username) {
+        StringBuilder informMailBuilder = new StringBuilder();
+        informMailBuilder.append("<h1>").append("Dear ").append(username).append("</h1>").append("</br>")
+                .append("<center>").append("<p>")
+                .append("Currently, your account balance is under 50.000 VND. Please add more for further operation.")
+                .append("</p>").append("</center>");
+        return informMailBuilder.toString();
+    }
+
     @Override
     public void approveLandlordAccount(SwmUser user) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -274,6 +283,22 @@ public class MailService implements IMailService {
 
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void lowBalanceInformToLandlord(String username) {
+        SwmUser user = userService.findUserByUsername(username);
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        try {
+            helper.setTo(new InternetAddress(user.getEmail()));
+            helper.setFrom("no-reply@swm.com", "stay_with_me");
+            helper.setSubject("Low balance");
+            helper.setText(this.generateLowBalanceInformLandlordMailSubject(username), true);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
     }
 }

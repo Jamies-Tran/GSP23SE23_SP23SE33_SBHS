@@ -10,8 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingBlocRequestDto {
-    private String bookingFrom;
-    private String bookingTo;
+
     private Long totalReservation;
     private Long totalBookingPrice;
     private String homestayName;

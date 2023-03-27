@@ -273,6 +273,14 @@ public class BookingService implements IBookingService {
 
                 break;
             case CASH:
+                SwmUser landlordUser = homestayBooking.getLandlord().getUser();
+                Long currentLandlordWalletBalance = landlordUser.getLandlordProperty().getBalanceWallet()
+                        .getTotalBalance();
+                Long landlordTotalCommission = this.getLandlordCommission(userSaveBooking.getTotalBookingPrice());
+                if (currentLandlordWalletBalance < landlordTotalCommission) {
+                    throw new InvalidException("Cash payment is not available right now");
+                }
+
                 break;
         }
         bookingHomestay.setBookingFrom(bookingHomestayRequest.getBookingFrom());
@@ -329,41 +337,34 @@ public class BookingService implements IBookingService {
             Long currentPassengerWalletBalance = passengerUser.getPassengerProperty().getBalanceWallet()
                     .getTotalBalance();
             Long landlordTotalCommission = this.getLandlordCommission(booking.getTotalBookingPrice());
+            if (currentPassengerWalletBalance < landlordTotalCommission) {
+                throw new InvalidException("We can't process your booking with payment by cash.");
+            }
             LandlordCommission landlordCommission = new LandlordCommission();
             switch (PaymentMethod.valueOf(b.getPaymentMethod().toUpperCase())) {
                 case CASH:
-
                     blocHomestayOwners.forEach(landlordUser -> {
                         Long currentLandlordWalletBalance = landlordUser.getLandlordProperty().getBalanceWallet()
                                 .getTotalBalance();
-                        // kiểm tra nếu số dư đủ trả tiền hoa hồng thì trừ luôn còn không thì ghi nợ
-                        if (currentLandlordWalletBalance >= landlordTotalCommission) {
-                            Long newLandlordWalletBalance = currentLandlordWalletBalance -
-                                    landlordTotalCommission;
-                            landlordUser.getLandlordProperty().getBalanceWallet()
-                                    .setTotalBalance(newLandlordWalletBalance);
 
-                            landlordCommission.setCommission(landlordTotalCommission);
-                            landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
-                            landlordCommission.setLandlordWallet(
-                                    landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
-                            landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
-                                    .setLandlordCommissions(List.of(landlordCommission));
-                            landlordCommission.setCreatedBy(landlordUser.getUsername());
-                            landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-                            landlordCommissionRepo.save(landlordCommission);
-                        } else {
-                            landlordCommission.setCommission(landlordTotalCommission);
-                            landlordCommission.setCommissionType(CommissionType.UNPAID_COMMISSION.name());
-                            landlordCommission.setLandlordWallet(
-                                    landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
-                            landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
-                                    .setLandlordCommissions(List.of(landlordCommission));
-                            landlordCommission.setCreatedBy(landlordUser.getUsername());
-                            landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
-                            landlordCommissionRepo.save(landlordCommission);
+                        Long newLandlordWalletBalance = currentLandlordWalletBalance -
+                                landlordTotalCommission;
+                        landlordUser.getLandlordProperty().getBalanceWallet()
+                                .setTotalBalance(newLandlordWalletBalance);
+
+                        landlordCommission.setCommission(landlordTotalCommission);
+                        landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
+                        landlordCommission.setLandlordWallet(
+                                landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
+                        landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
+                                .setLandlordCommissions(List.of(landlordCommission));
+                        landlordCommission.setCreatedBy(landlordUser.getUsername());
+                        landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+                        landlordCommissionRepo.save(landlordCommission);
+                        if (landlordUser.getLandlordProperty().getBalanceWallet()
+                                .getTotalBalance() <= 50000) {
+                            mailService.lowBalanceInformToLandlord(landlordUser.getUsername());
                         }
-
                     });
 
                     break;
@@ -466,8 +467,8 @@ public class BookingService implements IBookingService {
             homestayBooking.setBookingHomestays(List.of(bookingHomestay));
             userSaveBooking.setBookingHomestays(List.of(bookingHomestay));
 
-            bookingHomestay.setBookingFrom(bookingHomestayRequest.getBookingFrom());
-            bookingHomestay.setBookingTo(bookingHomestayRequest.getBookingTo());
+            bookingHomestay.setBookingFrom(bookingBlocHomestayRequest.getBookingFrom());
+            bookingHomestay.setBookingTo(bookingBlocHomestayRequest.getBookingTo());
             bookingHomestay.setTotalBookingPrice(bookingHomestayRequest.getTotalBookingPrice());
             bookingHomestay.setPaymentMethod(bookingBlocHomestayRequest.getPaymentMethod());
             bookingHomestay.setHomestayType(HomestayType.BLOC.name());
