@@ -4,10 +4,8 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/overview_booking_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/overview_booking_state.dart';
-import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
@@ -15,7 +13,6 @@ import 'package:staywithme_passenger_application/model/search_filter_model.dart'
 import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
-import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -80,10 +77,8 @@ class OverviewBookingBloc {
             "totalServicePrice": event.totalServicePrice
           });
     } else if (event is SaveBookingHomestayEvent) {
-      String username =
-          utf8.decode(firebaseAuth.currentUser!.displayName!.runes.toList());
-      final bookingHomestayData = await bookingService.saveHomestayForBooking(
-          username, event.bookingHomestay!);
+      final bookingHomestayData =
+          await bookingService.saveHomestayForBooking(event.bookingHomestay!);
       if (bookingHomestayData is BookingHomestayModel) {
         showDialog(
             context: event.context!,

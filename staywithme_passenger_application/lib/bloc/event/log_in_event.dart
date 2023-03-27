@@ -62,14 +62,6 @@ class LogInSuccessEvent extends LogInEvent {
   BuildContext? context;
 }
 
-class InformLoginToFireAuthEvent extends LogInEvent {
-  InformLoginToFireAuthEvent({this.context, this.email, this.username});
-
-  BuildContext? context;
-  String? username;
-  String? email;
-}
-
 class LogInFailEvent extends LogInEvent {
   LogInFailEvent({this.context, this.message, this.excCount});
 

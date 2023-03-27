@@ -31,7 +31,7 @@ class HomestayModel {
   List<HomestayImageModel>? homestayImages;
   List<HomestayFacilityModel>? homestayFacilities;
   List<HomestayServiceModel>? homestayServices;
-  List<HomestayRule>? homestayRules;
+  List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
 
   factory HomestayModel.fromJson(Map<String, dynamic> json) => HomestayModel(
@@ -57,9 +57,9 @@ class HomestayModel {
               .map((e) => HomestayServiceModel.fromJson(e)))
           : <HomestayServiceModel>[],
       homestayRules: json["homestayRules"] != null
-          ? List<HomestayRule>.from(
-              json["homestayRules"].map((e) => HomestayRule.fromJson(e)))
-          : <HomestayRule>[],
+          ? List<HomestayRuleModel>.from(
+              json["homestayRules"].map((e) => HomestayRuleModel.fromJson(e)))
+          : <HomestayRuleModel>[],
       ratings: json["ratings"] != null
           ? List<RatingModel>.from(
               json["ratings"].map((e) => RatingModel.fromJson(e)))
@@ -132,12 +132,12 @@ class HomestayListPagingModel {
           pageNumber: json["pageNumber"]);
 }
 
-class HomestayRule {
-  HomestayRule({this.id, this.description});
+class HomestayRuleModel {
+  HomestayRuleModel({this.id, this.description});
 
   int? id;
   String? description;
 
-  factory HomestayRule.fromJson(Map<String, dynamic> json) =>
-      HomestayRule(id: json["id"], description: json["description"]);
+  factory HomestayRuleModel.fromJson(Map<String, dynamic> json) =>
+      HomestayRuleModel(id: json["id"], description: json["description"]);
 }

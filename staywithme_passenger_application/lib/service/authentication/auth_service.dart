@@ -7,8 +7,8 @@ import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/login_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
+import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 import '../../global_variable.dart';
@@ -28,8 +28,6 @@ abstract class IAuthenticateService {
 }
 
 class AuthenticateService extends IAuthenticateService {
-  final _firebaseService = locator.get<IFirebaseService>();
-
   final _authByGoogleService = locator.get<IAuthenticateByGoogleService>();
 
   @override
@@ -74,6 +72,8 @@ class AuthenticateService extends IAuthenticateService {
         // _firebaseService.saveLoginInfo(loginModel).then((value) async =>
         //     await _authByGoogleService
         //         .informLoginToFireAuth(loginModel.email!));
+        await SharedPreferencesService.saveUserLoginInfo(
+            loginModel.username!, loginModel.email!, loginModel.token!);
 
         return loginModel;
       } else if (response.statusCode == 401) {
@@ -104,9 +104,8 @@ class AuthenticateService extends IAuthenticateService {
             authenticateByGoogleData is SocketException) {
           return authenticateByGoogleData;
         } else {
-          await _authByGoogleService
-              .updateFirebaseUsername(loginModel.username!);
-          await _firebaseService.saveLoginInfo(loginModel);
+          await SharedPreferencesService.saveUserLoginInfo(
+              loginModel.username!, loginModel.email!, loginModel.token!);
         }
         return loginModel;
       } else {

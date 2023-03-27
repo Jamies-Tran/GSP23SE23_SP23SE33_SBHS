@@ -9,8 +9,7 @@ import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/login_model.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
-import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
-import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
+
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final loginBloc = LoginBloc();
-  final _firebase = locator.get<IFirebaseService>();
+
   final _authService = locator.get<IAuthenticateService>();
   //final _firebaseAuth = locator.get<IAuthenticateByGoogleService>();
 
@@ -404,8 +403,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                     if (data
                                                                         is LoginModel) {
                                                                       return FutureBuilder(
-                                                                        future:
-                                                                            _firebase.saveLoginInfo(data),
+                                                                        future: Future.delayed(const Duration(
+                                                                            seconds:
+                                                                                3)),
                                                                         builder:
                                                                             (context,
                                                                                 snapshot) {
@@ -548,93 +548,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ]),
-    );
-  }
-}
-
-class LoginLoadingScreen extends StatefulWidget {
-  const LoginLoadingScreen({super.key});
-  static String loginLoadingScreenRoute = "/login-loading";
-
-  @override
-  State<LoginLoadingScreen> createState() => _LoginLoadingScreenState();
-}
-
-class _LoginLoadingScreenState extends State<LoginLoadingScreen> {
-  final loginBloc = LoginBloc();
-  final firebaseAuth = locator.get<IAuthenticateByGoogleService>();
-
-  @override
-  void dispose() {
-    loginBloc.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final contextArgurments = ModalRoute.of(context)!.settings.arguments as Map;
-    String email = contextArgurments["email"];
-    String username = contextArgurments["username"];
-
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.orange, Colors.white])),
-        child: FutureBuilder(
-          future: firebaseAuth.informLoginToFireAuth(email),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SpinKitCircle(
-                          color: Colors.white,
-                        ),
-                        Text(
-                          "Just a minutes...",
-                          style: TextStyle(fontFamily: "Lobster"),
-                        )
-                      ]),
-                );
-              case ConnectionState.done:
-                loginBloc.eventController.sink.add(InformLoginToFireAuthEvent(
-                    context: context, email: email, username: username));
-                break;
-              default:
-                break;
-            }
-
-            return Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.orange, Colors.white]),
-              ),
-              child: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.check_box_rounded,
-                        color: Colors.greenAccent,
-                        size: 50,
-                      ),
-                      Text(
-                        "Success",
-                        style: TextStyle(fontFamily: "Lobster"),
-                      )
-                    ]),
-              ),
-            );
-          },
-        ),
-      ),
     );
   }
 }

@@ -6,16 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/passenger_model.dart';
-import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 abstract class IUserService {
   Future<dynamic> getPassengerPersonalInformation(String username);
 }
 
 class UserService extends IUserService {
-  final _firebaseService = locator.get<IFirebaseService>();
-
   @override
   Future getPassengerPersonalInformation(String username) async {
     final client = http.Client();

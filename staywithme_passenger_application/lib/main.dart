@@ -16,6 +16,7 @@ import 'package:staywithme_passenger_application/screen/homestay/booking_homesta
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/process_bloc_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/intro_screen.dart';
@@ -69,8 +70,6 @@ class MyApp extends StatelessWidget {
             const AuthenticateWrapperScreen(),
         PassengerInfoManagementScreen.passengerInfoManagementScreenRoute:
             (context) => const PassengerInfoManagementScreen(),
-        LoginLoadingScreen.loginLoadingScreenRoute: (context) =>
-            const LoginLoadingScreen(),
         AddBalanceScreen.addBalanceScreenRoute: (context) =>
             const AddBalanceScreen(),
         PaymentHistoryScreen.paymentHistoryScreenRoute: (context) =>
@@ -96,6 +95,8 @@ class MyApp extends StatelessWidget {
             const BookingBlocScreen(),
         ProcessBookingScreen.processBookingScreenRoute: (context) =>
             const ProcessBookingScreen(),
+        ProcessBlocBookingScreen.processBlocBookingScreenRoute: (context) =>
+            const ProcessBlocBookingScreen(),
         IntroScreen.instroScreenRoute: (context) => const IntroScreen()
       },
     );

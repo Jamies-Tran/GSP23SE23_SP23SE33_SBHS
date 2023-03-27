@@ -101,8 +101,7 @@ class _PassengerInfoManagementScreenState
                                 height: 25,
                               ),
                               const AdvancedAvatar(
-                                image:
-                                    AssetImage("images/login_background.jpg"),
+                                image: AssetImage("images/swm.png"),
                               ),
                               const SizedBox(
                                 height: 20,
@@ -270,7 +269,7 @@ class _PassengerInfoManagementScreenState
                                                   height: 20,
                                                 ),
                                                 const Text(
-                                                  "Availble",
+                                                  "Available",
                                                   style: TextStyle(
                                                       fontFamily: "Lobster",
                                                       fontWeight:
@@ -437,7 +436,9 @@ class _PassengerInfoManagementScreenState
                                               1.5,
                                           50),
                                       backgroundColor: secondaryColor),
-                                  onPressed: () => fireAuthService.signOut(),
+                                  onPressed: () => infoManagementBloc
+                                      .eventController.sink
+                                      .add(SignOutEvent(context: context)),
                                   child: const Text(
                                     "sign out",
                                     style: TextStyle(

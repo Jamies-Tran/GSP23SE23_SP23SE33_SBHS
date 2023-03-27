@@ -31,6 +31,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
   Widget build(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
     String homestayName = contextArguments["homestayName"];
+    bool? isHomestayInBloc = contextArguments["isHomestayInBloc"];
     final bookingStartDateTextEditingController = TextEditingController();
     final bookingEndDateTextEditingController = TextEditingController();
 
@@ -129,182 +130,202 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                   ],
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                    left: 10, top: 15, right: 10),
-                                color: Colors.white,
-                                height: MediaQuery.of(context).size.height,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      data.name!,
-                                      style: const TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Lobster",
-                                          color: primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: TextFormField(
-                                            controller:
-                                                bookingStartDateTextEditingController,
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                                hintText:
-                                                    "Start date yyyy-MM-dd",
-                                                enabledBorder:
-                                                    const OutlineInputBorder(
+                              isHomestayInBloc! == false
+                                  ? Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, top: 15, right: 10),
+                                      color: Colors.white,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data.name!,
+                                            style: const TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Lobster",
+                                                color: primaryColor),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: TextFormField(
+                                                  controller:
+                                                      bookingStartDateTextEditingController,
+                                                  readOnly: true,
+                                                  decoration: InputDecoration(
+                                                      hintText:
+                                                          "Start date yyyy-MM-dd",
+                                                      enabledBorder:
+                                                          const OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color:
+                                                                      secondaryColor,
+                                                                  width: 1.0)),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          borderSide:
+                                                              const BorderSide(
+                                                                  color:
+                                                                      secondaryColor,
+                                                                  width: 1.0))),
+                                                  onTap: () {
+                                                    showDatePicker(
+                                                            context: context,
+                                                            initialDate:
+                                                                DateTime.now(),
+                                                            firstDate:
+                                                                DateTime.now(),
+                                                            lastDate: DateTime
+                                                                    .now()
+                                                                .add(const Duration(
+                                                                    days: 365)))
+                                                        .then((value) {
+                                                      bookingStartDateTextEditingController
+                                                              .text =
+                                                          dateFormat
+                                                              .format(value!);
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: TextFormField(
+                                                  controller:
+                                                      bookingEndDateTextEditingController,
+                                                  readOnly: true,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    hintText:
+                                                        "End date yyyy-MM-dd",
+                                                    enabledBorder: OutlineInputBorder(
                                                         borderSide: BorderSide(
                                                             color:
                                                                 secondaryColor,
                                                             width: 1.0)),
-                                                focusedBorder: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    borderSide:
-                                                        const BorderSide(
+                                                    focusedBorder: OutlineInputBorder(
+                                                        borderSide: BorderSide(
                                                             color:
                                                                 secondaryColor,
-                                                            width: 1.0))),
-                                            onTap: () {
-                                              showDatePicker(
-                                                      context: context,
-                                                      initialDate:
-                                                          DateTime.now(),
-                                                      firstDate: DateTime.now(),
-                                                      lastDate: DateTime.now()
-                                                          .add(const Duration(
-                                                              days: 365)))
-                                                  .then((value) {
-                                                bookingStartDateTextEditingController
-                                                        .text =
-                                                    dateFormat.format(value!);
-                                              });
-                                            },
+                                                            width: 1.0)),
+                                                  ),
+                                                  onTap: () {
+                                                    showDatePicker(
+                                                            context: context,
+                                                            initialDate: dateFormat
+                                                                .parse(
+                                                                    bookingStartDateTextEditingController
+                                                                        .text)
+                                                                .add(
+                                                                    const Duration(
+                                                                        days:
+                                                                            1)),
+                                                            firstDate: dateFormat
+                                                                .parse(
+                                                                    bookingStartDateTextEditingController
+                                                                        .text)
+                                                                .add(
+                                                                    const Duration(
+                                                                        days:
+                                                                            1)),
+                                                            lastDate: dateFormat
+                                                                .parse(
+                                                                    bookingStartDateTextEditingController
+                                                                        .text)
+                                                                .add(const Duration(
+                                                                    days: 365)))
+                                                        .then((value) {
+                                                      bookingEndDateTextEditingController
+                                                              .text =
+                                                          dateFormat
+                                                              .format(value!);
+                                                      homestayDetailBloc
+                                                          .eventController.sink
+                                                          .add(OnCheckValidBookingDateEvent(
+                                                              bookingStart:
+                                                                  bookingStartDateTextEditingController
+                                                                      .text,
+                                                              bookingEnd:
+                                                                  bookingEndDateTextEditingController
+                                                                      .text,
+                                                              homestayName:
+                                                                  data.name));
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: TextFormField(
-                                            controller:
-                                                bookingEndDateTextEditingController,
-                                            readOnly: true,
-                                            decoration: const InputDecoration(
-                                              hintText: "End date yyyy-MM-dd",
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: secondaryColor,
-                                                      width: 1.0)),
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: secondaryColor,
-                                                      width: 1.0)),
-                                            ),
-                                            onTap: () {
-                                              showDatePicker(
-                                                      context: context,
-                                                      initialDate: dateFormat
-                                                          .parse(
-                                                              bookingStartDateTextEditingController
-                                                                  .text)
-                                                          .add(const Duration(
-                                                              days: 1)),
-                                                      firstDate: dateFormat
-                                                          .parse(
-                                                              bookingStartDateTextEditingController
-                                                                  .text)
-                                                          .add(const Duration(
-                                                              days: 1)),
-                                                      lastDate: dateFormat
-                                                          .parse(
-                                                              bookingStartDateTextEditingController
-                                                                  .text)
-                                                          .add(const Duration(
-                                                              days: 365)))
-                                                  .then((value) {
-                                                bookingEndDateTextEditingController
-                                                        .text =
-                                                    dateFormat.format(value!);
-                                                homestayDetailBloc
-                                                    .eventController.sink
-                                                    .add(OnCheckValidBookingDateEvent(
-                                                        bookingStart:
-                                                            bookingStartDateTextEditingController
-                                                                .text,
-                                                        bookingEnd:
-                                                            bookingEndDateTextEditingController
-                                                                .text,
-                                                        homestayName:
-                                                            data.name));
-                                              });
-                                            },
+                                          streamSnapshot.data!.msg != null
+                                              ? Text(
+                                                  streamSnapshot.data!.msg!,
+                                                  style: TextStyle(
+                                                      color: streamSnapshot
+                                                          .data!.msgFontColor),
+                                                )
+                                              : const SizedBox(),
+                                          const SizedBox(
+                                            height: 10,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    streamSnapshot.data!.msg != null
-                                        ? Text(
-                                            streamSnapshot.data!.msg!,
-                                            style: TextStyle(
-                                                color: streamSnapshot
-                                                    .data!.msgFontColor),
-                                          )
-                                        : const SizedBox(),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Center(
-                                      child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              minimumSize: const Size(200, 50),
-                                              maximumSize: const Size(200, 50),
-                                              backgroundColor: streamSnapshot
-                                                          .data!
+                                          Center(
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    minimumSize:
+                                                        const Size(200, 50),
+                                                    maximumSize:
+                                                        const Size(200, 50),
+                                                    backgroundColor: streamSnapshot
+                                                                .data!
+                                                                .isBookingValid ==
+                                                            true
+                                                        ? primaryColor
+                                                        : Colors.grey),
+                                                onPressed: () {
+                                                  if (streamSnapshot.data!
                                                           .isBookingValid ==
-                                                      true
-                                                  ? primaryColor
-                                                  : Colors.grey),
-                                          onPressed: () {
-                                            if (streamSnapshot
-                                                    .data!.isBookingValid ==
-                                                true) {
-                                              homestayDetailBloc
-                                                  .eventController.sink
-                                                  .add(CreateBookingEvent(
-                                                      context: context,
-                                                      homestayName: data.name,
-                                                      homestayId: data.id,
-                                                      bookingStart:
-                                                          bookingStartDateTextEditingController
-                                                              .text,
-                                                      bookingEnd:
-                                                          bookingEndDateTextEditingController
-                                                              .text));
-                                            }
-                                          },
-                                          child: const Text(
-                                            "Book",
-                                            style: TextStyle(
-                                                fontFamily: "Lobster",
-                                                fontWeight: FontWeight.bold),
-                                          )),
+                                                      true) {
+                                                    homestayDetailBloc
+                                                        .eventController.sink
+                                                        .add(CreateBookingEvent(
+                                                            context: context,
+                                                            homestayName:
+                                                                data.name,
+                                                            homestayId: data.id,
+                                                            bookingStart:
+                                                                bookingStartDateTextEditingController
+                                                                    .text,
+                                                            bookingEnd:
+                                                                bookingEndDateTextEditingController
+                                                                    .text));
+                                                  }
+                                                },
+                                                child: const Text(
+                                                  "Book",
+                                                  style: TextStyle(
+                                                      fontFamily: "Lobster",
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                          )
+                                        ],
+                                      ),
                                     )
-                                  ],
-                                ),
-                              ),
+                                  : const SizedBox(),
                             ]),
                           );
                         } else if (data is ServerExceptionModel) {

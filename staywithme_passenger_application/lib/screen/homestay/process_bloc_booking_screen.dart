@@ -14,15 +14,16 @@ import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
-class ProcessBookingScreen extends StatefulWidget {
-  const ProcessBookingScreen({super.key});
-  static const processBookingScreenRoute = "/process-booking";
+class ProcessBlocBookingScreen extends StatefulWidget {
+  const ProcessBlocBookingScreen({super.key});
+  static const processBlocBookingScreenRoute = "/process-bloc-booking";
 
   @override
-  State<ProcessBookingScreen> createState() => _ProcessBookingScreenState();
+  State<ProcessBlocBookingScreen> createState() =>
+      _ProcessBlocBookingScreenState();
 }
 
-class _ProcessBookingScreenState extends State<ProcessBookingScreen> {
+class _ProcessBlocBookingScreenState extends State<ProcessBlocBookingScreen> {
   final processBookingBloc = ProcessBookingBloc();
   final bookingService = locator.get<IBookingService>();
   final firebaseAuth = FirebaseAuth.instance;

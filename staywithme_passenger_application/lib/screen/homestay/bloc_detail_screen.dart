@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:staywithme_passenger_application/bloc/bloc_detail_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/bloc_detail_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/bloc_detail_state.dart';

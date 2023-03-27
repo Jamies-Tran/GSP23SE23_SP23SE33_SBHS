@@ -56,7 +56,10 @@ class SearchHomestayBloc {
     } else if (event is OnViewHomestayDetailEvent) {
       Navigator.pushNamed(
           event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
-          arguments: {"homestayName": event.homestayName});
+          arguments: {
+            "homestayName": event.homestayName,
+            "isHomestayInBloc": false
+          });
     } else if (event is OnViewBlocHomestayDetailEvent) {
       Navigator.pushNamed(
           event.context!, BlocDetailScreen.blocDetailScreenRoute,

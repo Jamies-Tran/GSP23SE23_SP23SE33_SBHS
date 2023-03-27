@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
+
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_detail_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
@@ -11,6 +10,7 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
+import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -18,7 +18,6 @@ class HomestayDetailBloc {
   final eventController = StreamController<HomestayDetailEvent>();
   final stateController = StreamController<HomestayDetailState>();
   final _bookingService = locator.get<IBookingService>();
-  final _firebaseAuth = FirebaseAuth.instance;
 
   String? _msg;
   Color? _msgFontColor;
@@ -61,7 +60,8 @@ class HomestayDetailBloc {
         }
       });
     } else if (event is CreateBookingEvent) {
-      if (_firebaseAuth.currentUser == null) {
+      bool isLogin = await SharedPreferencesService.isUserSignIn();
+      if (isLogin == false) {
         showDialog(
           context: event.context!,
           builder: (context) => AlertDialog(
@@ -87,10 +87,7 @@ class HomestayDetailBloc {
         );
       } else {
         final bookingHomestayData =
-            await _bookingService.getBookingHomestsayById(
-                utf8.decode(
-                    _firebaseAuth.currentUser!.displayName!.runes.toList()),
-                event.homestayId!);
+            await _bookingService.getBookingHomestsayById(event.homestayId!);
         if (bookingHomestayData is BookingHomestayModel) {
           showDialog(
             context: event.context!,
@@ -98,7 +95,7 @@ class HomestayDetailBloc {
                 title: const Center(
                   child: Text("Notice"),
                 ),
-                content: Container(
+                content: SizedBox(
                   width: 200,
                   height: 150,
                   child: Text(
@@ -115,10 +112,8 @@ class HomestayDetailBloc {
                       )),
                   TextButton(
                       onPressed: () async {
-                        final bookingData = await _bookingService.createBooking(
-                            utf8.decode(_firebaseAuth
-                                .currentUser!.displayName!.runes
-                                .toList()));
+                        final bookingData =
+                            await _bookingService.createBooking();
                         if (bookingData is BookingModel) {
                           Navigator.pushNamed(event.context!,
                               BookingHomestayScreen.bookingHomestayScreenRoute,
@@ -174,8 +169,7 @@ class HomestayDetailBloc {
                 ]),
           );
         } else {
-          final bookingData = await _bookingService.createBooking(utf8
-              .decode(_firebaseAuth.currentUser!.displayName!.runes.toList()));
+          final bookingData = await _bookingService.createBooking();
           if (bookingData is BookingModel) {
             Navigator.pushNamed(event.context!,
                 BookingHomestayScreen.bookingHomestayScreenRoute,

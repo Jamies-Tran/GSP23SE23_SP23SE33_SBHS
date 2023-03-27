@@ -10,6 +10,7 @@ class BlocHomestayModel {
       this.numberOfRating,
       this.homestays,
       this.homestayServices,
+      this.homestayRules,
       this.ratings});
 
   String? name;
@@ -20,6 +21,7 @@ class BlocHomestayModel {
   int? numberOfRating;
   List<HomestayInBlocModel>? homestays;
   List<HomestayServiceModel>? homestayServices;
+  List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
 
   factory BlocHomestayModel.fromJson(Map<String, dynamic> json) =>
@@ -39,17 +41,26 @@ class BlocHomestayModel {
           ratings: json["ratings"] != null
               ? List<RatingModel>.from(
                   json["ratings"].map((e) => RatingModel.fromJson(e)))
-              : <RatingModel>[]);
+              : <RatingModel>[],
+          homestayRules: json["homestayRules"] != null
+              ? List<HomestayRuleModel>.from(json["homestayRules"]
+                  .map((e) => HomestayRuleModel.fromJson(e)))
+              : <HomestayRuleModel>[]);
 }
 
 class HomestayInBlocModel {
   HomestayInBlocModel(
-      {this.name, this.price, this.availableRooms, this.homestayImages});
+      {this.name,
+      this.price,
+      this.availableRooms,
+      this.homestayImages,
+      this.homestayFacilities});
 
   String? name;
   int? price;
   int? availableRooms;
   List<HomestayImageModel>? homestayImages;
+  List<HomestayFacilityModel>? homestayFacilities;
 
   factory HomestayInBlocModel.fromJson(Map<String, dynamic> json) =>
       HomestayInBlocModel(
@@ -59,7 +70,11 @@ class HomestayInBlocModel {
           homestayImages: json["homestayImages"] != null
               ? List<HomestayImageModel>.from(json["homestayImages"]
                   .map((e) => HomestayImageModel.fromJson(e)))
-              : <HomestayImageModel>[]);
+              : <HomestayImageModel>[],
+          homestayFacilities: json["homestayFacilities"] != null
+              ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
+                  .map((e) => HomestayFacilityModel.fromJson(e)))
+              : <HomestayFacilityModel>[]);
 }
 
 class BlocHomestayListPagingModel {

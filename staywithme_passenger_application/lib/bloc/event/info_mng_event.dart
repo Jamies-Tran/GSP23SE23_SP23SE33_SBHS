@@ -15,3 +15,8 @@ class NavigateToPaymentHistoryScreenEvent extends InfoManagementEvent {
   BuildContext? context;
   String? username;
 }
+
+class SignOutEvent extends InfoManagementEvent {
+  SignOutEvent({this.context});
+  BuildContext? context;
+}

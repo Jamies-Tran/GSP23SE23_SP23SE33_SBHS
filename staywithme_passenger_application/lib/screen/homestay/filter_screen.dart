@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:staywithme_passenger_application/bloc/event/filter_homestay_event.dart';
@@ -64,7 +63,7 @@ class _FilterScreenState extends State<FilterScreen> {
     int homestayHighestPrice = 100000;
     int homestayServiceHighestPrice = 100000;
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final username = contextArguments["username"];
+
     FilterAddtionalInformationModel? filterAdditional =
         contextArguments["filterAddtionalInformation"];
     Position? position = contextArguments["position"];

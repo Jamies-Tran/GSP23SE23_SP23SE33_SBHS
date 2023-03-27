@@ -1,12 +1,8 @@
-import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/log_in_screen.dart';
 
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
+import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 
 class AuthenticateWrapperScreen extends StatelessWidget {
   const AuthenticateWrapperScreen({super.key});
@@ -14,33 +10,29 @@ class AuthenticateWrapperScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fireAuth = FirebaseAuth.instance;
-    // dynamic contextArguments =
-    //     ModalRoute.of(context)!.settings.arguments as Map?;
-    // String? username = contextArguments != null
-    //     ? contextArguments["username"]
-    //     : "passenger002";
-    //final fireAuthService = locator.get<IAuthenticateByGoogleService>();
-
-    return StreamBuilder(
-      stream: fireAuth.authStateChanges(),
+    return FutureBuilder(
+      future: SharedPreferencesService.initSharedPreferenced(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const SpinKitCircle(
-              color: primaryColor,
-            );
-
-          default:
-            if (snapshot.hasData) {
+            return const SizedBox();
+          case ConnectionState.done:
+            final data = snapshot.data!;
+            bool? isLogin = data.containsKey("userLoginInfo");
+            if (isLogin == true) {
+              List<String> userLoginInfo = data.getStringList("userLoginInfo")!;
               return PassengerInfoManagementScreen(
-                username:
-                    utf8.decode(snapshot.data!.displayName!.runes.toList()),
+                username: userLoginInfo[0],
               );
             } else {
               return const LoginScreen();
             }
+
+          default:
+            break;
         }
+
+        return const LoginScreen();
       },
     );
   }

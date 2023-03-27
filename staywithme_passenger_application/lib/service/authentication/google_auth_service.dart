@@ -7,8 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/service/authentication/firebase_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
+import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 
 import '../../model/passenger_model.dart';
 
@@ -21,16 +20,10 @@ abstract class IAuthenticateByGoogleService {
       GoogleSignInAccount googleSignInAccount);
 
   Future<dynamic> registerGoogleAccount(PassengerModel passengerModel);
-
-  Future<dynamic> informLoginToFireAuth(String email);
-
-  Future<void> updateFirebaseUsername(String username);
 }
 
 class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
   final _firebaseAuth = FirebaseAuth.instance;
-
-  final _firebase = locator.get<IFirebaseService>();
 
   GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -55,17 +48,11 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
   @override
   Future signOut() async {
     try {
-      String? email = _firebaseAuth.currentUser!.email;
-      await googleSignIn.signOut().then((value) => _firebase
-          .deleteLoginInfo(email!)
-          .timeout(Duration(seconds: connectionTimeOut)));
-
-      await _firebaseAuth
+      await googleSignIn
           .signOut()
-          .then((value) => _firebase
-              .deleteLoginInfo(email!)
-              .timeout(Duration(seconds: connectionTimeOut)))
           .timeout(Duration(seconds: connectionTimeOut));
+
+      await SharedPreferencesService.removeUserInfo();
     } on TimeoutException catch (e) {
       return e;
     } on SocketException catch (e) {
@@ -117,26 +104,5 @@ class AuthenticateByGoogleService extends IAuthenticateByGoogleService {
     } on SocketException catch (e) {
       return e;
     }
-  }
-
-  @override
-  Future informLoginToFireAuth(String email) async {
-    try {
-      await _firebaseAuth
-          .createUserWithEmailAndPassword(
-              email: email, password: email.split("@").first)
-          .then((value) async => await _firebaseAuth.signInWithEmailAndPassword(
-              email: email, password: email.split("@").first));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "email-already-in-use") {
-        await _firebaseAuth.signInWithEmailAndPassword(
-            email: email, password: email.split("@").first);
-      }
-    }
-  }
-
-  @override
-  Future<void> updateFirebaseUsername(String username) async {
-    await _firebaseAuth.currentUser!.updateDisplayName(username);
   }
 }

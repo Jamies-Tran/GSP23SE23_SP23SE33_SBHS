@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -95,8 +95,7 @@ class BlocHomestayDetailBloc {
           ),
         );
       } else {
-        final bookingData = await _bookingService.createBooking(utf8
-            .decode(_firebaseAuth.currentUser!.displayName!.runes.toList()));
+        final bookingData = await _bookingService.createBooking();
         if (bookingData is BookingModel) {
           Navigator.pushNamed(
               event.context!, BookingBlocScreen.bookingBlocScreenRoute,

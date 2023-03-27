@@ -292,7 +292,7 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
                                           .homestayServiceList![index].name!) ==
                                       true
                                   ? primaryColor
-                                  : Colors.white),
+                                  : Colors.grey),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -512,7 +512,7 @@ class ViewHomestayRuleScreen extends StatefulWidget {
       this.bookingEnd,
       this.homestayServiceList,
       this.totalServicePrice});
-  final List<HomestayRule>? homestayRuleList;
+  final List<HomestayRuleModel>? homestayRuleList;
   final String? homestayName;
   final int? bookingId;
   final String? bookingStart;
