@@ -1,10 +1,9 @@
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class ChooseServiceState {
-  ChooseServiceState({this.homestayServiceList = const [], this.homestayName});
+  ChooseServiceState({this.homestayServiceList = const []});
 
   List<HomestayServiceModel> homestayServiceList;
-  String? homestayName;
 
   int totalServicePrice() {
     int totalPrice = 0;

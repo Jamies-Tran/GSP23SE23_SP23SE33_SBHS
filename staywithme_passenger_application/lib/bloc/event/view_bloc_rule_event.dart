@@ -3,34 +3,24 @@ import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
-abstract class ViewHomestayInBlocFacilityEvent {}
+abstract class ViewBlocHomestayRuleEvent {}
 
-class SelectHomestayInBlocEvent extends ViewHomestayInBlocFacilityEvent {
-  SelectHomestayInBlocEvent(
-      {this.currentIndex, this.totalHomestays, this.isNext});
-
-  int? currentIndex;
-  int? totalHomestays;
-  bool? isNext;
-}
-
-class OnNextStepToBlocRuleEvent extends ViewHomestayInBlocFacilityEvent {
-  OnNextStepToBlocRuleEvent(
+class OnNextStepToChooseHomestayInBlocEvent extends ViewBlocHomestayRuleEvent {
+  OnNextStepToChooseHomestayInBlocEvent(
       {this.context,
       this.bookingStart,
       this.bookingEnd,
-      this.blocBookingvalidation,
+      this.blocBookingValidation,
       this.bookingBlocList,
       this.blocServiceList,
       this.bloc,
       this.bookingId,
       this.totalHomestayPrice,
       this.totalServicePrice});
-
   BuildContext? context;
   String? bookingStart;
   String? bookingEnd;
-  BlocBookingDateValidationModel? blocBookingvalidation;
+  BlocBookingDateValidationModel? blocBookingValidation;
   List<BookingBlocModel>? bookingBlocList;
   List<HomestayServiceModel>? blocServiceList;
   BlocHomestayModel? bloc;

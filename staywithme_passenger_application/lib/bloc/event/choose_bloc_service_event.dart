@@ -11,26 +11,29 @@ class OnChooseServiceEvent extends ChooseBlocServiceEvent {
   HomestayServiceModel? homestayServiceModel;
 }
 
-class OnNextStepToViewHomestayInBlocFacilityEvent
-    extends ChooseBlocServiceEvent {
-  OnNextStepToViewHomestayInBlocFacilityEvent(
+class OnNextStepToOviewBlocBookingEvent extends ChooseBlocServiceEvent {
+  OnNextStepToOviewBlocBookingEvent(
       {this.context,
       this.bookingStart,
       this.bookingEnd,
+      this.blocBookingValidation,
       this.bookingBlocList,
       this.blocServiceList,
       this.bookingId,
       this.bloc,
       this.totalHomestayPrice,
-      this.totalServicePrice});
+      this.totalServicePrice,
+      this.overviewFlag});
 
   BuildContext? context;
   String? bookingStart;
   String? bookingEnd;
+  BlocBookingDateValidationModel? blocBookingValidation;
   List<BookingBlocModel>? bookingBlocList;
   List<HomestayServiceModel>? blocServiceList;
   int? bookingId;
   BlocHomestayModel? bloc;
   int? totalHomestayPrice;
   int? totalServicePrice;
+  bool? overviewFlag;
 }

@@ -19,7 +19,8 @@ class FilterHomestayState {
       this.facilityQuantity,
       this.serviceName,
       this.servicePrice,
-      this.isInputAddress});
+      this.isInputAddress,
+      this.locationPermission});
 
   String? homestayType;
   LocationType? locationType;
@@ -28,6 +29,7 @@ class FilterHomestayState {
   int? distanceValue;
   bool? isGeometry;
   bool? isInputAddress;
+  bool? locationPermission;
   String? bookingStartDate;
   String? bookingEndDate;
   int? totalBookingReservation;

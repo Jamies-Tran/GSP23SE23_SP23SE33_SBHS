@@ -803,3 +803,19 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
     );
   }
 }
+
+class SelectNextHomestayScreen extends StatefulWidget {
+  const SelectNextHomestayScreen({super.key});
+  static const String selectNextHomestayScreenRoute = "/next-homestay";
+
+  @override
+  State<SelectNextHomestayScreen> createState() =>
+      _SelectNextHomestayScreenState();
+}
+
+class _SelectNextHomestayScreenState extends State<SelectNextHomestayScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}

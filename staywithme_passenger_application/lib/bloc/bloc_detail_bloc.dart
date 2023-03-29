@@ -9,6 +9,7 @@ import 'package:staywithme_passenger_application/bloc/state/bloc_detail_state.da
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/screen/homestay/booking_bloc_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -95,13 +96,14 @@ class BlocHomestayDetailBloc {
           ),
         );
       } else {
-        final bookingData = await _bookingService.createBooking();
+        final bookingData =
+            await _bookingService.createBooking(HomestayType.bloc.name);
         if (bookingData is BookingModel) {
           Navigator.pushNamed(
               event.context!, BookingBlocScreen.bookingBlocScreenRoute,
               arguments: {
                 "bloc": event.bloc,
-                "blocBookingDateValidation": event.blocBookingDateValidation,
+                "blocBookingValidation": event.blocBookingDateValidation,
                 "bookingId": bookingData.id,
                 "bookingStart": event.bookingStart,
                 "bookingEnd": event.bookingEnd

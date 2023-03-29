@@ -2,7 +2,7 @@ import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class BookingState {
   BookingState(
-      {this.homestayName,
+      {this.homestay,
       this.bookingId,
       this.selectedIndex,
       this.bookingStart,
@@ -10,7 +10,7 @@ class BookingState {
       this.homestayServiceList,
       this.totalServicePrice});
 
-  String? homestayName;
+  HomestayModel? homestay;
   int? bookingId;
   int? selectedIndex;
   String? bookingStart;

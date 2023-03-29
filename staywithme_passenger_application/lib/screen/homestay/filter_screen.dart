@@ -250,52 +250,48 @@ class _FilterScreenState extends State<FilterScreen> {
                   const SizedBox(
                     height: 5,
                   ),
-                  position != null
-                      ? Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: ListTile(
-                                title: Text(LocationType.address.name),
-                                leading: Radio<LocationType>(
-                                  activeColor: primaryColor,
-                                  value: LocationType.address,
-                                  groupValue: snapshot.data!.locationType,
-                                  onChanged: (value) {
-                                    filterHomestayBloc.eventController.sink.add(
-                                        ChooseLocationTypeFilterEvent(
-                                            locationType: value));
-                                  },
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 50,
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: ListTile(
-                                title: Text(LocationType.nearby.name),
-                                leading: Radio<LocationType>(
-                                  activeColor: primaryColor,
-                                  value: LocationType.nearby,
-                                  groupValue: snapshot.data!.locationType,
-                                  onChanged: (value) {
-                                    filterHomestayBloc.eventController.sink.add(
-                                        ChooseLocationTypeFilterEvent(
-                                            locationType: value));
-                                    filterHomestayBloc.eventController.sink.add(
-                                        ChooseNearByFilterEvent(
-                                            position: position));
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
-                  const SizedBox(
-                    height: 5,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ListTile(
+                          title: Text(LocationType.address.name),
+                          leading: Radio<LocationType>(
+                            activeColor: primaryColor,
+                            value: LocationType.address,
+                            groupValue: snapshot.data!.locationType,
+                            onChanged: (value) {
+                              filterHomestayBloc.eventController.sink.add(
+                                  ChooseLocationTypeFilterEvent(
+                                      locationType: value,
+                                      context: context,
+                                      position: position));
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: ListTile(
+                          title: Text(LocationType.nearby.name),
+                          leading: Radio<LocationType>(
+                            activeColor: primaryColor,
+                            value: LocationType.nearby,
+                            groupValue: snapshot.data!.locationType,
+                            onChanged: (value) {
+                              filterHomestayBloc.eventController.sink.add(
+                                  ChooseLocationTypeFilterEvent(
+                                      locationType: value,
+                                      position: position,
+                                      context: context));
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Autocomplete<Prediction>(
                     displayStringForOption: displayStringForOption,
@@ -304,7 +300,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         SizedBox(
                       width: 350,
                       child: TextFormField(
-                        readOnly: snapshot.data!.isInputAddress!,
+                        readOnly: !snapshot.data!.isInputAddress!,
                         controller: textEditingController,
                         focusNode: focusNode,
                         decoration: InputDecoration(
@@ -313,8 +309,8 @@ class _FilterScreenState extends State<FilterScreen> {
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
                                   color: snapshot.data!.isInputAddress!
-                                      ? Colors.black45
-                                      : primaryColor,
+                                      ? primaryColor
+                                      : Colors.black45,
                                   width: 1.0)),
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),

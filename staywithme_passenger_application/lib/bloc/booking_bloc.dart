@@ -12,7 +12,7 @@ class BookingBloc {
   BookingState initData(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
     return BookingState(
-        homestayName: contextArguments["homestayName"],
+        homestay: contextArguments["homestay"],
         bookingId: contextArguments["bookingId"],
         bookingStart: contextArguments["bookingStart"],
         bookingEnd: contextArguments["bookingEnd"],

@@ -16,14 +16,14 @@ class BookingBlocHomestayBloc {
         bookingStart: contextArguments["bookingStart"],
         bookingEnd: contextArguments["bookingEnd"],
         selectedIndex: contextArguments["selectedIndex"] ?? 0,
-        blocBookingDateValidation:
-            contextArguments["blocBookingDateValidation"],
+        blocBookingDateValidation: contextArguments["blocBookingValidation"],
         blocServiceList:
             contextArguments["blocServiceList"] ?? <HomestayServiceModel>[],
         bookingBlocList:
             contextArguments["bookingBlocList"] ?? <BookingBlocModel>[],
         totalHomestayPrice: contextArguments["totalHomestayPrice"] ?? 0,
-        totalServicePrice: contextArguments["totalServicePrice"] ?? 0);
+        totalServicePrice: contextArguments["totalServicePrice"] ?? 0,
+        overviewFlag: contextArguments["overviewFlag"] ?? false);
   }
 
   void dispose() {

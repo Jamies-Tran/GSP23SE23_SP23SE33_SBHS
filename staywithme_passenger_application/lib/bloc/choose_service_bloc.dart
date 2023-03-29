@@ -12,10 +12,8 @@ class ChooseHomestayServiceBloc {
 
   final List<HomestayServiceModel> _homestayServiceList = [];
 
-  ChooseServiceState initData(String homestayName) {
-    return ChooseServiceState(
-        homestayServiceList: <HomestayServiceModel>[],
-        homestayName: homestayName);
+  ChooseServiceState initData() {
+    return ChooseServiceState(homestayServiceList: <HomestayServiceModel>[]);
   }
 
   void dispose() {
@@ -47,7 +45,7 @@ class ChooseHomestayServiceBloc {
           event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
             "selectedIndex": 1,
-            "homestayName": event.homestayName,
+            "homestay": event.homestay,
             "bookingId": event.bookingId,
             "homestayServiceList": event.homestayServiceList,
             "totalServicePrice": event.totalServicePrice,

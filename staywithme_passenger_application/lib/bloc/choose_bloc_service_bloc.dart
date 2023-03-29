@@ -13,9 +13,10 @@ class ChooseBlocServiceBloc {
   final List<HomestayServiceModel> _homestayServiceList =
       <HomestayServiceModel>[];
 
-  ChooseBlocServiceState initData() {
+  ChooseBlocServiceState initData(List<HomestayServiceModel>? blocServiceList) {
     return ChooseBlocServiceState(
-        homestayServiceList: <HomestayServiceModel>[]);
+      homestayServiceList: blocServiceList ?? <HomestayServiceModel>[],
+    );
   }
 
   void dispose() {
@@ -42,20 +43,38 @@ class ChooseBlocServiceBloc {
       } else {
         _homestayServiceList.add(event.homestayServiceModel!);
       }
-    } else if (event is OnNextStepToViewHomestayInBlocFacilityEvent) {
-      Navigator.pushNamed(
-          event.context!, BookingBlocScreen.bookingBlocScreenRoute,
-          arguments: {
-            "selectedIndex": 2,
-            "bookingStart": event.bookingStart,
-            "bookingEnd": event.bookingEnd,
-            "bookingBlocList": event.bookingBlocList,
-            "blocServiceList": event.blocServiceList,
-            "bloc": event.bloc,
-            "bookingId": event.bookingId,
-            "totalHomestayPrice": event.totalHomestayPrice,
-            "totalServicePrice": event.totalServicePrice,
-          });
+    } else if (event is OnNextStepToOviewBlocBookingEvent) {
+      if (event.overviewFlag == true) {
+        Navigator.pushNamed(
+            event.context!, BookingBlocScreen.bookingBlocScreenRoute,
+            arguments: {
+              "selectedIndex": 4,
+              "bookingStart": event.bookingStart,
+              "bookingEnd": event.bookingEnd,
+              "blocBookingValidation": event.blocBookingValidation,
+              "bookingBlocList": event.bookingBlocList,
+              "blocServiceList": event.blocServiceList,
+              "bloc": event.bloc,
+              "bookingId": event.bookingId,
+              "totalHomestayPrice": event.totalHomestayPrice,
+              "totalServicePrice": event.totalServicePrice,
+            });
+      } else {
+        Navigator.pushNamed(
+            event.context!, BookingBlocScreen.bookingBlocScreenRoute,
+            arguments: {
+              "selectedIndex": 4,
+              "bookingStart": event.bookingStart,
+              "bookingEnd": event.bookingEnd,
+              "blocBookingValidation": event.blocBookingValidation,
+              "bookingBlocList": event.bookingBlocList,
+              "blocServiceList": event.blocServiceList,
+              "bloc": event.bloc,
+              "bookingId": event.bookingId,
+              "totalHomestayPrice": event.totalHomestayPrice,
+              "totalServicePrice": event.totalServicePrice,
+            });
+      }
     }
 
     stateController.sink

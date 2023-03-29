@@ -12,7 +12,7 @@ class OnTabHomestayServiceEvent extends ChooseServiceEvent {
 class OnNextStepToHomestayFacilityEvent extends ChooseServiceEvent {
   OnNextStepToHomestayFacilityEvent(
       {this.context,
-      this.homestayName,
+      this.homestay,
       this.bookingId,
       this.homestayServiceList,
       this.totalServicePrice,
@@ -20,7 +20,7 @@ class OnNextStepToHomestayFacilityEvent extends ChooseServiceEvent {
       this.bookingStart});
 
   BuildContext? context;
-  String? homestayName;
+  HomestayModel? homestay;
   int? bookingId;
   List<HomestayServiceModel>? homestayServiceList;
   int? totalServicePrice;

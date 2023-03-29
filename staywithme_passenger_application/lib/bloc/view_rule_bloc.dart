@@ -23,7 +23,7 @@ class ViewHomestayRuleBloc {
           event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
             "selectedIndex": 3,
-            "homestayName": event.homestayName,
+            "homestay": event.homestay,
             "bookingId": event.bookingId,
             "bookingStart": event.bookingStart,
             "bookingEnd": event.bookingEnd,

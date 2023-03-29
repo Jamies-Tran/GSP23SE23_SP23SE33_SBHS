@@ -2,14 +2,20 @@ import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class BookingBlocHomestayModel {
   BookingBlocHomestayModel(
-      {this.bookingRequestList,
+      {this.blocName,
+      this.bookingRequestList,
       this.homestayServiceNameList,
+      this.totalBookingPrice,
+      this.totalServicePrice,
       this.bookingFrom,
       this.bookingTo,
       this.paymentMethod});
 
   List<BookingBlocModel>? bookingRequestList;
   List<String>? homestayServiceNameList;
+  int? totalBookingPrice;
+  int? totalServicePrice;
+  String? blocName;
   String? bookingFrom;
   String? bookingTo;
   String? paymentMethod;
@@ -17,6 +23,9 @@ class BookingBlocHomestayModel {
   Map<String, dynamic> toJson() => {
         "bookingRequestList":
             List.from(bookingRequestList!.map((e) => e.toJson())),
+        "blocName": blocName,
+        "totalBookingPrice": totalBookingPrice,
+        "totalServicePrice": totalServicePrice,
         "homestayServiceNameList": homestayServiceNameList,
         "bookingFrom": bookingFrom,
         "bookingTo": bookingTo,

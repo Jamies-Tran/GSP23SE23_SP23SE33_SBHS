@@ -15,7 +15,6 @@ import 'package:staywithme_passenger_application/bloc/state/overview_booking_sta
 import 'package:staywithme_passenger_application/bloc/view_facility_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/view_rule_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
-import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -43,13 +42,13 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
         ChooseServiceScreen(
           homestayServiceList: homestay.homestayServices,
           bookingId: bookingId,
-          homestayName: homestay.name,
+          homestay: homestay,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
         ),
         ViewHomestayFacilityScreen(
           homestayFacilityList: homestay.homestayFacilities,
-          homestayName: homestay.name,
+          homestay: homestay,
           bookingId: bookingId,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
@@ -58,7 +57,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
         ),
         ViewHomestayRuleScreen(
           homestayRuleList: homestay.homestayRules,
-          homestayName: homestay.name,
+          homestay: homestay,
           bookingId: bookingId,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
@@ -117,96 +116,14 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
                 showUnselectedLabels: false,
               ),
             ),
-            body: FutureBuilder(
-              future: homestayService
-                  .getHomestayDetailByName(streamSnapshot.data!.homestayName!),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        SpinKitCircle(
-                          color: primaryColor,
-                        ),
-                        Text("getting homestay info...")
-                      ],
-                    );
-                  case ConnectionState.done:
-                    if (snapshot.hasData) {
-                      final data = snapshot.data;
-                      if (data is HomestayModel) {
-                        return widgetList(
-                                data,
-                                streamSnapshot.data!.bookingId,
-                                streamSnapshot.data!.bookingStart!,
-                                streamSnapshot.data!.bookingEnd!,
-                                streamSnapshot.data!.homestayServiceList!,
-                                streamSnapshot.data!.totalServicePrice!)[
-                            streamSnapshot.data!.selectedIndex!];
-                      } else if (data is ServerExceptionModel) {
-                        return AlertDialog(
-                          title: const Center(
-                            child: Text("Notice"),
-                          ),
-                          content: SizedBox(
-                            height: 100,
-                            width: 250,
-                            child: Center(child: Text(data.message!)),
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Try again"))
-                          ],
-                        );
-                      } else {
-                        return AlertDialog(
-                          title: const Center(
-                            child: Text("Notice"),
-                          ),
-                          content: const SizedBox(
-                            height: 100,
-                            width: 250,
-                            child: Center(child: Text("Network error")),
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Try again"))
-                          ],
-                        );
-                      }
-                    } else {
-                      return AlertDialog(
-                        title: const Center(
-                          child: Text("Notice"),
-                        ),
-                        content: SizedBox(
-                          height: 100,
-                          width: 250,
-                          child: Center(child: Text(snapshot.error.toString())),
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Try again"))
-                        ],
-                      );
-                    }
-                  default:
-                    break;
-                }
-                return const SizedBox();
-              },
-            ),
+            body: widgetList(
+                streamSnapshot.data!.homestay!,
+                streamSnapshot.data!.bookingId,
+                streamSnapshot.data!.bookingStart!,
+                streamSnapshot.data!.bookingEnd!,
+                streamSnapshot.data!.homestayServiceList!,
+                streamSnapshot.data!
+                    .totalServicePrice!)[streamSnapshot.data!.selectedIndex!],
           ));
         });
   }
@@ -216,12 +133,12 @@ class ChooseServiceScreen extends StatefulWidget {
   const ChooseServiceScreen(
       {super.key,
       this.homestayServiceList,
-      this.homestayName,
+      this.homestay,
       this.bookingId,
       this.bookingStart,
       this.bookingEnd});
   final List<HomestayServiceModel>? homestayServiceList;
-  final String? homestayName;
+  final HomestayModel? homestay;
   final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
@@ -244,7 +161,7 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
   Widget build(BuildContext context) {
     return StreamBuilder<ChooseServiceState>(
         stream: chooseHomestayServiceBloc.stateController.stream,
-        initialData: chooseHomestayServiceBloc.initData(widget.homestayName!),
+        initialData: chooseHomestayServiceBloc.initData(),
         builder: (context, streamSnapshot) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -345,7 +262,7 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
                     chooseHomestayServiceBloc.eventController.sink.add(
                         OnNextStepToHomestayFacilityEvent(
                             context: context,
-                            homestayName: widget.homestayName,
+                            homestay: widget.homestay,
                             bookingId: widget.bookingId,
                             homestayServiceList:
                                 streamSnapshot.data!.homestayServiceList,
@@ -371,14 +288,14 @@ class ViewHomestayFacilityScreen extends StatefulWidget {
   const ViewHomestayFacilityScreen(
       {super.key,
       this.homestayFacilityList,
-      this.homestayName,
+      this.homestay,
       this.bookingId,
       this.bookingStart,
       this.bookingEnd,
       this.homestayServiceList,
       this.totalServicePrice});
   final List<HomestayFacilityModel>? homestayFacilityList;
-  final String? homestayName;
+  final HomestayModel? homestay;
   final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
@@ -481,7 +398,7 @@ class _ViewHomestayFacilityScreenState
               onPressed: () {
                 viewHomestayFacilityBloc.eventController.sink.add(
                     OnNextStepToHomestayRuleEvent(
-                        homestayName: widget.homestayName,
+                        homestay: widget.homestay,
                         bookingId: widget.bookingId,
                         bookingStart: widget.bookingStart,
                         bookingEnd: widget.bookingEnd,
@@ -505,7 +422,7 @@ class _ViewHomestayFacilityScreenState
 class ViewHomestayRuleScreen extends StatefulWidget {
   const ViewHomestayRuleScreen(
       {super.key,
-      this.homestayName,
+      this.homestay,
       this.bookingId,
       this.homestayRuleList,
       this.bookingStart,
@@ -513,7 +430,7 @@ class ViewHomestayRuleScreen extends StatefulWidget {
       this.homestayServiceList,
       this.totalServicePrice});
   final List<HomestayRuleModel>? homestayRuleList;
-  final String? homestayName;
+  final HomestayModel? homestay;
   final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
@@ -603,7 +520,7 @@ class _ViewHomestayRuleScreenState extends State<ViewHomestayRuleScreen> {
                 viewHomestayRuleBloc.eventController.sink.add(
                     OnNextStepToOverviewEvent(
                         context: context,
-                        homestayName: widget.homestayName,
+                        homestay: widget.homestay,
                         bookingId: widget.bookingId,
                         bookingStart: widget.bookingStart,
                         bookingEnd: widget.bookingEnd,

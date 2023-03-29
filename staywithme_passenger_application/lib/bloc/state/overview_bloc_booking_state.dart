@@ -46,8 +46,11 @@ class OverviewBookingBlocState {
         break;
     }
     BookingBlocHomestayModel bookingBlocHomestay = BookingBlocHomestayModel(
+        blocName: bloc!.name,
         bookingFrom: bookingStart,
         bookingTo: bookingEnd,
+        totalBookingPrice: totalBookingPrice(),
+        totalServicePrice: totalServicePrice,
         bookingRequestList: bookingBlocList,
         homestayServiceNameList: blocServiceList!.map((e) => e.name!).toList(),
         paymentMethod: paymentMethodString);

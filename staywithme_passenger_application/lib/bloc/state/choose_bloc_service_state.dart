@@ -1,9 +1,10 @@
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class ChooseBlocServiceState {
-  ChooseBlocServiceState({this.homestayServiceList});
+  ChooseBlocServiceState({this.homestayServiceList, this.overviewFlag = false});
 
   List<HomestayServiceModel>? homestayServiceList;
+  bool? overviewFlag;
 
   bool isHomestayServiceSelected(String serviceName) {
     for (HomestayServiceModel service in homestayServiceList!) {

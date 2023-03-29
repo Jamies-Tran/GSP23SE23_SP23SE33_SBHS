@@ -13,7 +13,8 @@ class BookingBlocHomestayState {
       this.bookingBlocList,
       this.blocServiceList,
       this.totalHomestayPrice,
-      this.totalServicePrice});
+      this.totalServicePrice,
+      this.overviewFlag});
 
   BlocHomestayModel? bloc;
   int? bookingId;
@@ -25,4 +26,5 @@ class BookingBlocHomestayState {
   List<HomestayServiceModel>? blocServiceList;
   int? totalHomestayPrice;
   int? totalServicePrice;
+  bool? overviewFlag;
 }

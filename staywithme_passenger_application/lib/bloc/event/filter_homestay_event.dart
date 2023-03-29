@@ -24,9 +24,12 @@ class ChooseBookingEndDateFilterEvent extends FilterHomestayEvent {
 }
 
 class ChooseLocationTypeFilterEvent extends FilterHomestayEvent {
-  ChooseLocationTypeFilterEvent({this.locationType});
+  ChooseLocationTypeFilterEvent(
+      {this.context, this.locationType, this.position});
 
+  BuildContext? context;
   LocationType? locationType;
+  Position? position;
 }
 
 class InputAddressFilterEvent extends FilterHomestayEvent {

@@ -14,6 +14,8 @@ import 'package:staywithme_passenger_application/service/share_preference/share_
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
+enum HomestayType { homestay, bloc }
+
 class HomestayDetailBloc {
   final eventController = StreamController<HomestayDetailEvent>();
   final stateController = StreamController<HomestayDetailState>();
@@ -87,7 +89,7 @@ class HomestayDetailBloc {
         );
       } else {
         final bookingHomestayData =
-            await _bookingService.getBookingHomestsayById(event.homestayId!);
+            await _bookingService.getBookingHomestsayById(event.homestay!.id!);
         if (bookingHomestayData is BookingHomestayModel) {
           showDialog(
             context: event.context!,
@@ -99,7 +101,7 @@ class HomestayDetailBloc {
                   width: 200,
                   height: 150,
                   child: Text(
-                      "${event.homestayName} has been saved to your booking that haven't been submitted,if you proceed we will replace with the new save?"),
+                      "${event.homestay!.name} has been saved to your booking that haven't been submitted,if you proceed we will replace with the new save?"),
                 ),
                 actions: [
                   TextButton(
@@ -112,13 +114,13 @@ class HomestayDetailBloc {
                       )),
                   TextButton(
                       onPressed: () async {
-                        final bookingData =
-                            await _bookingService.createBooking();
+                        final bookingData = await _bookingService
+                            .createBooking(HomestayType.homestay.name);
                         if (bookingData is BookingModel) {
                           Navigator.pushNamed(event.context!,
                               BookingHomestayScreen.bookingHomestayScreenRoute,
                               arguments: {
-                                "homestayName": event.homestayName,
+                                "homestay": event.homestay,
                                 "bookingId": bookingData.id,
                                 "bookingStart": event.bookingStart,
                                 "bookingEnd": event.bookingEnd
@@ -169,12 +171,13 @@ class HomestayDetailBloc {
                 ]),
           );
         } else {
-          final bookingData = await _bookingService.createBooking();
+          final bookingData =
+              await _bookingService.createBooking(HomestayType.homestay.name);
           if (bookingData is BookingModel) {
             Navigator.pushNamed(event.context!,
                 BookingHomestayScreen.bookingHomestayScreenRoute,
                 arguments: {
-                  "homestayName": event.homestayName,
+                  "homestay": event.homestay,
                   "bookingId": bookingData.id,
                   "bookingStart": event.bookingStart,
                   "bookingEnd": event.bookingEnd

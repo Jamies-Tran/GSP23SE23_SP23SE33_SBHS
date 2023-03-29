@@ -41,9 +41,10 @@ class ViewHomestayInBlocFacilityBloc {
       Navigator.pushNamed(
           event.context!, BookingBlocScreen.bookingBlocScreenRoute,
           arguments: {
-            "selectedIndex": 3,
+            "selectedIndex": 1,
             "bookingStart": event.bookingStart,
             "bookingEnd": event.bookingEnd,
+            "blocBookingValidation": event.blocBookingvalidation,
             "bookingBlocList": event.bookingBlocList,
             "blocServiceList": event.blocServiceList,
             "bloc": event.bloc,

@@ -5,10 +5,15 @@ import 'package:staywithme_passenger_application/bloc/event/filter_homestay_even
 import 'package:staywithme_passenger_application/bloc/state/filter_homestay_state.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
+import 'package:staywithme_passenger_application/service/location/location_service.dart';
+import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
+import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class FilterHomestayBloc {
   final eventController = StreamController<FilterHomestayEvent>();
   final stateController = StreamController<FilterHomestayState>();
+
+  final locationService = locator.get<ILocationService>();
 
   String? _homestayType;
   LocationType? _locationType = LocationType.address;
@@ -17,6 +22,7 @@ class FilterHomestayBloc {
   String? _bookingEndDate = "";
   int? _totalBookingReservation = 0;
   bool? _isInputAddress = true;
+  bool? _locationPermission;
   String? _address = "";
   bool? _isGeometry = false;
   int? _distanceValue = 1000;
@@ -54,7 +60,10 @@ class FilterHomestayBloc {
     });
   }
 
-  void eventHandler(FilterHomestayEvent event) {
+  Future<void> eventHandler(FilterHomestayEvent event) async {
+    final sharedPreferences =
+        await SharedPreferencesService.initSharedPreferenced();
+
     if (event is ChooseBookingStartDateFilterEvent) {
       _bookingStartDate = event.start;
     } else if (event is ChooseBookingEndDateFilterEvent) {
@@ -62,12 +71,48 @@ class FilterHomestayBloc {
     } else if (event is InputTotalBookingRoomEvent) {
       _totalBookingReservation = event.totalReservation;
     } else if (event is ChooseLocationTypeFilterEvent) {
-      _locationType = event.locationType;
-      switch (_locationType) {
+      switch (event.locationType) {
         case LocationType.address:
+          _locationType = event.locationType;
           _isInputAddress = false;
           break;
         case LocationType.nearby:
+          bool locationPermission =
+              sharedPreferences.getBool("locationPermission")!;
+          bool permissionDeniedForever =
+              sharedPreferences.getBool("permissionDeniedForever")!;
+          _locationPermission = locationPermission;
+          if (locationPermission == false) {
+            if (permissionDeniedForever == true) {
+              showDialog(
+                context: event.context!,
+                builder: (context) => AlertDialog(
+                    title: const Center(
+                      child: Text("Notice"),
+                    ),
+                    content: Container(
+                      height: 50,
+                      width: 50,
+                      child: const Text(
+                          "Grand your location permisison and try again"),
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancel"))
+                    ]),
+              );
+            }
+
+            await locationService.getUserCurrentLocation();
+          } else {
+            _locationType = event.locationType;
+            _address =
+                "${sharedPreferences.getDouble("latitude")},${sharedPreferences.getDouble("longitude")}";
+            _isGeometry = false;
+          }
           _isInputAddress = true;
           break;
         default:
@@ -78,8 +123,6 @@ class FilterHomestayBloc {
       _address = event.address;
       _isGeometry = true;
     } else if (event is ChooseNearByFilterEvent) {
-      _address = "${event.position!.latitude},${event.position!.longitude}";
-      _isGeometry = false;
     } else if (event is ChooseDistanceFilterEvent) {
       _distance = event.distance;
       switch (_distance) {
@@ -124,23 +167,23 @@ class FilterHomestayBloc {
 
     stateController.sink.add(
       FilterHomestayState(
-        address: _address,
-        bookingEndDate: _bookingEndDate,
-        bookingStartDate: _bookingStartDate,
-        distance: _distance,
-        distanceValue: _distanceValue,
-        facilityName: _facilityName,
-        facilityQuantity: _facilityQuantity,
-        homestayType: _homestayType,
-        isGeometry: _isGeometry,
-        isInputAddress: _isInputAddress,
-        locationType: _locationType,
-        priceRangeValue: _priceRangeValues,
-        ratingRangeValue: _ratingRangeValues,
-        serviceName: _serviceName,
-        servicePrice: _servicePrice,
-        totalBookingReservation: _totalBookingReservation,
-      ),
+          address: _address,
+          bookingEndDate: _bookingEndDate,
+          bookingStartDate: _bookingStartDate,
+          distance: _distance,
+          distanceValue: _distanceValue,
+          facilityName: _facilityName,
+          facilityQuantity: _facilityQuantity,
+          homestayType: _homestayType,
+          isGeometry: _isGeometry,
+          isInputAddress: _isInputAddress,
+          locationType: _locationType,
+          priceRangeValue: _priceRangeValues,
+          ratingRangeValue: _ratingRangeValues,
+          serviceName: _serviceName,
+          servicePrice: _servicePrice,
+          totalBookingReservation: _totalBookingReservation,
+          locationPermission: _locationPermission),
     );
   }
 }

@@ -9,7 +9,7 @@ import 'package:staywithme_passenger_application/service/share_preference/share_
 import 'package:http/http.dart' as http;
 
 abstract class IBookingService {
-  Future<dynamic> createBooking();
+  Future<dynamic> createBooking(String homestayType);
 
   Future<dynamic> saveHomestayForBooking(
       BookingHomestayModel bookingHomestayModel);
@@ -30,9 +30,9 @@ abstract class IBookingService {
 
 class BookingService extends IBookingService {
   @override
-  Future createBooking() async {
+  Future createBooking(String homestayType) async {
     final client = http.Client();
-    final uri = Uri.parse(createBookingUrl);
+    final uri = Uri.parse("$createBookingUrl?homestayType=$homestayType");
     try {
       final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
       String token = userLoginInfo['accessToken']!;

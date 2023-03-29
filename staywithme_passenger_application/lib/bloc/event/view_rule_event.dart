@@ -6,7 +6,7 @@ abstract class ViewHomestayRuleEvent {}
 class OnNextStepToOverviewEvent extends ViewHomestayRuleEvent {
   OnNextStepToOverviewEvent(
       {this.context,
-      this.homestayName,
+      this.homestay,
       this.bookingId,
       this.bookingStart,
       this.bookingEnd,
@@ -14,7 +14,7 @@ class OnNextStepToOverviewEvent extends ViewHomestayRuleEvent {
       this.totalServicePrice});
 
   BuildContext? context;
-  String? homestayName;
+  HomestayModel? homestay;
   int? bookingId;
   String? bookingStart;
   String? bookingEnd;

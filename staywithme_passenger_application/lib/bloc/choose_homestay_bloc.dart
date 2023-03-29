@@ -11,10 +11,12 @@ class ChooseHomestayBloc {
   final eventController = StreamController<ChooseHomestayEvent>();
   final stateController = StreamController<ChooseHomestayState>();
 
-  final List<BookingBlocModel> _bookingBlocModelList = <BookingBlocModel>[];
+  List<BookingBlocModel> _bookingBlocModelList = <BookingBlocModel>[];
 
-  ChooseHomestayState initData() {
-    return ChooseHomestayState(bookingBlocList: <BookingBlocModel>[]);
+  ChooseHomestayState initData(List<BookingBlocModel>? bookingBlocList) {
+    _bookingBlocModelList = bookingBlocList ?? <BookingBlocModel>[];
+    return ChooseHomestayState(
+        bookingBlocList: bookingBlocList ?? <BookingBlocModel>[]);
   }
 
   void dispose() {
@@ -49,15 +51,35 @@ class ChooseHomestayBloc {
             "isHomestayInBloc": true
           });
     } else if (event is OnNextStepToChooseServiceEvent) {
-      Navigator.pushNamed(
-          event.context!, BookingBlocScreen.bookingBlocScreenRoute,
-          arguments: {
-            "selectedIndex": 1,
-            "bookingBlocList": event.bookingBlocList,
-            "bloc": event.bloc,
-            "bookingId": event.bookingId,
-            "totalHomestayPrice": event.totalHomestayPrice
-          });
+      if (event.overviewFlag == true) {
+        Navigator.pushNamed(
+            event.context!, BookingBlocScreen.bookingBlocScreenRoute,
+            arguments: {
+              "selectedIndex": 4,
+              "bookingStart": event.bookingStart,
+              "bookingEnd": event.bookingEnd,
+              "bookingBlocList": event.bookingBlocList,
+              "blocBookingValidation": event.blocBookingValidation,
+              "bloc": event.bloc,
+              "bookingId": event.bookingId,
+              "totalHomestayPrice": event.totalHomestayPrice,
+              "totalServicePrice": event.totalServicePrice,
+              "blocServiceList": event.blocServiceList
+            });
+      } else {
+        Navigator.pushNamed(
+            event.context!, BookingBlocScreen.bookingBlocScreenRoute,
+            arguments: {
+              "selectedIndex": 3,
+              "blocBookingValidation": event.blocBookingValidation,
+              "bookingStart": event.bookingStart,
+              "bookingEnd": event.bookingEnd,
+              "bookingBlocList": event.bookingBlocList,
+              "bloc": event.bloc,
+              "bookingId": event.bookingId,
+              "totalHomestayPrice": event.totalHomestayPrice
+            });
+      }
     }
     stateController.sink
         .add(ChooseHomestayState(bookingBlocList: _bookingBlocModelList));
