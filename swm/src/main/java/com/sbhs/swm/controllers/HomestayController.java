@@ -114,6 +114,8 @@ public class HomestayController {
         public ResponseEntity<?> getBlocHomestayDetailByName(@RequestParam String name) {
                 BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
                 BlocHomestayResponseDto responseBloc = modelMapper.map(bloc, BlocHomestayResponseDto.class);
+                responseBloc.setAddress(responseBloc.getAddress().split("_")[0]);
+
                 return new ResponseEntity<BlocHomestayResponseDto>(responseBloc, HttpStatus.OK);
         }
 
@@ -179,7 +181,6 @@ public class HomestayController {
                 HomestayListPagingDto homestayListPagingDto = new HomestayListPagingDto();
                 switch (filter.getHomestayType().toUpperCase()) {
                         case "HOMESTAY":
-
                                 PagedListHolder<Homestay> homestays = homestayService.getHomestayListFiltered(
                                                 filter.getFilterOption(), filter.getSearchString(), page, size,
                                                 isNextPage,

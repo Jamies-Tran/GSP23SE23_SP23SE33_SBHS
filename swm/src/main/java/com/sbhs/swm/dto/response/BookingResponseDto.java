@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 public class BookingResponseDto {
     private Long id;
+    private String code;
     private Long totalBookingPrice;
     private Long totalBookingDeposit;
     private String status;

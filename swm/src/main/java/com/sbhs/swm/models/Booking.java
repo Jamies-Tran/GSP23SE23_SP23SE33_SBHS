@@ -24,6 +24,9 @@ public class Booking extends BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private @Setter String code;
+
     @Column
     private @Setter Long totalBookingPrice = 0L;
 
@@ -36,13 +39,19 @@ public class Booking extends BaseModel {
     @ManyToOne
     private @Setter Passenger passenger;
 
+    @Column
+    private @Setter String homestayType;
+
+    @Column
+    private @Setter String paymentMethod;
+
     @OneToMany(mappedBy = "booking", cascade = { CascadeType.REMOVE })
     private @Setter List<BookingHomestay> bookingHomestays;
 
-    @OneToMany(mappedBy = "booking", cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(mappedBy = "booking", cascade = { CascadeType.ALL })
     private @Setter List<BookingHomestayService> bookingHomestayServices;
 
-    @OneToMany(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking", cascade = { CascadeType.REMOVE })
     private @Setter List<BookingDeposit> bookingDeposits;
 
 }

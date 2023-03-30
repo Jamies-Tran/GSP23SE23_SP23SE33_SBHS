@@ -15,7 +15,11 @@ public interface IBookingService {
 
     List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
 
-    Booking createBookingByPassenger();
+    void deleteBookingHomestay(Long bookingId, Long homestayId);
+
+    void deleteBooking(Long bookingId);
+
+    Booking createBookingByPassenger(String homestayType);
 
     Booking submitBookingByPassenger(Long bookingId);
 

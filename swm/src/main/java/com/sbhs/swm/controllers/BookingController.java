@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,8 +42,8 @@ public class BookingController {
 
     @PostMapping("/new-booking")
     @PreAuthorize("hasAuthority('booking:create')")
-    public ResponseEntity<?> createBookingByPassenger() {
-        Booking bookingSave = bookingService.createBookingByPassenger();
+    public ResponseEntity<?> createBookingByPassenger(String homestayType) {
+        Booking bookingSave = bookingService.createBookingByPassenger(homestayType);
         BookingResponseDto responseBookingSave = modelMapper.map(bookingSave, BookingResponseDto.class);
         responseBookingSave.setBookingHomestays(new ArrayList<>());
         responseBookingSave.setBookingHomestayServices(new ArrayList<>());
@@ -145,5 +146,21 @@ public class BookingController {
                 .map(b -> modelMapper.map(b, BookingResponseDto.class)).collect(Collectors.toList());
 
         return new ResponseEntity<List<BookingResponseDto>>(responseBookingList, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/booking-homestay")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> deleteBookingHomestay(Long bookingId, Long homestayId) {
+        bookingService.deleteBookingHomestay(bookingId, homestayId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/booking")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> deleteBooking(Long bookingId) {
+        bookingService.deleteBooking(bookingId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

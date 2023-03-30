@@ -15,8 +15,7 @@ public class BookingHomestayResponseDto {
     private String bookingFrom;
     private String bookingTo;
     private Long totalBookingPrice;
-    private String paymentMethod;
-    private String homestayType;
+
     private Long totalReservation;
     private HomestayResponseDto homestay;
     private BookingDepositDto bookingDeposit;

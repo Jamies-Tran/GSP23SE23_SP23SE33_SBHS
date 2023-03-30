@@ -40,12 +40,6 @@ public class BookingHomestay {
     private Long totalBookingPrice;
 
     @Column
-    private String paymentMethod;
-
-    @Column
-    private String homestayType;
-
-    @Column
     private Long totalReservation;
 
 }
