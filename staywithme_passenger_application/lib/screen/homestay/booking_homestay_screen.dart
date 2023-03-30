@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:staywithme_passenger_application/bloc/booking_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/choose_service_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/event/choose_service_event.dart';
@@ -39,21 +39,12 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
           List<HomestayServiceModel> homestayServiceList,
           int totalServicePrice) =>
       [
-        ChooseServiceScreen(
-          homestayServiceList: homestay.homestayServices,
-          bookingId: bookingId,
-          homestay: homestay,
-          bookingStart: bookingStart,
-          bookingEnd: bookingEnd,
-        ),
         ViewHomestayFacilityScreen(
           homestayFacilityList: homestay.homestayFacilities,
           homestay: homestay,
           bookingId: bookingId,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
-          homestayServiceList: homestayServiceList,
-          totalServicePrice: totalServicePrice,
         ),
         ViewHomestayRuleScreen(
           homestayRuleList: homestay.homestayRules,
@@ -61,8 +52,13 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
           bookingId: bookingId,
           bookingStart: bookingStart,
           bookingEnd: bookingEnd,
-          homestayServiceList: homestayServiceList,
-          totalServicePrice: totalServicePrice,
+        ),
+        ChooseServiceScreen(
+          homestayServiceList: homestay.homestayServices,
+          bookingId: bookingId,
+          homestay: homestay,
+          bookingStart: bookingStart,
+          bookingEnd: bookingEnd,
         ),
         OverviewBookingScreen(
           homestay: homestay,
@@ -71,7 +67,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
           bookingEnd: bookingEnd,
           homestayServiceList: homestayServiceList,
           totalServicePrice: totalServicePrice,
-        )
+        ),
       ];
 
   @override
@@ -93,16 +89,16 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
               child: BottomNavigationBar(
                 items: const [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.room_service),
-                      label: "Services",
-                      backgroundColor: primaryColor),
-                  BottomNavigationBarItem(
                       icon: Icon(Icons.chair),
                       label: "Facilities",
                       backgroundColor: primaryColor),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.rule),
                       label: "Rules",
+                      backgroundColor: primaryColor),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.room_service),
+                      label: "Services",
                       backgroundColor: primaryColor),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.alarm),
@@ -260,7 +256,7 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
                       maximumSize: const Size(200, 50)),
                   onPressed: () {
                     chooseHomestayServiceBloc.eventController.sink.add(
-                        OnNextStepToHomestayFacilityEvent(
+                        OnNextStepToOverviewBookingHomestayEvent(
                             context: context,
                             homestay: widget.homestay,
                             bookingId: widget.bookingId,
@@ -285,22 +281,19 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
 }
 
 class ViewHomestayFacilityScreen extends StatefulWidget {
-  const ViewHomestayFacilityScreen(
-      {super.key,
-      this.homestayFacilityList,
-      this.homestay,
-      this.bookingId,
-      this.bookingStart,
-      this.bookingEnd,
-      this.homestayServiceList,
-      this.totalServicePrice});
+  const ViewHomestayFacilityScreen({
+    super.key,
+    this.homestayFacilityList,
+    this.homestay,
+    this.bookingId,
+    this.bookingStart,
+    this.bookingEnd,
+  });
   final List<HomestayFacilityModel>? homestayFacilityList;
   final HomestayModel? homestay;
   final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
-  final List<HomestayServiceModel>? homestayServiceList;
-  final int? totalServicePrice;
 
   @override
   State<ViewHomestayFacilityScreen> createState() =>
@@ -396,15 +389,14 @@ class _ViewHomestayFacilityScreenState
                   minimumSize: const Size(200, 50),
                   maximumSize: const Size(200, 50)),
               onPressed: () {
-                viewHomestayFacilityBloc.eventController.sink.add(
-                    OnNextStepToHomestayRuleEvent(
-                        homestay: widget.homestay,
-                        bookingId: widget.bookingId,
-                        bookingStart: widget.bookingStart,
-                        bookingEnd: widget.bookingEnd,
-                        context: context,
-                        homestayServiceList: widget.homestayServiceList,
-                        totalServicePrice: widget.totalServicePrice));
+                viewHomestayFacilityBloc.eventController.sink
+                    .add(OnNextStepToHomestayRuleEvent(
+                  homestay: widget.homestay,
+                  bookingId: widget.bookingId,
+                  bookingStart: widget.bookingStart,
+                  bookingEnd: widget.bookingEnd,
+                  context: context,
+                ));
               },
               child: const Text(
                 "Next",
@@ -420,22 +412,19 @@ class _ViewHomestayFacilityScreenState
 }
 
 class ViewHomestayRuleScreen extends StatefulWidget {
-  const ViewHomestayRuleScreen(
-      {super.key,
-      this.homestay,
-      this.bookingId,
-      this.homestayRuleList,
-      this.bookingStart,
-      this.bookingEnd,
-      this.homestayServiceList,
-      this.totalServicePrice});
+  const ViewHomestayRuleScreen({
+    super.key,
+    this.homestay,
+    this.bookingId,
+    this.homestayRuleList,
+    this.bookingStart,
+    this.bookingEnd,
+  });
   final List<HomestayRuleModel>? homestayRuleList;
   final HomestayModel? homestay;
   final int? bookingId;
   final String? bookingStart;
   final String? bookingEnd;
-  final List<HomestayServiceModel>? homestayServiceList;
-  final int? totalServicePrice;
 
   @override
   State<ViewHomestayRuleScreen> createState() => _ViewHomestayRuleScreenState();
@@ -517,15 +506,14 @@ class _ViewHomestayRuleScreenState extends State<ViewHomestayRuleScreen> {
                   minimumSize: const Size(200, 50),
                   maximumSize: const Size(200, 50)),
               onPressed: () {
-                viewHomestayRuleBloc.eventController.sink.add(
-                    OnNextStepToOverviewEvent(
-                        context: context,
-                        homestay: widget.homestay,
-                        bookingId: widget.bookingId,
-                        bookingStart: widget.bookingStart,
-                        bookingEnd: widget.bookingEnd,
-                        homestayServiceList: widget.homestayServiceList,
-                        totalServicePrice: widget.totalServicePrice));
+                viewHomestayRuleBloc.eventController.sink
+                    .add(OnNextStepToChooseHomestayServiceEvent(
+                  context: context,
+                  homestay: widget.homestay,
+                  bookingId: widget.bookingId,
+                  bookingStart: widget.bookingStart,
+                  bookingEnd: widget.bookingEnd,
+                ));
               },
               child: const Text(
                 "Next",
@@ -826,14 +814,27 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                snapshot
-                                                    .data!
-                                                    .homestayServiceList![index]
-                                                    .name!,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              TweenAnimationBuilder(
+                                                tween: Tween<double>(
+                                                    begin: 0, end: 1),
+                                                duration:
+                                                    const Duration(seconds: 3),
+                                                builder:
+                                                    (context, value, child) =>
+                                                        Opacity(
+                                                  opacity: value,
+                                                  child: child,
+                                                ),
+                                                child: Text(
+                                                  snapshot
+                                                      .data!
+                                                      .homestayServiceList![
+                                                          index]
+                                                      .name!,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
                                               const SizedBox(
                                                 width: 100,
@@ -849,7 +850,7 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                                                             opacity: value,
                                                             child: child),
                                                 child: Text(
-                                                  "Price(VND): ${snapshot.data!.homestayServiceList![index].price}",
+                                                  "Price(VND): ${currencyFormat.format(snapshot.data!.homestayServiceList![index].price)}",
                                                   style: const TextStyle(
                                                       fontFamily: "Lobster",
                                                       fontWeight:
@@ -887,9 +888,10 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                                           conext: context,
                                           homestayServiceList:
                                               widget.homestayServiceList,
-                                          homestayName: widget.homestay!.name,
+                                          homestay: widget.homestay,
                                           bookingStart: widget.bookingStart,
                                           bookingEnd: widget.bookingEnd,
+                                          bookingId: widget.bookingId,
                                           totalServicePrice:
                                               widget.totalServicePrice));
                                 },

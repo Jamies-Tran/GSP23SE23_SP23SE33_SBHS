@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/overview_booking_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/overview_booking_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
@@ -69,9 +70,10 @@ class OverviewBookingBloc {
       Navigator.pushNamed(
           event.conext!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
-            "selectedIndex": 0,
+            "selectedIndex": 2,
             "homestayServiceList": event.homestayServiceList,
-            "homestayName": event.homestayName,
+            "bookingId": event.bookingId,
+            "homestay": event.homestay,
             "bookingStart": event.bookingStart,
             "bookingEnd": event.bookingEnd,
             "totalServicePrice": event.totalServicePrice
@@ -86,23 +88,15 @@ class OverviewBookingBloc {
                     title: const Center(
                       child: Text("Notice"),
                     ),
-                    content: const SizedBox(
+                    content: SizedBox(
                       height: 200,
                       width: 200,
-                      child: Text("Do you want to keep on booking?"),
+                      child: Column(children: const [
+                        Text("Your booking have been saved"),
+                        Text("Do you want to submit or keep on browsing?")
+                      ]),
                     ),
                     actions: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context,
-                                ProcessBookingScreen.processBookingScreenRoute,
-                                arguments: {"bookingId": event.bookingId});
-                          },
-                          child: const Text(
-                            "No, that's all for now",
-                            style: TextStyle(
-                                fontSize: 15, color: Colors.greenAccent),
-                          )),
                       TextButton(
                           onPressed: () {
                             FilterByBookingDate filterByBookingDate =
@@ -122,18 +116,32 @@ class OverviewBookingBloc {
                                     filterByBookingDateRange:
                                         filterByBookingDate,
                                     filterByAddress: filterByAddress);
-                            Navigator.pushReplacementNamed(context,
-                                SearchHomestayScreen.searchHomestayScreenRoute,
+                            Navigator.pushReplacementNamed(
+                                context,
+                                SelectNextHomestayScreen
+                                    .selectNextHomestayScreenRoute,
                                 arguments: {
                                   "filterOption": filterOptionModel,
+                                  "bookingId": event.bookingId,
                                   "homestayType": "homestay"
                                 });
                           },
                           child: const Text(
-                            "Yes, i want to look around for more",
+                            "Keep browsing",
                             style: TextStyle(
                                 fontSize: 15, color: Colors.greenAccent),
-                          ))
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(context,
+                                ProcessBookingScreen.processBookingScreenRoute,
+                                arguments: {"bookingId": event.bookingId});
+                          },
+                          child: const Text(
+                            "Submit",
+                            style:
+                                TextStyle(fontSize: 15, color: secondaryColor),
+                          )),
                     ]),
             barrierDismissible: false);
       } else if (bookingHomestayData is ServerExceptionModel) {

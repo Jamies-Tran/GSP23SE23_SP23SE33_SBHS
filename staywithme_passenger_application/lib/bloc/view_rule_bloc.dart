@@ -18,17 +18,15 @@ class ViewHomestayRuleBloc {
   }
 
   void eventHandler(ViewHomestayRuleEvent event) {
-    if (event is OnNextStepToOverviewEvent) {
+    if (event is OnNextStepToChooseHomestayServiceEvent) {
       Navigator.pushNamed(
           event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
-            "selectedIndex": 3,
+            "selectedIndex": 2,
             "homestay": event.homestay,
             "bookingId": event.bookingId,
             "bookingStart": event.bookingStart,
             "bookingEnd": event.bookingEnd,
-            "homestayServiceList": event.homestayServiceList,
-            "totalServicePrice": event.totalServicePrice
           });
     }
   }

@@ -9,8 +9,8 @@ class OnTabHomestayServiceEvent extends ChooseServiceEvent {
   HomestayServiceModel? homestayServiceModel;
 }
 
-class OnNextStepToHomestayFacilityEvent extends ChooseServiceEvent {
-  OnNextStepToHomestayFacilityEvent(
+class OnNextStepToOverviewBookingHomestayEvent extends ChooseServiceEvent {
+  OnNextStepToOverviewBookingHomestayEvent(
       {this.context,
       this.homestay,
       this.bookingId,

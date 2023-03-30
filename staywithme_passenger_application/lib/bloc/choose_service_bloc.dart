@@ -40,11 +40,11 @@ class ChooseHomestayServiceBloc {
       } else {
         _homestayServiceList.add(event.homestayServiceModel!);
       }
-    } else if (event is OnNextStepToHomestayFacilityEvent) {
+    } else if (event is OnNextStepToOverviewBookingHomestayEvent) {
       Navigator.pushNamed(
           event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
-            "selectedIndex": 1,
+            "selectedIndex": 3,
             "homestay": event.homestay,
             "bookingId": event.bookingId,
             "homestayServiceList": event.homestayServiceList,

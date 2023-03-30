@@ -3,21 +3,18 @@ import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 abstract class ViewHomestayRuleEvent {}
 
-class OnNextStepToOverviewEvent extends ViewHomestayRuleEvent {
-  OnNextStepToOverviewEvent(
-      {this.context,
-      this.homestay,
-      this.bookingId,
-      this.bookingStart,
-      this.bookingEnd,
-      this.homestayServiceList,
-      this.totalServicePrice});
+class OnNextStepToChooseHomestayServiceEvent extends ViewHomestayRuleEvent {
+  OnNextStepToChooseHomestayServiceEvent({
+    this.context,
+    this.homestay,
+    this.bookingId,
+    this.bookingStart,
+    this.bookingEnd,
+  });
 
   BuildContext? context;
   HomestayModel? homestay;
   int? bookingId;
   String? bookingStart;
   String? bookingEnd;
-  List<HomestayServiceModel>? homestayServiceList;
-  int? totalServicePrice;
 }

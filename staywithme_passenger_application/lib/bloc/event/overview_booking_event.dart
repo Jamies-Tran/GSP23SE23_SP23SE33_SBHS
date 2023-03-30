@@ -24,15 +24,17 @@ class EditHomestayServiceBookingEvent extends OverviewBookingEvent {
   EditHomestayServiceBookingEvent(
       {this.conext,
       this.homestayServiceList,
-      this.homestayName,
+      this.homestay,
       this.bookingStart,
       this.bookingEnd,
+      this.bookingId,
       this.totalServicePrice});
 
   BuildContext? conext;
   List<HomestayServiceModel>? homestayServiceList;
-  String? homestayName;
+  HomestayModel? homestay;
   String? bookingStart;
   String? bookingEnd;
+  int? bookingId;
   int? totalServicePrice;
 }

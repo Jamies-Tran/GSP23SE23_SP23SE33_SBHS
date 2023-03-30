@@ -1,4 +1,5 @@
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
+import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 
 class BookingBlocHomestayModel {
   BookingBlocHomestayModel(
@@ -180,7 +181,8 @@ class BookingServiceModel {
   factory BookingServiceModel.fromJson(Map<String, dynamic> json) =>
       BookingServiceModel(
           totalServicePrice: json["totalServicePrice"],
-          homestayService: json["homestayService"],
+          homestayService:
+              HomestayServiceModel.fromJson(json["homestayService"]),
           homestayName: json["homestayName"]);
 }
 

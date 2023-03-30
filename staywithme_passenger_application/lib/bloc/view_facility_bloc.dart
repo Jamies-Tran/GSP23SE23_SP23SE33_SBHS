@@ -22,13 +22,11 @@ class ViewHomestayFacilityBloc {
       Navigator.pushNamed(
           event.context!, BookingHomestayScreen.bookingHomestayScreenRoute,
           arguments: {
-            "selectedIndex": 2,
+            "selectedIndex": 1,
             "homestay": event.homestay,
             "bookingId": event.bookingId,
             "bookingStart": event.bookingStart,
             "bookingEnd": event.bookingEnd,
-            "homestayServiceList": event.homestayServiceList,
-            "totalServicePrice": event.totalServicePrice
           });
     }
   }

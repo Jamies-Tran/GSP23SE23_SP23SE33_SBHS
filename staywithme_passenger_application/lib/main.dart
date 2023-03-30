@@ -97,6 +97,8 @@ class MyApp extends StatelessWidget {
             const ProcessBookingScreen(),
         ProcessBlocBookingScreen.processBlocBookingScreenRoute: (context) =>
             const ProcessBlocBookingScreen(),
+        SelectNextHomestayScreen.selectNextHomestayScreenRoute: (context) =>
+            const SelectNextHomestayScreen(),
         IntroScreen.instroScreenRoute: (context) => const IntroScreen()
       },
     );

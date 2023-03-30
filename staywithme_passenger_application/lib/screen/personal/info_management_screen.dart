@@ -451,9 +451,9 @@ class _PassengerInfoManagementScreenState
                       )),
                     );
                   } else if (data is ServerExceptionModel) {
-                    return ElevatedButton(
-                        onPressed: () => fireAuthService.signOut(),
-                        child: Text("${data.message}"));
+                    infoManagementBloc.eventController.sink
+                        .add(SignOutEvent(context: context));
+                    return const SizedBox();
                   } else if (data is SocketException ||
                       data is TimeoutException) {
                     return Center(
