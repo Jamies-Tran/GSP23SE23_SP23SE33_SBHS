@@ -1,5 +1,4 @@
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 
 class BookingBlocHomestayModel {
   BookingBlocHomestayModel(
@@ -8,8 +7,6 @@ class BookingBlocHomestayModel {
       this.homestayServiceNameList,
       this.totalBookingPrice,
       this.totalServicePrice,
-      this.bookingFrom,
-      this.bookingTo,
       this.paymentMethod});
 
   List<BookingBlocModel>? bookingRequestList;
@@ -17,8 +14,7 @@ class BookingBlocHomestayModel {
   int? totalBookingPrice;
   int? totalServicePrice;
   String? blocName;
-  String? bookingFrom;
-  String? bookingTo;
+
   String? paymentMethod;
 
   Map<String, dynamic> toJson() => {
@@ -28,8 +24,6 @@ class BookingBlocHomestayModel {
         "totalBookingPrice": totalBookingPrice,
         "totalServicePrice": totalServicePrice,
         "homestayServiceNameList": homestayServiceNameList,
-        "bookingFrom": bookingFrom,
-        "bookingTo": bookingTo,
         "paymentMethod": paymentMethod
       };
 }
@@ -50,57 +44,57 @@ class BookingBlocModel {
 }
 
 class BookingHomestayModel {
-  BookingHomestayModel(
-      {this.id,
-      this.bookingFrom,
-      this.bookingTo,
-      this.paymentMethod,
-      this.totalBookingPrice,
-      this.totalServicePrice,
-      this.totalReservation,
-      this.homestayType,
-      this.homestayName,
-      this.homestayServiceList,
-      this.homestay,
-      this.bookingDeposit});
+  BookingHomestayModel({
+    this.bookingHomestayId,
+    this.paymentMethod,
+    this.totalBookingPrice,
+    this.totalServicePrice,
+    this.totalReservation,
+    this.homestayType,
+    this.homestayName,
+    this.homestayServiceList,
+    this.homestay,
+  });
 
-  int? id;
-  String? bookingFrom;
-  String? bookingTo;
+  BookingHomestayIdModel? bookingHomestayId;
   String? paymentMethod;
   int? totalBookingPrice;
   int? totalServicePrice;
-  int? price;
   int? totalReservation;
   String? homestayName;
   String? homestayType;
   List<String>? homestayServiceList;
   HomestayModel? homestay;
-  BookingDepositModel? bookingDeposit;
 
   factory BookingHomestayModel.fromJson(Map<String, dynamic> json) =>
       BookingHomestayModel(
-          id: json["id"],
-          bookingFrom: json["bookingFrom"],
-          bookingTo: json["bookingTo"],
-          paymentMethod: json["paymentMethod"],
-          totalBookingPrice: json["totalBookingPrice"],
-          totalReservation: json["totalReservation"],
-          homestay: HomestayModel.fromJson(json["homestay"]),
-          bookingDeposit: json["bookingDeposit"] != null
-              ? BookingDepositModel.fromJson(json["bookingDeposit"])
-              : null);
+        bookingHomestayId:
+            BookingHomestayIdModel.fromJson(json["bookingHomestayId"]),
+        paymentMethod: json["paymentMethod"],
+        totalBookingPrice: json["totalBookingPrice"],
+        totalReservation: json["totalReservation"],
+        homestay: HomestayModel.fromJson(json["homestay"]),
+      );
 
   Map<String, dynamic> toJson() => {
-        "bookingFrom": bookingFrom,
-        "bookingTo": bookingTo,
         "paymentMethod": paymentMethod,
         "homestayServiceList": homestayServiceList,
         "totalBookingPrice": totalBookingPrice,
         "totalServicePrice": totalServicePrice,
         "totalReservation": totalReservation,
-        "homestayName": homestayName
+        "homestay": homestay!.toJson(),
+        "homestayName": homestayName,
       };
+}
+
+class BookingHomestayIdModel {
+  BookingHomestayIdModel({this.bookingId, this.homestayId});
+  int? bookingId;
+  int? homestayId;
+
+  factory BookingHomestayIdModel.fromJson(Map<String, dynamic> json) =>
+      BookingHomestayIdModel(
+          bookingId: json["bookingId"], homestayId: json["homestayId"]);
 }
 
 class BookingDepositModel {
@@ -141,6 +135,9 @@ class DepositModel {
 class BookingModel {
   BookingModel(
       {this.id,
+      this.code,
+      this.bookingFrom,
+      this.bookingTo,
       this.totalBookingPrice,
       this.totalBookingDeposit,
       this.status,
@@ -149,6 +146,9 @@ class BookingModel {
       this.bookingDeposits});
 
   int? id;
+  String? code;
+  String? bookingFrom;
+  String? bookingTo;
   int? totalBookingPrice;
   int? totalBookingDeposit;
   String? status;
@@ -158,6 +158,9 @@ class BookingModel {
 
   factory BookingModel.fromJson(Map<String, dynamic> json) => BookingModel(
       id: json["id"],
+      code: json["code"],
+      bookingFrom: json["bookingFrom"],
+      bookingTo: json["bookingTo"],
       totalBookingPrice: json["totalBookingPrice"],
       totalBookingDeposit: json["totalBookingDeposit"],
       status: json["status"],
@@ -168,12 +171,27 @@ class BookingModel {
               .map((e) => BookingServiceModel.fromJson(e))),
       bookingDeposits: List<BookingDepositModel>.from(
           json["bookingDeposits"].map((e) => BookingDepositModel.fromJson(e))));
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "bookingFrom": bookingFrom,
+        "bookingTo": bookingTo,
+        "totalBookingPrice": totalBookingPrice,
+        "bookingHomestays": bookingHomestays!.map((e) => e.toJson()).toList(),
+        "bookingHomestayServices": bookingHomestayServices != null
+            ? bookingHomestayServices!.map((e) => e.toJson()).toList()
+            : <BookingServiceModel>[]
+      };
 }
 
 class BookingServiceModel {
   BookingServiceModel(
-      {this.totalServicePrice, this.homestayService, this.homestayName});
+      {this.id,
+      this.totalServicePrice,
+      this.homestayService,
+      this.homestayName});
 
+  int? id;
   int? totalServicePrice;
   String? homestayName;
   HomestayServiceModel? homestayService;
@@ -184,6 +202,13 @@ class BookingServiceModel {
           homestayService:
               HomestayServiceModel.fromJson(json["homestayService"]),
           homestayName: json["homestayName"]);
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "totalServicePrice": totalServicePrice,
+        "homestayName": homestayName,
+        "homestayService": homestayService!.toJson(),
+      };
 }
 
 class BookingValidateModel {

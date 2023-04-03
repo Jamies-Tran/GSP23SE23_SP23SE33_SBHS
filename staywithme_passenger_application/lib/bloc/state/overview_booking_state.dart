@@ -1,6 +1,6 @@
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 
 class OverviewBookingState {
   OverviewBookingState(
@@ -41,8 +41,6 @@ class OverviewBookingState {
         break;
     }
     return BookingHomestayModel(
-        bookingFrom: bookingStart,
-        bookingTo: bookingEnd,
         homestayServiceList: homestayServiceList!.map((e) => e.name!).toList(),
         totalBookingPrice: totalBookingPrice(),
         totalServicePrice: totalServicePrice,

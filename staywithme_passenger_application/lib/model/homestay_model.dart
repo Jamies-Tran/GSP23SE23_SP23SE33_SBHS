@@ -64,6 +64,11 @@ class HomestayModel {
           ? List<RatingModel>.from(
               json["ratings"].map((e) => RatingModel.fromJson(e)))
           : <RatingModel>[]);
+
+    Map<String, dynamic> toJson() => {
+      "name" : name,
+      "price" : price
+    };
 }
 
 class HomestayImageModel {
@@ -95,6 +100,8 @@ class HomestayServiceModel {
   factory HomestayServiceModel.fromJson(Map<String, dynamic> json) =>
       HomestayServiceModel(
           name: json["name"], price: json["price"], status: json["status"]);
+
+  Map<String, dynamic> toJson() => {"name": name, "price": price};
 }
 
 class RatingModel {

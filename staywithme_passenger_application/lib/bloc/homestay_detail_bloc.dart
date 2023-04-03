@@ -8,7 +8,7 @@ import 'package:staywithme_passenger_application/bloc/state/homestay_detail_stat
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
@@ -88,8 +88,8 @@ class HomestayDetailBloc {
           ),
         );
       } else {
-        final bookingHomestayData =
-            await _bookingService.getBookingHomestsayById(event.homestay!.id!);
+        final bookingHomestayData = await _bookingService
+            .getBookingHomestsayByHomestayId(event.homestay!.id!);
         if (bookingHomestayData is BookingHomestayModel) {
           showDialog(
             context: event.context!,
@@ -114,8 +114,10 @@ class HomestayDetailBloc {
                       )),
                   TextButton(
                       onPressed: () async {
-                        final bookingData = await _bookingService
-                            .createBooking(HomestayType.homestay.name);
+                        final bookingData = await _bookingService.createBooking(
+                            HomestayType.homestay.name,
+                            event.bookingStart!,
+                            event.bookingEnd!);
                         if (bookingData is BookingModel) {
                           Navigator.pushNamed(event.context!,
                               BookingHomestayScreen.bookingHomestayScreenRoute,
@@ -171,8 +173,10 @@ class HomestayDetailBloc {
                 ]),
           );
         } else {
-          final bookingData =
-              await _bookingService.createBooking(HomestayType.homestay.name);
+          final bookingData = await _bookingService.createBooking(
+              HomestayType.homestay.name,
+              event.bookingStart!,
+              event.bookingEnd!);
           if (bookingData is BookingModel) {
             Navigator.pushNamed(event.context!,
                 BookingHomestayScreen.bookingHomestayScreenRoute,

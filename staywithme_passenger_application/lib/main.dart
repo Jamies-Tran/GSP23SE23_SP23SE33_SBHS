@@ -10,9 +10,11 @@ import 'package:staywithme_passenger_application/screen/authenticate/log_in_scre
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/validate_otp_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/bloc_detail_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_bloc_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
+
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
@@ -93,6 +95,10 @@ class MyApp extends StatelessWidget {
             const BookingHomestayScreen(),
         BookingBlocScreen.bookingBlocScreenRoute: (context) =>
             const BookingBlocScreen(),
+        BookingListScreen.bookingListScreenRoute: (context) =>
+            const BookingListScreen(),
+        BookingLoadingScreen.bookingLoadingScreen: (context) =>
+            const BookingLoadingScreen(),
         ProcessBookingScreen.processBookingScreenRoute: (context) =>
             const ProcessBookingScreen(),
         ProcessBlocBookingScreen.processBlocBookingScreenRoute: (context) =>

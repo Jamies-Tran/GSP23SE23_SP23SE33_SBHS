@@ -70,6 +70,11 @@ final blocAvailableHomestaysUrl =
 final bookingHomestayUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_HOMESTAY"]}";
 
+final bookingUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING"]}";
+
+final bookingUpdateServiceUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_UPDATE_SERVICE"]}";
+
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final dateFormat = DateFormat("yyyy-MM-dd");

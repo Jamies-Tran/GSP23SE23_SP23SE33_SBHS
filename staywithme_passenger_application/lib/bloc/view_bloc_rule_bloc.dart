@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/view_bloc_rule_event.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_bloc_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
 
 class ViewBlocHomestayRuleBloc {
   final eventController = StreamController<ViewBlocHomestayRuleEvent>();

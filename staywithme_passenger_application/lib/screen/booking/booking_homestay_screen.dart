@@ -33,7 +33,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
 
   List<Widget> widgetList(
           HomestayModel homestay,
-          int? bookingId,
+          int bookingId,
           String bookingStart,
           String bookingEnd,
           List<HomestayServiceModel> homestayServiceList,
@@ -114,7 +114,7 @@ class _BookingHomestayScreenState extends State<BookingHomestayScreen> {
             ),
             body: widgetList(
                 streamSnapshot.data!.homestay!,
-                streamSnapshot.data!.bookingId,
+                streamSnapshot.data!.bookingId!,
                 streamSnapshot.data!.bookingStart!,
                 streamSnapshot.data!.bookingEnd!,
                 streamSnapshot.data!.homestayServiceList!,
@@ -1016,6 +1016,8 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                               SaveBookingHomestayEvent(
                                   bookingHomestay:
                                       snapshot.data!.bookingHomestayModel(),
+                                  bookingStart: widget.bookingStart,
+                                  bookingEnd: widget.bookingEnd,
                                   bookingId: widget.bookingId,
                                   context: context));
                         },

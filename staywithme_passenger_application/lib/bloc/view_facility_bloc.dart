@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:staywithme_passenger_application/bloc/event/view_facility_event.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 
 class ViewHomestayFacilityBloc {
   final eventController = StreamController<ViewHomestayFacilityEvent>();

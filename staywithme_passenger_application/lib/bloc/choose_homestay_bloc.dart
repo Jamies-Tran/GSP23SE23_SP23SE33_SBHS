@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/choose_homestay_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/choose_homestay_state.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_bloc_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 
 class ChooseHomestayBloc {

@@ -90,11 +90,11 @@ class FilterHomestayBloc {
                     title: const Center(
                       child: Text("Notice"),
                     ),
-                    content: Container(
+                    content: const SizedBox(
                       height: 50,
                       width: 50,
-                      child: const Text(
-                          "Grand your location permisison and try again"),
+                      child:
+                          Text("Grand your location permisison and try again"),
                     ),
                     actions: [
                       TextButton(

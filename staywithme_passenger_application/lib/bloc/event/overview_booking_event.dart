@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 
 abstract class OverviewBookingEvent {}
 
@@ -13,9 +13,15 @@ class ChoosePaymentMethodEvent extends OverviewBookingEvent {
 
 class SaveBookingHomestayEvent extends OverviewBookingEvent {
   SaveBookingHomestayEvent(
-      {this.context, this.bookingHomestay, this.bookingId});
+      {this.context,
+      this.bookingStart,
+      this.bookingEnd,
+      this.bookingHomestay,
+      this.bookingId});
 
   BuildContext? context;
+  String? bookingStart;
+  String? bookingEnd;
   BookingHomestayModel? bookingHomestay;
   int? bookingId;
 }

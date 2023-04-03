@@ -1,19 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/overview_booking_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/overview_booking_state.dart';
-import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/model/search_filter_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_homestay_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -82,68 +78,74 @@ class OverviewBookingBloc {
       final bookingHomestayData =
           await bookingService.saveHomestayForBooking(event.bookingHomestay!);
       if (bookingHomestayData is BookingHomestayModel) {
-        showDialog(
-            context: event.context!,
-            builder: (context) => AlertDialog(
-                    title: const Center(
-                      child: Text("Notice"),
-                    ),
-                    content: SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: Column(children: const [
-                        Text("Your booking have been saved"),
-                        Text("Do you want to submit or keep on browsing?")
-                      ]),
-                    ),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            FilterByBookingDate filterByBookingDate =
-                                FilterByBookingDate(
-                                    start: event.bookingHomestay!.bookingFrom,
-                                    end: event.bookingHomestay!.bookingTo,
-                                    totalReservation: event.bookingHomestay!
-                                        .homestay!.availableRooms);
-                            FilterByAddress filterByAddress = FilterByAddress(
-                                address: utf8.decode(event
-                                    .bookingHomestay!.homestay!.address!.runes
-                                    .toList()),
-                                distance: 5000,
-                                isGeometry: true);
-                            FilterOptionModel filterOptionModel =
-                                FilterOptionModel(
-                                    filterByBookingDateRange:
-                                        filterByBookingDate,
-                                    filterByAddress: filterByAddress);
-                            Navigator.pushReplacementNamed(
-                                context,
-                                SelectNextHomestayScreen
-                                    .selectNextHomestayScreenRoute,
-                                arguments: {
-                                  "filterOption": filterOptionModel,
-                                  "bookingId": event.bookingId,
-                                  "homestayType": "homestay"
-                                });
-                          },
-                          child: const Text(
-                            "Keep browsing",
-                            style: TextStyle(
-                                fontSize: 15, color: Colors.greenAccent),
-                          )),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context,
-                                ProcessBookingScreen.processBookingScreenRoute,
-                                arguments: {"bookingId": event.bookingId});
-                          },
-                          child: const Text(
-                            "Submit",
-                            style:
-                                TextStyle(fontSize: 15, color: secondaryColor),
-                          )),
-                    ]),
-            barrierDismissible: false);
+        Navigator.pushNamed(
+            event.context!, BookingLoadingScreen.bookingLoadingScreen,
+            arguments: {
+              "bookingId": event.bookingId,
+              "homestayType": "homestay"
+            });
+        // showDialog(
+        //     context: event.context!,
+        //     builder: (context) => AlertDialog(
+        //             title: const Center(
+        //               child: Text("Notice"),
+        //             ),
+        //             content: SizedBox(
+        //               height: 200,
+        //               width: 200,
+        //               child: Column(children: const [
+        //                 Text("Your booking have been saved"),
+        //                 Text("Do you want to submit or keep on browsing?")
+        //               ]),
+        //             ),
+        //             actions: [
+        //               TextButton(
+        //                   onPressed: () {
+        //                     FilterByBookingDate filterByBookingDate =
+        //                         FilterByBookingDate(
+        //                             start: event.bookingStart!,
+        //                             end: event.bookingEnd!,
+        //                             totalReservation: event.bookingHomestay!
+        //                                 .homestay!.availableRooms);
+        //                     FilterByAddress filterByAddress = FilterByAddress(
+        //                         address: utf8.decode(event
+        //                             .bookingHomestay!.homestay!.address!.runes
+        //                             .toList()),
+        //                         distance: 5000,
+        //                         isGeometry: true);
+        //                     FilterOptionModel filterOptionModel =
+        //                         FilterOptionModel(
+        //                             filterByBookingDateRange:
+        //                                 filterByBookingDate,
+        //                             filterByAddress: filterByAddress);
+        //                     Navigator.pushReplacementNamed(
+        //                         context,
+        //                         SelectNextHomestayScreen
+        //                             .selectNextHomestayScreenRoute,
+        //                         arguments: {
+        //                           "filterOption": filterOptionModel,
+        //                           "bookingId": event.bookingId,
+        //                           "homestayType": "homestay"
+        //                         });
+        //                   },
+        //                   child: const Text(
+        //                     "Keep browsing",
+        //                     style: TextStyle(
+        //                         fontSize: 15, color: Colors.greenAccent),
+        //                   )),
+        //               TextButton(
+        //                   onPressed: () {
+        //                     Navigator.pushReplacementNamed(context,
+        //                         ProcessBookingScreen.processBookingScreenRoute,
+        //                         arguments: {"bookingId": event.bookingId});
+        //                   },
+        //                   child: const Text(
+        //                     "Submit",
+        //                     style:
+        //                         TextStyle(fontSize: 15, color: secondaryColor),
+        //                   )),
+        //             ]),
+        //     barrierDismissible: false);
       } else if (bookingHomestayData is ServerExceptionModel) {
         showDialog(
           context: event.context!,

@@ -12,7 +12,6 @@ import 'package:staywithme_passenger_application/bloc/state/select_next_state.da
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/image_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';

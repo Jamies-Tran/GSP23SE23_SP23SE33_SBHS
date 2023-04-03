@@ -1,7 +1,7 @@
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/screen/homestay/booking_bloc_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
 
 class OverviewBookingBlocState {
   OverviewBookingBlocState(
@@ -47,8 +47,6 @@ class OverviewBookingBlocState {
     }
     BookingBlocHomestayModel bookingBlocHomestay = BookingBlocHomestayModel(
         blocName: bloc!.name,
-        bookingFrom: bookingStart,
-        bookingTo: bookingEnd,
         totalBookingPrice: totalBookingPrice(),
         totalServicePrice: totalServicePrice,
         bookingRequestList: bookingBlocList,
