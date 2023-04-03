@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
+import com.sbhs.swm.dto.request.BookingUpdateRequestDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
 import com.sbhs.swm.dto.response.BookingHomestayResponseDto;
@@ -42,8 +43,8 @@ public class BookingController {
 
     @PostMapping("/new-booking")
     @PreAuthorize("hasAuthority('booking:create')")
-    public ResponseEntity<?> createBookingByPassenger(String homestayType) {
-        Booking bookingSave = bookingService.createBookingByPassenger(homestayType);
+    public ResponseEntity<?> createBookingByPassenger(String homestayType, String bookingFrom, String bookingTo) {
+        Booking bookingSave = bookingService.createBookingByPassenger(homestayType, bookingFrom, bookingTo);
         BookingResponseDto responseBookingSave = modelMapper.map(bookingSave, BookingResponseDto.class);
         responseBookingSave.setBookingHomestays(new ArrayList<>());
         responseBookingSave.setBookingHomestayServices(new ArrayList<>());
@@ -55,12 +56,24 @@ public class BookingController {
 
     @GetMapping("/booking-homestay")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> getBookingHomestayById(Long homestayId) {
-        BookingHomestay bookingHomestay = bookingService.getBookingHomestayById(homestayId);
+    public ResponseEntity<?> getBookingHomestayByHomestayId(Long homestayId) {
+        BookingHomestay bookingHomestay = bookingService.getBookingHomestayByHomestayId(homestayId);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
                 BookingHomestayResponseDto.class);
 
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_PASSENGER', 'ROLE_LANDLORD')")
+    public ResponseEntity<?> getBookingById(Long bookingId) {
+        Booking booking = bookingService.findBookingById(bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
+        for (BookingHomestayResponseDto b : responseBooking.getBookingHomestays()) {
+            b.getHomestay().setAddress(b.getHomestay().getAddress().split("_")[0]);
+        }
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 
     @PostMapping("/save-homestay")
@@ -71,6 +84,16 @@ public class BookingController {
                 BookingHomestayResponseDto.class);
 
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @PutMapping
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> updateBooking(@RequestBody BookingUpdateRequestDto booking, @RequestParam Long bookingId) {
+
+        Booking updatedBooking = bookingService.updateSavedBooking(booking, bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(updatedBooking, BookingResponseDto.class);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 
     @PostMapping("/save-bloc")
@@ -156,7 +179,7 @@ public class BookingController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/booking")
+    @DeleteMapping
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> deleteBooking(Long bookingId) {
         bookingService.deleteBooking(bookingId);

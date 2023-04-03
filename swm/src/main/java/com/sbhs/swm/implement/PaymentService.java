@@ -23,7 +23,7 @@ import com.sbhs.swm.models.type.WalletType;
 import com.sbhs.swm.repositories.PaymentRepo;
 import com.sbhs.swm.services.IPaymentService;
 import com.sbhs.swm.services.IUserService;
-import com.sbhs.swm.util.DateFormatUtil;
+import com.sbhs.swm.util.DateTimeUtil;
 import com.sbhs.swm.util.MomoSignatureHashingUtil;
 
 @Service
@@ -36,7 +36,7 @@ public class PaymentService implements IPaymentService {
         private IUserService userService;
 
         @Autowired
-        private DateFormatUtil dateFormatUtil;
+        private DateTimeUtil dateFormatUtil;
 
         @Autowired
         private String getPartnerCode;

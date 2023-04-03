@@ -18,7 +18,7 @@ import com.sbhs.swm.models.type.PromotionType;
 import com.sbhs.swm.repositories.PromotionRepo;
 import com.sbhs.swm.services.IPromotionService;
 import com.sbhs.swm.services.IUserService;
-import com.sbhs.swm.util.DateFormatUtil;
+import com.sbhs.swm.util.DateTimeUtil;
 
 @Service
 public class PromotionService implements IPromotionService {
@@ -30,7 +30,7 @@ public class PromotionService implements IPromotionService {
     private IUserService userService;
 
     @Autowired
-    private DateFormatUtil dateFormatUtil;
+    private DateTimeUtil dateFormatUtil;
 
     @Override
     public Promotion findPromotionByCode(String code) {

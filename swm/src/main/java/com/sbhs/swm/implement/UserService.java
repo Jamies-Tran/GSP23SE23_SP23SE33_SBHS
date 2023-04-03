@@ -39,7 +39,7 @@ import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IRoleService;
 import com.sbhs.swm.services.IUserService;
-import com.sbhs.swm.util.DateFormatUtil;
+import com.sbhs.swm.util.DateTimeUtil;
 
 @Service
 public class UserService implements IUserService {
@@ -66,7 +66,7 @@ public class UserService implements IUserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private DateFormatUtil dateFormatUtil;
+    private DateTimeUtil dateFormatUtil;
 
     @Override
     public SwmUser findUserByUsername(String username) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
-
+import com.sbhs.swm.dto.request.BookingUpdateRequestDto;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
@@ -13,17 +13,19 @@ public interface IBookingService {
 
     BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest);
 
+    Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
+
     List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
 
     void deleteBookingHomestay(Long bookingId, Long homestayId);
 
     void deleteBooking(Long bookingId);
 
-    Booking createBookingByPassenger(String homestayType);
+    Booking createBookingByPassenger(String homestayType, String bookingFrom, String bookingTo);
 
     Booking submitBookingByPassenger(Long bookingId);
 
-    BookingHomestay getBookingHomestayById(Long homestayId);
+    BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
 
     List<Booking> findBookingsByUsernameAndStatus(String bookingStatus);
 

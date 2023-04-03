@@ -32,7 +32,7 @@ import com.sbhs.swm.services.IGoongService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IUserService;
 import com.sbhs.swm.util.CityProvinceNameUtil;
-import com.sbhs.swm.util.DateFormatUtil;
+import com.sbhs.swm.util.DateTimeUtil;
 
 @Service
 public class HomestayService implements IHomestayService {
@@ -53,7 +53,7 @@ public class HomestayService implements IHomestayService {
     private IUserService userService;
 
     @Autowired
-    private DateFormatUtil dateFormatUtil;
+    private DateTimeUtil dateFormatUtil;
 
     @Autowired
     private CityProvinceNameUtil cityProvinceNameUtil;

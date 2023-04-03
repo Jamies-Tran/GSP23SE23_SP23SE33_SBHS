@@ -31,7 +31,7 @@ import com.sbhs.swm.services.IAdminService;
 import com.sbhs.swm.services.IHomestayService;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IUserService;
-import com.sbhs.swm.util.DateFormatUtil;
+import com.sbhs.swm.util.DateTimeUtil;
 
 @Service
 public class AdminService implements IAdminService {
@@ -64,7 +64,7 @@ public class AdminService implements IAdminService {
     private String GENDER;
 
     @Autowired
-    private DateFormatUtil dateFormatUtil;
+    private DateTimeUtil dateFormatUtil;
 
     @Autowired
     private IUserService userService;

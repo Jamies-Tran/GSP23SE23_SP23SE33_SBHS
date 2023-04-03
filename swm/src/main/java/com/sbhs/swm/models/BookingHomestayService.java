@@ -32,7 +32,7 @@ public class BookingHomestayService {
     private HomestayService homestayService;
 
     @Column(columnDefinition = "nvarchar(500)")
-    private String homestayname;
+    private String homestayName;
 
     @Column
     private Long totalServicePrice;

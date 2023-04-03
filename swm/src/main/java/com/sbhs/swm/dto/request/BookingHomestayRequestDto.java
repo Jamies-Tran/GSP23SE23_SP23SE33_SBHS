@@ -12,8 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingHomestayRequestDto {
-    private String bookingFrom;
-    private String bookingTo;
     private String paymentMethod;
     private Long totalReservation;
     private String homestayName;

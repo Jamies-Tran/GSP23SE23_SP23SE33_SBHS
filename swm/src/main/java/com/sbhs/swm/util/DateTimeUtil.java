@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import com.sbhs.swm.handlers.exceptions.InvalidDateException;
 
 @Configuration
-public class DateFormatUtil {
+public class DateTimeUtil {
     @Autowired
     private SimpleDateFormat simpleDateFormat;
 

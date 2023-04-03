@@ -10,7 +10,7 @@ import com.sbhs.swm.models.BookingHomestay;
 public class BookingDateValidationUtil {
 
     @Autowired
-    private DateFormatUtil dateFormatUtil;
+    private DateTimeUtil dateFormatUtil;
 
     public String bookingValidateString(String startDate, String endDate, BookingHomestay bookingHomestay) {
 
@@ -19,8 +19,8 @@ public class BookingDateValidationUtil {
         if (currentStart.after(currentEnd) || currentStart.after(currentEnd)) {
             return BookingDateValidationString.INVALID.name();
         }
-        Date bookedStart = dateFormatUtil.formatGivenDate(bookingHomestay.getBookingFrom());
-        Date bookedEnd = dateFormatUtil.formatGivenDate(bookingHomestay.getBookingTo());
+        Date bookedStart = dateFormatUtil.formatGivenDate(bookingHomestay.getBooking().getBookingFrom());
+        Date bookedEnd = dateFormatUtil.formatGivenDate(bookingHomestay.getBooking().getBookingTo());
         if ((bookedStart.after(currentStart) && bookedStart.before(currentEnd))
                 && (bookedEnd.after(currentEnd) && bookedEnd.after(currentStart))) {
             return BookingDateValidationString.ON_BOOKING_PERIOD.name();

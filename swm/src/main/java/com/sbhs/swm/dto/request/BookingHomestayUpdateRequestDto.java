@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingBlocRequestDto {
-    private Long totalReservation;
+public class BookingHomestayUpdateRequestDto {
+    private Long id;
     private Long totalBookingPrice;
-    private String homestayName;
-
+    private Long totalReservation;
+    private HomestayRequestDto homestay;
 }

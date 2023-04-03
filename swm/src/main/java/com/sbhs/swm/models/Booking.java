@@ -28,6 +28,12 @@ public class Booking extends BaseModel {
     private @Setter String code;
 
     @Column
+    private @Setter String bookingFrom;
+
+    @Column
+    private @Setter String bookingTo;
+
+    @Column
     private @Setter Long totalBookingPrice = 0L;
 
     @Column

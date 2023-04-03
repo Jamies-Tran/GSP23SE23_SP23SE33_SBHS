@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 public class BookingHomestay {
     @EmbeddedId
-    private BookingHomestayId bookingSaveHomestayId = new BookingHomestayId();
+    private BookingHomestayId bookingHomestayId = new BookingHomestayId();
 
     @MapsId("bookingId")
     @ManyToOne
@@ -29,12 +29,6 @@ public class BookingHomestay {
     @ManyToOne
     @JoinColumn
     private Homestay homestay;
-
-    @Column
-    private String bookingFrom;
-
-    @Column
-    private String bookingTo;
 
     @Column
     private Long totalBookingPrice;
