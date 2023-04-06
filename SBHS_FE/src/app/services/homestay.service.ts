@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { throwError } from 'rxjs/internal/observable/throwError';
-import { catchError } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -133,15 +133,15 @@ public findBlocList(status:string){
 }
 
 // 5 GET
-//  /api/homestay/user/detail
-public findHomestayByName(name:string){
+//  /api/homestay/user/homestay-detail
+public getHomestayDetailByName(name:string):Observable<any>{
   this.httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json ',
       'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
     }),
   };
-  const url = `${this.REST_API_SERVER}/api/homestay/user/detail?name=${name}`;
+  const url = `${this.REST_API_SERVER}/api/homestay/user/homestay-detail?name=${name}`;
   return this.httpClient
     .get<any>(url, this.httpOptions)
     .pipe(catchError(this.handleError));

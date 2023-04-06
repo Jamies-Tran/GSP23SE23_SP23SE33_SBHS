@@ -1,13 +1,27 @@
-<div class="container pt-5">
+<div class="container pt-5 mb-3">
   <div class="row w-100 justify-content-center">
     <div class="col-10">
       <div class="mb-3">
         <i class="fa-solid fa-arrow-left-long"></i> <span class="ms-2">Homestay</span>
       </div>
       <div class="card-header border-0">
-        <h1 class="">Homestay Name</h1>
-        <i class="fa-solid fa-location-dot"></i>
-        <span class="ms-2">17 Phan Van Tri, Vũng Tàu, Việt Nam</span>
+        <div class="row w-100 m-0 p-0">
+          <div class="col-10 m-0 p-0">
+            <h1 class="">{{datas.name}}</h1>
+            <i class="fa-solid fa-location-dot"></i>
+            <span class="ms-2">{{datas.address}} </span>
+
+          </div>
+          <div class="col-2 m-0 p-0">
+            <small *ngIf="datas.status =='ACTIVATING'"
+              class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">{{datas.status}}</small>
+            <small *ngIf="datas.status =='PENDING'"
+              class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-2">{{datas.status}}</small>
+            <small *ngIf="datas.status =='REJECTED_LICENSE_NOT_MATCHED' && 'BANNED' "
+              class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-2">{{datas.status}}</small>
+          </div>
+        </div>
+
       </div>
       <!-- Image -->
       <div class="card my-3">
@@ -15,8 +29,8 @@
           <mat-grid-tile [colspan]="4" [rowspan]="2">
             <div class="w-100 h-100 pe-2">
               <div class="w-100 h-100" style="
-            background-image: url('/assets/images/image-1.jpeg'); background-size: cover;
-            background-position: center; "></div>
+            background-size: cover;
+            background-position: center; " [style.background-image]="'url('+ urls[0] + ') '"></div>
             </div>
 
           </mat-grid-tile>
@@ -24,33 +38,23 @@
           <mat-grid-tile [colspan]="2" [rowspan]="1">
             <div class="w-100 h-100 pb-1">
               <div class="w-100 h-100" style="
-            background-image: url('/assets/images/image-1.jpeg'); background-size: cover;
-            background-position: center; "></div>
+             background-size: cover;
+            background-position: center; " [style.background-image]=" 'url('+ urls[1] + ')' "></div>
             </div>
           </mat-grid-tile>
           <mat-grid-tile [colspan]="2" [rowspan]="1">
             <div class="w-100 h-100 pt-1">
               <div class="w-100 h-100" style="
-            background-image: url('/assets/images/image-1.jpeg'); background-size: cover;
-            background-position: center; "></div>
+            background-size: cover;
+            background-position: center; " [style.background-image]="'url('+ urls[2] + ')'"></div>
             </div>
           </mat-grid-tile>
         </mat-grid-list>
 
         <div class="row w-100 m-0 ">
-          <div class="col-3 p-0">
-            <div class="w-100 pe-1"><img src="/assets/images/image-1.jpeg" alt="" class=" img-fluid"></div>
+          <div class="col-3 p-0" *ngFor="let url of urls4">
+            <div class="w-100 pe-1"><img [src]="url" class=" img-fluid"></div>
           </div>
-          <div class="col-3 p-0">
-            <div class="w-100 pe-1"><img src="/assets/images/image-1.jpeg" alt="" class=" img-fluid"></div>
-          </div>
-          <div class="col-3 p-0">
-            <div class="w-100 pe-1"><img src="/assets/images/image-1.jpeg" alt="" class=" img-fluid"></div>
-          </div>
-          <div class="col-3 p-0">
-            <div class="w-100 "><img src="/assets/images/image-1.jpeg" alt="" class=" img-fluid"></div>
-          </div>
-
         </div>
       </div>
       <!-- Basic information  -->
@@ -63,7 +67,7 @@
               </div>
               <div class="col-4 m-0 p-0">
                 <div class="d-flex flex-row justify-content-end ">
-                  <button  mat-stroked-button class="border border-warning me-2">Edit</button>
+                  <button mat-stroked-button class="border border-warning me-2">Edit</button>
                   <button mat-stroked-button class="border border-success">Edit All</button>
                 </div>
               </div>
@@ -80,7 +84,7 @@
                         <span class="text-muted text-uppercase fs-7 text-break text-wrap">homestay name</span>
                       </div>
                       <div class="col-9">
-                        <span> Hoemstay Qaung</span>
+                        <span> {{datas.name}} </span>
                       </div>
                     </div>
                   </div>
@@ -94,7 +98,7 @@
                         <span class="text-muted text-uppercase">Available Rooms</span>
                       </div>
                       <div class="col-6">
-                        <span> 20</span>
+                        <span> {{datas.availableRooms}} </span>
                       </div>
                     </div>
                   </div>
@@ -104,7 +108,7 @@
                         <span class="text-muted text-uppercase">Room Capacity</span>
                       </div>
                       <div class="col-6">
-                        <span> 10</span>
+                        <span> {{datas.availableRooms}} </span>
                       </div>
                     </div>
                   </div>
@@ -118,8 +122,7 @@
                         <span class="text-muted text-uppercase">address</span>
                       </div>
                       <div class="col-9">
-                        <span> 123 quang trung nguyen hue quang trung nguyen hue quang trung nguyen hue quang trung
-                          nguyen hue</span>
+                        <span> {{datas.address}} </span>
                       </div>
                     </div>
                   </div>
@@ -128,7 +131,7 @@
               <div class="col-3 m-0 p-0">
                 <div class="w-100 overflow-hidden">
                   <span class="text-muted text-uppercase">Homestay License</span>
-                  <img src="/assets/images/image-1.jpeg" class="img-fuild w-100 h-100 mt-2" style="object-fit: cover;">
+                  <img [src]="datas.businessLicense" class="img-fuild w-100 h-100 mt-2" style="object-fit: cover;">
                 </div>
               </div>
             </div>
@@ -148,7 +151,7 @@
               </div>
               <div class="col-4 m-0 p-0">
                 <div class="d-flex flex-row justify-content-end ">
-                  <button  mat-stroked-button class="border border-warning me-2">Edit</button>
+                  <button mat-stroked-button class="border border-warning me-2">Edit</button>
                   <button mat-stroked-button class="border border-success">Edit All</button>
                 </div>
               </div>
@@ -166,7 +169,7 @@
                       <div class="col-8 m-0 p-0">
                         <div class="d-flex flex-row justify-content-end">
                           <div class="">
-                            <span class="text-success">100.000 vnd</span>
+                            <span class="text-success">{{datas.price | currency:'VND'}} </span>
                           </div>
                         </div>
                       </div>
@@ -183,8 +186,8 @@
                       <div class="col-6 m-0 p-0">
                         <div class="d-flex flex-row justify-content-end">
                           <div class="">
-                            <span class="">Your earnings (including taxes): <span class="text-danger"> 100.000
-                                vnd</span></span>
+                            <span class="">Your earnings (including taxes): <span class="text-danger"> {{priceTax |
+                                currency:'VND' }} </span></span>
                           </div>
                         </div>
                       </div>
@@ -250,7 +253,8 @@
                       </div>
                       <div class="col-9">
                         <div class="row w-100 p-0 m-0">
-                          <div class="col-3 p-0 m-0">Pet</div>
+                          <div class="col-3 p-0 m-0" *ngFor="let item of datas.homestayRules">{{item.description}}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -282,28 +286,21 @@
             <div class="row w-100 p-0 m-0">
               <div class="col m-0 p-0 pe-2">
                 <div class="row w-100 m-0 p-0">
-                  <div class="col-6 m-0 p-0">
-                    <div class="row w-100 m-0 p-0">
-                      <div class="col-6 m-0 p-0">
-                        <span class="text-muted text-uppercase">Available Rooms</span>
-                      </div>
-                      <div class="col-6">
-                        <span> 20</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 m-0 p-0">
-                    <div class="row w-100 m-0 p-0">
-                      <div class="col-6 m-0 p-0">
-                        <span class="text-muted text-uppercase">Room Capacity</span>
-                      </div>
-                      <div class="col-6">
-                        <span> 10</span>
+                    <div class="col-6 m-0 p-0" *ngFor="let item of datas.homestayFacilities ; let i = index">
+                      <hr *ngIf="i >1">
+                      <div class="row w-100 m-0 p-0">
+                        <div class="col-6 m-0 p-0">
+                          <span class="text-muted text-uppercase">{{item.name}} </span>
+                        </div>
+                        <div class="col-6">
+                          <span> {{item.quantity}} </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <div class="col-6 m-0 p-0 " *ngIf="datas.homestayFacilities.length % 2 == 1 ">
+                     <hr>
+                    </div>
                 </div>
-                <hr>
               </div>
             </div>
           </div>
@@ -329,28 +326,21 @@
             <div class="row w-100 p-0 m-0">
               <div class="col m-0 p-0 pe-2">
                 <div class="row w-100 m-0 p-0">
-                  <div class="col-6 m-0 p-0">
+                  <div class="col-6 m-0 p-0" *ngFor="let item of datas.homestayServices ; let i = index">
+                    <hr *ngIf="i >1">
                     <div class="row w-100 m-0 p-0">
                       <div class="col-6 m-0 p-0">
-                        <span class="text-muted text-uppercase">Available Rooms</span>
+                        <span class="text-muted text-uppercase">{{item.name}} </span>
                       </div>
                       <div class="col-6">
-                        <span> 20</span>
+                        <span> {{item.price | currency:'VND'}} </span>
                       </div>
                     </div>
                   </div>
-                  <div class="col-6 m-0 p-0">
-                    <div class="row w-100 m-0 p-0">
-                      <div class="col-6 m-0 p-0">
-                        <span class="text-muted text-uppercase">Room Capacity</span>
-                      </div>
-                      <div class="col-6">
-                        <span> 10</span>
-                      </div>
-                    </div>
+                  <div class="col-6 m-0 p-0 " *ngIf="datas.homestayServices.length % 2 == 1 ">
+                   <hr>
                   </div>
-                </div>
-                <hr>
+              </div>
               </div>
             </div>
           </div>

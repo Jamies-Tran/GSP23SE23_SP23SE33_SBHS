@@ -43,7 +43,7 @@ export class HomestayComponent implements OnInit {
 
   }
   getHomestayName(name: string){
-    localStorage.setItem('homestayName',name);
+    sessionStorage.setItem('name',name);
   }
   id: string =""
   getHomestayId(id: string){
