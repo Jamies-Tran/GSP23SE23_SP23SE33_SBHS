@@ -295,9 +295,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           this.message = 'Please enter New Service Name';
           this.openDialogMessage();
           return;
-        } else valid = true;
+        } else {valid = true;
+        this.homestayServices.push({name:items.name, price:items.price});}
       }
-    } else valid = true;
+    } else {
+      valid = true;
+    }
 
     this.blocShow = false;
     this.overviewShow = true;
@@ -685,21 +688,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   // submit
   register() {
     console.log('register');
-    // homestay Image
-    // for (this.file of this.homestayImageFiles) {
-    //   const path =
-    //     'homestay/' +
-    //     this.informationFormGroup.controls.blocHomestayName.value +
-    //     ' ' +
-    //     this.file.name;
-    //   const fileRef = this.storage.ref(path);
-    //   this.storage.upload(path, this.file);
-    //   this.homestayImages.push({ imageUrl: this.file.name });
-    // }
+
 
     // homestayLicenseFiles
     for( this.file of this.homestayLicenseFiles){
-      this.homestayLicense = this.file.name;
+      this.homestayLicense = this.informationFormGroup.controls.blocHomestayName.value +
+      ' ' + this.file.name;
     }
 
     this.data = {
@@ -729,6 +723,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.data.homestayServices = this.homestayServices;
     this.data.homestays = this.homestays;
     console.log('data', this.data);
+
+
+
     if (this.flag === true && this.data.homestays.length > 0) {
       this.httpHomestay.createBloc(this.data).subscribe(
         (data) => {
