@@ -15,6 +15,8 @@ public interface IBookingService {
 
     Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
 
+    Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId);
+
     List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
 
     void deleteBookingHomestay(Long bookingId, Long homestayId);
@@ -23,7 +25,9 @@ public interface IBookingService {
 
     Booking createBookingByPassenger(String homestayType, String bookingFrom, String bookingTo);
 
-    Booking submitBookingByPassenger(Long bookingId);
+    Booking submitBookingForHomestayByPassenger(Long bookingId);
+
+    Booking submitBookingForBlocByPassenger(Long bookingId, String paymentMethod);
 
     BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
 
@@ -35,9 +39,12 @@ public interface IBookingService {
 
     Booking findBookingById(Long id);
 
+    Booking findBookingSavedBlocHomestayType();
+
     List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd);
 
-    public boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
+    boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
             int totalReservation);
 
+    void addHomestayInBlocToBooking(String homestayName, Long bookingId, String paymentMethod);
 }

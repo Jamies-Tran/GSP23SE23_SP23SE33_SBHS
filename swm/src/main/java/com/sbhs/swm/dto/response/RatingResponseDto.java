@@ -14,5 +14,6 @@ public class RatingResponseDto extends BaseResponseDto {
     private Double servicePoint;
     private Double locationPoint;
     private Double securityPoint;
+    private double averagePoint;
     private String comment;
 }

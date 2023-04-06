@@ -36,4 +36,7 @@ public class BookingHomestay {
     @Column
     private Long totalReservation;
 
+    @Column
+    private @Setter String paymentMethod;
+
 }

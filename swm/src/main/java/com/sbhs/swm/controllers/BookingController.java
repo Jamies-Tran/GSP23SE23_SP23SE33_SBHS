@@ -23,12 +23,15 @@ import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingUpdateRequestDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
+import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
 import com.sbhs.swm.dto.response.BookingHomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingResponseDto;
+
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
+import com.sbhs.swm.models.type.HomestayType;
 import com.sbhs.swm.services.IBookingService;
 
 @RestController
@@ -69,6 +72,18 @@ public class BookingController {
     public ResponseEntity<?> getBookingById(Long bookingId) {
         Booking booking = bookingService.findBookingById(bookingId);
         BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
+        switch (HomestayType.valueOf(booking.getHomestayType().toUpperCase())) {
+            case BLOC:
+                BlocHomestayResponseDto responseBlocHomestay = modelMapper.map(booking.getBloc(),
+                        BlocHomestayResponseDto.class);
+                responseBooking.setBlocResponse(responseBlocHomestay);
+                break;
+            case HOMESTAY:
+                break;
+        }
+        
+        
+
         for (BookingHomestayResponseDto b : responseBooking.getBookingHomestays()) {
             b.getHomestay().setAddress(b.getHomestay().getAddress().split("_")[0]);
         }
@@ -86,6 +101,19 @@ public class BookingController {
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
     }
 
+    @GetMapping("/bloc-type")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> getBookingSavedBlocHomestayType() {
+        Booking booking = bookingService.findBookingSavedBlocHomestayType();
+        BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
+        // BlocHomestayResponseDto responseBloc = modelMapper.map(booking.getBloc(),
+        // BlocHomestayResponseDto.class);
+        // responseBooking.setBlocResponse(responseBloc);
+        // responseBooking.getBlocResponse().setAddress(responseBooking.getBlocResponse().getAddress().split("_")[0]);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
     @PutMapping
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> updateBooking(@RequestBody BookingUpdateRequestDto booking, @RequestParam Long bookingId) {
@@ -94,6 +122,25 @@ public class BookingController {
         BookingResponseDto responseBooking = modelMapper.map(updatedBooking, BookingResponseDto.class);
 
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
+    @PutMapping("/homestay-in-bloc")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> addHomestayInBlocToBooking(String homestayName, Long bookingId, String paymentMethod) {
+        bookingService.addHomestayInBlocToBooking(homestayName, bookingId, paymentMethod);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/homestay-service")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> updateBookingServices(@RequestBody List<String> serviceNameList,
+            @RequestParam Long bookingId, @RequestParam String homestayName) {
+        Booking updatedBookingService = bookingService.updateSavedBookingServices(serviceNameList, homestayName,
+                bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(updatedBookingService, BookingResponseDto.class);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+
     }
 
     @PostMapping("/save-bloc")
@@ -106,10 +153,19 @@ public class BookingController {
         return new ResponseEntity<List<BookingHomestayResponseDto>>(responseBookingHomestayList, HttpStatus.OK);
     }
 
-    @PutMapping("/submit")
+    @PutMapping("/submit-homestay")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> submitBooking(Long bookingId) {
-        Booking booking = bookingService.submitBookingByPassenger(bookingId);
+    public ResponseEntity<?> submitBookingForHomestay(Long bookingId) {
+        Booking booking = bookingService.submitBookingForHomestayByPassenger(bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
+    @PutMapping("/submit-bloc")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> submitBookingForBloc(Long bookingId, String paymentMethod) {
+        Booking booking = bookingService.submitBookingForBlocByPassenger(bookingId, paymentMethod);
         BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
 
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);

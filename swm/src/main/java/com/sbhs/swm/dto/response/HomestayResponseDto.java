@@ -23,6 +23,7 @@ public class HomestayResponseDto extends BaseResponseDto {
     private String cityProvince;
     private String businessLicense;
     private Integer availableRooms;
+    private Integer roomCapacity;
     private Double totalAverageRating;
     private Integer numberOfRating = 0;
     private String status;

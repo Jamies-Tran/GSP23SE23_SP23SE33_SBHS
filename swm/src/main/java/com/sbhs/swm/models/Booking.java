@@ -8,8 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,8 +51,9 @@ public class Booking extends BaseModel {
     @Column
     private @Setter String homestayType;
 
-    @Column
-    private @Setter String paymentMethod;
+    @OneToOne
+    @JoinColumn(name = "bloc_id", referencedColumnName = "id")
+    private @Setter BlocHomestay bloc;
 
     @OneToMany(mappedBy = "booking", cascade = { CascadeType.REMOVE })
     private @Setter List<BookingHomestay> bookingHomestays;

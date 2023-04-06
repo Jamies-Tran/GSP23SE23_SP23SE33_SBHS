@@ -21,6 +21,8 @@ public class BookingResponseDto {
     private Long totalBookingPrice;
     private Long totalBookingDeposit;
     private String status;
+    private String homestayType;
+    private BlocHomestayResponseDto blocResponse;
     private List<BookingHomestayResponseDto> bookingHomestays;
     private List<BookingServiceResponseDto> bookingHomestayServices;
     private List<BookingDepositDto> bookingDeposits;

@@ -373,10 +373,10 @@ public class HomestayService implements IHomestayService {
         List<String> serviceNames = new ArrayList<>();
         switch (homestayType.toUpperCase()) {
             case "HOMESTAY":
-                serviceNames = homestayServiceRepo.getHomestayServiceDistincNames();
+                serviceNames = homestayServiceRepo.findHomestayServiceDistincNames();
                 break;
             case "BLOC":
-                serviceNames = homestayServiceRepo.getBlocServiceDistincNames();
+                serviceNames = homestayServiceRepo.findBlocServiceDistincNames();
                 break;
         }
 
@@ -389,10 +389,10 @@ public class HomestayService implements IHomestayService {
         List<Long> servicePriceList = new ArrayList<>();
         switch (homestayType) {
             case "HOMESTAY":
-                servicePriceList = homestayServiceRepo.getHomestayServiceOrderByPrice();
+                servicePriceList = homestayServiceRepo.findHomestayServiceOrderByPrice();
                 break;
             case "BLOC":
-                servicePriceList = homestayServiceRepo.getBlocServiceOrderByPrice();
+                servicePriceList = homestayServiceRepo.findBlocServiceOrderByPrice();
                 break;
         }
 
