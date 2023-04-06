@@ -9,7 +9,7 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/process_bloc_booking_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -27,7 +27,6 @@ class OverviewBookingBlocHomestayBloc {
   int? _bookingId;
   int? _totalHomestayPrice;
   int? _totalServicePrice;
-  BlocPaymentMethod? _paymentMethod = BlocPaymentMethod.swm_wallet;
 
   OverviewBookingBlocState initData(
       String bookingStart,
@@ -53,7 +52,6 @@ class OverviewBookingBlocHomestayBloc {
         bookingEnd: bookingEnd,
         bookingId: bookingId,
         bookingStart: bookingStart,
-        paymentMethod: BlocPaymentMethod.swm_wallet,
         totalHomestayPrice: totalHomestayPrice,
         totalServicePrice: totalServicePrice);
   }
@@ -70,15 +68,17 @@ class OverviewBookingBlocHomestayBloc {
   }
 
   Future<void> eventHandler(OverviewBookingBlocEvent event) async {
-    if (event is ChooseBlocPaymentMethodEvent) {
-      _paymentMethod = event.paymentMethod;
-    } else if (event is SubmitBookingBlocHomestayEvent) {
+    if (event is SubmitBookingBlocHomestayEvent) {
       final savedBookingBlocData =
           await _bookingService.saveBlocForBooking(event.bookingBlocHomestay!);
       if (savedBookingBlocData is List<BookingHomestayModel>) {
-        Navigator.pushReplacementNamed(event.context!,
-            ProcessBlocBookingScreen.processBlocBookingScreenRoute,
-            arguments: {"bookingId": event.bookingId});
+        Navigator.pushReplacementNamed(
+            event.context!, BookingLoadingScreen.bookingLoadingScreen,
+            arguments: {
+              "bookingId": event.bookingId,
+              "homestayType": "bloc",
+              "blocBookingValidation": event.blocBookingDateValidation
+            });
       } else if (savedBookingBlocData is ServerExceptionModel) {
         showDialog(
           context: event.context!,
@@ -169,7 +169,6 @@ class OverviewBookingBlocHomestayBloc {
         bookingStart: _bookingStart,
         bookingEnd: _bookingEnd,
         bookingId: _bookingId,
-        paymentMethod: _paymentMethod,
         totalHomestayPrice: _totalHomestayPrice,
         totalServicePrice: _totalServicePrice));
   }

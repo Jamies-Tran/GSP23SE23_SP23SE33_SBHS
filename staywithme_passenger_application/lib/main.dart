@@ -18,7 +18,6 @@ import 'package:staywithme_passenger_application/screen/booking/booking_bloc_scr
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_transaction_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/process_bloc_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/intro_screen.dart';
@@ -95,14 +94,14 @@ class MyApp extends StatelessWidget {
             const BookingHomestayScreen(),
         BookingBlocScreen.bookingBlocScreenRoute: (context) =>
             const BookingBlocScreen(),
+        ShowBlocHomestayListScreen.showBlocHomestayListScreenRoute: (context) =>
+            const ShowBlocHomestayListScreen(),
         BookingListScreen.bookingListScreenRoute: (context) =>
             const BookingListScreen(),
         BookingLoadingScreen.bookingLoadingScreen: (context) =>
             const BookingLoadingScreen(),
         ProcessBookingScreen.processBookingScreenRoute: (context) =>
             const ProcessBookingScreen(),
-        ProcessBlocBookingScreen.processBlocBookingScreenRoute: (context) =>
-            const ProcessBlocBookingScreen(),
         SelectNextHomestayScreen.selectNextHomestayScreenRoute: (context) =>
             const SelectNextHomestayScreen(),
         IntroScreen.instroScreenRoute: (context) => const IntroScreen()

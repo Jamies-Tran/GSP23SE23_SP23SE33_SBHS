@@ -53,8 +53,11 @@ final saveHomestayUrl =
 
 final saveBlocUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["SAVE_BLOC"]}";
 
-final submitBookingUrl =
-    "${dotenv.env["DOMAIN"]}/${dotenv.env["SUBMIT_BOOKING"]}";
+final submitBookingHomestayUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["SUBMIT_BOOKING_HOMESTAY"]}";
+
+final submitBookingBlocUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["SUBMIT_BOOKING_BLOC"]}";
 
 final homestayDetailUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_DETAIL"]}";
@@ -74,6 +77,12 @@ final bookingUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING"]}";
 
 final bookingUpdateServiceUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_UPDATE_SERVICE"]}";
+
+final bookingSavedHomestayTypeUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_BLOC_TYPE"]}";
+
+final addHomestayInBlocUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["ADD_HOMESTAY_BLOC"]}";
 
 // common variable
 final currencyFormat = NumberFormat("#,##0");

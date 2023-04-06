@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/select_next_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/select_next_state.dart';
+import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
@@ -15,16 +16,28 @@ class SelectNextHomestayBloc {
   int? _bookingId;
   String? _homestayType;
   FilterOptionModel? _filterOption;
+  bool? _brownseHomestayFlag;
+  String? _bookingStart;
+  String? _bookingEnd;
+  BlocBookingDateValidationModel? _blocBookingValidation;
 
   SelectNextHomestayState initData(BuildContext context) {
     final contextArgurments = ModalRoute.of(context)!.settings.arguments as Map;
     _homestayType = contextArgurments["homestayType"];
     _bookingId = contextArgurments["bookingId"];
     _filterOption = contextArgurments["filterOption"];
+    _brownseHomestayFlag = contextArgurments["brownseHomestayFlag"] ?? false;
+    _bookingStart = contextArgurments["bookingStart"];
+    _bookingEnd = contextArgurments["bookingEnd"];
+    _blocBookingValidation = contextArgurments["blocBookingValidation"];
     return SelectNextHomestayState(
         filterOption: contextArgurments["filterOption"],
         homestayType: contextArgurments["homestayType"],
-        bookingId: contextArgurments["bookingId"]);
+        bookingId: contextArgurments["bookingId"],
+        brownseHomestayFlag: contextArgurments["brownseHomestayFlag"] ?? false,
+        bookingStart: contextArgurments["bookingStart"],
+        bookingEnd: contextArgurments["bookingEnd"],
+        blocBookingValidation: contextArgurments["blocBookingValidation"]);
   }
 
   void dispose() {
@@ -47,7 +60,11 @@ class SelectNextHomestayBloc {
           event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
           arguments: {
             "homestayName": event.homestayName,
-            "isHomestayInBloc": false
+            "isHomestayInBloc": false,
+            "brownseHomestayFlag": _brownseHomestayFlag,
+            "bookingStart": _bookingStart,
+            "bookingEnd": _bookingEnd,
+            "blocBookingValidation": _blocBookingValidation
           });
     } else if (event is SubmitBookingHomestayEvent) {
       Navigator.pushReplacementNamed(

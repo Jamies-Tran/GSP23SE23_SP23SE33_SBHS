@@ -9,6 +9,7 @@ import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
@@ -100,20 +101,35 @@ class HomestayDetailBloc {
                 content: SizedBox(
                   width: 200,
                   height: 150,
-                  child: Text(
-                      "${event.homestay!.name} has been saved to your booking that haven't been submitted,if you proceed we will replace with the new save?"),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                          "${event.homestay!.name} has been saved to your booking that haven't been submitted."),
+                      const Text(
+                          "Do you want to continue or start new booking?"),
+                    ],
+                  ),
                 ),
                 actions: [
                   TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                            context, BookingLoadingScreen.bookingLoadingScreen,
+                            arguments: {
+                              "bookingId": bookingHomestayData
+                                  .bookingHomestayId!.bookingId,
+                              "homestayType": "homestay",
+                            });
                       },
                       child: const Text(
-                        "No",
+                        "Continue",
                         style: TextStyle(color: Colors.red),
                       )),
                   TextButton(
                       onPressed: () async {
+                        await _bookingService.deleteBooking(
+                            bookingHomestayData.bookingHomestayId!.bookingId!);
                         final bookingData = await _bookingService.createBooking(
                             HomestayType.homestay.name,
                             event.bookingStart!,
@@ -167,7 +183,7 @@ class HomestayDetailBloc {
                         }
                       },
                       child: const Text(
-                        "Yes",
+                        "Create new",
                         style: TextStyle(color: primaryColor),
                       ))
                 ]),

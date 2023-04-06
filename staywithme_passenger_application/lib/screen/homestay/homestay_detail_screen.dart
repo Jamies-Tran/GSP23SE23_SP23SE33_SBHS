@@ -7,6 +7,7 @@ import 'package:staywithme_passenger_application/bloc/event/homestay_detail_even
 import 'package:staywithme_passenger_application/bloc/homestay_detail_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
+import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
@@ -22,7 +23,6 @@ class HomestayDetailScreen extends StatefulWidget {
 }
 
 class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
-  final firebaseAuth = FirebaseAuth.instance;
   final homestayService = locator.get<IHomestayService>();
   final imageService = locator.get<IImageService>();
   final homestayDetailBloc = HomestayDetailBloc();
@@ -31,9 +31,21 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
   Widget build(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
     String homestayName = contextArguments["homestayName"];
-    bool? isHomestayInBloc = contextArguments["isHomestayInBloc"];
+    bool isHomestayInBloc = contextArguments["isHomestayInBloc"] ?? false;
+    bool bookingViewHomestayDetailFlag =
+        contextArguments["bookingViewHomestayDetailFlag"] ?? false;
+    bool brownseHomestayFlag = contextArguments["brownseHomestayFlag"] ?? false;
+    String? bookingStart = contextArguments["bookingStart"];
+    String? bookingEnd = contextArguments["bookingEnd"];
+    BlocBookingDateValidationModel? blocBookingValidation =
+        contextArguments["blocBookingValidation"];
     final bookingStartDateTextEditingController = TextEditingController();
     final bookingEndDateTextEditingController = TextEditingController();
+
+    if (brownseHomestayFlag) {
+      bookingStartDateTextEditingController.text = bookingStart!;
+      bookingEndDateTextEditingController.text = bookingEnd!;
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -130,7 +142,8 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                   ],
                                 ),
                               ),
-                              isHomestayInBloc! == false
+                              isHomestayInBloc == false &&
+                                      bookingViewHomestayDetailFlag == false
                                   ? Container(
                                       padding: const EdgeInsets.only(
                                           left: 10, top: 15, right: 10),
@@ -181,22 +194,27 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                                       secondaryColor,
                                                                   width: 1.0))),
                                                   onTap: () {
-                                                    showDatePicker(
-                                                            context: context,
-                                                            initialDate:
-                                                                DateTime.now(),
-                                                            firstDate:
-                                                                DateTime.now(),
-                                                            lastDate: DateTime
-                                                                    .now()
-                                                                .add(const Duration(
-                                                                    days: 365)))
-                                                        .then((value) {
-                                                      bookingStartDateTextEditingController
-                                                              .text =
-                                                          dateFormat
-                                                              .format(value!);
-                                                    });
+                                                    if (!brownseHomestayFlag) {
+                                                      showDatePicker(
+                                                              context: context,
+                                                              initialDate:
+                                                                  DateTime
+                                                                      .now(),
+                                                              firstDate:
+                                                                  DateTime
+                                                                      .now(),
+                                                              lastDate: DateTime
+                                                                      .now()
+                                                                  .add(const Duration(
+                                                                      days:
+                                                                          365)))
+                                                          .then((value) {
+                                                        bookingStartDateTextEditingController
+                                                                .text =
+                                                            dateFormat
+                                                                .format(value!);
+                                                      });
+                                                    }
                                                   },
                                                 ),
                                               ),
@@ -225,47 +243,47 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                             width: 1.0)),
                                                   ),
                                                   onTap: () {
-                                                    showDatePicker(
-                                                            context: context,
-                                                            initialDate: dateFormat
-                                                                .parse(
+                                                    if (!brownseHomestayFlag) {
+                                                      showDatePicker(
+                                                              context: context,
+                                                              initialDate: dateFormat
+                                                                  .parse(
+                                                                      bookingStartDateTextEditingController
+                                                                          .text)
+                                                                  .add(const Duration(
+                                                                      days: 1)),
+                                                              firstDate: dateFormat
+                                                                  .parse(
+                                                                      bookingStartDateTextEditingController
+                                                                          .text)
+                                                                  .add(const Duration(
+                                                                      days: 1)),
+                                                              lastDate: dateFormat
+                                                                  .parse(
+                                                                      bookingStartDateTextEditingController
+                                                                          .text)
+                                                                  .add(const Duration(
+                                                                      days:
+                                                                          365)))
+                                                          .then((value) {
+                                                        bookingEndDateTextEditingController
+                                                                .text =
+                                                            dateFormat
+                                                                .format(value!);
+                                                        homestayDetailBloc
+                                                            .eventController
+                                                            .sink
+                                                            .add(OnCheckValidBookingDateEvent(
+                                                                bookingStart:
                                                                     bookingStartDateTextEditingController
-                                                                        .text)
-                                                                .add(
-                                                                    const Duration(
-                                                                        days:
-                                                                            1)),
-                                                            firstDate: dateFormat
-                                                                .parse(
-                                                                    bookingStartDateTextEditingController
-                                                                        .text)
-                                                                .add(
-                                                                    const Duration(
-                                                                        days:
-                                                                            1)),
-                                                            lastDate: dateFormat
-                                                                .parse(
-                                                                    bookingStartDateTextEditingController
-                                                                        .text)
-                                                                .add(const Duration(
-                                                                    days: 365)))
-                                                        .then((value) {
-                                                      bookingEndDateTextEditingController
-                                                              .text =
-                                                          dateFormat
-                                                              .format(value!);
-                                                      homestayDetailBloc
-                                                          .eventController.sink
-                                                          .add(OnCheckValidBookingDateEvent(
-                                                              bookingStart:
-                                                                  bookingStartDateTextEditingController
-                                                                      .text,
-                                                              bookingEnd:
-                                                                  bookingEndDateTextEditingController
-                                                                      .text,
-                                                              homestayName:
-                                                                  data.name));
-                                                    });
+                                                                        .text,
+                                                                bookingEnd:
+                                                                    bookingEndDateTextEditingController
+                                                                        .text,
+                                                                homestayName:
+                                                                    data.name));
+                                                      });
+                                                    }
                                                   },
                                                 ),
                                               ),
@@ -290,15 +308,19 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                     maximumSize:
                                                         const Size(200, 50),
                                                     backgroundColor: streamSnapshot
-                                                                .data!
-                                                                .isBookingValid ==
-                                                            true
+                                                                    .data!
+                                                                    .isBookingValid ==
+                                                                true ||
+                                                            brownseHomestayFlag ==
+                                                                true
                                                         ? primaryColor
                                                         : Colors.grey),
                                                 onPressed: () {
                                                   if (streamSnapshot.data!
-                                                          .isBookingValid ==
-                                                      true) {
+                                                              .isBookingValid ==
+                                                          true ||
+                                                      brownseHomestayFlag ==
+                                                          true) {
                                                     homestayDetailBloc
                                                         .eventController.sink
                                                         .add(CreateBookingEvent(

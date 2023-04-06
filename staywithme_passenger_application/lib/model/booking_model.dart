@@ -1,3 +1,4 @@
+import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class BookingBlocHomestayModel {
@@ -50,7 +51,6 @@ class BookingHomestayModel {
     this.totalBookingPrice,
     this.totalServicePrice,
     this.totalReservation,
-    this.homestayType,
     this.homestayName,
     this.homestayServiceList,
     this.homestay,
@@ -62,7 +62,7 @@ class BookingHomestayModel {
   int? totalServicePrice;
   int? totalReservation;
   String? homestayName;
-  String? homestayType;
+
   List<String>? homestayServiceList;
   HomestayModel? homestay;
 
@@ -138,9 +138,11 @@ class BookingModel {
       this.code,
       this.bookingFrom,
       this.bookingTo,
+      this.homestayType,
       this.totalBookingPrice,
       this.totalBookingDeposit,
       this.status,
+      this.bloc,
       this.bookingHomestays,
       this.bookingHomestayServices,
       this.bookingDeposits});
@@ -149,9 +151,11 @@ class BookingModel {
   String? code;
   String? bookingFrom;
   String? bookingTo;
+  String? homestayType;
   int? totalBookingPrice;
   int? totalBookingDeposit;
   String? status;
+  BlocHomestayModel? bloc;
   List<BookingHomestayModel>? bookingHomestays;
   List<BookingServiceModel>? bookingHomestayServices;
   List<BookingDepositModel>? bookingDeposits;
@@ -161,9 +165,13 @@ class BookingModel {
       code: json["code"],
       bookingFrom: json["bookingFrom"],
       bookingTo: json["bookingTo"],
+      homestayType: json["homestayType"],
       totalBookingPrice: json["totalBookingPrice"],
       totalBookingDeposit: json["totalBookingDeposit"],
       status: json["status"],
+      bloc: json["blocResponse"] != null
+          ? BlocHomestayModel.fromJson(json["blocResponse"])
+          : null,
       bookingHomestays: List<BookingHomestayModel>.from(json["bookingHomestays"]
           .map((e) => BookingHomestayModel.fromJson(e))),
       bookingHomestayServices: List<BookingServiceModel>.from(

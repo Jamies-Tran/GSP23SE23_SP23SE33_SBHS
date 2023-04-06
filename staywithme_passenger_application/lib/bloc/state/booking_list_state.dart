@@ -1,5 +1,6 @@
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 
 class BookingListState {
   BookingListState(
@@ -9,7 +10,9 @@ class BookingListState {
       this.activeUpdateService,
       this.bookingHomestayChosenList,
       this.bookingHomestayIndex,
-      this.serviceNameList = const <String>[]});
+      this.blocBookingValidation,
+      this.serviceList = const <HomestayServiceModel>[],
+      this.paymentMethod});
 
   BookingModel? booking;
   String? homestayType;
@@ -17,7 +20,9 @@ class BookingListState {
   bool? isBookingHomestay;
   bool? activeUpdateService;
   int? bookingHomestayIndex;
-  List<String>? serviceNameList;
+  List<HomestayServiceModel>? serviceList;
+  BlocBookingDateValidationModel? blocBookingValidation;
+  BlocPaymentMethod? paymentMethod;
 
   int totalBookingServicePrice(String homestayName) {
     List<BookingServiceModel> bookingServiceList = booking!
@@ -49,9 +54,18 @@ class BookingListState {
     return false;
   }
 
-  bool isServiceBooked(String serviceName) {
-    for (String s in serviceNameList!) {
-      if (s == serviceName) {
+  bool isServiceBooked(int serviceId) {
+    for (BookingServiceModel s in booking!.bookingHomestayServices!) {
+      if (s.homestayService!.id == serviceId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool isServiceSelected(int serviceId) {
+    for (HomestayServiceModel s in serviceList!) {
+      if (s.id == serviceId) {
         return true;
       }
     }
@@ -60,14 +74,8 @@ class BookingListState {
 
   int totalChosenHomestayServicePrice() {
     int totalServicePrice = 0;
-    for (BookingHomestayModel b in booking!.bookingHomestays!) {
-      for (HomestayServiceModel s in b.homestay!.homestayServices!) {
-        for (String e in serviceNameList!) {
-          if (s.name! == e) {
-            totalServicePrice = totalServicePrice + s.price!;
-          }
-        }
-      }
+    for (HomestayServiceModel e in serviceList!) {
+      totalServicePrice = totalServicePrice + e.price!;
     }
     return totalServicePrice;
   }

@@ -8,7 +8,7 @@ class HomestayModel {
       this.address,
       this.cityProvince,
       this.availableRooms,
-      this.remainRooms,
+      this.roomCapacity,
       this.totalAverageRating,
       this.numberOfRating,
       this.status,
@@ -24,7 +24,7 @@ class HomestayModel {
   String? address;
   String? cityProvince;
   int? availableRooms;
-  int? remainRooms;
+  int? roomCapacity;
   double? totalAverageRating;
   int? numberOfRating;
   String? status;
@@ -41,6 +41,7 @@ class HomestayModel {
       address: json["address"],
       cityProvince: json["cityProvince"],
       availableRooms: json["availableRooms"],
+      roomCapacity: json["roomCapacity"],
       totalAverageRating: json["totalAverageRating"],
       numberOfRating: json["numberOfRating"],
       status: json["status"],
@@ -65,10 +66,7 @@ class HomestayModel {
               json["ratings"].map((e) => RatingModel.fromJson(e)))
           : <RatingModel>[]);
 
-    Map<String, dynamic> toJson() => {
-      "name" : name,
-      "price" : price
-    };
+  Map<String, dynamic> toJson() => {"name": name, "price": price};
 }
 
 class HomestayImageModel {
@@ -91,15 +89,19 @@ class HomestayFacilityModel {
 }
 
 class HomestayServiceModel {
-  HomestayServiceModel({this.name, this.price, this.status});
+  HomestayServiceModel({this.id, this.name, this.price, this.status});
 
+  int? id;
   String? name;
   int? price;
   String? status;
 
   factory HomestayServiceModel.fromJson(Map<String, dynamic> json) =>
       HomestayServiceModel(
-          name: json["name"], price: json["price"], status: json["status"]);
+          id: json["id"],
+          name: json["name"],
+          price: json["price"],
+          status: json["status"]);
 
   Map<String, dynamic> toJson() => {"name": name, "price": price};
 }

@@ -1,12 +1,19 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/booking_list_event.dart';
+
 import 'package:staywithme_passenger_application/bloc/state/booking_list_state.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
+import 'package:staywithme_passenger_application/model/homestay_model.dart';
+import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -21,26 +28,30 @@ class BookingListBloc {
   bool? _isBookingHomestay = true;
   bool? _activeUpdateService = false;
   int? _bookingHomestayIndex = 0;
-  final List<String> _serviceNameList = <String>[];
+  BlocBookingDateValidationModel? _blocBookingValidation;
+  BlocPaymentMethod? _paymentMethod;
+  final List<HomestayServiceModel> _serviceList = <HomestayServiceModel>[];
 
   BookingListState initData(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
     _booking = contextArguments["booking"];
     _homestayType = contextArguments["homestayType"];
-    for (BookingServiceModel s in _booking!.bookingHomestayServices!) {
-      _serviceNameList.add(s.homestayService!.name!);
-    }
+    _blocBookingValidation = contextArguments["blocBookingValidation"];
+    _paymentMethod = BlocPaymentMethod.swm_wallet;
     return BookingListState(
         booking: contextArguments["booking"],
         homestayType: contextArguments["homestayType"],
         bookingHomestayChosenList: <BookingHomestayModel>[],
-        isBookingHomestay: true,
-        bookingHomestayIndex: 0,
-        serviceNameList: _serviceNameList,
-        activeUpdateService: false);
+        isBookingHomestay: contextArguments["isBookingHomestay"] ?? true,
+        bookingHomestayIndex: contextArguments["bookingHomestayIndex"] ?? 0,
+        serviceList: _serviceList,
+        blocBookingValidation: contextArguments["blocBookingValidation"],
+        activeUpdateService: false,
+        paymentMethod: BlocPaymentMethod.swm_wallet);
   }
 
   void dispose() {
+    eventController.close();
     stateController.close();
   }
 
@@ -60,7 +71,8 @@ class BookingListBloc {
           event.context!, BookingLoadingScreen.bookingLoadingScreen,
           arguments: {
             "bookingId": event.bookingId,
-            "homestayType": "homestay"
+            "homestayType": _homestayType,
+            "blocBookingValidation": _blocBookingValidation
           });
     } else if (event is ChooseBookingHomestayEvent) {
       BookingHomestayModel? removeBookingHomestay;
@@ -81,29 +93,36 @@ class BookingListBloc {
     } else if (event is ChooseViewHomestayListEvent) {
       _isBookingHomestay = true;
     } else if (event is ChooseViewServiceListEvent) {
+      for (BookingServiceModel s in _booking!.bookingHomestayServices!) {
+        _serviceList.add(s.homestayService!);
+      }
       _isBookingHomestay = false;
     } else if (event is ChooseNewHomestayServiceEvent) {
-      String? removeServiceName;
-      for (String s in _serviceNameList) {
-        if (s == event.serviceName) {
-          removeServiceName = s;
+      HomestayServiceModel? removeService;
+      for (HomestayServiceModel s in _serviceList) {
+        if (s.id == event.homestayService!.id) {
+          removeService = s;
         }
       }
-      if (removeServiceName != null) {
-        _serviceNameList.remove(removeServiceName);
+      if (removeService != null) {
+        _serviceList.remove(removeService);
       } else {
-        _serviceNameList.add(event.serviceName!);
+        _serviceList.add(event.homestayService!);
       }
       _activeUpdateService = true;
     } else if (event is UpdateHomestayServiceEvent) {
+      String homestayName = _homestayType == "homestay"
+          ? event.homestayName!
+          : _booking!.bloc!.name!;
       final bookingData = await bookingService.updateBookingServices(
-          event.serviceNameList!, event.bookingId!, event.homestayName!);
+          event.serviceNameList!, event.bookingId!, homestayName);
       if (bookingData is BookingModel) {
         Navigator.pushReplacementNamed(
             event.context!, BookingLoadingScreen.bookingLoadingScreen,
             arguments: {
-              "bookingId": event.bookingId,
-              "homestayType": event.homestayType
+              "bookingId": _booking!.id!,
+              "homestayType": _homestayType,
+              "blocBookingValidation": _blocBookingValidation
             });
       } else if (bookingData is ServerExceptionModel) {
         showDialog(
@@ -129,14 +148,148 @@ class BookingListBloc {
               )),
         );
       }
+    } else if (event is CancelUpdateServiceEvent) {
+      _activeUpdateService = false;
+      Navigator.pushNamed(
+          event.context!, BookingLoadingScreen.bookingLoadingScreen,
+          arguments: {
+            "bookingId": _booking!.id,
+            "homestayType": _homestayType,
+            "isBookingHomestay": _isBookingHomestay,
+            "bookingHomestayIndex": _bookingHomestayIndex,
+            "blocBookingValidation": _blocBookingValidation
+          });
+    } else if (event is BrowseMoreHomestayEvent) {
+      FilterOptionModel filterOption;
+      if (event.similarWithAnotherHomestay!) {
+        filterOption = FilterOptionModel(
+            filterByBookingDateRange: FilterByBookingDate(
+                start: _booking!.bookingFrom,
+                end: _booking!.bookingTo,
+                totalReservation: event.homestay!.availableRooms),
+            filterByAddress: FilterByAddress(
+                address: utf8.decode(event.homestay!.address!.runes.toList()),
+                distance: 5000,
+                isGeometry: true),
+            filterByRatingRange: FilterByRatingRange(
+                highest: event.homestay!.totalAverageRating,
+                lowest: event.homestay!.totalAverageRating));
+      } else {
+        filterOption = FilterOptionModel(
+          filterByBookingDateRange: FilterByBookingDate(
+              start: _booking!.bookingFrom,
+              end: _booking!.bookingTo,
+              totalReservation:
+                  _booking!.bookingHomestays!.first.totalReservation),
+        );
+      }
+
+      Navigator.pushReplacementNamed(event.context!,
+          SelectNextHomestayScreen.selectNextHomestayScreenRoute,
+          arguments: {
+            "filterOption": filterOption,
+            "bookingId": _booking!.id,
+            "bookingStart": _booking!.bookingFrom,
+            "bookingEnd": _booking!.bookingTo,
+            "homestayType": _homestayType,
+            "blocBookingValidation": _blocBookingValidation,
+            "brownseHomestayFlag": true
+          });
+    } else if (event is ForwardHomestayEvent) {
+      if (_bookingHomestayIndex! < _booking!.bookingHomestays!.length - 1) {
+        _bookingHomestayIndex = _bookingHomestayIndex! + 1;
+      }
+    } else if (event is BackwardHomestayEvent) {
+      if (_bookingHomestayIndex! > 0) {
+        _bookingHomestayIndex = _bookingHomestayIndex! - 1;
+      }
+    } else if (event is DeleteBookingHomestayEvent) {
+      final deleteBookingHomestayData = await bookingService
+          .deleteBookingHomestay(_booking!.id!, event.homestayId!);
+      if (deleteBookingHomestayData is String) {
+        Navigator.pushReplacementNamed(
+            event.context!, BookingLoadingScreen.bookingLoadingScreen,
+            arguments: {
+              "bookingId": _booking!.id,
+              "homestayType": _homestayType,
+              "blocBookingValidation": _blocBookingValidation
+            });
+      } else if (deleteBookingHomestayData is ServerExceptionModel) {
+        showDialog(
+          context: event.context!,
+          builder: (context) => AlertDialog(
+            title: const Center(
+              child: Text("Error"),
+            ),
+            content: SizedBox(
+              height: 100,
+              child: Text(deleteBookingHomestayData.message!),
+            ),
+          ),
+        );
+      } else if (deleteBookingHomestayData is SocketException ||
+          deleteBookingHomestayData is TimeoutException) {
+        showDialog(
+          context: event.context!,
+          builder: (context) => const AlertDialog(
+            title: Center(
+              child: Text("Error"),
+            ),
+            content: SizedBox(
+              height: 100,
+              child: Text("Can't connect to server"),
+            ),
+          ),
+        );
+      }
+    } else if (event is ViewHomestayDetailScreenEvent) {
+      Navigator.pushNamed(
+          event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
+          arguments: {
+            "homestayName": event.homestayName,
+            "bookingViewHomestayDetailFlag": true
+          });
+    } else if (event is SubmitBookingEvent) {
+      String paymentMethod = "";
+      switch (_paymentMethod) {
+        case BlocPaymentMethod.cash:
+          paymentMethod = "CASH";
+          break;
+        case BlocPaymentMethod.swm_wallet:
+          paymentMethod = "SWM_WALLET";
+          break;
+        case null:
+          break;
+      }
+      Navigator.pushReplacementNamed(
+          event.context!, ProcessBookingScreen.processBookingScreenRoute,
+          arguments: {
+            "bookingId": _booking!.id,
+            "homestayType": _homestayType,
+            "paymentMethod": paymentMethod
+          });
+    } else if (event is ChooseHomestayListInBlocEvent) {
+      Navigator.pushNamed(event.context!,
+          ShowBlocHomestayListScreen.showBlocHomestayListScreenRoute,
+          arguments: {
+            "bloc": event.bloc,
+            "blocBookingValidation": event.blocBookingValidation,
+            "booking": event.booking,
+            "paymentMethod": _paymentMethod.toString()
+          });
+    } else if (event is ChoosePaymentMethodEvent) {
+      _paymentMethod = event.paymentMethod!;
     }
+
     stateController.sink.add(BookingListState(
         bookingHomestayChosenList: _bookingHomestayChosenList,
         booking: _booking,
         homestayType: _homestayType,
         isBookingHomestay: _isBookingHomestay,
         bookingHomestayIndex: _bookingHomestayIndex,
-        serviceNameList: _serviceNameList,
-        activeUpdateService: _activeUpdateService));
+        serviceList: _serviceList,
+        blocBookingValidation: _blocBookingValidation,
+        activeUpdateService: _activeUpdateService,
+        paymentMethod: _paymentMethod));
   }
 }

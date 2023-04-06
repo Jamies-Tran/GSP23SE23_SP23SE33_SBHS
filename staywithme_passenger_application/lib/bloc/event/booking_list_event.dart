@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
+import 'package:staywithme_passenger_application/model/homestay_model.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 
 abstract class BookingListEvent {}
 
@@ -33,9 +36,9 @@ class ChooseViewServiceListEvent extends BookingListEvent {
 }
 
 class ChooseNewHomestayServiceEvent extends BookingListEvent {
-  ChooseNewHomestayServiceEvent({this.serviceName});
+  ChooseNewHomestayServiceEvent({this.homestayService});
 
-  String? serviceName;
+  HomestayServiceModel? homestayService;
 }
 
 class UpdateHomestayServiceEvent extends BookingListEvent {
@@ -53,4 +56,62 @@ class UpdateHomestayServiceEvent extends BookingListEvent {
   String? homestayType;
 }
 
-class CancelUpdateServiceEvent extends BookingListEvent {}
+class CancelUpdateServiceEvent extends BookingListEvent {
+  CancelUpdateServiceEvent({this.context});
+
+  BuildContext? context;
+}
+
+class BrowseMoreHomestayEvent extends BookingListEvent {
+  BrowseMoreHomestayEvent(
+      {this.context, this.similarWithAnotherHomestay, this.homestay});
+
+  BuildContext? context;
+  bool? similarWithAnotherHomestay;
+  HomestayModel? homestay;
+}
+
+class ForwardHomestayEvent extends BookingListEvent {
+  ForwardHomestayEvent();
+}
+
+class BackwardHomestayEvent extends BookingListEvent {
+  BackwardHomestayEvent();
+}
+
+class DeleteBookingHomestayEvent extends BookingListEvent {
+  DeleteBookingHomestayEvent({this.homestayId, this.context});
+
+  BuildContext? context;
+
+  int? homestayId;
+}
+
+class ViewHomestayDetailScreenEvent extends BookingListEvent {
+  ViewHomestayDetailScreenEvent({this.context, this.homestayName});
+
+  BuildContext? context;
+  String? homestayName;
+}
+
+class SubmitBookingEvent extends BookingListEvent {
+  SubmitBookingEvent({this.context});
+
+  BuildContext? context;
+}
+
+class ChooseHomestayListInBlocEvent extends BookingListEvent {
+  ChooseHomestayListInBlocEvent(
+      {this.context, this.booking, this.bloc, this.blocBookingValidation});
+
+  BuildContext? context;
+  BookingModel? booking;
+  BlocHomestayModel? bloc;
+  BlocBookingDateValidationModel? blocBookingValidation;
+}
+
+class ChoosePaymentMethodEvent extends BookingListEvent {
+  ChoosePaymentMethodEvent({this.paymentMethod});
+
+  BlocPaymentMethod? paymentMethod;
+}

@@ -50,23 +50,37 @@ class BlocHomestayModel {
 
 class HomestayInBlocModel {
   HomestayInBlocModel(
-      {this.name,
+      {this.id,
+      this.name,
       this.price,
       this.availableRooms,
+      this.roomCapacity,
+      this.totalAverageRating,
+      this.bloc,
       this.homestayImages,
-      this.homestayFacilities});
+      this.homestayFacilities,
+      this.ratings});
 
+  int? id;
   String? name;
   int? price;
   int? availableRooms;
+  int? roomCapacity;
+  double? totalAverageRating;
+  BlocHomestayModel? bloc;
   List<HomestayImageModel>? homestayImages;
   List<HomestayFacilityModel>? homestayFacilities;
+  List<RatingModel>? ratings;
 
   factory HomestayInBlocModel.fromJson(Map<String, dynamic> json) =>
       HomestayInBlocModel(
+          id: json["id"],
           name: json["name"],
           availableRooms: json["availableRooms"],
+          roomCapacity: json["roomCapacity"],
           price: json["price"],
+          totalAverageRating: json["totalAverageRating"],
+          bloc: json["blocResponse"],
           homestayImages: json["homestayImages"] != null
               ? List<HomestayImageModel>.from(json["homestayImages"]
                   .map((e) => HomestayImageModel.fromJson(e)))
@@ -74,7 +88,11 @@ class HomestayInBlocModel {
           homestayFacilities: json["homestayFacilities"] != null
               ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
                   .map((e) => HomestayFacilityModel.fromJson(e)))
-              : <HomestayFacilityModel>[]);
+              : <HomestayFacilityModel>[],
+          ratings: json["ratings"] != null
+              ? List<RatingModel>.from(
+                  json["ratings"].map((e) => RatingModel.fromJson(e)))
+              : <RatingModel>[]);
 }
 
 class BlocHomestayListPagingModel {

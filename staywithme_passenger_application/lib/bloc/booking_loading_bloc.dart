@@ -11,15 +11,8 @@ class BookingLoadingBloc {
 
   int? _bookingId;
   String? _homestayType;
-
-  BookingLoadingState initData(BuildContext context) {
-    final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    _bookingId = contextArguments["bookingId"];
-    _homestayType = contextArguments["homestayType"];
-    return BookingLoadingState(
-        bookingId: contextArguments["bookingId"],
-        homestayType: contextArguments["homestayType"]);
-  }
+  bool? _isBookingHomestay;
+  int? _bookingHomestayIndex;
 
   BookingLoadingBloc() {
     eventController.stream.listen((event) {
@@ -30,12 +23,24 @@ class BookingLoadingBloc {
   void eventHandler(BookingLoadingEvent event) {
     if (event is GetBookingSuccessEvent) {
       Navigator.pushReplacementNamed(
-          event.context!, BookingListScreen.bookingListScreenRoute, arguments: {
-        "booking": event.booking,
-        "homestayType": event.homestayType
-      });
+          event.context!, BookingListScreen.bookingListScreenRoute,
+          arguments: {
+            "booking": event.booking,
+            "homestayType": event.homestayType,
+            "bookingHomestayIndex": event.bookingHomestayIndex,
+            "isBookingHomestay": event.isBookingHomestay,
+            "blocBookingValidation": event.blocBookingValidation
+          });
     }
     stateController.sink.add(BookingLoadingState(
-        bookingId: _bookingId, homestayType: _homestayType));
+        bookingId: _bookingId,
+        homestayType: _homestayType,
+        bookingHomestayIndex: _bookingHomestayIndex,
+        isBookingHomestay: _isBookingHomestay));
+  }
+
+  void dispose() {
+    eventController.close();
+    stateController.close();
   }
 }

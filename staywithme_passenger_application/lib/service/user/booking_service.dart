@@ -18,7 +18,9 @@ abstract class IBookingService {
   Future<dynamic> saveBlocForBooking(
       BookingBlocHomestayModel bookingBlocHomestayModel);
 
-  Future<dynamic> submitBooking(int bookingId);
+  Future<dynamic> submitBookingHomestay(int bookingId);
+
+  Future<dynamic> submitBookingBloc(int bookingId, String paymentMethod);
 
   Future<dynamic> checkValidBookingDateForHomestay(
       BookingValidateModel bookingValidateModel);
@@ -28,12 +30,21 @@ abstract class IBookingService {
 
   Future<dynamic> getBookingHomestsayByHomestayId(int homestayId);
 
+  Future<dynamic> getBookingSavedBlocHomestayType();
+
   Future<dynamic> getBookingById(int bookingId);
 
   Future<dynamic> updateBooking(BookingModel booking, int bookingId);
 
   Future<dynamic> updateBookingServices(
       List<String> serviceNameList, int bookingId, String homestayName);
+
+  Future<dynamic> deleteBookingHomestay(int bookingId, int homestayId);
+
+  Future<dynamic> deleteBooking(int bookingId);
+
+  Future<dynamic> addHomestayInBlocToBooking(
+      String homestayName, String paymentMethod, int bookingId);
 }
 
 class BookingService extends IBookingService {
@@ -133,9 +144,9 @@ class BookingService extends IBookingService {
   }
 
   @override
-  Future submitBooking(int bookingId) async {
+  Future submitBookingHomestay(int bookingId) async {
     final client = http.Client();
-    Uri uri = Uri.parse("$submitBookingUrl?bookingId=$bookingId");
+    Uri uri = Uri.parse("$submitBookingHomestayUrl?bookingId=$bookingId");
     try {
       final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
       String token = userLoginInfo['accessToken']!;
@@ -312,6 +323,140 @@ class BookingService extends IBookingService {
               },
               body: json.encode(serviceNameList))
           .timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 200) {
+        BookingModel bookingModel =
+            BookingModel.fromJson(json.decode(response.body));
+        return bookingModel;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future deleteBookingHomestay(int bookingId, int homestayId) async {
+    final client = http.Client();
+    final uri = Uri.parse(
+        "$bookingHomestayUrl?bookingId=$bookingId&homestayId=$homestayId");
+    try {
+      final getUserLoginInfo =
+          await SharedPreferencesService.getUserLoginInfo();
+      final accessToken = getUserLoginInfo["accessToken"];
+      final response = await client.delete(uri, headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer $accessToken"
+      }).timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 204) {
+        return "Booking homestay deleted";
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future deleteBooking(int bookingId) async {
+    final client = http.Client();
+    final uri = Uri.parse("$bookingUrl?bookingId=$bookingId");
+    try {
+      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
+      final accessToken = userLoginInfo["accessToken"];
+      final response = await client.delete(uri, headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer $accessToken"
+      }).timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 204) {
+        return "booking deleted";
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future getBookingSavedBlocHomestayType() async {
+    final client = http.Client();
+    final uri = Uri.parse(bookingSavedHomestayTypeUrl);
+    try {
+      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
+      final accessToken = userLoginInfo["accessToken"];
+      final response = await client.get(uri, headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer $accessToken"
+      }).timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 200) {
+        BookingModel booking =
+            BookingModel.fromJson(json.decode(response.body));
+        return booking;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future addHomestayInBlocToBooking(
+      String homestayName, String paymentMethod, int bookingId) async {
+    final client = http.Client();
+    final uri = Uri.parse(
+        "$addHomestayInBlocUrl?homestayName=$homestayName&bookingId=$bookingId&paymentMethod=$paymentMethod");
+    try {
+      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
+      final accessToken = userLoginInfo["accessToken"];
+      final response = await client.put(uri, headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer $accessToken"
+      }).timeout(Duration(seconds: connectionTimeOut));
+      if (response.statusCode == 200) {
+        return "Add homestay success";
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future submitBookingBloc(int bookingId, String paymentMethod) async {
+    final client = http.Client();
+    Uri uri = Uri.parse(
+        "$submitBookingBlocUrl?bookingId=$bookingId&paymentMethod=$paymentMethod");
+    try {
+      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
+      String token = userLoginInfo['accessToken']!;
+      final response = await client.put(uri, headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer $token"
+      }).timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 200) {
         BookingModel bookingModel =
             BookingModel.fromJson(json.decode(response.body));
