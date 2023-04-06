@@ -32,6 +32,9 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
+  st1Property:boolean = false;
+  st2Homestay:boolean=false;
+
   // information
   informationFormGroup = this._formBuilder.group({
     blocHomestayName: ['', Validators.required],
@@ -43,6 +46,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   isHomestayLicense: boolean = false;
   informationForm() {
     this.flag = false;
+    this.st1Property = false;
     console.log(this.informationFormGroup.value);
     console.log(this.homestayLicenseFiles.length);
     this.isHomestayLicense =
@@ -62,6 +66,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     } else {
       this.result = '';
       this.flag = true;
+      this.st1Property=true;
       this.stepper.next();
     }
   }
@@ -78,6 +83,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   //  homestay
   homestayInformationForm() {
     this.validPrice();
+    this.st2Homestay = false;
     console.log(this.homestayInformationFormGroup.value);
     if (this.homestayInformationFormGroup.controls.name.value == '') {
       this.message = 'Please enter Homestay name';
@@ -102,6 +108,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     } else {
       this.result = '';
       this.flag = true;
+      this.st2Homestay = true;
       this.stepper2.next();
     }
   }

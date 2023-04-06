@@ -8,6 +8,8 @@ import { RegisterHomestayComponent } from './homestay/register-homestay/register
 import { CategoryHomestayComponent } from './homestay/category-homestay/category-homestay.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { AuthGuard } from '../auth.guard';
+import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-detail.component';
+import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 
 
 const routes: Routes = [
@@ -39,6 +41,14 @@ const routes: Routes = [
               },
 
             ],
+          },
+          {
+            path: 'HomestayDetail',
+            component: HomestayDetailComponent,
+          },
+          {
+            path: 'BlockHomestayDetail',
+            component: BlocHomestayDetailComponent,
           },
         ],
       },

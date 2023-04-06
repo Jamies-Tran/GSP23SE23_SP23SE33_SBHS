@@ -33,7 +33,7 @@
                         <div class="col-6">
                           <h6 class="mb-0">Room Capacity <span class="text-danger">*</span></h6>
                           <input type="number" name="homestayRoomCapacityInput" class="form-control" required mdbInput
-                            mdbValidate formControlName="roomCapacity" min="1" max="10" maxlength="2" minlength="1"
+                            mdbValidate formControlName="roomCapacity" min="1" max="99" maxlength="2" minlength="1"
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                         </div>
 
@@ -744,7 +744,7 @@
                     <div class="col w-100">
                       <div class="row">
                         <div class="col-1 p-0 d-flex justify-content-center">
-                          <i class="fa-regular fa-heart"></i>
+                          <i class="fa-solid fa-heart text-danger"></i>
                         </div>
                         <div class="col-10">
                           <p>Step 1</p>
@@ -753,7 +753,7 @@
                         </div>
                         <div class="col-1 d-flex justify-content-center align-items-center p-0">
                           <button mat-fab class="text-primary bg-body shadow-0 overflow-hidden" matRipple
-                            matRippleColor="darkgray" (click)="step1()">Edit</button>
+                            matRippleColor="darkgray" (click)="step1()" type="button">Edit</button>
                         </div>
                       </div>
                     </div>
@@ -769,7 +769,7 @@
                     <div class="col w-100">
                       <div class="row">
                         <div class="col-1 p-0 d-flex justify-content-center">
-                          <i class="fa-regular fa-heart"></i>
+                          <i class="fa-solid fa-heart text-danger"></i>
                         </div>
                         <div class="col-9">
                           <p>Step 2</p>
@@ -778,7 +778,7 @@
                           </p>
                         </div>
                         <div class="col-2 d-flex justify-content-center align-items-center p-0">
-                          <button mat-raised-button color="primary" class="px-1 w-100" (click)="step5()">Add
+                          <button mat-raised-button color="primary" class="px-1 w-100" (click)="step5()" type="button">Add
                             Image</button>
                         </div>
                       </div>
@@ -794,7 +794,7 @@
                     <div class="col w-100">
                       <div class="row">
                         <div class="col-1 p-0 d-flex justify-content-center">
-                          <i class="fa-regular fa-heart"></i>
+                          <i class="fa-solid fa-heart text-danger"></i>
                         </div>
                         <div class="col-10">
                           <p>Step 3</p>
@@ -803,7 +803,7 @@
                         </div>
                         <div class="col-1 d-flex justify-content-center align-items-center p-0">
                           <button mat-fab class="text-primary bg-body shadow-0 overflow-hidden" matRipple
-                            matRippleColor="darkgray" (click)="step6()">Edit</button>
+                            matRippleColor="darkgray" (click)="step6()" type="button">Edit</button>
                         </div>
                       </div>
                     </div>

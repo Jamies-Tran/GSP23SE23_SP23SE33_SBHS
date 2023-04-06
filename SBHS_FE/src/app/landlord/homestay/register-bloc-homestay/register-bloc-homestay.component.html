@@ -476,7 +476,8 @@
               <div class="col w-100">
                 <div class="row">
                   <div class="col-1 p-0 d-flex justify-content-center">
-                    <i class="fa-regular fa-heart"></i>
+                    <i *ngIf="!st1Property" class="fa-regular fa-heart"></i>
+                    <i *ngIf="st1Property" class="fa-solid fa-heart text-danger"></i>
                   </div>
                   <div class="col-10">
                     <p>Step 1</p>
@@ -501,7 +502,8 @@
               <div class="col w-100">
                 <div class="row">
                   <div class="col-1 p-0 d-flex justify-content-center">
-                    <i class="fa-regular fa-heart"></i>
+                    <i *ngIf="!st2Homestay" class="fa-regular fa-heart"></i>
+                    <i *ngIf="st2Homestay" class="fa-solid fa-heart text-danger"></i>
                   </div>
                   <div class="col-10">
                     <p>Step 2</p>
@@ -598,14 +600,14 @@
                         <div class="col-6">
                           <h6 class="mb-0">Available Rooms<span class="text-danger">*</span></h6>
                           <input type="number" min="0" class="form-control" name="room" formControlName="room"
-                            pattern="[0-9]*"
+                            pattern="[0-9]*" max="99"
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                             maxlength="2" minlength="1" />
                         </div>
                         <div class="col-6">
                           <h6 class="mb-0">Room Capacity<span class="text-danger">*</span></h6>
                           <input type="number" min="0" class="form-control" name="roomCapacity" formControlName="roomCapacity"
-                            pattern="[0-9]*"
+                            pattern="[0-9]*" max="99"
                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                             maxlength="2" minlength="1" />
                         </div>
