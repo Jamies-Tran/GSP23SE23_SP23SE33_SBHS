@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,8 +55,8 @@ public class BlocHomestay extends BaseModel {
     @OneToMany(mappedBy = "bloc", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private @Setter List<HomestayRule> homestayRules;
 
-    @OneToOne
-    private @Setter Booking booking;
+    @OneToMany(mappedBy = "bloc")
+    private @Setter List<Booking> bookings;
 
     @ManyToOne
     private @Setter Landlord landlord;

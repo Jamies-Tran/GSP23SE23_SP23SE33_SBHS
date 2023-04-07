@@ -33,6 +33,9 @@ public interface HomestayRepo extends JpaRepository<Homestay, Long> {
     @Query(value = "select h from Homestay h where h.status = 'ACTIVATING' and h.bloc = null order by h.totalAverageRating desc")
     Page<Homestay> getHomestayListOrderByTotalAverageRatingPoint(Pageable pageable);
 
+    @Query(value = "select h from Homestay h where h.status = :status")
+    List<Homestay> findHomestayByStatus(String status);
+
     @Query(value = "select h from Homestay h where h.address = :address")
     Optional<Homestay> findHomestayByAddress(@Param("address") String address);
 

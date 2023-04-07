@@ -2,7 +2,6 @@ package com.sbhs.swm.dto.request;
 
 import java.util.List;
 
-import com.sbhs.swm.dto.HomestayInBlocDto;
 import com.sbhs.swm.dto.HomestayServiceDto;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +20,6 @@ public class BlocHomestayRequestDto {
     private Double totalAverageRating;
     private String status;
     private List<HomestayServiceDto> homestayServices;
-    private List<HomestayInBlocDto> homestays;
+    private List<HomestayInBlocRequestDto> homestays;
     private List<HomestayRuleRequestDto> homestayRules;
 }

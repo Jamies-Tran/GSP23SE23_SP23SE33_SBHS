@@ -51,8 +51,7 @@ public class Booking extends BaseModel {
     @Column
     private @Setter String homestayType;
 
-    @OneToOne
-    @JoinColumn(name = "bloc_id", referencedColumnName = "id")
+    @ManyToOne
     private @Setter BlocHomestay bloc;
 
     @OneToMany(mappedBy = "booking", cascade = { CascadeType.REMOVE })

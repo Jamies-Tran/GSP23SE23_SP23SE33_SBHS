@@ -28,7 +28,12 @@ public interface IHomestayService {
                         boolean isNextPage,
                         boolean isPreviousPage);
 
-        public Page<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size, boolean isNextPage,
+        public PagedListHolder<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size,
+                        boolean isNextPage,
+                        boolean isPreviousPage);
+
+        public PagedListHolder<Homestay> findHomestaysByStatus(String status, int page, int size,
+                        boolean isNextPage,
                         boolean isPreviousPage);
 
         public List<String> getHomestayCityOrProvince();

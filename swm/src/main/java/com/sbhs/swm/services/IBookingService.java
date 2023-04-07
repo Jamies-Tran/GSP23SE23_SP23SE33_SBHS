@@ -35,10 +35,7 @@ public interface IBookingService {
 
     BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
 
-    // List<Booking> findBookingsByUsernameAndStatus(String bookingStatus);
-
-    // List<Booking> findBookingsByHomestayNameAndStatus(String bookingStatus,
-    // String homestayName);
+    List<Booking> getPassengerBookingByStatus();
 
     Boolean canPassengerMakeBooking(long totalBookingPrice);
 

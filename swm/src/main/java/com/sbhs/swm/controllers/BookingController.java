@@ -125,8 +125,7 @@ public class BookingController {
         responseBookingList.forEach(b -> b.getHomestay().setAddress(b.getHomestay().getAddress().split("_")[0]));
         BookingHomestayListResponseDto responseBookingHomestayList = new BookingHomestayListResponseDto();
         responseBookingHomestayList.setBookingList(responseBookingList);
-        responseBookingHomestayList.setTotalBookingPending(bookingService.countBookingHomestayPending(homestayName));
-        responseBookingHomestayList.setTotalBooking(responseBookingList.size());
+
         return new ResponseEntity<BookingHomestayListResponseDto>(responseBookingHomestayList, HttpStatus.OK);
     }
 

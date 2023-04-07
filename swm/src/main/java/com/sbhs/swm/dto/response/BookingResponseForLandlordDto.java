@@ -16,6 +16,6 @@ public class BookingResponseForLandlordDto {
     private String code;
     private String bookingFrom;
     private String bookingTo;
-
+    private BlocHomestayResponseDto bloc;
     private List<BookingServiceResponseDto> bookingHomestayServices;
 }

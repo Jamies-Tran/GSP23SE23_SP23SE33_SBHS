@@ -199,17 +199,21 @@ public class HomestayService implements IHomestayService {
     }
 
     @Override
-    public Page<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size, boolean isNextPage,
+    public PagedListHolder<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size,
+            boolean isNextPage,
             boolean isPreviousPage) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<BlocHomestay> blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(pageable, status);
-        if (blocHomestays.hasNext() && isNextPage == true && isPreviousPage == false) {
-            blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(blocHomestays.nextPageable(), status);
-        } else if (blocHomestays.hasPrevious() && isPreviousPage == true && isNextPage == false) {
-            blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(blocHomestays.previousPageable(), status);
+
+        List<BlocHomestay> blocHomestays = blocHomestayRepo.findBlocHomestaysByStatus(status);
+        PagedListHolder<BlocHomestay> pagedListHolder = new PagedListHolder<>(blocHomestays);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(size);
+        if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
+        } else if (!pagedListHolder.isFirstPage() && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
         }
 
-        return blocHomestays;
+        return pagedListHolder;
     }
 
     @Override
@@ -467,6 +471,21 @@ public class HomestayService implements IHomestayService {
         pagedListHolder.setPage(page);
         pagedListHolder.setPageSize(size);
         if (!pagedListHolder.isLastPage() && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
+        } else if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
+        }
+
+        return pagedListHolder;
+    }
+
+    @Override
+    public PagedListHolder<Homestay> findHomestaysByStatus(String status, int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
+        List<Homestay> homestayList = homestayRepo.findHomestayByStatus(status);
+        PagedListHolder<Homestay> pagedListHolder = new PagedListHolder<>(homestayList);
+
+        if (!pagedListHolder.isFirstPage() && isPreviousPage == true && isNextPage == false) {
             pagedListHolder.previousPage();
         } else if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
             pagedListHolder.nextPage();

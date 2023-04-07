@@ -13,6 +13,5 @@ import lombok.Setter;
 @Setter
 public class BookingHomestayListResponseDto {
     List<BookingHomestayResponseForLandlordDto> bookingList;
-    private Integer totalBookingPending;
-    private Integer totalBooking;
+
 }

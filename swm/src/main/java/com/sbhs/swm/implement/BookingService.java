@@ -418,6 +418,7 @@ public class BookingService implements IBookingService {
         });
 
         booking.setStatus(BookingStatus.PENDING.name());
+        booking.getBookingHomestays().forEach(b -> b.setStatus(BookingStatus.PENDING.name()));
 
         return booking;
     }
@@ -544,6 +545,7 @@ public class BookingService implements IBookingService {
                 homestaysInBloc.stream().findFirst().get().getBloc().getName());
 
         booking.setStatus(BookingStatus.PENDING.name());
+        booking.getBookingHomestays().forEach(b -> b.setStatus(BookingStatus.PENDING.name()));
 
         return booking;
     }
@@ -596,7 +598,7 @@ public class BookingService implements IBookingService {
         }
         BlocHomestay bloc = homestayService.findBlocHomestayByName(bookingBlocHomestayRequest.getBlocName());
         userSaveBooking.setBloc(bloc);
-        bloc.setBooking(userSaveBooking);
+        bloc.setBookings(List.of(userSaveBooking));
         List<BookingHomestayService> bookingHomestayServiceList = new ArrayList<>();
         List<HomestayService> homestayServiceBookingList = bloc.getHomestayServices().stream()
                 .filter(s -> bookingBlocHomestayRequest.getHomestayServiceNameList().contains(s.getName()))
@@ -690,7 +692,7 @@ public class BookingService implements IBookingService {
     public void deleteBooking(Long bookingId) {
         Booking booking = this.findBookingById(bookingId);
         if (booking.getBloc() != null) {
-            booking.getBloc().setBooking(null);
+            booking.getBloc().setBookings(null);
         }
         if (!booking.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())) {
             throw new InvalidException("Can't delete this booking.");
@@ -733,11 +735,7 @@ public class BookingService implements IBookingService {
     @Transactional
     public Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId) {
         Booking booking = this.findBookingById(bookingId);
-        // List<HomestayService> homestayServiceList = serviceNameList.stream()
-        // .map(s ->
-        // homestayServiceRepo.findHomestayServiceByServiceNameAndHomestayName(s,
-        // homestayName).get())
-        // .collect(Collectors.toList());
+
         List<HomestayService> homestayServiceList = serviceNameList.stream()
                 .map(s -> homestayServiceRepo.findHomestayServiceByName(s).get())
                 .collect(Collectors.toList());
@@ -838,6 +836,12 @@ public class BookingService implements IBookingService {
     public Integer countBookingHomestayPending(String homestayName) {
         Integer bookingHomestayPending = bookingHomestayRepo.countBookingHomestayPending(homestayName);
         return bookingHomestayPending;
+    }
+
+    @Override
+    public List<Booking> getPassengerBookingByStatus() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPassengerBookingByStatus'");
     }
 
 }
