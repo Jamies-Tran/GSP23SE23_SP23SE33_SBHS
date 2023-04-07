@@ -14,6 +14,7 @@ import com.sbhs.swm.models.BookingShareCode;
 import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.BookingShareCodeStatus;
+import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.models.type.HomestayType;
 import com.sbhs.swm.repositories.BookingShareCodeRepo;
 import com.sbhs.swm.repositories.DepositRepo;
@@ -53,10 +54,14 @@ public class BookingShareCodeService implements IBookingShareCodeService {
     public BookingShareCode applyBookingShareCode(String shareCode) {
         SwmUser user = userService.authenticatedUser();
         BookingShareCode bookingShareCode = getBookingSharedCodeByCode(shareCode);
+
         if (bookingShareCode.getCreatedBy().equals(user.getUsername())) {
             throw new InvalidException("You can't apply share code of your own");
         }
         Booking booking = bookingShareCode.getBooking();
+        if (!booking.getStatus().equalsIgnoreCase(BookingStatus.ACCEPTED.name())) {
+            throw new InvalidException("Booking's not valid");
+        }
         if (booking.getBookingDeposits() != null) {
             for (BookingDeposit d : booking.getBookingDeposits()) {
                 Long currentDepositUnpaidAmount = d.getUnpaidAmount();

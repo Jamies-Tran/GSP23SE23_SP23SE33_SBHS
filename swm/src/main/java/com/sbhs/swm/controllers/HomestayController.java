@@ -139,7 +139,8 @@ public class HomestayController {
         public ResponseEntity<?> findHomestayList(@RequestParam String status, @RequestParam int page,
                         @RequestParam int size,
                         @RequestParam boolean isNextPage, boolean isPreviousPage) {
-                PagedListHolder<Homestay> homestays = homestayService.findHomestayList(status.toUpperCase(), page, size,
+                PagedListHolder<Homestay> homestays = homestayService.findHomestaysByStatus(status.toUpperCase(), page,
+                                size,
                                 isNextPage,
                                 isPreviousPage);
                 List<HomestayResponseDto> homestayDtos = homestays.getPageList().stream()
