@@ -164,4 +164,5 @@ public getBlocHomestayDetailByName(name:string):Observable<any>{
     .pipe(catchError(this.handleError));
 }
 
+
 }

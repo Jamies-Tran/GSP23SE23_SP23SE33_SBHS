@@ -40,6 +40,7 @@ import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-det
 import {MatGridListModule} from '@angular/material/grid-list';
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { BookingComponent } from './booking/booking.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     BlocHomestayDetailComponent,
     HomestayDetailComponent,
     BlocHomestayComponent,
+    BookingComponent,
   ],
   imports: [
     CommonModule,

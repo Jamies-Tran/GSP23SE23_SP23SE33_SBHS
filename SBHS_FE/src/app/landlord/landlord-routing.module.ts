@@ -11,6 +11,7 @@ import { AuthGuard } from '../auth.guard';
 import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-detail.component';
 import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
+import { BookingComponent } from './booking/booking.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,10 @@ const routes: Routes = [
             component: BlocHomestayDetailComponent,
           },
         ],
+      },
+      {
+        path: 'Booking',
+        component: BookingComponent,
       },
     ],
   },
