@@ -33,6 +33,7 @@ import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromLocationResponseDto;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
+import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
 
 @RestController
@@ -41,6 +42,9 @@ public class HomestayController {
 
         @Autowired
         private IHomestayService homestayService;
+
+        @Autowired
+        private IBookingService bookingService;
 
         @Autowired
         private ModelMapper modelMapper;
@@ -78,7 +82,10 @@ public class HomestayController {
                 List<HomestayResponseDto> homestayDtos = homestays.getPageList().stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
-                homestayDtos.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+                homestayDtos.forEach(h -> {
+                        h.setAddress(h.getAddress().split("_")[0]);
+                        h.setTotalBookingPending(bookingService.countBookingHomestayPending(h.getName()));
+                });
 
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
                                 new ArrayList<>(),

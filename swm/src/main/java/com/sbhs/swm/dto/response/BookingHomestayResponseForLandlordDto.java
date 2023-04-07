@@ -10,8 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookingHomestayResponseForLandlordDto {
-    private Long id;
-    private BookingResponseDto booking;
+    private BookingResponseForLandlordDto booking;
     private HomestayResponseDto homestay;
     private Long totalBookingPrice;
     private Long totalReservation;

@@ -804,57 +804,9 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public List<Booking> getLandlordBookingHomestayList(String homestayType) {
-        SwmUser user = userService.authenticatedUser();
-        List<Booking> bookingList = bookingRepo.findAll();
-        switch (HomestayType.valueOf(homestayType.toUpperCase())) {
-            case HOMESTAY:
-                bookingList = bookingList.stream()
-                        .filter(b -> b.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name())
-                                && !b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
-                        .collect(Collectors.toList());
-
-                break;
-            case BLOC:
-                bookingList = bookingList.stream()
-                        .filter(b -> b.getHomestayType().equalsIgnoreCase(HomestayType.BLOC.name())
-                                && !b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
-                        .collect(Collectors.toList());
-                break;
-        }
-
-        boolean isLandlordHaveBooking = bookingList.stream().filter(b -> b.getBookingHomestays().stream()
-                .filter(bh -> bh.getHomestay().getLandlord().getUser().getUsername().equals(user.getUsername()))
-                .findAny().isPresent()).findAny().isPresent();
-
-        if (isLandlordHaveBooking) {
-            for (Booking b : bookingList) {
-                b.setBookingHomestays(b.getBookingHomestays().stream().filter(
-                        bh -> bh.getHomestay().getLandlord().getUser().getUsername().equals(user.getUsername()))
-                        .collect(Collectors.toList()));
-            }
-        } else {
-            bookingList.clear();
-
-        }
-
-        return bookingList;
-    }
-
-    @Override
-    public Integer countPendingBookingOfHomestay(String homestay) {
-        List<BookingHomestay> bookingHomestayList = bookingHomestayRepo
-                .findAll();
-        bookingHomestayList = bookingHomestayList.stream().filter(h -> {
-            if ((h.getHomestay() != null && h.getHomestay().getName().equals(homestay))
-                    || (h.getBooking().getBloc() != null && h.getBooking().getBloc().getName().equals(homestay))
-                            && !h.getBooking().getStatus().equalsIgnoreCase(BookingStatus.PENDING.name())) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-
-        return bookingHomestayList.size();
+    public List<BookingHomestay> getLandlordBookingHomestayList(String homestayName) {
+        List<BookingHomestay> bookingHomestayList = bookingHomestayRepo.findBookingHomestayByHomestayName(homestayName);
+        return bookingHomestayList;
     }
 
     @Override
@@ -880,6 +832,12 @@ public class BookingService implements IBookingService {
         mailService.informBookingForHomestayRejected(bookingHomestay, message);
 
         return bookingHomestay;
+    }
+
+    @Override
+    public Integer countBookingHomestayPending(String homestayName) {
+        Integer bookingHomestayPending = bookingHomestayRepo.countBookingHomestayPending(homestayName);
+        return bookingHomestayPending;
     }
 
 }
