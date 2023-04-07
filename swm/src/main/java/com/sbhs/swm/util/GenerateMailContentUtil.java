@@ -21,7 +21,7 @@ import com.sbhs.swm.models.type.PaymentMethod;
 
 public class GenerateMailContentUtil {
     @Autowired
-    private static DateTimeUtil dateTimeUtil;
+    private static DateTimeUtil dateFormatUtil = new DateTimeUtil();
 
     public static String generatePassengerChangePasswordOtpMailSubject(String otp) {
         StringBuilder builder = new StringBuilder();
@@ -179,7 +179,7 @@ public class GenerateMailContentUtil {
         Booking booking = bookingHomestay.getBooking();
         BookingDeposit bookingDeposit = booking.getBookingDeposits().stream()
                 .filter(b -> b.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny().get();
-        int duration = dateTimeUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
+        int duration = dateFormatUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
         String bookingTotalPrice = vndNumberFormat.format(bookingHomestay.getTotalBookingPrice().doubleValue());
         String bookingTotalPaidDeposit = vndNumberFormat.format(bookingDeposit.getPaidAmount().doubleValue());
         SwmUser user = booking.getPassenger().getUser();
@@ -193,7 +193,8 @@ public class GenerateMailContentUtil {
                 .append(" days.From ").append(booking.getBookingFrom()).append(" to ").append(booking.getBookingTo())
                 .append("</li>")
                 .append("<li style='font-weight:bold'>").append("The homestay locate at ")
-                .append(bookingHomestay.getHomestay().getAddress())
+                .append(bookingHomestay.getHomestay().getAddress()
+                        .split(bookingHomestay.getHomestay().getAddress().split("_")[0]))
                 .append("</li>");
         // .append("</ul>");
         switch (PaymentMethod.valueOf(bookingHomestay.getPaymentMethod())) {

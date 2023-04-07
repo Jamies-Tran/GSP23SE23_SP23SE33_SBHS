@@ -15,7 +15,7 @@ public interface IBookingService {
 
     Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
 
-    List<BookingHomestay> getLandlordBookingHomestayList(String homestayName);
+    List<Booking> getLandlordBookingHomestayList(String homestayType);
 
     Integer countPendingBookingOfHomestay(String homestay);
 
