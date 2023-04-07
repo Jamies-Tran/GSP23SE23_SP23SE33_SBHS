@@ -96,7 +96,7 @@ public class BookingShareCodeService implements IBookingShareCodeService {
         }
         bookingShareCode.setPassenger(user.getPassengerProperty());
         bookingShareCode.setStatus(BookingShareCodeStatus.USED.name());
-        user.getPassengerProperty().setShareCode(bookingShareCode);
+        user.getPassengerProperty().setShareCodes(List.of(bookingShareCode));
         mailService.informBookingSharedCodeHadBeenApplied(bookingShareCode);
 
         return bookingShareCode;

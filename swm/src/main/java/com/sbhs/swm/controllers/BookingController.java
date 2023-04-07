@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbhs.swm.dto.paging.BookingListPagingDto;
 import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingDateValidationRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingUpdateRequestDto;
+import com.sbhs.swm.dto.request.FilterBookingRequestDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
 import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
@@ -285,5 +288,20 @@ public class BookingController {
         bookingService.deleteBooking(bookingId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/filter-booking")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> filterPassengerBooking(@RequestBody FilterBookingRequestDto filterBookingRequest, int page,
+            int size, Boolean isNextPage, Boolean isPreviousPage) {
+        PagedListHolder<Booking> bookingList = bookingService.filterPassengerBooking(filterBookingRequest, page, size,
+                isNextPage, isPreviousPage);
+        List<BookingResponseDto> responseBookingList = bookingList.getPageList().stream()
+                .map(b -> modelMapper.map(b, BookingResponseDto.class)).collect(Collectors.toList());
+        BookingListPagingDto bookingListPaging = new BookingListPagingDto();
+        bookingListPaging.setBookings(responseBookingList);
+        bookingListPaging.setPageNumber(bookingList.getPage());
+
+        return new ResponseEntity<BookingListPagingDto>(bookingListPaging, HttpStatus.OK);
     }
 }

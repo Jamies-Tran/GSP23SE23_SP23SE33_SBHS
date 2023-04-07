@@ -161,6 +161,7 @@ public class HomestayController {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
                 responseHomestay.setAddress(responseHomestay.getAddress().split("_")[0]);
+                responseHomestay.setTotalBookingPending(bookingService.countBookingHomestayPending(name));
 
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
         }

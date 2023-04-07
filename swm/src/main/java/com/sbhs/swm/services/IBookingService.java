@@ -2,9 +2,12 @@ package com.sbhs.swm.services;
 
 import java.util.List;
 
+import org.springframework.beans.support.PagedListHolder;
+
 import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingUpdateRequestDto;
+import com.sbhs.swm.dto.request.FilterBookingRequestDto;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
@@ -35,7 +38,14 @@ public interface IBookingService {
 
     BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
 
-    List<Booking> getPassengerBookingByStatus();
+    PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
+            int page, int size, boolean isNextPage, boolean isPreviousPage);
+
+    List<Booking> filterPassengerBookingByHomestayType(List<Booking> bookingList, String homestayType);
+
+    List<Booking> filterPassengerBookingByStatus(List<Booking> bookingList, String status);
+
+    List<Booking> filterPassengerBookingByHost(boolean isHost);
 
     Boolean canPassengerMakeBooking(long totalBookingPrice);
 

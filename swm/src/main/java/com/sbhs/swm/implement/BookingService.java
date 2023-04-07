@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +14,7 @@ import com.sbhs.swm.dto.request.BookingBlocHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayRequestDto;
 import com.sbhs.swm.dto.request.BookingHomestayUpdateRequestDto;
 import com.sbhs.swm.dto.request.BookingUpdateRequestDto;
+import com.sbhs.swm.dto.request.FilterBookingRequestDto;
 import com.sbhs.swm.dto.request.BookingBlocRequestDto;
 import com.sbhs.swm.handlers.exceptions.BookingNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidBookingException;
@@ -839,9 +840,58 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public List<Booking> getPassengerBookingByStatus() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPassengerBookingByStatus'");
+    public PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
+            int page, int size, boolean isNextPage, boolean isPreviousPage) {
+        List<Booking> bookingList = this.filterPassengerBookingByHost(filterBookingRequest.getIsHost());
+        if (filterBookingRequest.getHomestayType() != null) {
+            bookingList = this.filterPassengerBookingByHomestayType(bookingList,
+                    filterBookingRequest.getHomestayType());
+        }
+
+        if (filterBookingRequest.getStatus() != null) {
+            bookingList = this.filterPassengerBookingByStatus(bookingList, filterBookingRequest.getStatus());
+        }
+
+        PagedListHolder<Booking> pagedListHolder = new PagedListHolder<>(bookingList);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(size);
+        if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
+        } else if (!pagedListHolder.isFirstPage() && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
+        }
+
+        return pagedListHolder;
+    }
+
+    @Override
+    public List<Booking> filterPassengerBookingByHomestayType(List<Booking> bookingList, String homestayType) {
+        bookingList = bookingList.stream().filter(b -> b.getHomestayType().equalsIgnoreCase(homestayType))
+                .collect(Collectors.toList());
+        return bookingList;
+    }
+
+    @Override
+    public List<Booking> filterPassengerBookingByStatus(List<Booking> bookingList, String status) {
+        bookingList = bookingList.stream().filter(b -> b.getStatus().equalsIgnoreCase(status))
+                .collect(Collectors.toList());
+        return bookingList;
+    }
+
+    @Override
+    public List<Booking> filterPassengerBookingByHost(boolean isHost) {
+        SwmUser user = userService.authenticatedUser();
+        List<Booking> bookingList;
+        List<Booking> shareCodeBooking = new ArrayList<>();
+        if (isHost) {
+            bookingList = user.getPassengerProperty().getBookings();
+        } else {
+            for (BookingShareCode s : user.getPassengerProperty().getShareCodes()) {
+                shareCodeBooking.add(s.getBooking());
+            }
+            bookingList = shareCodeBooking;
+        }
+        return bookingList;
     }
 
 }

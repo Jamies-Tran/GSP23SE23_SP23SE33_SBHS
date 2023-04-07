@@ -44,7 +44,6 @@ public class Passenger extends BaseModel {
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;
 
-    @OneToOne
-    @JoinColumn(name = "share_id", referencedColumnName = "id")
-    private @Setter BookingShareCode shareCode;
+    @OneToMany(mappedBy = "passenger")
+    private @Setter List<BookingShareCode> shareCodes;
 }

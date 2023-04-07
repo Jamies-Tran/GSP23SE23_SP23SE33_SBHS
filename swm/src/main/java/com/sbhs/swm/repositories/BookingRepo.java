@@ -20,4 +20,7 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
     @Query(value = "delete from Booking b where b.id = :bookingId")
     @Modifying
     void deleteBookingById(@Param("bookingId") Long bookingId);
+
+    @Query(value = "select b from Booking b where b.homestayType = :homestayType")
+    List<Booking> findBookingByHomestayType(@Param("homestayType") String homestayType);
 }
