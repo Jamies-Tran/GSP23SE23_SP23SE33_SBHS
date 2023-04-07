@@ -15,6 +15,10 @@ public interface IBookingService {
 
     Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
 
+    List<BookingHomestay> getLandlordBookingHomestayList(String homestayName);
+
+    Integer countPendingBookingOfHomestay(String homestay);
+
     Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId);
 
     List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
@@ -31,9 +35,10 @@ public interface IBookingService {
 
     BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
 
-    List<Booking> findBookingsByUsernameAndStatus(String bookingStatus);
+    // List<Booking> findBookingsByUsernameAndStatus(String bookingStatus);
 
-    List<Booking> findBookingsByHomestayNameAndStatus(String bookingStatus, String homestayName);
+    // List<Booking> findBookingsByHomestayNameAndStatus(String bookingStatus,
+    // String homestayName);
 
     Boolean canPassengerMakeBooking(long totalBookingPrice);
 
@@ -47,4 +52,8 @@ public interface IBookingService {
             int totalReservation);
 
     void addHomestayInBlocToBooking(String homestayName, Long bookingId, String paymentMethod);
+
+    BookingHomestay acceptBookingForHomestay(Long bookingId, Long homestayId);
+
+    BookingHomestay rejectBookingForHomestay(Long bookingId, Long homestayId, String message);
 }

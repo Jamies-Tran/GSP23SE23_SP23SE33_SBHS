@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+
+import com.sbhs.swm.models.status.BookingStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingHomestay {
+public class BookingHomestay extends BaseModel {
     @EmbeddedId
     private BookingHomestayId bookingHomestayId = new BookingHomestayId();
 
@@ -39,4 +42,6 @@ public class BookingHomestay {
     @Column
     private @Setter String paymentMethod;
 
+    @Column
+    private @Setter String status = BookingStatus.SAVED.name();
 }

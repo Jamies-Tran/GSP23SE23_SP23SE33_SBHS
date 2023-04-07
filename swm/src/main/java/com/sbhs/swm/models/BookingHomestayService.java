@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingHomestayService {
+public class BookingHomestayService extends BaseModel {
     @EmbeddedId
     private BookingHomestayServiceId bookingSaveServiceId = new BookingHomestayServiceId();
 

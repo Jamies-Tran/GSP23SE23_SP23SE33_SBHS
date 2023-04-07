@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.models.BlocHomestay;
+import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.BookingShareCode;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
@@ -188,7 +189,47 @@ public class MailService implements IMailService {
                     ingformShareCodeInformMail,
                     true);
             helper.setFrom("no-reply@swm.com", "stay_with_me");
-            helper.setSubject("Homestay pending");
+            helper.setSubject("Booking Invite");
+            mailSender.send(mimeMessage);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void informBookingForHomestayAccepted(BookingHomestay bookingHomestay) {
+        String ingformShareCodeInformMail = GenerateMailContentUtil
+                .generateInformAcceptBookingForHomestay(bookingHomestay);
+        SwmUser bookingHost = bookingHomestay.getBooking().getPassenger().getUser();
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        try {
+            helper.setTo(new InternetAddress(bookingHost.getEmail()));
+            helper.setText(
+                    ingformShareCodeInformMail,
+                    true);
+            helper.setFrom("no-reply@swm.com", "stay_with_me");
+            helper.setSubject("Booking Accepted");
+            mailSender.send(mimeMessage);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void informBookingForHomestayRejected(BookingHomestay bookingHomestay, String message) {
+        String ingformShareCodeInformMail = GenerateMailContentUtil
+                .generateInformRejectBookingForHomestay(bookingHomestay, message);
+        SwmUser bookingHost = bookingHomestay.getBooking().getPassenger().getUser();
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        try {
+            helper.setTo(new InternetAddress(bookingHost.getEmail()));
+            helper.setText(
+                    ingformShareCodeInformMail,
+                    true);
+            helper.setFrom("no-reply@swm.com", "stay_with_me");
+            helper.setSubject("Booking Rejected");
             mailSender.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());

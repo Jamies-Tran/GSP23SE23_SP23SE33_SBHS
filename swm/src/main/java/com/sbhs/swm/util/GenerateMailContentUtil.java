@@ -1,13 +1,28 @@
 package com.sbhs.swm.util;
 
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
+import java.text.NumberFormat;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.BookingDeposit;
+import com.sbhs.swm.models.BookingHomestay;
+import com.sbhs.swm.models.BookingHomestayService;
 import com.sbhs.swm.models.BookingShareCode;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.models.type.HomestayType;
+import com.sbhs.swm.models.type.PaymentMethod;
 
 public class GenerateMailContentUtil {
+    @Autowired
+    private static DateTimeUtil dateTimeUtil;
+
     public static String generatePassengerChangePasswordOtpMailSubject(String otp) {
         StringBuilder builder = new StringBuilder();
         builder.append(
@@ -153,6 +168,77 @@ public class GenerateMailContentUtil {
                 .append("<p>").append("Currently, user ").append(bookingGuest.getUsername())
                 .append(" use share code on your booking ").append(bookingCode).append("<br>").append("<p>")
                 .append("Now you can share the remain deposit with your guest.").append("</p>").append("</br>");
+        return informMailBuilder.toString();
+    }
+
+    public static String generateInformAcceptBookingForHomestay(BookingHomestay bookingHomestay) {
+        StringBuilder informMailBuilder = new StringBuilder();
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat vndNumberFormat = NumberFormat.getCurrencyInstance(locale);
+
+        Booking booking = bookingHomestay.getBooking();
+        BookingDeposit bookingDeposit = booking.getBookingDeposits().stream()
+                .filter(b -> b.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny().get();
+        int duration = dateTimeUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
+        String bookingTotalPrice = vndNumberFormat.format(bookingHomestay.getTotalBookingPrice().doubleValue());
+        String bookingTotalPaidDeposit = vndNumberFormat.format(bookingDeposit.getPaidAmount().doubleValue());
+        SwmUser user = booking.getPassenger().getUser();
+        informMailBuilder.append("<h1>").append("Dear ").append(user.getUsername()).append("</h1>")
+                .append("</br>")
+                .append("<p>").append("Your booking for homestay ").append(bookingHomestay.getHomestay().getName())
+                .append(" in booking ").append(booking.getCode())
+                .append(" has been accepted.").append("</br>").append("Quick information:").append("</br>")
+                .append("<ul>")
+                .append("<li style='font-weight:bold'>").append("You'll stay there for ").append(duration)
+                .append(" days.From ").append(booking.getBookingFrom()).append(" to ").append(booking.getBookingTo())
+                .append("</li>")
+                .append("<li style='font-weight:bold'>").append("The homestay locate at ")
+                .append(bookingHomestay.getHomestay().getAddress())
+                .append("</li>");
+        // .append("</ul>");
+        switch (PaymentMethod.valueOf(bookingHomestay.getPaymentMethod())) {
+            case SWM_WALLET:
+                informMailBuilder.append("<li style='font-weight:bold'>").append("Total booking price ")
+                        .append(bookingTotalPrice).append(" VND.").append(" You've paid deposit for ")
+                        .append(bookingTotalPaidDeposit).append("</li>");
+                break;
+            case CASH:
+                informMailBuilder.append("<li style='font-weight:bold'>").append("Total booking price ")
+                        .append(bookingTotalPrice).append("</li>");
+                break;
+        }
+        if (booking.getBookingHomestayServices().stream()
+                .filter(s -> s.getHomestayName().equals(bookingHomestay.getHomestay().getName())).findAny()
+                .isPresent()) {
+            List<BookingHomestayService> bookingHomestayServiceList = booking.getBookingHomestayServices().stream()
+                    .filter(s -> s.getHomestayName().equals(bookingHomestay.getHomestay().getName()))
+                    .collect(Collectors.toList());
+            informMailBuilder.append("<li style='font-weight:bold'>").append("You've booked ")
+                    .append(bookingHomestayServiceList.size()).append(" services").append("</li>");
+        }
+
+        informMailBuilder.append("<p>Sinerely</p>").append("</br>").append("<h2>Stay With Me</h2>");
+        return informMailBuilder.toString();
+    }
+
+    public static String generateInformRejectBookingForHomestay(BookingHomestay bookingHomestay, String message) {
+        Booking booking = bookingHomestay.getBooking();
+        String bookingCode = booking.getCode();
+        SwmUser user = booking.getPassenger().getUser();
+        SwmUser landlord = bookingHomestay.getHomestay().getLandlord().getUser();
+        StringBuilder informMailBuilder = new StringBuilder();
+        informMailBuilder.append("<h1>").append("Dear ").append(user.getUsername()).append("</h1>")
+                .append("</br>")
+                .append("<p>").append("Your homestay ").append(bookingHomestay.getHomestay().getName())
+                .append(" in booking ").append(bookingCode).append(" has been rejected.").append("</p>").append("</br>")
+                .append("<p>")
+                .append("Here is message from landlord: ").append("</p>").append("</br>")
+                .append("<p style='font-weight:bold'>").append(message).append("</p>").append("</br>").append("<p>")
+                .append("You can contact landlord by: ").append("</br>").append("<ul>")
+                .append("<li style='font-weight:bold'>").append("Name: ").append(landlord.getUsername()).append("</li>")
+                .append("<li style='font-weight:bold'>").append("Email: ").append(landlord.getEmail()).append("</li>")
+                .append("<li style='font-weight:bold'>").append("Phone: ").append(landlord.getPhone()).append("</li>")
+                .append("</ul>");
         return informMailBuilder.toString();
     }
 }
