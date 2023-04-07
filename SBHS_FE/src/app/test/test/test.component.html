@@ -1,1 +1,145 @@
+<div class="vh-100 v-100" [class.example-is-mobile]="mobileQuery.matches">
 
+  <mat-sidenav-container class="example-container vh-100 vw-100" [autosize]=" mobileQuery.matches ? 'false' : 'true' ">
+
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+      [style.min-width]="!isExpanded ? '0' :''" opened="true" class="left">
+      <img src="https://www.gstatic.com/mobilesdk/190424_mobilesdk/nav_nachos@2x.png" class="w-100 vh-100 pt-5"
+        *ngIf="isExpanded">
+      <section class="vh-100 sidenav" [style.position]="isExpanded? 'absolute' : 'unset'">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col p-0 vh-100">
+              <!-- Header -->
+              <nav class="w-100 navbar sticky-top navbar-expand-sm nav-logo p-0 ">
+                <div class="container-fluid">
+                  <a class="navbar-brand " routerLink="/Homepage" *ngIf="isExpanded">
+                    <img class="logo-isExpanded" src="/assets/images/logo-2.png">
+                  </a>
+                  <a class="navbar-brand me-0" routerLink="/Homepage" *ngIf="!isExpanded">
+                    <img class="logo " src="/assets/images/logo-4.png">
+                  </a>
+
+                </div>
+              </nav>
+              <div class="w-100 overflow-auto h-100 main-content" id="left">
+                <!-- <h6 class="text-muted text-uppercase text-break text-wrap">general</h6> -->
+                <mat-nav-list>
+                  <!-- items -->
+                  <!-- Dashboard -->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0"
+                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/Dashboard"
+                    routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
+                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''"><span
+                        class="material-symbols-outlined">
+                        <span class="material-symbols-outlined"> dashboard </span>
+                      </span></mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Dashboard</span>
+                  </mat-list-item>
+
+                  <!-- items -->
+                  <!-- Homestay -->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0"
+                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay"
+                    routerLinkActive="active"
+
+                    (click)="showSubmenu = !showSubmenu">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
+                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''"><span
+                        class="material-symbols-outlined">
+                        <span class="material-symbols-outlined"> add_home </span>
+                      </span></mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Manage Homestay</span>
+                    <mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}"
+                      *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+                  </mat-list-item>
+
+                  <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
+                    <a mat-list-item href="...">Submenu Item 1</a>
+                    <a mat-list-item href="...">Submenu Item 2</a>
+                  </div>
+
+
+                  <!-- Homestay -->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0"
+                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="BlockHomestay"
+                    routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
+                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''"><span
+                        class="material-symbols-outlined">
+                        <span class="material-symbols-outlined"> add_home </span>
+                      </span></mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Block Homestay</span>
+                  </mat-list-item>
+
+                  <!-- items -->
+                  <!-- Homestay -->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0"
+                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Booking"
+                    routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
+                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''"><span
+                        class="material-symbols-outlined">
+                        <span class="material-symbols-outlined"> calendar_month </span>
+                      </span></mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Booking</span>
+                  </mat-list-item>
+
+                  <!-- items -->
+                  <!-- Homestay -->
+                  <mat-list-item class="sidenav-nav-link w-100 p-0"
+                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/Promotion"
+                    routerLinkActive="active">
+                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
+                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''"><span
+                        class="material-symbols-outlined">
+                        <span class="material-symbols-outlined"> percent </span>
+                      </span></mat-icon>
+                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Promotion</span>
+                  </mat-list-item>
+
+                </mat-nav-list>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+
+
+
+      <section class="vh-100 ">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col p-0 vh-100">
+              <!-- Header -->
+              <nav class="w-100 navbar sticky-top navbar-expand-sm bg-white p-0 ">
+                <div class="container-fluid">
+                  <button mat-icon-button
+                    (click)="mobileQuery.matches ? snav.toggle() : isExpanded = !isExpanded "><mat-icon>menu</mat-icon></button>
+                  <div class=""></div>
+
+                  <div>
+
+                  </div>
+                </div>
+              </nav>
+
+              <div class="w-100 overflow-auto h-100 main-content" id="right">
+                <router-outlet></router-outlet>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
+</div>

@@ -30,7 +30,7 @@ export class BlocHomestayComponent {
 
   getHomestayPending() {
     this.valuePending = [];
-    this.http.findBlocList('PENDING').subscribe(async (data) => {
+    this.http.getBlocByLandlord('PENDING').subscribe(async (data) => {
       console.log('data:', data['blocs']);
       for (this.i of data['blocs'].reverse()) {
         var imgUrl;
@@ -53,7 +53,7 @@ export class BlocHomestayComponent {
   }
   getHomestayActivating() {
     this.valueActivating = [];
-    this.http.findBlocList('ACTIVATING').subscribe(async (data) => {
+    this.http.getBlocByLandlord('ACTIVATING').subscribe(async (data) => {
       console.log('data:', data['blocs']);
       for (this.i of data['blocs'].reverse()) {
         var imgUrl;
@@ -76,7 +76,7 @@ export class BlocHomestayComponent {
   }
   getHomestayReject() {
     this.valueReject =[];
-    this.http.findBlocList('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
+    this.http.getBlocByLandlord('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
       console.log('data:', data['blocs']);
       for (this.i of data['blocs'].reverse()) {
         var imgUrl;
