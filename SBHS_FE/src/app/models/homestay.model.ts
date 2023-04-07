@@ -1,4 +1,5 @@
 export interface Homestay {
+  id:number;
   address: string;
   availableRooms: number;
   businessLicense: string;
@@ -35,4 +36,5 @@ export interface Homestay {
   ratings: [];
   status: string;
   totalAverageRating: number;
+  totalBookingPending: number;
 }

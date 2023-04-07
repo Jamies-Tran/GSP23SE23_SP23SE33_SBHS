@@ -23,4 +23,5 @@ export interface BlocHomestay {
   ];
   homestayRules: [{ id: number; description: string }];
   ratings: [];
+  totalBookingPending:number;
 }

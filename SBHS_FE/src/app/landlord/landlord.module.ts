@@ -27,7 +27,7 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import {MatBadgeModule} from '@angular/material/badge';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -42,6 +42,7 @@ import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { BookingComponent } from './booking/booking.component';
 
+
 @NgModule({
   declarations: [
     HomestayComponent,
@@ -53,6 +54,7 @@ import { BookingComponent } from './booking/booking.component';
     HomestayDetailComponent,
     BlocHomestayComponent,
     BookingComponent,
+
   ],
   imports: [
     CommonModule,
@@ -81,7 +83,8 @@ import { BookingComponent } from './booking/booking.component';
     MatAutocompleteModule,
     CdkStepperModule,
     MatGridListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ],
 })
 export class LandlordModule {}

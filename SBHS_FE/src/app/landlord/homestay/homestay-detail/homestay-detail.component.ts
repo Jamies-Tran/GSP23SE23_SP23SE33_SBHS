@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Homestay } from 'src/app/models/homestay.model';
+
 import { MessageComponent } from 'src/app/pop-up/message/message.component';
 import { SuccessComponent } from 'src/app/pop-up/success/success.component';
+import { BookingService } from 'src/app/services/booking.service';
 import { HomestayService } from 'src/app/services/homestay.service';
 import { ImageService } from 'src/app/services/image.service';
 
@@ -14,12 +16,14 @@ import { ImageService } from 'src/app/services/image.service';
 export class HomestayDetailComponent implements OnInit {
   constructor(
     private http: HomestayService,
+    private httpBooking: BookingService,
     private image: ImageService,
     public dialog: MatDialog
   ) {}
   ngOnInit(): void {
     this.name = sessionStorage.getItem('name') as string;
     this.getHomestay();
+    this.booking();
   }
   name!: string;
   message!: string;
@@ -28,6 +32,8 @@ export class HomestayDetailComponent implements OnInit {
   urls: string[] = [];
   urls4: string[] = [];
   priceTax!: number;
+  showBooking = false;
+
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
@@ -40,6 +46,7 @@ export class HomestayDetailComponent implements OnInit {
     });
   }
   getHomestay() {
+
     try {
       this.http.getHomestayDetailByName(this.name).subscribe({
         next: async (data: any) => {
@@ -49,6 +56,7 @@ export class HomestayDetailComponent implements OnInit {
             this.urls4 = [];
             console.log(value.homestayFacilities);
             this.datas = {
+              id:value.id,
               address: value.address,
               availableRooms: value.availableRooms,
               businessLicense: value.businessLicense,
@@ -62,6 +70,7 @@ export class HomestayDetailComponent implements OnInit {
               ratings: value.rating,
               status: value.status,
               totalAverageRating: value.totalAverageRating,
+              totalBookingPending: value.totalBookingPending,
             };
             console.log('value', value);
             console.log('this.datas', this.datas);
@@ -96,5 +105,66 @@ export class HomestayDetailComponent implements OnInit {
       this.openDialogMessage();
       console.log(error);
     }
+  }
+  datasBooking:any[]=[];
+  booking(){
+    this.datasBooking = [];
+    try {
+     this.httpBooking.getBookingForLandlord(this.name).subscribe({
+      next: (data:any)=>{
+        if(data){
+          console.log(data);
+          const value = data;
+          for( let i of value.bookingList.reverse()){
+            this.datasBooking.push({
+              id:i.booking.id,
+              code: i.booking.code,
+              bookingFrom: i.booking.bookingFrom,
+              bookingTo:i.booking.bookingTo,
+              bloc:i.booking.bloc,
+              bookingHomestayServices:i.booking.bookingHomestayServices,
+              totalBookingPrice: i.totalBookingPrice,
+              totalReservation: i.totalReservation,
+              paymentMethod : i.paymentMethod
+            })
+          }
+          console.log('booking' , this.datasBooking);
+
+        }
+
+      }
+     })
+    } catch (error) {
+      this.message = error as string;
+      this.openDialogMessage();
+      console.log(error);
+    }
+  }
+
+  accept(id:number){
+    try {
+      this.httpBooking.acceptBookingForHomestay(this.datas.id , id).subscribe({
+        next:(data:any) =>{
+          this.message = "Accept Booking Homestay Success";
+          this.openDialogSuccess();
+          this.getHomestay();
+          this.booking();
+          this.showBooking = true;
+        },
+        error: (error)=>{
+          this.message= error;
+          this.openDialogMessage();
+        }
+      }
+      )
+    } catch (error) {
+      this.message = error as string;
+      this.openDialogMessage();
+      console.log(error);
+    }
+  }
+
+  reject(){
+
   }
 }

@@ -13,12 +13,19 @@
 
           </div>
           <div class="col-2 m-0 p-0">
-            <small *ngIf="datas.status =='ACTIVATING'"
-              class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">{{datas.status}}</small>
-            <small *ngIf="datas.status =='PENDING'"
-              class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-2">{{datas.status}}</small>
-            <small *ngIf="datas.status =='REJECTED_LICENSE_NOT_MATCHED' && 'BANNED' "
-              class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-2">{{datas.status}}</small>
+            <div>
+              <small *ngIf="datas.status =='ACTIVATING'"
+                class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-success-emphasis bg-success-subtle border border-success-subtle rounded-2">{{datas.status}}</small>
+              <small *ngIf="datas.status =='PENDING'"
+                class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-2">{{datas.status}}</small>
+              <small *ngIf="datas.status =='REJECTED_LICENSE_NOT_MATCHED' && 'BANNED' "
+                class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-2">{{datas.status}}</small>
+            </div>
+            <div>
+              <button [matBadgeHidden]="!datas.totalBookingPending" [matBadge]="datas.totalBookingPending"
+                matBadgePosition="after" matBadgeColor="warn" matBadgeSize="small" mat-stroked-button
+                class="d-inline-flex mb-3 px-2 py-1 fw-semibold   border  rounded-2 text-uppercase  ">Booking</button>
+            </div>
           </div>
         </div>
 
@@ -52,8 +59,9 @@
         </mat-grid-list>
 
         <div class="row w-100 m-0 ">
-          <div class="col-3 p-0" *ngFor="let url of urls4" >
-            <div class="w-100 pe-1 overflow-hidden" style="height:90px"><img [src]="url" class=" img-fluid" style="object-fit: cover;"></div>
+          <div class="col-3 p-0" *ngFor="let url of urls4">
+            <div class="w-100 pe-1 overflow-hidden" style="height:90px"><img [src]="url" class=" img-fluid"
+                style="object-fit: cover;"></div>
           </div>
         </div>
       </div>
@@ -80,10 +88,10 @@
                 <div class="row w-100 m-0 p-0">
                   <div class="col m-0 p-0">
                     <div class="row w-100 m-0 p-0">
-                      <div class="col-3 m-0 p-0">
+                      <div class="col-4 m-0 p-0">
                         <span class="text-muted text-uppercase fs-7 text-break text-wrap">block homestay name</span>
                       </div>
-                      <div class="col-9">
+                      <div class="col-8">
                         <span> {{datas.name}} </span>
                       </div>
                     </div>
@@ -94,10 +102,10 @@
                 <div class="row w-100 m-0 p-0">
                   <div class="col m-0 p-0">
                     <div class="row w-100 m-0 p-0">
-                      <div class="col-3 m-0 p-0">
+                      <div class="col-4 m-0 p-0">
                         <span class="text-muted text-uppercase">address</span>
                       </div>
-                      <div class="col-9">
+                      <div class="col-8">
                         <span> {{datas.address}} </span>
                       </div>
                     </div>
@@ -226,7 +234,7 @@
       </div>
 
 
-      <!-- Service  -->
+      <!-- Homestay  -->
       <div class=" my-3">
         <div class="card">
           <div class="card-header">
@@ -384,45 +392,45 @@
                 </div>
               </div>
               <!-- facility -->
-      <div class="card my-3">
-        <div class="card">
-          <div class="card-header">
-            <div class="row w-100 m-0 p-0">
-              <div class="col-8 m-0 p-0">
-                <h4 class="posttitle-text mb-0">Facility</h4>
-              </div>
-              <div class="col-4 m-0 p-0">
-                <div class="d-flex flex-row justify-content-end ">
-                  <button mat-stroked-button class="border border-warning me-2">Edit</button>
-                  <button mat-stroked-button class="border border-success">Edit All</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="row w-100 p-0 m-0">
-              <div class="col m-0 p-0 pe-2">
-                <div class="row w-100 m-0 p-0">
-                    <div class="col-6 m-0 p-0" *ngFor="let item of homestay.homestayFacilities ; let i = index">
-                      <hr *ngIf="i >1">
-                      <div class="row w-100 m-0 p-0">
-                        <div class="col-6 m-0 p-0">
-                          <span class="text-muted text-uppercase">{{item.name}} </span>
-                        </div>
-                        <div class="col-6">
-                          <span> {{item.quantity}} </span>
+              <div class="card my-3">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="row w-100 m-0 p-0">
+                      <div class="col-8 m-0 p-0">
+                        <h4 class="posttitle-text mb-0">Facility</h4>
+                      </div>
+                      <div class="col-4 m-0 p-0">
+                        <div class="d-flex flex-row justify-content-end ">
+                          <button mat-stroked-button class="border border-warning me-2">Edit</button>
+                          <button mat-stroked-button class="border border-success">Edit All</button>
                         </div>
                       </div>
                     </div>
-                    <div class="col-6 m-0 p-0 " *ngIf="homestay.homestayFacilities.length % 2 == 1 ">
-                     <hr>
+                  </div>
+                  <div class="card-body">
+                    <div class="row w-100 p-0 m-0">
+                      <div class="col m-0 p-0 pe-2">
+                        <div class="row w-100 m-0 p-0">
+                          <div class="col-6 m-0 p-0" *ngFor="let item of homestay.homestayFacilities ; let i = index">
+                            <hr *ngIf="i >1">
+                            <div class="row w-100 m-0 p-0">
+                              <div class="col-6 m-0 p-0">
+                                <span class="text-muted text-uppercase">{{item.name}} </span>
+                              </div>
+                              <div class="col-6">
+                                <span> {{item.quantity}} </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-6 m-0 p-0 " *ngIf="homestay.homestayFacilities.length % 2 == 1 ">
+                            <hr>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
             </mat-expansion-panel>
 

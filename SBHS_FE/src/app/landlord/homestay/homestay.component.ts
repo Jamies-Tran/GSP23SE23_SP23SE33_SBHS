@@ -43,6 +43,7 @@ export class HomestayComponent implements OnInit {
               name: this.i.name,
               id: this.i.id,
               status: this.i.status,
+
             });
           })
           .catch((error) => {
@@ -66,6 +67,7 @@ export class HomestayComponent implements OnInit {
               name: this.i.name,
               id: this.i.id,
               status: this.i.status,
+              totalBookingPending: this.i.totalBookingPending,
             });
           })
           .catch((error) => {

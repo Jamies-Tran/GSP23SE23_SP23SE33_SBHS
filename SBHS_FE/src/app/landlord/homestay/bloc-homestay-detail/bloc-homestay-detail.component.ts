@@ -56,7 +56,8 @@ export class BlocHomestayDetailComponent {
               homestayServices:value.homestayServices,
               homestays:value.homestays,
               homestayRules:value.homestayRules,
-              ratings:value.ratings
+              ratings:value.ratings,
+              totalBookingPending: value.totalBookingPending,
             }
             console.log('datas' , this.datas);
             for(let homestay of this.datas.homestays){

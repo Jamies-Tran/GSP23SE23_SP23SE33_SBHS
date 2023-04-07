@@ -13,6 +13,7 @@ import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/blo
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import { BookingComponent } from './booking/booking.component';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -70,6 +71,7 @@ const routes: Routes = [
         path: 'Booking',
         component: BookingComponent,
       },
+
     ],
   },
 ];

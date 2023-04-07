@@ -30,7 +30,7 @@ export class BookingComponent implements OnInit {
   page: number = 1;
   count: number = 0;
   tableSize: number = 5;
-  i: any;
+
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
@@ -47,17 +47,18 @@ export class BookingComponent implements OnInit {
     try {
       this.http.getHomestayByLandlord('ACTIVATING').subscribe(async (data) => {
         console.log('data:', data['homestays']);
-        for (this.i of data['homestays'].reverse()) {
+        for (let i of data['homestays']) {
           var imgUrl;
           await this.image
-            .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+            .getImage('homestay/' + i.homestayImages[0].imageUrl)
             .then((url) => {
               imgUrl = url;
               this.valuesHomestay.push({
                 imgURL: imgUrl,
-                name: this.i.name,
-                id: this.i.id,
-                status: this.i.status,
+                name: i.name,
+                id: i.id,
+                status: i.status,
+                totalBookingPending: i.totalBookingPending,
               });
             })
             .catch((error) => {
@@ -74,35 +75,37 @@ export class BookingComponent implements OnInit {
 
   getBookingBloc() {
     this.valuesBloc = [];
-    this.http.getBlocByLandlord('ACTIVATING').subscribe(async (data) => {
+    this.http.getBlocByLandlord('ACTIVATING').subscribe({next: async  (data) => {
       console.log('data:', data['blocs']);
-      for (this.i of data['blocs'].reverse()) {
+      for (let i of data['blocs']) {
         var imgUrl;
         await this.image
           .getImage(
-            'homestay/' + this.i.homestays[0].homestayImages[0].imageUrl
+            'homestay/' + i.homestays[0].homestayImages[0].imageUrl
           )
           .then((url) => {
             imgUrl = url;
             this.valuesBloc.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
+              name: i.name,
+              id: i.id,
+              status: i.status,
+              totalBookingPending: i.totalBookingPending,
             });
           })
           .catch((error) => {
             console.log(error);
           });
       }
-    });
+       console.log('valuesBloc:', this.valuesBloc);
+    }});
   }
 
   public onItemSelector(id: number, createdBy: string) {
     this.id = id;
     this.username = createdBy;
     localStorage.setItem('id', id + '');
-    localStorage.setItem('createdBy', createdBy);
+    sessionStorage.setItem('name' ,createdBy );
   }
   accept() {}
   openDialogAction() {}
