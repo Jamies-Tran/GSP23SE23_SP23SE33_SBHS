@@ -20,7 +20,12 @@ public interface IHomestayService {
 
         public Homestay findHomestayByAddress(String address);
 
-        public Page<Homestay> findHomestayList(String filter, String name, int page, int size, boolean isNextPage,
+        public PagedListHolder<Homestay> findHomestayList(String filterBy, int page, int size,
+                        boolean isNextPage,
+                        boolean isPreviousPage);
+
+        public PagedListHolder<BlocHomestay> findBlocList(String filterBy, int page, int size,
+                        boolean isNextPage,
                         boolean isPreviousPage);
 
         public Page<BlocHomestay> findBlocHomestaysByStatus(String status, int page, int size, boolean isNextPage,

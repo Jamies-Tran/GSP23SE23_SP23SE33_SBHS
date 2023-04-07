@@ -420,10 +420,21 @@ public class BookingService implements IBookingService {
     @Transactional
     public Booking submitBookingForBlocByPassenger(Long bookingId, String paymentMethod) {
         Booking booking = this.findBookingById(bookingId);
+        StringBuilder shareCodeBuilder = new StringBuilder();
+        shareCodeBuilder.append("SHARED").append(booking.getBookingFrom().split("-")[2])
+                .append(booking.getBookingTo().split("-")[2])
+                .append(booking.getCode().subSequence(4, booking.getCode().length() - 1));
         if (!booking.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())) {
             throw new InvalidException("booking have been submitted");
         }
         SwmUser passengerUser = booking.getPassenger().getUser();
+        BookingShareCode bookingShareCode = new BookingShareCode();
+        bookingShareCode.setBooking(booking);
+        bookingShareCode.setCreatedBy(passengerUser.getUsername());
+        bookingShareCode.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        bookingShareCode.setStatus(BookingShareCodeStatus.UNUSED.name());
+        bookingShareCode.setShareCode(shareCodeBuilder.toString());
+        bookingShareCodeRepo.save(bookingShareCode);
         booking.getBookingHomestays().forEach(b -> b.setPaymentMethod(paymentMethod));
         Long currentPassengerWalletBalance = passengerUser.getPassengerProperty().getBalanceWallet()
                 .getTotalBalance();

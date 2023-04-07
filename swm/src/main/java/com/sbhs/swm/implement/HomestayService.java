@@ -3,6 +3,8 @@ package com.sbhs.swm.implement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,6 @@ import com.sbhs.swm.dto.request.FilterOption;
 import com.sbhs.swm.handlers.exceptions.HomestayNameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.HomestayNotFoundException;
 import com.sbhs.swm.handlers.exceptions.InvalidAccountOperatorException;
-import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
@@ -169,43 +170,24 @@ public class HomestayService implements IHomestayService {
     }
 
     @Override
-    public Page<Homestay> findHomestayList(String filter, String name, int page, int size, boolean isNextPage,
+    public PagedListHolder<Homestay> findHomestayList(String filterBy, int page, int size,
+            boolean isNextPage,
             boolean isPreviousPage) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Homestay> homestayPage;
-        // custom page
-        // homestayPage = new PageImpl<>();
-        switch (filter.toUpperCase()) {
-            case "HOMESTAY_STATUS":
-                homestayPage = homestayRepo.findHomestaysByStatus(pageable, name);
-
-                if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
-                    homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.nextPageable(), name);
-                } else if (isNextPage == false && isPreviousPage == true && homestayPage.hasPrevious()) {
-                    homestayPage = homestayRepo.findHomestaysByStatus(homestayPage.previousPageable(), name);
-                }
-                break;
-            case "HOMESTAY_OWNER":
-                homestayPage = homestayRepo.findHomestaysByLandlordName(pageable, name);
-                if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
-                    homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.nextPageable(), name);
-                } else if (isNextPage == false && isPreviousPage == true && homestayPage.hasPrevious()) {
-                    homestayPage = homestayRepo.findHomestaysByLandlordName(homestayPage.previousPageable(), name);
-                }
-                break;
-            case "HOMESTAY_BLOC":
-                homestayPage = homestayRepo.findHomestayByBlocName(pageable, name);
-                if (isNextPage == true && isPreviousPage == false && homestayPage.hasNext()) {
-                    homestayPage = homestayRepo.findHomestayByBlocName(homestayPage.nextPageable(), name);
-                } else if (isNextPage == false && isPreviousPage == true && homestayPage.hasPrevious()) {
-                    homestayPage = homestayRepo.findHomestayByBlocName(homestayPage.previousPageable(), name);
-                }
-                break;
-            default:
-                throw new InvalidException("Invalid filter");
+        SwmUser user = userService.authenticatedUser();
+        List<Homestay> homestayList = user.getLandlordProperty().getHomestays();
+        homestayList = homestayList.stream().filter(h -> h.getStatus().equals(filterBy.toUpperCase()))
+                .collect(Collectors.toList());
+        PagedListHolder<Homestay> pagedListHolder = new PagedListHolder<>(homestayList);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(size);
+        if (!pagedListHolder.isFirstPage() && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
+        } else if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
         }
-        return homestayPage;
+
+        return pagedListHolder;
     }
 
     @Override
@@ -469,6 +451,25 @@ public class HomestayService implements IHomestayService {
             pagedListHolder.nextPage();
         } else if (pagedListHolder.isFirstPage() == false && isPreviousPage == true && isNextPage == false) {
             pagedListHolder.previousPage();
+        }
+
+        return pagedListHolder;
+    }
+
+    @Override
+    public PagedListHolder<BlocHomestay> findBlocList(String filterBy, int page, int size,
+            boolean isNextPage, boolean isPreviousPage) {
+        SwmUser user = userService.authenticatedUser();
+        List<BlocHomestay> blocHomestayList = user.getLandlordProperty().getBlocHomestays();
+        blocHomestayList = blocHomestayList.stream().filter(b -> b.getStatus().equals(filterBy.toUpperCase()))
+                .collect(Collectors.toList());
+        PagedListHolder<BlocHomestay> pagedListHolder = new PagedListHolder<>(blocHomestayList);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(size);
+        if (!pagedListHolder.isLastPage() && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
+        } else if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
         }
 
         return pagedListHolder;

@@ -67,23 +67,44 @@ public class HomestayController {
         }
 
         @GetMapping("/homestay-list")
-        @PreAuthorize("hasAuthority('homestay:view')")
-        public ResponseEntity<?> findHomestayList(@RequestParam String filter, @RequestParam String param,
+        @PreAuthorize("hasRole('ROLE_LANDLORD')")
+        public ResponseEntity<?> findHomestayByOwnerList(@RequestParam String param,
                         @RequestParam int page, @RequestParam int size, @RequestParam Boolean isNextPage,
                         @RequestParam Boolean isPreviousPage) {
-                Page<Homestay> homestays = homestayService.findHomestayList(filter, param.toUpperCase(), page, size,
+                PagedListHolder<Homestay> homestays = homestayService.findHomestayList(param.toUpperCase(),
+                                page, size,
                                 isNextPage,
                                 isPreviousPage);
-                List<HomestayResponseDto> homestayDtos = homestays.stream()
+                List<HomestayResponseDto> homestayDtos = homestays.getPageList().stream()
                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
                 homestayDtos.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
 
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
                                 new ArrayList<>(),
-                                homestays.getPageable().getPageNumber());
+                                homestays.getPage());
 
                 return new ResponseEntity<HomestayListPagingDto>(homestayResponseListDto, HttpStatus.OK);
+        }
+
+        @GetMapping("/bloc-list")
+        @PreAuthorize("hasRole('ROLE_LANDLORD')")
+        public ResponseEntity<?> findBlocHomestayByOwnerList(@RequestParam String param,
+                        @RequestParam int page, @RequestParam int size, @RequestParam Boolean isNextPage,
+                        @RequestParam Boolean isPreviousPage) {
+                PagedListHolder<BlocHomestay> blocs = homestayService.findBlocList(param.toUpperCase(),
+                                page, size,
+                                isNextPage,
+                                isPreviousPage);
+                List<BlocHomestayResponseDto> blocHomestayDtos = blocs.getPageList().stream()
+                                .map(h -> modelMapper.map(h, BlocHomestayResponseDto.class))
+                                .collect(Collectors.toList());
+                blocHomestayDtos.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+
+                BlocHomestayListPagingDto blocResponseListDto = new BlocHomestayListPagingDto(blocHomestayDtos,
+                                blocs.getPage());
+
+                return new ResponseEntity<BlocHomestayListPagingDto>(blocResponseListDto, HttpStatus.OK);
         }
 
         @GetMapping("/user/bloc-list")
