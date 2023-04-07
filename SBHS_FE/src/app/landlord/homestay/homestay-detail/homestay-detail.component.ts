@@ -87,7 +87,7 @@ export class HomestayDetailComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.message = 'Bạn chưa có lịch đặt nào cả';
+          this.message = error;
           this.openDialogMessage;
         },
       });

@@ -37,18 +37,21 @@ export class HomestayService {
       .pipe(catchError(this.handleError));
   }
 
-  public getHomestayByLandlord(username: any) {
+  //  GET
+  // /api/homestay/homestay-list
+  public getHomestayByLandlord(status: any):Observable<any> {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json ',
         'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
-    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?filter=HOMESTAY_OWNER&isNextPage=true&isPreviousPage=true&page=0&param=${username}&size=100`;
+    const url = `${this.REST_API_SERVER}/api/homestay/homestay-list?isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=1000`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
+
 
   public getHomestayByBlocHomestay(name: any) {
     this.httpOptions = {
@@ -119,14 +122,14 @@ export class HomestayService {
 
   // 4 GET
   // /api/homestay/user/bloc-list
-public findBlocList(status:string){
+public findBlocList(status:string):Observable<any>{
   this.httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json ',
       'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
     }),
   };
-  const url = `${this.REST_API_SERVER}/api/homestay/user/bloc-list?isNextPage=true&isPreviousPage=true&page=0&size=1000&status=${status}`;
+  const url = `${this.REST_API_SERVER}/api/homestay/bloc-list?isNextPage=true&isPreviousPage=true&page=0&param=${status}&size=1000`;
   return this.httpClient
     .get<any>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
@@ -142,6 +145,20 @@ public getHomestayDetailByName(name:string):Observable<any>{
     }),
   };
   const url = `${this.REST_API_SERVER}/api/homestay/user/homestay-detail?name=${name}`;
+  return this.httpClient
+    .get<any>(url, this.httpOptions)
+    .pipe(catchError(this.handleError));
+}
+// 6 GET
+//  /api/homestay/user/bloc-detail
+public getBlocHomestayDetailByName(name:string):Observable<any>{
+  this.httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json ',
+      'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+    }),
+  };
+  const url = `${this.REST_API_SERVER}/api/homestay/user/bloc-detail?name=${name}`;
   return this.httpClient
     .get<any>(url, this.httpOptions)
     .pipe(catchError(this.handleError));

@@ -412,7 +412,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
           this.homestayImages,
           this.homestayServices,
           this.homestayFacilities,
-          this.priceTax.toString(),
+          this.price.toString(),
           this.roomCapacity,
           this.homestayRules
         )

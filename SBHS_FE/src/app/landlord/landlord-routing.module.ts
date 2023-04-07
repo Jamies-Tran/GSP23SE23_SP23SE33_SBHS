@@ -10,12 +10,13 @@ import { ProfileComponent } from '../profile/profile.component';
 import { AuthGuard } from '../auth.guard';
 import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-detail.component';
 import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/bloc-homestay-detail.component';
-
+import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LandlordComponent,canActivateChild: [AuthGuard],
+    component: LandlordComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'Homestay',
@@ -39,22 +40,30 @@ const routes: Routes = [
                 path: 'RegisterBlocHomestay',
                 component: RegisterBlocHomestayComponent,
               },
-
             ],
           },
           {
             path: 'HomestayDetail',
             component: HomestayDetailComponent,
           },
+        ],
+      },
+      {
+        path: 'Profile',
+        component: ProfileComponent,
+      },
+      {
+        path: 'BlockHomestay',
+        component: BlocHomestayComponent,
+      },
+      {
+        path: 'BlockHomestay',
+        children: [
           {
             path: 'BlockHomestayDetail',
             component: BlocHomestayDetailComponent,
           },
         ],
-      },
-      {
-        path: 'Profile',
-        component: ProfileComponent
       },
     ],
   },

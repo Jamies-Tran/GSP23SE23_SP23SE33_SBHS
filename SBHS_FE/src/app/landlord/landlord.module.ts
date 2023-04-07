@@ -38,6 +38,8 @@ import { CategoryHomestayComponent } from './homestay/category-homestay/category
 import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-detail.component';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     RegisterBlocHomestayComponent,
     BlocHomestayDetailComponent,
     HomestayDetailComponent,
+    BlocHomestayComponent,
   ],
   imports: [
     CommonModule,
@@ -75,7 +78,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatListModule,
     MatAutocompleteModule,
     CdkStepperModule,
-    MatGridListModule
+    MatGridListModule,
+    MatExpansionModule
   ],
 })
 export class LandlordModule {}

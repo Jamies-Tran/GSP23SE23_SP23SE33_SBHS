@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ImageService } from '../../services/image.service';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HomestayService } from 'src/app/services/homestay.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
-  selector: 'app-homestay',
-  templateUrl: './homestay.component.html',
-  styleUrls: ['./homestay.component.scss'],
+  selector: 'app-bloc-homestay',
+  templateUrl: './bloc-homestay.component.html',
+  styleUrls: ['./bloc-homestay.component.scss']
 })
-export class HomestayComponent implements OnInit {
+export class BlocHomestayComponent {
   constructor(
     private image: ImageService,
     public dialog: MatDialog,
@@ -30,12 +30,12 @@ export class HomestayComponent implements OnInit {
 
   getHomestayPending() {
     this.valuePending = [];
-    this.http.getHomestayByLandlord('PENDING').subscribe(async (data) => {
-      console.log('data:', data['homestays']);
-      for (this.i of data['homestays'].reverse()) {
+    this.http.findBlocList('PENDING').subscribe(async (data) => {
+      console.log('data:', data['blocs']);
+      for (this.i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+          .getImage('homestay/' + this.i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valuePending.push({
@@ -53,15 +53,15 @@ export class HomestayComponent implements OnInit {
   }
   getHomestayActivating() {
     this.valueActivating = [];
-    this.http.getHomestayByLandlord('ACTIVATING').subscribe(async (data) => {
-      console.log('data:', data['homestays']);
-      for (this.i of data['homestays'].reverse()) {
+    this.http.findBlocList('ACTIVATING').subscribe(async (data) => {
+      console.log('data:', data['blocs']);
+      for (this.i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+          .getImage('homestay/' + this.i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
-            this.valueActivating.push({
+            this.valuePending.push({
               imgURL: imgUrl,
               name: this.i.name,
               id: this.i.id,
@@ -76,15 +76,15 @@ export class HomestayComponent implements OnInit {
   }
   getHomestayReject() {
     this.valueReject =[];
-    this.http.getHomestayByLandlord('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
-      console.log('data:', data['homestays']);
-      for (this.i of data['homestays'].reverse()) {
+    this.http.findBlocList('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
+      console.log('data:', data['blocs']);
+      for (this.i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+          .getImage('homestay/' + this.i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
-            this.valueReject.push({
+            this.valuePending.push({
               imgURL: imgUrl,
               name: this.i.name,
               id: this.i.id,
