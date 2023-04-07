@@ -64,4 +64,8 @@ public class Booking extends BaseModel {
     @OneToMany(mappedBy = "booking", cascade = { CascadeType.REMOVE })
     private @Setter List<BookingDeposit> bookingDeposits;
 
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @JoinColumn(name = "share_id", referencedColumnName = "id")
+    private @Setter BookingShareCode shareCode;
+
 }

@@ -25,10 +25,12 @@ import com.sbhs.swm.models.BookingDeposit;
 import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.BookingHomestayService;
+import com.sbhs.swm.models.BookingShareCode;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayService;
 import com.sbhs.swm.models.LandlordCommission;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.BookingShareCodeStatus;
 import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.models.status.DepositStatus;
 import com.sbhs.swm.models.type.CommissionType;
@@ -39,7 +41,7 @@ import com.sbhs.swm.repositories.HomestayServiceRepo;
 import com.sbhs.swm.repositories.BookingHomestayRepo;
 import com.sbhs.swm.repositories.BookingRepo;
 import com.sbhs.swm.repositories.BookingServiceRepo;
-
+import com.sbhs.swm.repositories.BookingShareCodeRepo;
 import com.sbhs.swm.repositories.LandlordCommissionRepo;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
@@ -84,6 +86,9 @@ public class BookingService implements IBookingService {
 
     @Autowired
     private BookingDateValidationUtil bookingDateValidationUtil;
+
+    @Autowired
+    private BookingShareCodeRepo bookingShareCodeRepo;
 
     @Override
     public List<Booking> findBookingsByUsernameAndStatus(String status) {
@@ -312,11 +317,22 @@ public class BookingService implements IBookingService {
     @Transactional
     public Booking submitBookingForHomestayByPassenger(Long bookingId) {
         Booking booking = this.findBookingById(bookingId);
+        StringBuilder shareCodeBuilder = new StringBuilder();
+        shareCodeBuilder.append("SHARED").append(booking.getBookingFrom().split("-")[2])
+                .append(booking.getBookingTo().split("-")[2])
+                .append(booking.getCode().subSequence(4, booking.getCode().length() - 1));
         if (!booking.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())) {
             throw new InvalidException("booking have been submitted");
         }
-        SwmUser passengerUser = booking.getPassenger().getUser();
 
+        SwmUser passengerUser = booking.getPassenger().getUser();
+        BookingShareCode bookingShareCode = new BookingShareCode();
+        bookingShareCode.setBooking(booking);
+        bookingShareCode.setCreatedBy(passengerUser.getUsername());
+        bookingShareCode.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+        bookingShareCode.setStatus(BookingShareCodeStatus.UNUSED.name());
+        bookingShareCode.setShareCode(shareCodeBuilder.toString());
+        bookingShareCodeRepo.save(bookingShareCode);
         Long currentPassengerWalletBalance = passengerUser.getPassengerProperty().getBalanceWallet()
                 .getTotalBalance();
         List<Homestay> homestays = booking.getBookingHomestays().stream().map(b -> b.getHomestay())

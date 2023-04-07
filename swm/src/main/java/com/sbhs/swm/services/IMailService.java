@@ -3,6 +3,7 @@ package com.sbhs.swm.services;
 import org.springframework.lang.Nullable;
 
 import com.sbhs.swm.models.BlocHomestay;
+import com.sbhs.swm.models.BookingShareCode;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 
@@ -22,4 +23,6 @@ public interface IMailService {
             @Nullable String blocName);
 
     public void lowBalanceInformToLandlord(String username);
+
+    public void informBookingSharedCodeHadBeenApplied(BookingShareCode bookingShareCode);
 }
