@@ -87,6 +87,7 @@ import { SuccessComponent } from './pop-up/success/success.component';
 import { MessageComponent } from './pop-up/message/message.component';
 import { PendingHomestayComponent } from './pop-up/pending-homestay/pending-homestay.component';
 import { ProfileComponent } from './profile/profile.component';
+import { BookingPendingComponent } from './pop-up/booking-pending/booking-pending.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -115,6 +116,7 @@ export const MY_DATE_FORMATS = {
     MessageComponent,
     PendingHomestayComponent,
     ProfileComponent,
+    BookingPendingComponent,
   ],
   imports: [
     BrowserModule,

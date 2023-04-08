@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Homestay } from 'src/app/models/homestay.model';
+import { ActionPendingComponent } from 'src/app/pop-up/action-pending/action-pending.component';
+import { BookingPendingComponent } from 'src/app/pop-up/booking-pending/booking-pending.component';
 
 import { MessageComponent } from 'src/app/pop-up/message/message.component';
 import { SuccessComponent } from 'src/app/pop-up/success/success.component';
@@ -164,7 +166,16 @@ export class HomestayDetailComponent implements OnInit {
     }
   }
 
-  reject(){
+  reject(bookingId:number, homestayId:number){
+    this.dialog.open(BookingPendingComponent, {
+      data: {
+        bookingId:bookingId, homestayId:homestayId
+      },
+      disableClose: true
+    });
 
+    this.getHomestay();
+    this.booking();
+    this.showBooking = true;
   }
 }

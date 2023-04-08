@@ -65,9 +65,10 @@ export class BookingService {
         Authorization: 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
+    const value = {message:message};
     const url = `${this.REST_API_SERVER}/api/booking/reject?bookingId=${bookingId}&homestayId=${homestayId}`;
     return this.httpClient
-      .put<any>(url, message, this.httpOptions)
+      .put<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 }
