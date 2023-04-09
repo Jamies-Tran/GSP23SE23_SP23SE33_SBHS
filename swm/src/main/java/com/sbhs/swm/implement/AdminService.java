@@ -244,6 +244,7 @@ public class AdminService implements IAdminService {
         SwmUser updator = userService.authenticatedUser();
         BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
         bloc.setStatus(HomestayStatus.REJECTED_LICENSE_NOT_MATCHED.name());
+        bloc.getHomestays().forEach(h -> h.setStatus(HomestayStatus.REJECTED_LICENSE_NOT_MATCHED.name()));
         bloc.setUpdatedBy(updator.getUsername());
         bloc.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.rejectHomestay(null, bloc);

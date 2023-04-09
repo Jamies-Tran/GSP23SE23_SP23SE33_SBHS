@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbhs.swm.dto.BookingInviteCodeDto;
+import com.sbhs.swm.dto.response.BookingResponseDto;
 import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.services.IBookingInviteCodeService;
 
 @RestController
-@RequestMapping("/api/share-code")
-public class BookingShareCodeController {
+@RequestMapping("/api/invite-code")
+public class BookingInviteController {
     @Autowired
     private IBookingInviteCodeService bookingShareCodeService;
 
@@ -27,6 +28,8 @@ public class BookingShareCodeController {
     public ResponseEntity<?> applyBookingShareCode(String inviteCode) {
         BookingInviteCode bookingShareCode = bookingShareCodeService.applyBookingInviteCode(inviteCode);
         BookingInviteCodeDto responseShareCode = modelMapper.map(bookingShareCode, BookingInviteCodeDto.class);
+        BookingResponseDto responseBooking = modelMapper.map(responseShareCode.getBooking(), BookingResponseDto.class);
+        responseShareCode.setBooking(responseBooking);
 
         return new ResponseEntity<BookingInviteCodeDto>(responseShareCode, HttpStatus.OK);
     }
