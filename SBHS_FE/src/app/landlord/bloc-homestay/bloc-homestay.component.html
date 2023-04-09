@@ -25,17 +25,17 @@
             <div class="card">
               <div class="card-body pt-0">
                 <h5 class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVATING' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
-                <div class="image img-fluid w-100" routerLink="BlockHomestayDetail" (click)="getHomestayName(item.name)">
+                <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>
-                <div class="name" routerLink="BlockHomestayDetail" (click)="getHomestayName(item.name)">
+                <div class="name" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   {{item.name}}
                 </div>
                 <div class="button">
                   <!-- <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)" (click)="deleteHomestay()">Delete</a> -->
                   <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)"
                     (click)="openDialog()">Delete</a>
-                  <a mat-raised-button color="primary" routerLink="BlockHomestayDetail"
+                  <a mat-raised-button color="primary" routerLink="../BlockHomestayDetail"
                     (click)="getHomestayName(item.name)">Edit</a>
 
                 </div>
@@ -49,17 +49,17 @@
             <div class="card">
               <div class="card-body pt-0">
                 <h5 class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVE' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
-                <div class="image img-fluid w-100" routerLink="BlockHomestayDetail" (click)="getHomestayName(item.name)">
+                <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>
-                <div class="name" routerLink="BlockHomestayDetail" (click)="getHomestayName(item.name)">
+                <div class="name" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   {{item.name}}
                 </div>
                 <div class="button">
                   <!-- <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)" (click)="deleteHomestay()">Delete</a> -->
                   <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)"
                     (click)="openDialog()">Delete</a>
-                  <a mat-raised-button color="primary" routerLink="BlockHomestayDetail"
+                  <a mat-raised-button color="primary" routerLink="../BlockHomestayDetail"
                     (click)="getHomestayName(item.name)">Edit</a>
 
                 </div>
@@ -73,17 +73,17 @@
             <div class="card">
               <div class="card-body pt-0">
                 <h5 class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVE' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
-                <div class="image img-fluid w-100" routerLink="BlockHomestayDetail" (click)="getHomestayName(item.name)">
+                <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>
-                <div class="name" routerLink="BlockHomestayDetail" (click)="getHomestayName(item.name)">
+                <div class="name" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   {{item.name}}
                 </div>
                 <div class="button">
                   <!-- <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)" (click)="deleteHomestay()">Delete</a> -->
                   <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)"
                     (click)="openDialog()">Delete</a>
-                  <a mat-raised-button color="primary" routerLink="BlockHomestayDetail"
+                  <a mat-raised-button color="primary" routerLink="../BlockHomestayDetail"
                     (click)="getHomestayName(item.name)">Edit</a>
 
                 </div>
