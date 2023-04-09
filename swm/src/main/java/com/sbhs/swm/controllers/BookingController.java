@@ -121,8 +121,8 @@ public class BookingController {
 
     @GetMapping("/landlord/booking-list")
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
-    public ResponseEntity<?> getBookingForLandlord(String homestayName) {
-        List<BookingHomestay> bookingHomestayList = bookingService.getLandlordBookingHomestayList(homestayName);
+    public ResponseEntity<?> getBookingForLandlord(String homestayName, String status) {
+        List<BookingHomestay> bookingHomestayList = bookingService.getLandlordBookingHomestayList(homestayName, status);
         List<BookingHomestayResponseForLandlordDto> responseBookingList = bookingHomestayList.stream()
                 .map(h -> modelMapper.map(h, BookingHomestayResponseForLandlordDto.class)).collect(Collectors.toList());
         responseBookingList.forEach(b -> b.getHomestay().setAddress(b.getHomestay().getAddress().split("_")[0]));

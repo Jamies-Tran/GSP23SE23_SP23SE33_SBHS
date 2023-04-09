@@ -23,4 +23,5 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
 
     @Query(value = "select b from Booking b where b.homestayType = :homestayType")
     List<Booking> findBookingByHomestayType(@Param("homestayType") String homestayType);
+
 }

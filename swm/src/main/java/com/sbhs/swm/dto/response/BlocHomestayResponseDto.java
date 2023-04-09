@@ -21,9 +21,9 @@ public class BlocHomestayResponseDto extends BaseResponseDto {
     private String businessLicense;
     private String status;
     private Double totalAverageRating;
-
     private List<HomestayServiceDto> homestayServices;
     private List<HomestayInBlocResponseDto> homestays;
     private List<HomestayRuleResponseDto> homestayRules;
     private List<RatingResponseDto> ratings;
+    private Integer totalBookingPending;
 }

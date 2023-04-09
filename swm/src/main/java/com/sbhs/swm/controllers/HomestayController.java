@@ -171,6 +171,7 @@ public class HomestayController {
                 BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
                 BlocHomestayResponseDto responseBloc = modelMapper.map(bloc, BlocHomestayResponseDto.class);
                 responseBloc.setAddress(responseBloc.getAddress().split("_")[0]);
+                responseBloc.setTotalBookingPending(bookingService.countBookingBlocHomestayPending(name));
 
                 return new ResponseEntity<BlocHomestayResponseDto>(responseBloc, HttpStatus.OK);
         }

@@ -803,8 +803,9 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public List<BookingHomestay> getLandlordBookingHomestayList(String homestayName) {
-        List<BookingHomestay> bookingHomestayList = bookingHomestayRepo.findBookingHomestayByHomestayName(homestayName);
+    public List<BookingHomestay> getLandlordBookingHomestayList(String homestayName, String status) {
+        List<BookingHomestay> bookingHomestayList = bookingHomestayRepo.findBookingHomestayByHomestayName(homestayName,
+                status);
         return bookingHomestayList;
     }
 
@@ -892,6 +893,14 @@ public class BookingService implements IBookingService {
             bookingList = shareCodeBooking;
         }
         return bookingList;
+    }
+
+    @Override
+    public Integer countBookingBlocHomestayPending(String blocName) {
+        BlocHomestay bloc = homestayService.findBlocHomestayByName(blocName);
+        List<Booking> blocBookingList = bloc.getBookings();
+
+        return blocBookingList.size();
     }
 
 }

@@ -14,53 +14,55 @@ import com.sbhs.swm.models.Homestay;
 
 public interface IBookingService {
 
-    BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest);
+        BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest);
 
-    Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
+        Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
 
-    List<BookingHomestay> getLandlordBookingHomestayList(String homestayName);
+        List<BookingHomestay> getLandlordBookingHomestayList(String homestayName, String status);
 
-    Integer countBookingHomestayPending(String homestayName);
+        Integer countBookingHomestayPending(String homestayName);
 
-    Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId);
+        Integer countBookingBlocHomestayPending(String blocName);
 
-    List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
+        Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId);
 
-    void deleteBookingHomestay(Long bookingId, Long homestayId);
+        List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
 
-    void deleteBooking(Long bookingId);
+        void deleteBookingHomestay(Long bookingId, Long homestayId);
 
-    Booking createBookingByPassenger(String homestayType, String bookingFrom, String bookingTo);
+        void deleteBooking(Long bookingId);
 
-    Booking submitBookingForHomestayByPassenger(Long bookingId);
+        Booking createBookingByPassenger(String homestayType, String bookingFrom, String bookingTo);
 
-    Booking submitBookingForBlocByPassenger(Long bookingId, String paymentMethod);
+        Booking submitBookingForHomestayByPassenger(Long bookingId);
 
-    BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
+        Booking submitBookingForBlocByPassenger(Long bookingId, String paymentMethod);
 
-    PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
-            int page, int size, boolean isNextPage, boolean isPreviousPage);
+        BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
 
-    List<Booking> filterPassengerBookingByHomestayType(List<Booking> bookingList, String homestayType);
+        PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
+                        int page, int size, boolean isNextPage, boolean isPreviousPage);
 
-    List<Booking> filterPassengerBookingByStatus(List<Booking> bookingList, String status);
+        List<Booking> filterPassengerBookingByHomestayType(List<Booking> bookingList, String homestayType);
 
-    List<Booking> filterPassengerBookingByHost(boolean isHost);
+        List<Booking> filterPassengerBookingByStatus(List<Booking> bookingList, String status);
 
-    Boolean canPassengerMakeBooking(long totalBookingPrice);
+        List<Booking> filterPassengerBookingByHost(boolean isHost);
 
-    Booking findBookingById(Long id);
+        Boolean canPassengerMakeBooking(long totalBookingPrice);
 
-    Booking findBookingSavedBlocHomestayType();
+        Booking findBookingById(Long id);
 
-    List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd);
+        Booking findBookingSavedBlocHomestayType();
 
-    boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
-            int totalReservation);
+        List<Homestay> getAvailableHomestayListFromBloc(String blocName, String bookingStart, String bookingEnd);
 
-    void addHomestayInBlocToBooking(String homestayName, Long bookingId, String paymentMethod);
+        boolean checkValidBookingForHomestay(String homestayName, String bookingStart, String bookingEnd,
+                        int totalReservation);
 
-    BookingHomestay acceptBookingForHomestay(Long bookingId, Long homestayId);
+        void addHomestayInBlocToBooking(String homestayName, Long bookingId, String paymentMethod);
 
-    BookingHomestay rejectBookingForHomestay(Long bookingId, Long homestayId, String message);
+        BookingHomestay acceptBookingForHomestay(Long bookingId, Long homestayId);
+
+        BookingHomestay rejectBookingForHomestay(Long bookingId, Long homestayId, String message);
 }
