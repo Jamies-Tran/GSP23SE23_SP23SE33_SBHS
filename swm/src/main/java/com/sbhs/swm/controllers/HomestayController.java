@@ -106,7 +106,10 @@ public class HomestayController {
                 List<BlocHomestayResponseDto> blocHomestayDtos = blocs.getPageList().stream()
                                 .map(h -> modelMapper.map(h, BlocHomestayResponseDto.class))
                                 .collect(Collectors.toList());
-                blocHomestayDtos.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+                blocHomestayDtos.forEach(h -> {
+                        h.setAddress(h.getAddress().split("_")[0]);
+                        h.setTotalBookingPending(bookingService.countBookingBlocHomestayPending(h.getName()));
+                });
 
                 BlocHomestayListPagingDto blocResponseListDto = new BlocHomestayListPagingDto(blocHomestayDtos,
                                 blocs.getPage());
