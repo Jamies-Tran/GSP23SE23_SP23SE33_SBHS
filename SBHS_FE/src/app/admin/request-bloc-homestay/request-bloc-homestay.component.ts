@@ -36,7 +36,7 @@ export class RequestBlocHomestayComponent {
   // Active
   this.httpHomestay.findBlocList('ACTIVATING').subscribe((data) => {
     this.valuesActive = data['blocs'];
-    console.log(this.valuesActive);
+    console.log(data);
   });
   // Reject
   this.httpHomestay.findBlocList('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
@@ -55,7 +55,7 @@ export class RequestBlocHomestayComponent {
     this.Id = id;
     this.name = name;
     localStorage.setItem('homestayId', id + '');
-    localStorage.setItem('homestayName', name);
+    sessionStorage.setItem('name', name);
   }
   public accept() {
     console.log('Accept');
@@ -64,10 +64,7 @@ export class RequestBlocHomestayComponent {
         if (data != null) {
           this.message = 'Bloc Homestay have accept';
           this.openDialogSuccess();
-          setTimeout(function(){
-            window.location.reload();
-         }, 2000);
-
+          this.getStatusBlocHomestay();
         }
         console.log(data);
       },
@@ -86,9 +83,7 @@ export class RequestBlocHomestayComponent {
         if (data != null) {
           this.message = 'Bloc Homestay have reject';
           this.openDialogSuccess();
-          setTimeout(function () {
-            window.location.reload();
-          }, 2000);
+          this.getStatusBlocHomestay();
         }
       },
       (error) => {
@@ -151,13 +146,18 @@ export class RequestBlocHomestayComponent {
 
   openDialogAction() {
     localStorage.setItem('blocHomestay', 'true');
-    this.dialog.open(PendingHomestayComponent, {
+    const dialogRef = this.dialog.open(PendingHomestayComponent, {
       data: {
         id: this.Id,
         name: this.name,
       },
       disableClose: true,
     });
+    dialogRef.afterClosed().subscribe(()=>{
+      setTimeout(() =>{
+        this.getStatusBlocHomestay();
+      } , 4000)
+    })
   }
 }
 export interface data {

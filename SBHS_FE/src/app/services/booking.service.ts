@@ -21,14 +21,14 @@ export class BookingService {
   }
   //  GET
   //  /api/booking/landlord/booking-list
-  public getBookingForLandlord(name: string): Observable<any> {
+  public getBookingForLandlord(name: string , status:string): Observable<any> {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json ',
         Authorization: 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
-    const url = `${this.REST_API_SERVER}/api/booking/landlord/booking-list?homestayName=${name}`;
+    const url = `${this.REST_API_SERVER}/api/booking/landlord/booking-list?homestayName=${name}&status=${status}`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));

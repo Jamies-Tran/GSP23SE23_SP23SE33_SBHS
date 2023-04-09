@@ -12,12 +12,12 @@ export class HomestayComponent implements OnInit {
   constructor(
     private image: ImageService,
     public dialog: MatDialog,
-    private http: HomestayService
+    private http: HomestayService,
   ) {}
   valuePending: any[] = [];
   valueActivating: any[] = [];
   valueReject: any[] = [];
-  i: any;
+
   isDelete = 'null';
   public username = localStorage.getItem('usernameLogined') as string;
   ngOnInit(): void {
@@ -30,44 +30,46 @@ export class HomestayComponent implements OnInit {
 
   getHomestayPending() {
     this.valuePending = [];
+
     this.http.getHomestayByLandlord('PENDING').subscribe(async (data) => {
       console.log('data:', data['homestays']);
-      for (this.i of data['homestays'].reverse()) {
+      for (let i of data['homestays'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+          .getImage('homestay/' + i.homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valuePending.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
-
+              name: i.name,
+              id: i.id,
+              status: i.status,
             });
           })
           .catch((error) => {
             console.log(error);
           });
+
       }
     });
   }
   getHomestayActivating() {
     this.valueActivating = [];
+
     this.http.getHomestayByLandlord('ACTIVATING').subscribe(async (data) => {
       console.log('data:', data['homestays']);
-      for (this.i of data['homestays'].reverse()) {
+      for (let i of data['homestays'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+          .getImage('homestay/' + i.homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valueActivating.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
-              totalBookingPending: this.i.totalBookingPending,
+              name: i.name,
+              id: i.id,
+              status: i.status,
+              totalBookingPending: i.totalBookingPending,
             });
           })
           .catch((error) => {
@@ -78,19 +80,20 @@ export class HomestayComponent implements OnInit {
   }
   getHomestayReject() {
     this.valueReject =[];
+
     this.http.getHomestayByLandlord('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
       console.log('data:', data['homestays']);
-      for (this.i of data['homestays'].reverse()) {
+      for (let i of data['homestays'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestayImages[0].imageUrl)
+          .getImage('homestay/' + i.homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valueReject.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
+              name: i.name,
+              id: i.id,
+              status: i.status,
             });
           })
           .catch((error) => {

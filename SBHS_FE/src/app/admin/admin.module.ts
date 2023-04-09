@@ -8,25 +8,43 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { AdminComponent } from './admin.component';
 import { RequestAccountLandlordComponent } from './request-account-landlord/request-account-landlord.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { matSelectAnimations, MatSelectModule } from '@angular/material/select';
 import { MatPaginatedTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AccountLandlordDetailComponent } from './request-account-landlord/account-landlord-detail/account-landlord-detail.component';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
-import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
-import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bloc-homestay.component';
 
+import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bloc-homestay.component';
+import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
+import { BlocHomestayDetailComponent } from './request-bloc-homestay/bloc-homestay-detail/bloc-homestay-detail.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [AdminComponent, RequestAccountLandlordComponent, AccountLandlordDetailComponent, RequestHomestayComponent, HomestayDetailComponent, RequestBlocHomestayComponent],
+  declarations: [
+    AdminComponent,
+    RequestAccountLandlordComponent,
+    AccountLandlordDetailComponent,
+    RequestHomestayComponent,
+    RequestBlocHomestayComponent,
+    HomestayDetailComponent,
+    BlocHomestayDetailComponent
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -45,7 +63,24 @@ import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bl
     MatSidenavModule,
     MatListModule,
     MatGridListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatDialogModule,
+    MatBadgeModule,
+    NgxDropzoneModule,
+    MatSlideToggleModule,
+    MatSidenavModule,
+    MatListModule,
+    MatAutocompleteModule,
+    CdkStepperModule,
+    MatGridListModule,
+    MatExpansionModule,
+  ],
+  providers: [
+    MatDialog,
+    {
+      provide: MatDialogRef,
+      useValue: {},
+    },
   ],
 })
 export class AdminModule {}

@@ -93,11 +93,12 @@
         </div>
       </div>
       <br>
-      <div class="button d-flex flex-column px-4">
-        <hr class="w-100">
-        <button *ngIf="status == 'ACTIVATING'" class="btn-denied" mat-raised-button
-          (click)="openDialogAction()">Denied</button>
-        <button *ngIf="status != 'ACTIVATING'" class="btn-accept" mat-raised-button (click)="accept()">Accept</button>
+      <hr class="w-100">
+      <div class="button d-flex flex-row px-4">
+
+        <button *ngIf="status == 'PENDING' || status == 'ACTIVATING'" class="btn-denied" mat-raised-button
+          (click)="openDialogAction()">Rejcet</button>
+        <button *ngIf="status == 'PENDING' || status !== 'ACTIVATING' " class="btn-accept" mat-raised-button (click)="accept()">Accept</button>
       </div>
     </div>
   </div>

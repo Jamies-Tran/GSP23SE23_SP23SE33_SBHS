@@ -10,47 +10,47 @@ import { AdminService } from '../../services/admin.service';
 @Component({
   selector: 'app-request-homestay',
   templateUrl: './request-homestay.component.html',
-  styleUrls: ['./request-homestay.component.scss']
+  styleUrls: ['./request-homestay.component.scss'],
 })
-export class RequestHomestayComponent implements OnInit{
+export class RequestHomestayComponent implements OnInit {
   valuesPending: data[] = [];
   valuesBanned: data[] = [];
   valuesActive: data[] = [];
   valuesReject: data[] = [];
   message!: string;
-  constructor(public dialog: MatDialog,private httpHomestay: HomestayService, private httpAdmin: AdminService ){}
+  constructor(
+    public dialog: MatDialog,
+    private httpHomestay: HomestayService,
+    private httpAdmin: AdminService
+  ) {}
   ngOnInit(): void {
     this.getStatusHomestay();
-    if(localStorage.getItem('isAccept') == 'true'){
-      this.message = 'Account have accept';
-      this.openDialogSuccess();
-      localStorage.setItem('isAccept' , '');
-    }
   }
 
   public getStatusHomestay() {
-  // Pending
-  this.httpHomestay.getHomestayByStatus('PENDING').subscribe((data) => {
-    this.valuesPending = data['homestays'];
-    console.log(this.valuesPending);
-  });
-  // Banned
-  this.httpHomestay.getHomestayByStatus('BANNED').subscribe((data) => {
-    this.valuesBanned = data['homestays'];
-    console.log(this.valuesBanned);
-  });
-  // Active
-  this.httpHomestay.getHomestayByStatus('ACTIVATING').subscribe((data) => {
-    this.valuesActive = data['homestays'];
-    console.log(this.valuesActive);
-  });
-  // Reject
-  this.httpHomestay.getHomestayByStatus('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
-    this.valuesReject = data['homestays'];
-    console.log(this.valuesReject);
-  });
-
-
+    // Pending
+    this.httpHomestay.getHomestayByStatus('PENDING').subscribe((data) => {
+      this.valuesPending = data['homestays'];
+      console.log(this.valuesPending);
+    });
+    // Banned
+    this.httpHomestay.getHomestayByStatus('BANNED').subscribe((data) => {
+      this.valuesBanned = data['homestays'];
+      console.log(this.valuesBanned);
+    });
+    // Active
+    this.httpHomestay.getHomestayByStatus('ACTIVATING').subscribe((data) => {
+      this.valuesActive = data['homestays'];
+      console.log(this.valuesActive);
+      console.log(data);
+    });
+    // Reject
+    this.httpHomestay
+      .getHomestayByStatus('REJECTED_LICENSE_NOT_MATCHED')
+      .subscribe((data) => {
+        this.valuesReject = data['homestays'];
+        console.log(this.valuesReject);
+      });
   }
   public Id = 0;
   public createBy = '';
@@ -61,22 +61,22 @@ export class RequestHomestayComponent implements OnInit{
     this.Id = id;
     this.name = name;
     localStorage.setItem('homestayId', id + '');
-    localStorage.setItem('homestayName', name);
+    sessionStorage.setItem('name', name);
   }
   public accept() {
     console.log('Accept');
     this.httpAdmin.activeHomestay(this.name).subscribe(
       (data) => {
         if (data != null) {
-                    localStorage.setItem('isAccept' , 'true');
-          location.reload();
+          this.message = ' Homestay hav accept';
+          this.openDialogSuccess();
+          this.getStatusHomestay();
         }
         console.log(data);
       },
       (error) => {
-          this.message = error;
-          this.openDialogMessage();
-
+        this.message = error;
+        this.openDialogMessage();
       }
     );
   }
@@ -104,9 +104,7 @@ export class RequestHomestayComponent implements OnInit{
       }
     );
   }
-  banned(){
-
-  }
+  banned() {}
 
   title = 'pagination';
   page: number = 1;
@@ -137,7 +135,6 @@ export class RequestHomestayComponent implements OnInit{
     this.valuesReject;
   }
 
-
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
       data: this.message,
@@ -150,12 +147,18 @@ export class RequestHomestayComponent implements OnInit{
   }
 
   openDialogAction() {
-    this.dialog.open(PendingHomestayComponent, {
+    const dialogRef = this.dialog.open(PendingHomestayComponent, {
       data: {
         name: this.name,
       },
       disableClose: true,
     });
+    dialogRef.afterClosed().subscribe(()=>{
+      setTimeout(() =>{
+        console.log('after close');
+        this.getStatusHomestay();
+      } , 4000)
+    })
   }
 }
 export interface data {

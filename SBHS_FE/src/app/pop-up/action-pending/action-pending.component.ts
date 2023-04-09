@@ -1,9 +1,11 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { MessageComponent } from '../message/message.component';
 import { SuccessComponent } from '../success/success.component';
 import { AdminService } from '../../services/admin.service';
+import { AccountLandlordDetailComponent } from 'src/app/admin/request-account-landlord/account-landlord-detail/account-landlord-detail.component';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-action-pending',
   templateUrl: './action-pending.component.html',
@@ -11,26 +13,31 @@ import { AdminService } from '../../services/admin.service';
 })
 export class ActionPendingComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: {  username: string },
+    public dialogRef: MatDialogRef<AccountLandlordDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {username:string , isReject:boolean},
     public dialog: MatDialog,
     private http: AdminService
   ) {}
 
   message: any;
   status: any;
-
-
+  orther!: string;
 
   public reject() {
+    this.data.isReject = false;
     console.log('Reject');
     console.log(this.status);
+    if (this.status == 'ORTHER') {
+      this.status = 'NOT_MATCHED';
+    }
     this.http.rejectLandlordAccount(this.data.username, this.status).subscribe(
       (data) => {
-        if (data != null) {
+        if (data != null)
+        {
+          this.data.isReject = true;
           this.message = 'Account have reject';
           this.openDialogSuccess();
-          location.reload();
+          this.dialogRef.close(this.data.isReject);
         }
       },
       (error) => {
@@ -51,8 +58,10 @@ export class ActionPendingComponent {
     });
   }
   openDialogSuccess() {
+    localStorage.setItem('action-pending', 'true');
     this.dialog.open(SuccessComponent, {
       data: this.message,
     });
   }
+
 }

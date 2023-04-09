@@ -17,7 +17,7 @@ export class BlocHomestayComponent {
   valuePending: any[] = [];
   valueActivating: any[] = [];
   valueReject: any[] = [];
-  i: any;
+
   isDelete = 'null';
   public username = localStorage.getItem('usernameLogined') as string;
   ngOnInit(): void {
@@ -32,17 +32,17 @@ export class BlocHomestayComponent {
     this.valuePending = [];
     this.http.getBlocByLandlord('PENDING').subscribe(async (data) => {
       console.log('data:', data['blocs']);
-      for (this.i of data['blocs'].reverse()) {
+      for (let i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestays[0].homestayImages[0].imageUrl)
+          .getImage('homestay/' + i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valuePending.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
+              name: i.name,
+              id: i.id,
+              status: i.status,
             });
           })
           .catch((error) => {
@@ -55,17 +55,17 @@ export class BlocHomestayComponent {
     this.valueActivating = [];
     this.http.getBlocByLandlord('ACTIVATING').subscribe(async (data) => {
       console.log('data:', data['blocs']);
-      for (this.i of data['blocs'].reverse()) {
+      for (let i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestays[0].homestayImages[0].imageUrl)
+          .getImage('homestay/' + i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valuePending.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
+              name: i.name,
+              id: i.id,
+              status: i.status,
             });
           })
           .catch((error) => {
@@ -78,17 +78,17 @@ export class BlocHomestayComponent {
     this.valueReject =[];
     this.http.getBlocByLandlord('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
       console.log('data:', data['blocs']);
-      for (this.i of data['blocs'].reverse()) {
+      for (let i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
-          .getImage('homestay/' + this.i.homestays[0].homestayImages[0].imageUrl)
+          .getImage('homestay/' + i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
             this.valuePending.push({
               imgURL: imgUrl,
-              name: this.i.name,
-              id: this.i.id,
-              status: this.i.status,
+              name: i.name,
+              id: i.id,
+              status: i.status,
             });
           })
           .catch((error) => {

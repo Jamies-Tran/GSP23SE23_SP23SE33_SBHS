@@ -36,7 +36,6 @@ export class BookingPendingComponent {
         next:(data:any) =>{
           this.message = "Reject Booking Homestay Success";
           this.openDialogSuccess();
-
         },
         error: (error)=>{
           this.message= error;

@@ -82,7 +82,9 @@ export class RequestAccountLandlordComponent implements OnInit {
       (data) => {
         if (data != null) {
           localStorage.setItem('isAccept' , 'true');
-          location.reload();
+          this.getStatusLandlord();
+          this.message = 'Accept Landlord Success'
+          this.openDialogSuccess();
         }
         console.log(data);
       },
@@ -145,12 +147,17 @@ export class RequestAccountLandlordComponent implements OnInit {
   }
 
   openDialogAction() {
-    this.dialog.open(ActionPendingComponent, {
+    const dialogRef = this.dialog.open(ActionPendingComponent, {
       data: {
         username: this.username,
       },
       disableClose: true
     });
+    dialogRef.afterClosed().subscribe(()=>{
+      setTimeout(() =>{
+        this.getStatusLandlord();
+      } , 4000)
+    })
   }
 }
 

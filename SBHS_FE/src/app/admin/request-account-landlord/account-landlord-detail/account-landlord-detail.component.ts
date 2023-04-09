@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ImageService } from 'src/app/services/image.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -23,7 +23,8 @@ export class AccountLandlordDetailComponent implements OnInit {
     public dialog: MatDialog,
     private image: ImageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialogRefSuccess : MatDialogRef<SuccessComponent>
   ) {}
   public username = '';
   public email = '';
@@ -37,6 +38,20 @@ export class AccountLandlordDetailComponent implements OnInit {
   public citizenIdentificationUrlBack = '';
   status !: string;
   ngOnInit(): void {
+   this.getAccountDetail();
+  }
+  getAccountDetail(){
+    this.username = '';
+    this.email = '';
+    this.phone = '';
+    this.gender = '';
+    this.citizenIdentificationString = '';
+    this.dob = '';
+    this.address = '';
+    this.avatarUrl = '';
+    this.citizenIdentificationUrlFont = '';
+    this.citizenIdentificationUrlBack = '';
+    this.status = '';
     try {
       const name = localStorage.getItem('createdBy') as string;
       this.httpUser.getUserInfo(name).subscribe(
@@ -71,12 +86,7 @@ export class AccountLandlordDetailComponent implements OnInit {
             'landlord/citizenIdentification/' +
               backImage
           );
-
-          console.log(this.citizenIdentificationUrlBack);
-          console.log(this.citizenIdentificationUrlFont);
-          console.log(this.avatarUrl);
-          console.log("font url:" , fontImage);
-          console.log("back url:" , backImage);
+          console.log("data" , data);
 
         },
         (error) => {
@@ -111,9 +121,7 @@ export class AccountLandlordDetailComponent implements OnInit {
         if (data != null) {
           this.message = 'Account have accept';
           this.openDialogSuccess();
-          this.router.navigate(['/Admin/RequestAccountLandlord'], {
-            relativeTo: this.route,
-          });
+          this.getAccountDetail();
         }
 
         console.log(data);
@@ -133,12 +141,19 @@ export class AccountLandlordDetailComponent implements OnInit {
       }
     );
   }
+
   openDialogAction() {
-    this.dialog.open(ActionPendingComponent, {
+    const dialogRef = this.dialog.open(ActionPendingComponent, {
       data: {
         username: this.username,
+        isReject:this.isReject
       },
       disableClose: true
     });
+    dialogRef.afterClosed().subscribe(()=>{
+      setTimeout(() =>{
+        this.getAccountDetail();
+      } , 4000)
+    })
   }
 }

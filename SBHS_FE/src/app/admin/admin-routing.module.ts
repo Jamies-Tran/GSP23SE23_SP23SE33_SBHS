@@ -4,9 +4,11 @@ import { AdminComponent } from './admin.component';
 import { RequestAccountLandlordComponent } from './request-account-landlord/request-account-landlord.component';
 import { AccountLandlordDetailComponent } from './request-account-landlord/account-landlord-detail/account-landlord-detail.component';
 import { RequestHomestayComponent } from './request-homestay/request-homestay.component';
-import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
+
 import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bloc-homestay.component';
 import { AuthGuard } from '../auth.guard';
+import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
+import { BlocHomestayDetailComponent } from './request-bloc-homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 
 const routes: Routes = [
   {
@@ -40,18 +42,18 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'BlocHomestay',
+        path: 'BlockHomestay',
         component: RequestBlocHomestayComponent,
       },
-      // {
-      //   path:'BlocHomestay',
-      //   children:[
-      //     {
-      //       path: 'HomestayDetail',
-      //       component: HomestayDetailComponent
-      //     }
-      //   ]
-      // },
+      {
+        path:'BlockHomestay',
+        children:[
+          {
+            path: 'BlockHomestayDetail',
+            component: BlocHomestayDetailComponent
+          }
+        ]
+      },
     ],
   },
 ];

@@ -36,7 +36,6 @@ export class HomestayDetailComponent implements OnInit {
   priceTax!: number;
   showBooking = false;
 
-
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
       data: this.message,
@@ -48,17 +47,17 @@ export class HomestayDetailComponent implements OnInit {
     });
   }
   getHomestay() {
-
     try {
       this.http.getHomestayDetailByName(this.name).subscribe({
         next: async (data: any) => {
           if (data) {
+            console.log('data homestay:', data);
             const value = data;
             this.urls = [];
             this.urls4 = [];
             console.log(value.homestayFacilities);
             this.datas = {
-              id:value.id,
+              id: value.id,
               address: value.address,
               availableRooms: value.availableRooms,
               businessLicense: value.businessLicense,
@@ -108,34 +107,32 @@ export class HomestayDetailComponent implements OnInit {
       console.log(error);
     }
   }
-  datasBooking:any[]=[];
-  booking(){
+  datasBooking: any[] = [];
+  booking() {
     this.datasBooking = [];
     try {
-     this.httpBooking.getBookingForLandlord(this.name).subscribe({
-      next: (data:any)=>{
-        if(data){
-          console.log(data);
-          const value = data;
-          for( let i of value.bookingList.reverse()){
-            this.datasBooking.push({
-              id:i.booking.id,
-              code: i.booking.code,
-              bookingFrom: i.booking.bookingFrom,
-              bookingTo:i.booking.bookingTo,
-              bloc:i.booking.bloc,
-              bookingHomestayServices:i.booking.bookingHomestayServices,
-              totalBookingPrice: i.totalBookingPrice,
-              totalReservation: i.totalReservation,
-              paymentMethod : i.paymentMethod
-            })
+      this.httpBooking.getBookingForLandlord(this.name, 'PENDING').subscribe({
+        next: (data: any) => {
+          if (data) {
+            console.log('booking ', data);
+            const value = data;
+            for (let i of value.bookingList.reverse()) {
+              this.datasBooking.push({
+                id: i.booking.id,
+                code: i.booking.code,
+                bookingFrom: i.booking.bookingFrom,
+                bookingTo: i.booking.bookingTo,
+                bloc: i.booking.bloc,
+                bookingHomestayServices: i.booking.bookingHomestayServices,
+                totalBookingPrice: i.totalBookingPrice,
+                totalReservation: i.totalReservation,
+                paymentMethod: i.paymentMethod,
+              });
+            }
+            console.log('booking', this.datasBooking);
           }
-          console.log('booking' , this.datasBooking);
-
-        }
-
-      }
-     })
+        },
+      });
     } catch (error) {
       this.message = error as string;
       this.openDialogMessage();
@@ -143,22 +140,24 @@ export class HomestayDetailComponent implements OnInit {
     }
   }
 
-  accept(id:number){
+  accept(id: number) {
+    console.log('accpet hoemstay id:', this.datas.id);
+    console.log('accpet booking id:', id);
+
     try {
-      this.httpBooking.acceptBookingForHomestay(this.datas.id , id).subscribe({
-        next:(data:any) =>{
-          this.message = "Accept Booking Homestay Success";
+      this.httpBooking.acceptBookingForHomestay(id, this.datas.id).subscribe({
+        next: (data: any) => {
+          this.message = 'Accept Booking Homestay Success';
           this.openDialogSuccess();
           this.getHomestay();
           this.booking();
           this.showBooking = true;
         },
-        error: (error)=>{
-          this.message= error;
+        error: (error) => {
+          this.message = error;
           this.openDialogMessage();
-        }
-      }
-      )
+        },
+      });
     } catch (error) {
       this.message = error as string;
       this.openDialogMessage();
@@ -166,16 +165,21 @@ export class HomestayDetailComponent implements OnInit {
     }
   }
 
-  reject(bookingId:number, homestayId:number){
-    this.dialog.open(BookingPendingComponent, {
+  reject(bookingId: number, homestayId: number) {
+    const dialogRef = this.dialog.open(BookingPendingComponent, {
       data: {
-        bookingId:bookingId, homestayId:homestayId
+        bookingId: bookingId,
+        homestayId: homestayId,
       },
-      disableClose: true
+      disableClose: true,
     });
 
-    this.getHomestay();
-    this.booking();
-    this.showBooking = true;
+    dialogRef.afterClosed().subscribe(() => {
+      setTimeout(() => {
+        this.getHomestay();
+        this.booking();
+        this.showBooking = true;
+      }, 4000);
+    });
   }
 }

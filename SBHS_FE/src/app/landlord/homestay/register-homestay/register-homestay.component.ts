@@ -421,6 +421,10 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
             this.result = 'Register Homestay Success';
             this.message = 'Register Homestay Success';
             this.openDialogSuccess();
+            this.router.navigate(['/Landlord/Homestay/HomestayList'], {
+              relativeTo: this.route,
+            });
+
           },
           (error) => {
             this.result = error;

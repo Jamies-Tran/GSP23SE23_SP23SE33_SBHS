@@ -4,6 +4,7 @@ import { MessageComponent } from '../message/message.component';
 import { SuccessComponent } from '../success/success.component';
 
 import { AdminService } from '../../services/admin.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-pending-homestay',
@@ -15,7 +16,9 @@ export class PendingHomestayComponent {
     @Inject(MAT_DIALOG_DATA)
     public data: { name: string },
     public dialog: MatDialog,
-    private http: AdminService
+    private http: AdminService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
   message: any;
 
@@ -25,12 +28,8 @@ export class PendingHomestayComponent {
       this.http.rejectBlocHomestay(this.data.name).subscribe(
         (data) => {
           if (data != null) {
-            localStorage.setItem('blocHomestay', '');
             this.message = 'Bloc Homestay have reject';
             this.openDialogSuccess();
-            setTimeout(function () {
-              window.location.reload();
-            }, 2000);
           }
         },
         (error) => {
@@ -51,9 +50,7 @@ export class PendingHomestayComponent {
           if (data != null) {
             this.message = 'Homestay have reject';
             this.openDialogSuccess();
-            setTimeout(function () {
-              window.location.reload();
-            }, 2000);
+
           }
         },
         (error) => {

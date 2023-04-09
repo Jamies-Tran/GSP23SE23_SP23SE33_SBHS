@@ -48,4 +48,13 @@
     font-size: 17px;
     }
   }
+  :host ::ng-deep .mdc-text-field--filled{
+    background-color: unset !important;
+  }
+  :host ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: unset !important;
+}
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled){
+  background-color: unset !important;
+}
 }
