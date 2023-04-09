@@ -27,6 +27,20 @@ export class TestComponent  {
   isShowing = false;
   showSubSubMenu: boolean = false;
 
+
+
+   toggle(){
+    const panelBody = document.querySelectorAll<HTMLElement>('.mat-expansion-panel-body');
+    if(this.isExpanded == true){
+      for(let i =0 ; i<panelBody.length ; i++){
+        panelBody[i].style.padding = "0 0 0 16px";
+      }
+    }else{
+      for(let i =0 ; i<panelBody.length ; i++){
+        panelBody[i].style.padding = '0';
+      }
+    }
    }
+  }
 
 

@@ -163,11 +163,49 @@
   }
 }
 
-.active{
+.active {
   background-image: linear-gradient(to right, #FFCE03, #FD9A01, #FD6104, #FF2C05, );
-  background-image: -webkit-linear-gradient(to right,#FFCE03,  #FD9A01, #FD6104, #FF2C05, );
+  background-image: -webkit-linear-gradient(to right, #FFCE03, #FD9A01, #FD6104, #FF2C05, );
 }
 
-.sidenav-link-text{
+.sidenav-link-text {
+  font-size: 15px;
+}
 
+.menu-button {
+  transition: 300ms ease-in-out;
+  transform: rotate(0deg);
+}
+
+.menu-button.rotated {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  display: none;
+  overflow-y: hidden;
+  transition: transform 300ms ease;
+  transform: scaleY(0);
+  transform-origin: top;
+  padding-left: 30px;
+}
+
+.submenu.expanded {
+  display: block;
+  transform: scaleY(1);
+}
+
+:host ::ng-deep .sidenav-nav-link .mat-expansion-panel-body {
+  padding-bottom: unset;
+  padding-right: unset;
+}
+
+:host ::ng-deep .sidenav-link-icon {
+  margin-right: 16px !important;
+  margin-left: 16px !important;
+  font-size: 22px;
+}
+
+:host ::ng-deep .sidenav-nav-link .mat-expansion-panel-header {
+  padding: 0px 16px;
 }

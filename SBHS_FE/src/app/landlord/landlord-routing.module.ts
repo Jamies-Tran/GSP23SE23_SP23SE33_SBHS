@@ -21,42 +21,39 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       {
-        path: 'Homestay',
-        component: HomestayComponent,
+        path: 'Category',
+        component: CategoryHomestayComponent,
       },
+      {
+        path: 'Category',
+        children: [
+          {
+            path: 'RegisterHomestay',
+            component: RegisterHomestayComponent,
+          },
+          {
+            path: 'RegisterBlocHomestay',
+            component: RegisterBlocHomestayComponent,
+          },
+        ],
+      },
+
       {
         path: 'Homestay',
         children: [
           {
-            path: 'Category',
-            component: CategoryHomestayComponent,
-          },
-          {
-            path: 'Category',
-            children: [
-              {
-                path: 'RegisterHomestay',
-                component: RegisterHomestayComponent,
-              },
-              {
-                path: 'RegisterBlocHomestay',
-                component: RegisterBlocHomestayComponent,
-              },
-            ],
-          },
-          {
             path: 'HomestayDetail',
             component: HomestayDetailComponent,
           },
+          {
+            path: 'HomestayList',
+            component: HomestayComponent,
+          },
+          {
+            path: 'HomestayCreate',
+            component: RegisterHomestayComponent,
+          },
         ],
-      },
-      {
-        path: 'Profile',
-        component: ProfileComponent,
-      },
-      {
-        path: 'BlockHomestay',
-        component: BlocHomestayComponent,
       },
       {
         path: 'BlockHomestay',
@@ -65,7 +62,19 @@ const routes: Routes = [
             path: 'BlockHomestayDetail',
             component: BlocHomestayDetailComponent,
           },
+          {
+            path: 'BlockHomestayList',
+            component: BlocHomestayComponent,
+          },
+          {
+            path: 'BlockHomestayCreate',
+            component: RegisterBlocHomestayComponent,
+          },
         ],
+      },
+      {
+        path: 'Profile',
+        component: ProfileComponent,
       },
       {
         path: 'Booking',
