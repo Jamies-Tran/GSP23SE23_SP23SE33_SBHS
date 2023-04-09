@@ -313,6 +313,7 @@
                       </div>
                       <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
+
                     <!-- Car Rental -->
                     <div class="row mb-2">
                       <div
@@ -336,6 +337,7 @@
                       </div>
                       <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
+
                     <!-- Sauna -->
                     <div class="row mb-2">
                       <div
@@ -745,6 +747,98 @@
                       <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
                     <!-- Wifi -->
+                    <!-- fan -->
+                    <div class="row mb-2">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <i class="fa-solid fa-fan"></i></div>
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
+                        <span>Fan</span>
+                      </div>
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <mat-checkbox color="primary" formControlName="fan"
+                          (change)="enableInputfan()"></mat-checkbox>
+                      </div>
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
+                        <div class="col-input">
+                          <input name="fanInput" type="number" pattern="[0~9]*" min="1" class="form-control"
+                            minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="fanAmount"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                        </div>
+                      </div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
+                    </div>
+                    <!-- fan -->
+                    <!-- wardrobe -->
+                    <div class="row mb-2">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <i class="fa-solid fa-door-closed"></i></div>
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
+                        <span>Wardrobe</span>
+                      </div>
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <mat-checkbox color="primary" formControlName="wardrobe"
+                          (change)="enableInputwardrobe()"></mat-checkbox>
+                      </div>
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
+                        <div class="col-input">
+                          <input name="wardrobeInput" type="number" pattern="[0~9]*" min="1" class="form-control"
+                            minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="wardrobeAmount"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                        </div>
+                      </div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
+                    </div>
+                    <!-- wardrobe -->
+                    <!-- table -->
+                    <div class="row mb-2">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <mat-icon class="mat-18">table_restaurant</mat-icon></div>
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
+                        <span>Table</span>
+                      </div>
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <mat-checkbox color="primary" formControlName="table"
+                          (change)="enableInputtable()"></mat-checkbox>
+                      </div>
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
+                        <div class="col-input">
+                          <input name="tableInput" type="number" pattern="[0~9]*" min="1" class="form-control"
+                            minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="tableAmount"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                        </div>
+                      </div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
+                    </div>
+                    <!-- table -->
+                    <!-- chair -->
+                    <div class="row mb-2">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <i class="fa-solid fa-couch"></i></div>
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
+                        <span>Chair</span>
+                      </div>
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <mat-checkbox color="primary" formControlName="chair"
+                          (change)="enableInputchair()"></mat-checkbox>
+                      </div>
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
+                        <div class="col-input">
+                          <input name="chairInput" type="number" pattern="[0~9]*" min="1" class="form-control"
+                            minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="chairAmount"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                        </div>
+                      </div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
+                    </div>
+                    <!-- chair -->
                     <br>
                     <hr>
                   </form>

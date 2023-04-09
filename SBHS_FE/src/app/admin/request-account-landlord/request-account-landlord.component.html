@@ -28,13 +28,21 @@
               totalItems: countPending
               };
               let i = index">
+
+
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">
                     {{post.id}}
                   </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">
-                    {{post.username}}
+                    <div class="d-flex align-items-center">
+                      <!-- <img [src]="getImageLandlord(post.avatarUrl)" alt="" style="width: 45px; height: 45px" class="rounded-circle" /> -->
+                      <div class="">
+                        <p class="fw-bold mb-1">{{post.username}}</p>
+                        <p class="text-muted mb-0">{{post.email}}</p>
+                      </div>
+                    </div>
                   </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">
@@ -101,7 +109,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls id="paginationPending"  previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationPending" previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangePending($event)">
                 </pagination-controls>
               </div>
@@ -127,6 +135,8 @@
 
           ;
           let i = index">
+
+
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">
                     {{post.id}}
@@ -136,7 +146,7 @@
                     (click)="onItemSelector(post.id, post.username)">
                     <div class="d-flex align-items-center">
                       <!-- <img [src]="getImageLandlord(post.avatarUrl)" alt="" style="width: 45px; height: 45px" class="rounded-circle" /> -->
-                      <div class="ms-3">
+                      <div class="">
                         <p class="fw-bold mb-1">{{post.username}}</p>
                         <p class="text-muted mb-0">{{post.email}}</p>
                       </div>
@@ -217,8 +227,16 @@
             let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
-                  <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
-                    (click)="onItemSelector(post.id, post.username)">{{post.username}}</td>
+                    <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
+                    (click)="onItemSelector(post.id, post.username)">
+                    <div class="d-flex align-items-center">
+                      <!-- <img [src]="getImageLandlord(post.avatarUrl)" alt="" style="width: 45px; height: 45px" class="rounded-circle" /> -->
+                      <div class="">
+                        <p class="fw-bold mb-1">{{post.username}}</p>
+                        <p class="text-muted mb-0">{{post.email}}</p>
+                      </div>
+                    </div>
+                  </td>
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">{{post.createdDate}}</td>
                   <td class="">

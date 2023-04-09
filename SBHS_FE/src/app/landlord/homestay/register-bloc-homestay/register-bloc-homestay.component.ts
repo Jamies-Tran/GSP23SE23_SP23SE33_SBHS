@@ -119,6 +119,14 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     tvAmount: [{ value: '', disabled: true }],
     wifi: false,
     wifiAmount: [{ value: '', disabled: true }],
+    fan:false,
+    wardrobe:false,
+    table:false,
+    chair:false,
+    fanAmount: [{ value: '', disabled: true }],
+    wardrobeAmount: [{ value: '', disabled: true }],
+    tableAmount: [{ value: '', disabled: true }],
+    chairAmount: [{ value: '', disabled: true }],
   });
   homestayFacilities: Array<{ name: string; quantity: number }> = [];
   commonFacilities = {
@@ -143,6 +151,26 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           .value as unknown as number,
       });
     }
+     // fan
+     if(this.facilityFormGroup.controls.fan.value == true){
+      this.homestayFacilities.push({name:'fan', quantity:this.facilityFormGroup.controls['fanAmount'].value as unknown as number})
+    }
+
+    // wardrobe
+    if(this.facilityFormGroup.controls.wardrobe.value == true){
+      this.homestayFacilities.push({name:'wardrobe', quantity:this.facilityFormGroup.controls['wardrobeAmount'].value as unknown as number})
+    }
+
+    // table
+    if(this.facilityFormGroup.controls.table.value == true){
+      this.homestayFacilities.push({name:'table', quantity:this.facilityFormGroup.controls['tableAmount'].value as unknown as number})
+    }
+
+    // chair
+    if(this.facilityFormGroup.controls.chair.value == true){
+      this.homestayFacilities.push({name:'chair', quantity:this.facilityFormGroup.controls['chairAmount'].value as unknown as number})
+    }
+
 
     // common facility
     this.commonFacilities = {
@@ -178,6 +206,41 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       this.facilityFormGroup.controls.wifiAmount.clearValidators();
     } else {
       this.facilityFormGroup.controls.wifiAmount.disable();
+    }
+  }
+  // fan
+  enableInputfan() {
+    if (this.facilityFormGroup.controls.fan.value == true) {
+      this.facilityFormGroup.controls.fanAmount.enable();
+      this.facilityFormGroup.controls.fanAmount.clearValidators();
+    } else {
+      this.facilityFormGroup.controls.fanAmount.disable();
+    }
+  }
+  // wardrobe
+  enableInputwardrobe() {
+    if (this.facilityFormGroup.controls.wardrobe.value == true) {
+      this.facilityFormGroup.controls.wardrobeAmount.enable();
+      this.facilityFormGroup.controls.wardrobeAmount.clearValidators();
+    } else {
+      this.facilityFormGroup.controls.wardrobeAmount.disable();
+    }
+  }
+  // table
+  enableInputtable() {
+    if (this.facilityFormGroup.controls.table.value == true) {
+      this.facilityFormGroup.controls.tableAmount.enable();
+      this.facilityFormGroup.controls.tableAmount.clearValidators();
+    } else {
+      this.facilityFormGroup.controls.table.disable();
+    }
+  }
+  enableInputchair() {
+    if (this.facilityFormGroup.controls.chair.value == true) {
+      this.facilityFormGroup.controls.chairAmount.enable();
+      this.facilityFormGroup.controls.chairAmount.clearValidators();
+    } else {
+      this.facilityFormGroup.controls.chairAmount.disable();
     }
   }
 
