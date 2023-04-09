@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { AdminRoutingModule } from './admin-routing.module';
-
+import { NgxEchartsModule } from 'ngx-echarts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { AdminComponent } from './admin.component';
@@ -34,6 +34,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     RequestHomestayComponent,
     RequestBlocHomestayComponent,
     HomestayDetailComponent,
-    BlocHomestayDetailComponent
+    BlocHomestayDetailComponent,
+    DashboardAdminComponent
   ],
   imports: [
     CommonModule,
@@ -74,6 +76,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CdkStepperModule,
     MatGridListModule,
     MatExpansionModule,
+    NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
   ],
   providers: [
     MatDialog,

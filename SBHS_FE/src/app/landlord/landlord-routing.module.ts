@@ -12,14 +12,24 @@ import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-det
 import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import { BookingComponent } from './booking/booking.component';
+import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landlord.component';
 
 
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'Dashboard',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
     component: LandlordComponent,
     canActivateChild: [AuthGuard],
     children: [
+      {
+        path: 'Dashboard',
+        component: DashboardLandlordComponent,
+      },
       {
         path: 'Category',
         component: CategoryHomestayComponent,

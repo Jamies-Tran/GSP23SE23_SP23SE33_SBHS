@@ -63,7 +63,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
-
+import { NgxEchartsModule } from 'ngx-echarts';
 // Component
 import { AppComponent } from './app.component';
 import { LoginLandlordComponent } from './guest/login/login.component';

@@ -9,12 +9,22 @@ import { RequestBlocHomestayComponent } from './request-bloc-homestay/request-bl
 import { AuthGuard } from '../auth.guard';
 import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
 import { BlocHomestayDetailComponent } from './request-bloc-homestay/bloc-homestay-detail/bloc-homestay-detail.component';
+import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'Dashboard',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
     component: AdminComponent,canActivateChild: [AuthGuard],
     children: [
+      {
+        path: 'Dashboard',
+        component: DashboardAdminComponent,
+      },
       {
         path: 'RequestAccountLandlord',
         component: RequestAccountLandlordComponent,

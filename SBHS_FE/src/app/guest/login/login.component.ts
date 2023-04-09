@@ -78,11 +78,11 @@ export class LoginLandlordComponent {
         console.log(data);
         console.log(localStorage.getItem('role'));
         if (data['roles'][0] === 'LANDLORD') {
-          this.router.navigate(['/Landlord'], {
+          this.router.navigate(['/Landlord/Dashboard'], {
             relativeTo: this.route,
           });
         } else if (data['roles'][0] === 'ADMIN') {
-          this.router.navigate(['/Admin'], {
+          this.router.navigate(['/Admin/Dashboard'], {
             relativeTo: this.route,
           });
         } else this.router.navigate([''], {

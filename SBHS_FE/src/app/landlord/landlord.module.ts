@@ -3,6 +3,7 @@ import { HomestayComponent } from './homestay/homestay.component';
 import { LandlordComponent } from './landlord.component';
 
 // Module
+import { NgxEchartsModule } from 'ngx-echarts';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -41,6 +42,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { BookingComponent } from './booking/booking.component';
+import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landlord.component';
 
 
 @NgModule({
@@ -54,6 +56,7 @@ import { BookingComponent } from './booking/booking.component';
     HomestayDetailComponent,
     BlocHomestayComponent,
     BookingComponent,
+    DashboardLandlordComponent,
 
   ],
   imports: [
@@ -84,7 +87,8 @@ import { BookingComponent } from './booking/booking.component';
     CdkStepperModule,
     MatGridListModule,
     MatExpansionModule,
-    MatBadgeModule
+    MatBadgeModule,
+    NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
   ],
 })
 export class LandlordModule {}
