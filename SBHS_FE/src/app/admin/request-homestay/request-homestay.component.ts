@@ -106,34 +106,45 @@ export class RequestHomestayComponent implements OnInit {
   }
   banned() {}
 
-  title = 'pagination';
-  page: number = 1;
-  count: number = 0;
-  tableSize: number = 5;
+
+
+  // Pending
+  pagePending: number = 1;
+  countPending: number = 0;
+  tableSizePending: number = 5;
 
   // Pending
   onTableDataChangePending(event: any) {
-    this.page = event;
+    this.pagePending = event;
     this.valuesPending;
   }
 
   // Banned
   onTableDataChangeBanned(event: any) {
-    this.page = event;
-    this.valuesBanned;
+    // this.page = event;
+    // this.valuesBanned;
   }
 
+     // Active
+     pageActive: number = 1;
+     countActive: number = 0;
+     tableSizeActive: number = 5;
   // Active
   onTableDataChangeActive(event: any) {
-    this.page = event;
+    this.pageActive = event;
     this.valuesActive;
   }
 
+   // Reject
+   pageReject: number = 1;
+   countReject: number = 0;
+   tableSizeReject: number = 5;
   // Reject
   onTableDataChangeReject(event: any) {
-    this.page = event;
+    this.pageReject = event;
     this.valuesReject;
   }
+
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {

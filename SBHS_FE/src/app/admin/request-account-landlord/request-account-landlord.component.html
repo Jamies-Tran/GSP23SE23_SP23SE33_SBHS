@@ -22,9 +22,10 @@
               </thead>
               <tbody>
                 <tr matRipple *ngFor="let post of valuesPending | paginate:{
-              itemsPerPage: tableSize,
-              currentPage: page,
-              totalItems: count
+                  id: 'paginationPending',
+                  itemsPerPage: tableSizePending,
+              currentPage: pagePending,
+              totalItems: countPending
               };
               let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
@@ -86,7 +87,7 @@
                   <td></td>
                   <td></td>
                 </tr>
-                <tr *ngIf="valuesBanned.length < 5">
+                <tr *ngIf="valuesPending.length < 5">
                   <td></td>
                   <td></td>
                   <td></td>
@@ -100,7 +101,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationPending"  previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangePending($event)">
                 </pagination-controls>
               </div>
@@ -119,9 +120,10 @@
               </thead>
               <tbody style="height:30vh">
                 <tr *ngFor="let post of valuesActive | paginate:{
-            itemsPerPage: tableSize,
-            currentPage: page,
-            totalItems: count}
+                  id: 'paginationActivated',
+                  itemsPerPage: tableSizeActive,
+            currentPage: pageActive,
+            totalItems: countActive}
 
           ;
           let i = index">
@@ -189,7 +191,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationActivated" previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangeActive($event)">
                 </pagination-controls>
               </div>
@@ -208,9 +210,10 @@
               </thead>
               <tbody style="height:30vh">
                 <tr *ngFor="let post of valuesReject | paginate:{
-            itemsPerPage: tableSize,
-            currentPage: page,
-            totalItems: count};
+                  id: 'paginationReject',
+                  itemsPerPage: tableSizeReject,
+            currentPage: pageReject,
+            totalItems: countReject};
             let i = index">
                   <td [style.cursor]="'pointer'" routerLink="AccountLandlordDetail"
                     (click)="onItemSelector(post.id, post.username)">{{post.id}}</td>
@@ -266,7 +269,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationReject" previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangeReject($event)">
                 </pagination-controls>
               </div>

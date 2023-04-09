@@ -31,7 +31,7 @@ export class BlocHomestayComponent {
   getHomestayPending() {
     this.valuePending = [];
     this.http.getBlocByLandlord('PENDING').subscribe(async (data) => {
-      console.log('data:', data['blocs']);
+      console.log('data:', data);
       for (let i of data['blocs'].reverse()) {
         var imgUrl;
         await this.image
@@ -61,7 +61,7 @@ export class BlocHomestayComponent {
           .getImage('homestay/' + i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
-            this.valuePending.push({
+            this.valueActivating.push({
               imgURL: imgUrl,
               name: i.name,
               id: i.id,
@@ -84,7 +84,7 @@ export class BlocHomestayComponent {
           .getImage('homestay/' + i.homestays[0].homestayImages[0].imageUrl)
           .then((url) => {
             imgUrl = url;
-            this.valuePending.push({
+            this.valueReject.push({
               imgURL: imgUrl,
               name: i.name,
               id: i.id,

@@ -46,6 +46,7 @@ export class HomestayDetailComponent implements OnInit {
       data: this.message,
     });
   }
+
   getHomestay() {
     try {
       this.http.getHomestayDetailByName(this.name).subscribe({
@@ -107,6 +108,7 @@ export class HomestayDetailComponent implements OnInit {
       console.log(error);
     }
   }
+
   datasBooking: any[] = [];
   booking() {
     this.datasBooking = [];

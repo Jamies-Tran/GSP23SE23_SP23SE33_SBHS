@@ -19,12 +19,13 @@
             <a mat-raised-button routerLink="/Landlord/Category">Register</a>
           </div>
         </div>
-
+        <!-- Pending -->
         <div class="row main-content">
+
           <div class="col-sm-4" *ngFor="let item of valuePending">
             <div class="card">
               <div class="card-body pt-0">
-                <h5 class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVATING' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
+                <h5 class="card-header text-center text-white w-100 bg-warning bg-gradient" > {{item.status}} </h5>
                 <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>
@@ -45,10 +46,11 @@
           </div>
         </div>
         <div class="row main-content">
+
           <div class="col-sm-4" *ngFor="let item of valueActivating">
             <div class="card">
               <div class="card-body pt-0">
-                <h5 class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVE' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
+                <h5 class="card-header text-center text-white w-100 bg-success "> {{item.status}} </h5>
                 <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>
@@ -69,10 +71,11 @@
           </div>
         </div>
         <div class="row main-content">
+
           <div class="col-sm-4" *ngFor="let item of valueReject">
             <div class="card">
               <div class="card-body pt-0">
-                <h5 class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVE' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
+                <h5 class="card-header text-center text-white w-100 bg-danger bg-gradient"> {{item.status}} </h5>
                 <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>

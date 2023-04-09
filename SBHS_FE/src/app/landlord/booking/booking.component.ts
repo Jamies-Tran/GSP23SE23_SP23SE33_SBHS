@@ -26,10 +26,16 @@ export class BookingComponent implements OnInit {
   message!: string;
   id: any;
   username: any;
-  title = 'pagination';
-  page: number = 1;
-  count: number = 0;
-  tableSize: number = 5;
+
+  // valuesHomestay
+  pageHomestay: number = 1;
+  countHomestay: number = 0;
+  tableSizeHomestay: number = 5;
+
+  // valuesBloc
+  pageBloc: number = 1;
+  countBloc: number = 0;
+  tableSizeBloc: number = 5;
 
 
   openDialogMessage() {
@@ -109,12 +115,13 @@ export class BookingComponent implements OnInit {
   }
   accept() {}
   openDialogAction() {}
+
   onTableDataChangeHomestay(event: any) {
-    this.page = event;
+    this.pageHomestay = event;
     this.valuesHomestay;
   }
   onTableDataChangeBloc(event: any) {
-    this.page = event;
+    this.pageBloc = event;
     this.valuesBloc;
   }
 }

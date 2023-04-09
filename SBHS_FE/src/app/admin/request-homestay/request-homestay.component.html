@@ -22,9 +22,10 @@
               </thead>
               <tbody>
                 <tr matRipple *ngFor="let post of valuesPending | paginate:{
-              itemsPerPage: tableSize,
-              currentPage: page,
-              totalItems: count
+                  id: 'paginationPending',
+                  itemsPerPage: tableSizePending,
+              currentPage: pagePending,
+              totalItems: countPending
               };
               let i = index" >
                   <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
@@ -90,7 +91,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationPending"previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangePending($event)">
                 </pagination-controls>
               </div>
@@ -109,9 +110,10 @@
               </thead>
               <tbody style="height:30vh">
                 <tr *ngFor="let post of valuesActive | paginate:{
-            itemsPerPage: tableSize,
-            currentPage: page,
-            totalItems: count}
+                  id: 'paginationActive',
+                  itemsPerPage: tableSizeActive,
+            currentPage: pageActive,
+            totalItems: countActive}
 
           ;
           let i = index" >
@@ -171,7 +173,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationActive"previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangeActive($event)">
                 </pagination-controls>
               </div>
@@ -190,9 +192,10 @@
               </thead>
               <tbody style="height:30vh">
                 <tr *ngFor="let post of valuesReject | paginate:{
-            itemsPerPage: tableSize,
-            currentPage: page,
-            totalItems: count};
+                  id: 'paginationReject',
+                  itemsPerPage: tableSizeReject,
+            currentPage: pageReject,
+            totalItems: countReject};
             let i = index" >
                   <td [style.cursor]="'pointer'" routerLink="HomestayDetail"
                   (click)="onItemSelector(post.id, post.name)">{{post.id}}</td>
@@ -247,7 +250,7 @@
 
               </div>
               <div class="col-sm-6 d-flex justify-content-center">
-                <pagination-controls previousLabel="Prev" nextLabel="Next"
+                <pagination-controls id="paginationReject"previousLabel="Prev" nextLabel="Next"
                   (pageChange)="onTableDataChangeReject($event)">
                 </pagination-controls>
               </div>
