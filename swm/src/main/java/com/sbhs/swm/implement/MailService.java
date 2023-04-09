@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.BookingHomestay;
-import com.sbhs.swm.models.BookingShareCode;
+import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.services.IMailService;
@@ -177,7 +177,7 @@ public class MailService implements IMailService {
     }
 
     @Override
-    public void informBookingSharedCodeHadBeenApplied(BookingShareCode bookingShareCode) {
+    public void informBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode) {
         String ingformShareCodeInformMail = GenerateMailContentUtil
                 .generateInformBookingSharedCodeHadBeenApplied(bookingShareCode);
         SwmUser bookingHost = bookingShareCode.getBooking().getPassenger().getUser();

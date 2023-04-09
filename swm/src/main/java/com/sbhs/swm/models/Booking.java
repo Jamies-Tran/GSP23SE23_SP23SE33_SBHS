@@ -64,7 +64,7 @@ public class Booking extends BaseModel {
     private @Setter List<BookingDeposit> bookingDeposits;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    @JoinColumn(name = "share_id", referencedColumnName = "id")
-    private @Setter BookingShareCode shareCode;
+    @JoinColumn(name = "invite_id", referencedColumnName = "id")
+    private @Setter BookingInviteCode inviteCode;
 
 }

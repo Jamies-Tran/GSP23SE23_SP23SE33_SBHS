@@ -13,7 +13,7 @@ import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingDeposit;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.BookingHomestayService;
-import com.sbhs.swm.models.BookingShareCode;
+import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.models.type.HomestayType;
@@ -158,7 +158,7 @@ public class GenerateMailContentUtil {
         return informMailBuilder.toString();
     }
 
-    public static String generateInformBookingSharedCodeHadBeenApplied(BookingShareCode bookingShareCode) {
+    public static String generateInformBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode) {
         StringBuilder informMailBuilder = new StringBuilder();
         SwmUser bookingHost = bookingShareCode.getBooking().getPassenger().getUser();
         SwmUser bookingGuest = bookingShareCode.getPassenger().getUser();

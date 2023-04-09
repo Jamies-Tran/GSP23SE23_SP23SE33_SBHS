@@ -45,5 +45,5 @@ public class Passenger extends BaseModel {
     private @Setter SwmUser user;
 
     @OneToMany(mappedBy = "passenger")
-    private @Setter List<BookingShareCode> shareCodes;
+    private @Setter List<BookingInviteCode> inviteCodes;
 }

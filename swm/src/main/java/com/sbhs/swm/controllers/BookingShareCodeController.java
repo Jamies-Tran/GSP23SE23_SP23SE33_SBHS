@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbhs.swm.dto.BookingShareCodeDto;
-import com.sbhs.swm.models.BookingShareCode;
-import com.sbhs.swm.services.IBookingShareCodeService;
+import com.sbhs.swm.dto.BookingInviteCodeDto;
+import com.sbhs.swm.models.BookingInviteCode;
+import com.sbhs.swm.services.IBookingInviteCodeService;
 
 @RestController
 @RequestMapping("/api/share-code")
 public class BookingShareCodeController {
     @Autowired
-    private IBookingShareCodeService bookingShareCodeService;
+    private IBookingInviteCodeService bookingShareCodeService;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> applyBookingShareCode(String shareCode) {
-        BookingShareCode bookingShareCode = bookingShareCodeService.applyBookingShareCode(shareCode);
-        BookingShareCodeDto responseShareCode = modelMapper.map(bookingShareCode, BookingShareCodeDto.class);
+    public ResponseEntity<?> applyBookingShareCode(String inviteCode) {
+        BookingInviteCode bookingShareCode = bookingShareCodeService.applyBookingInviteCode(inviteCode);
+        BookingInviteCodeDto responseShareCode = modelMapper.map(bookingShareCode, BookingInviteCodeDto.class);
 
-        return new ResponseEntity<BookingShareCodeDto>(responseShareCode, HttpStatus.OK);
+        return new ResponseEntity<BookingInviteCodeDto>(responseShareCode, HttpStatus.OK);
     }
 }

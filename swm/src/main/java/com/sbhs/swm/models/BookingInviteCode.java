@@ -17,18 +17,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class BookingShareCode extends BaseModel {
+public class BookingInviteCode extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private @Setter String shareCode;
+    private @Setter String inviteCode;
 
     @Column
     private @Setter String status;
 
-    @OneToOne
+    @OneToOne(mappedBy = "inviteCode")
     private @Setter Booking booking;
 
     @ManyToOne

@@ -26,7 +26,7 @@ import com.sbhs.swm.models.BookingDeposit;
 import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.BookingHomestayService;
-import com.sbhs.swm.models.BookingShareCode;
+import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayService;
 import com.sbhs.swm.models.LandlordCommission;
@@ -42,7 +42,7 @@ import com.sbhs.swm.repositories.HomestayServiceRepo;
 import com.sbhs.swm.repositories.BookingHomestayRepo;
 import com.sbhs.swm.repositories.BookingRepo;
 import com.sbhs.swm.repositories.BookingServiceRepo;
-import com.sbhs.swm.repositories.BookingShareCodeRepo;
+import com.sbhs.swm.repositories.BookingInviteCodeRepo;
 import com.sbhs.swm.repositories.LandlordCommissionRepo;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
@@ -89,7 +89,7 @@ public class BookingService implements IBookingService {
     private BookingDateValidationUtil bookingDateValidationUtil;
 
     @Autowired
-    private BookingShareCodeRepo bookingShareCodeRepo;
+    private BookingInviteCodeRepo bookingShareCodeRepo;
 
     // @Override
     // public List<Booking> findBookingsByUsernameAndStatus(String status) {
@@ -324,8 +324,8 @@ public class BookingService implements IBookingService {
     @Transactional
     public Booking submitBookingForHomestayByPassenger(Long bookingId) {
         Booking booking = this.findBookingById(bookingId);
-        StringBuilder shareCodeBuilder = new StringBuilder();
-        shareCodeBuilder.append("SHARED").append(booking.getBookingFrom().split("-")[2])
+        StringBuilder inviteCodeBuilder = new StringBuilder();
+        inviteCodeBuilder.append("SHARED").append(booking.getBookingFrom().split("-")[2])
                 .append(booking.getBookingTo().split("-")[2])
                 .append(booking.getCode().subSequence(4, booking.getCode().length() - 1));
         if (!booking.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())) {
@@ -333,12 +333,13 @@ public class BookingService implements IBookingService {
         }
 
         SwmUser passengerUser = booking.getPassenger().getUser();
-        BookingShareCode bookingShareCode = new BookingShareCode();
+        BookingInviteCode bookingShareCode = new BookingInviteCode();
         bookingShareCode.setBooking(booking);
         bookingShareCode.setCreatedBy(passengerUser.getUsername());
         bookingShareCode.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         bookingShareCode.setStatus(BookingShareCodeStatus.UNUSED.name());
-        bookingShareCode.setShareCode(shareCodeBuilder.toString());
+        bookingShareCode.setInviteCode(inviteCodeBuilder.toString());
+        booking.setInviteCode(bookingShareCode);
         bookingShareCodeRepo.save(bookingShareCode);
         Long currentPassengerWalletBalance = passengerUser.getPassengerProperty().getBalanceWallet()
                 .getTotalBalance();
@@ -436,12 +437,12 @@ public class BookingService implements IBookingService {
             throw new InvalidException("booking have been submitted");
         }
         SwmUser passengerUser = booking.getPassenger().getUser();
-        BookingShareCode bookingShareCode = new BookingShareCode();
+        BookingInviteCode bookingShareCode = new BookingInviteCode();
         bookingShareCode.setBooking(booking);
         bookingShareCode.setCreatedBy(passengerUser.getUsername());
         bookingShareCode.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
         bookingShareCode.setStatus(BookingShareCodeStatus.UNUSED.name());
-        bookingShareCode.setShareCode(shareCodeBuilder.toString());
+        bookingShareCode.setInviteCode(shareCodeBuilder.toString());
         bookingShareCodeRepo.save(bookingShareCode);
         booking.getBookingHomestays().forEach(b -> b.setPaymentMethod(paymentMethod));
         Long currentPassengerWalletBalance = passengerUser.getPassengerProperty().getBalanceWallet()
@@ -844,13 +845,15 @@ public class BookingService implements IBookingService {
     public PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
             int page, int size, boolean isNextPage, boolean isPreviousPage) {
         List<Booking> bookingList = this.filterPassengerBookingByHost(filterBookingRequest.getIsHost());
-        if (filterBookingRequest.getHomestayType() != null) {
-            bookingList = this.filterPassengerBookingByHomestayType(bookingList,
-                    filterBookingRequest.getHomestayType());
-        }
+        if (filterBookingRequest != null) {
+            if (filterBookingRequest.getHomestayType() != null) {
+                bookingList = this.filterPassengerBookingByHomestayType(bookingList,
+                        filterBookingRequest.getHomestayType());
+            }
 
-        if (filterBookingRequest.getStatus() != null) {
-            bookingList = this.filterPassengerBookingByStatus(bookingList, filterBookingRequest.getStatus());
+            if (filterBookingRequest.getStatus() != null) {
+                bookingList = this.filterPassengerBookingByStatus(bookingList, filterBookingRequest.getStatus());
+            }
         }
 
         PagedListHolder<Booking> pagedListHolder = new PagedListHolder<>(bookingList);
@@ -887,7 +890,7 @@ public class BookingService implements IBookingService {
         if (isHost) {
             bookingList = user.getPassengerProperty().getBookings();
         } else {
-            for (BookingShareCode s : user.getPassengerProperty().getShareCodes()) {
+            for (BookingInviteCode s : user.getPassengerProperty().getInviteCodes()) {
                 shareCodeBooking.add(s.getBooking());
             }
             bookingList = shareCodeBooking;

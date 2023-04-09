@@ -10,21 +10,21 @@ import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingDeposit;
-import com.sbhs.swm.models.BookingShareCode;
+import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.BookingShareCodeStatus;
 import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.models.type.HomestayType;
-import com.sbhs.swm.repositories.BookingShareCodeRepo;
+import com.sbhs.swm.repositories.BookingInviteCodeRepo;
 import com.sbhs.swm.repositories.DepositRepo;
-import com.sbhs.swm.services.IBookingShareCodeService;
+import com.sbhs.swm.services.IBookingInviteCodeService;
 import com.sbhs.swm.services.IMailService;
 import com.sbhs.swm.services.IUserService;
 import com.sbhs.swm.util.DateTimeUtil;
 
 @Service
-public class BookingShareCodeService implements IBookingShareCodeService {
+public class BookingInviteCodeService implements IBookingInviteCodeService {
 
     @Autowired
     private IUserService userService;
@@ -33,7 +33,7 @@ public class BookingShareCodeService implements IBookingShareCodeService {
     private IMailService mailService;
 
     @Autowired
-    private BookingShareCodeRepo bookingShareCodeRepo;
+    private BookingInviteCodeRepo bookingShareCodeRepo;
 
     @Autowired
     private DepositRepo depositRepo;
@@ -42,8 +42,8 @@ public class BookingShareCodeService implements IBookingShareCodeService {
     private DateTimeUtil dateTimeUtil;
 
     @Override
-    public BookingShareCode getBookingSharedCodeByCode(String shareCode) {
-        BookingShareCode bookingShareCode = bookingShareCodeRepo.findBookingShareCodeByCode(shareCode)
+    public BookingInviteCode getBookingInviteCodeByCode(String inviteCode) {
+        BookingInviteCode bookingShareCode = bookingShareCodeRepo.findBookingInviteCodeByCode(inviteCode)
                 .orElseThrow(() -> new NotFoundException("Share code not exist"));
 
         return bookingShareCode;
@@ -51,14 +51,14 @@ public class BookingShareCodeService implements IBookingShareCodeService {
 
     @Override
     @Transactional
-    public BookingShareCode applyBookingShareCode(String shareCode) {
+    public BookingInviteCode applyBookingInviteCode(String inviteCode) {
         SwmUser user = userService.authenticatedUser();
-        BookingShareCode bookingShareCode = getBookingSharedCodeByCode(shareCode);
+        BookingInviteCode bookingInviteCode = getBookingInviteCodeByCode(inviteCode);
 
-        if (bookingShareCode.getCreatedBy().equals(user.getUsername())) {
-            throw new InvalidException("You can't apply share code of your own");
+        if (bookingInviteCode.getCreatedBy().equals(user.getUsername())) {
+            throw new InvalidException("You can't apply invite code of your own");
         }
-        Booking booking = bookingShareCode.getBooking();
+        Booking booking = bookingInviteCode.getBooking();
         if (!booking.getStatus().equalsIgnoreCase(BookingStatus.ACCEPTED.name())) {
             throw new InvalidException("Booking's not valid");
         }
@@ -94,12 +94,12 @@ public class BookingShareCodeService implements IBookingShareCodeService {
                 depositRepo.save(deposit);
             }
         }
-        bookingShareCode.setPassenger(user.getPassengerProperty());
-        bookingShareCode.setStatus(BookingShareCodeStatus.USED.name());
-        user.getPassengerProperty().setShareCodes(List.of(bookingShareCode));
-        mailService.informBookingSharedCodeHadBeenApplied(bookingShareCode);
+        bookingInviteCode.setPassenger(user.getPassengerProperty());
+        bookingInviteCode.setStatus(BookingShareCodeStatus.USED.name());
+        user.getPassengerProperty().setInviteCodes(List.of(bookingInviteCode));
+        mailService.informBookingSharedCodeHadBeenApplied(bookingInviteCode);
 
-        return bookingShareCode;
+        return bookingInviteCode;
     }
 
 }

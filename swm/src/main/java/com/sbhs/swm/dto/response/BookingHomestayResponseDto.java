@@ -16,6 +16,8 @@ public class BookingHomestayResponseDto {
     private BookingHomestayIdDto bookingHomestayId;
     private Long totalBookingPrice;
     private Long totalReservation;
+    private String status;
     private HomestayResponseDto homestay;
     private BookingDepositDto bookingDeposit;
+    
 }
