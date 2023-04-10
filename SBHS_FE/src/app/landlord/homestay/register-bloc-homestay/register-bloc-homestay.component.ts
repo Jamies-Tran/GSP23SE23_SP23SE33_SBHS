@@ -811,9 +811,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
 
           this.message = 'Register Homestay Success';
           this.openDialogSuccess();
-          this.router.navigate(['/Landlord/BlockHomestay/BlockHomestayList'], {
-            relativeTo: this.route,
-          });
+          setTimeout(() =>{
+            this.router.navigate(['/Landlord/BlockHomestay/BlockHomestayList'], {
+              relativeTo: this.route,
+            });
+         }, 4000);
+
         },
         (error) => {
           this.message = error;

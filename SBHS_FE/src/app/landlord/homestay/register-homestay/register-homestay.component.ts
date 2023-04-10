@@ -259,8 +259,8 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     } else {
       this.result = '';
       this.flag = true;
-      // this.stepper.selectedIndex = 2;
-      this.stepper.next();
+      this.stepper.selectedIndex = 3;
+      // this.stepper.next();
     }
   }
 
@@ -575,9 +575,13 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
             this.result = 'Register Homestay Success';
             this.message = 'Register Homestay Success';
             this.openDialogSuccess();
-            this.router.navigate(['/Landlord/Homestay/HomestayList'], {
+            setTimeout(() =>{
+              this.router.navigate(['/Landlord/Homestay/HomestayList'], {
               relativeTo: this.route,
             });
+           }, 3000);
+
+
 
           },
           (error) => {
