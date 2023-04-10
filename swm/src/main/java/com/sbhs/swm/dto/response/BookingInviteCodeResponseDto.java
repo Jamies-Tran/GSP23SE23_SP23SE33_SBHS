@@ -1,6 +1,4 @@
-package com.sbhs.swm.dto;
-
-import com.sbhs.swm.dto.response.BookingResponseDto;
+package com.sbhs.swm.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BookingInviteCodeDto {
+public class BookingInviteCodeResponseDto {
     private Long id;
     private String inviteCode;
     private String status;
-    private BookingResponseDto bookingResponse;
-
 }

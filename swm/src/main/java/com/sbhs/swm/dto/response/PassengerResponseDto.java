@@ -2,8 +2,6 @@ package com.sbhs.swm.dto.response;
 
 import java.util.List;
 
-import com.sbhs.swm.models.BookingInviteCode;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class PassengerResponseDto extends BaseResponseDto {
     private Long id;
-    private List<BookingInviteCode> inviteCodes;
     private BalanceWalletResponseDto balanceWallet;
     private List<BookingResponseDto> bookings;
 }

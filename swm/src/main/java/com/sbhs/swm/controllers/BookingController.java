@@ -31,10 +31,12 @@ import com.sbhs.swm.dto.response.BookingDateValidationResponseDto;
 import com.sbhs.swm.dto.response.BookingHomestayListResponseDto;
 import com.sbhs.swm.dto.response.BookingHomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingHomestayResponseForLandlordDto;
+import com.sbhs.swm.dto.response.BookingInviteCodeResponseDto;
 import com.sbhs.swm.dto.response.BookingResponseDto;
 
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingHomestay;
+
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.type.HomestayType;
 import com.sbhs.swm.services.IBookingService;
@@ -303,5 +305,51 @@ public class BookingController {
         bookingListPaging.setPageNumber(bookingList.getPage());
 
         return new ResponseEntity<BookingListPagingDto>(bookingListPaging, HttpStatus.OK);
+    }
+
+    @PutMapping("/homestay/check-in")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> checkInForHomestay(Long bookingId, Long homestayId) {
+        BookingHomestay bookingHomestay = bookingService.checkInForHomestay(bookingId, homestayId);
+        BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
+                BookingHomestayResponseDto.class);
+
+        return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @PutMapping("/homestay/check-out")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> checkOutForHomestay(Long bookingId, Long homestayId) {
+        BookingHomestay bookingHomestay = bookingService.checkOutForHomestay(bookingId, homestayId);
+        BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
+                BookingHomestayResponseDto.class);
+
+        return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @PutMapping("/bloc/check-in")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> checkInForBloc(Long bookingId) {
+        Booking booking = bookingService.checkInForBloc(bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(booking,
+                BookingResponseDto.class);
+        BookingInviteCodeResponseDto bookingInviteCode = modelMapper.map(booking.getInviteCode(),
+                BookingInviteCodeResponseDto.class);
+        responseBooking.setInviteCode(bookingInviteCode);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
+    @PutMapping("/bloc/check-out")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> checkOutForBloc(Long bookingId) {
+        Booking booking = bookingService.checkOutForBloc(bookingId);
+        BookingResponseDto responseBooking = modelMapper.map(booking,
+                BookingResponseDto.class);
+        BookingInviteCodeResponseDto bookingInviteCode = modelMapper.map(booking.getInviteCode(),
+                BookingInviteCodeResponseDto.class);
+        responseBooking.setInviteCode(bookingInviteCode);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 }

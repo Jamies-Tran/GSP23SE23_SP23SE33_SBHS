@@ -18,6 +18,14 @@ public interface IBookingService {
 
         Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
 
+        BookingHomestay checkInForHomestay(Long bookingId, Long homestayId);
+
+        Booking checkInForBloc(Long bookingId);
+
+        BookingHomestay checkOutForHomestay(Long bookingId, Long homestayId);
+
+        Booking checkOutForBloc(Long bookingId);
+
         List<BookingHomestay> getLandlordBookingHomestayList(String homestayName, String status);
 
         Integer countBookingHomestayPending(String homestayName);

@@ -28,8 +28,8 @@ public class BookingInviteController {
     public ResponseEntity<?> applyBookingShareCode(String inviteCode) {
         BookingInviteCode bookingShareCode = bookingShareCodeService.applyBookingInviteCode(inviteCode);
         BookingInviteCodeDto responseShareCode = modelMapper.map(bookingShareCode, BookingInviteCodeDto.class);
-        BookingResponseDto responseBooking = modelMapper.map(responseShareCode.getBooking(), BookingResponseDto.class);
-        responseShareCode.setBooking(responseBooking);
+        BookingResponseDto responseBooking = modelMapper.map(bookingShareCode.getBooking(), BookingResponseDto.class);
+        responseShareCode.setBookingResponse(responseBooking);
 
         return new ResponseEntity<BookingInviteCodeDto>(responseShareCode, HttpStatus.OK);
     }
