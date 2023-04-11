@@ -32,7 +32,7 @@ public interface IBookingService {
 
         Integer countBookingBlocHomestayPending(String blocName);
 
-        Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId);
+        Booking updateSavedBookingServices(List<Long> serviceIdList, String homestayName, Long bookingId);
 
         List<BookingHomestay> createSaveBookingForBloc(BookingBlocHomestayRequestDto bookingBlocHomestayRequest);
 

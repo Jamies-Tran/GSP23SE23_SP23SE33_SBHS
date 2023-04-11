@@ -153,9 +153,9 @@ public class BookingController {
 
     @PutMapping("/homestay-service")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> updateBookingServices(@RequestBody List<String> serviceNameList,
+    public ResponseEntity<?> updateBookingServices(@RequestBody List<Long> serviceIdList,
             @RequestParam Long bookingId, @RequestParam String homestayName) {
-        Booking updatedBookingService = bookingService.updateSavedBookingServices(serviceNameList, homestayName,
+        Booking updatedBookingService = bookingService.updateSavedBookingServices(serviceIdList, homestayName,
                 bookingId);
         BookingResponseDto responseBooking = modelMapper.map(updatedBookingService, BookingResponseDto.class);
 

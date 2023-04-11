@@ -738,11 +738,11 @@ public class BookingService implements IBookingService {
 
     @Override
     @Transactional
-    public Booking updateSavedBookingServices(List<String> serviceNameList, String homestayName, Long bookingId) {
+    public Booking updateSavedBookingServices(List<Long> serviceIdList, String homestayName, Long bookingId) {
         Booking booking = this.findBookingById(bookingId);
 
-        List<HomestayService> homestayServiceList = serviceNameList.stream()
-                .map(s -> homestayServiceRepo.findHomestayServiceByName(s).get())
+        List<HomestayService> homestayServiceList = serviceIdList.stream()
+                .map(s -> homestayServiceRepo.findById(s).get())
                 .collect(Collectors.toList());
         homestayServiceList = homestayServiceList.stream().filter(
                 s -> (s.getHomestay() != null && s.getHomestay().getName().equals(homestayName))
