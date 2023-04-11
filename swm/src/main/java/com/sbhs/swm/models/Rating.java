@@ -34,7 +34,7 @@ public class Rating extends BaseModel {
     private @Setter double averagePoint = 0.0;
 
     @Column(columnDefinition = "nvarchar(500)")
-    private @Setter String comment = "";
+    private @Setter String comment = null;
 
     @ManyToOne
     private @Setter Homestay homestay;

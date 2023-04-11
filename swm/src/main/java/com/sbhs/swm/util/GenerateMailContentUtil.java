@@ -10,14 +10,12 @@ import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sbhs.swm.models.Booking;
-import com.sbhs.swm.models.BookingDeposit;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.BookingHomestayService;
 import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.models.type.HomestayType;
-import com.sbhs.swm.models.type.PaymentMethod;
 
 public class GenerateMailContentUtil {
     @Autowired
@@ -177,11 +175,10 @@ public class GenerateMailContentUtil {
         NumberFormat vndNumberFormat = NumberFormat.getCurrencyInstance(locale);
 
         Booking booking = bookingHomestay.getBooking();
-        BookingDeposit bookingDeposit = booking.getBookingDeposits().stream()
-                .filter(b -> b.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny().get();
+
         int duration = dateFormatUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
         String bookingTotalPrice = vndNumberFormat.format(bookingHomestay.getTotalBookingPrice().doubleValue());
-        String bookingTotalPaidDeposit = vndNumberFormat.format(bookingDeposit.getPaidAmount().doubleValue());
+
         SwmUser user = booking.getPassenger().getUser();
         informMailBuilder.append("<h1>").append("Dear ").append(user.getUsername()).append("</h1>")
                 .append("</br>")
@@ -195,19 +192,10 @@ public class GenerateMailContentUtil {
                 .append("<li style='font-weight:bold'>").append("The homestay locate at ")
                 .append(bookingHomestay.getHomestay().getAddress()
                         .split(bookingHomestay.getHomestay().getAddress().split("_")[0]))
-                .append("</li>");
+                .append("</li>").append("<li style='font-weight:bold'>").append("Total booking price ")
+                .append(bookingTotalPrice).append("</li>");
         // .append("</ul>");
-        switch (PaymentMethod.valueOf(bookingHomestay.getPaymentMethod())) {
-            case SWM_WALLET:
-                informMailBuilder.append("<li style='font-weight:bold'>").append("Total booking price ")
-                        .append(bookingTotalPrice).append(" VND.").append(" You've paid deposit for ")
-                        .append(bookingTotalPaidDeposit).append("</li>");
-                break;
-            case CASH:
-                informMailBuilder.append("<li style='font-weight:bold'>").append("Total booking price ")
-                        .append(bookingTotalPrice).append("</li>");
-                break;
-        }
+
         if (booking.getBookingHomestayServices().stream()
                 .filter(s -> s.getHomestayName().equals(bookingHomestay.getHomestay().getName())).findAny()
                 .isPresent()) {

@@ -956,14 +956,17 @@ public class BookingService implements IBookingService {
                 .allMatch(b -> b.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name()))) {
             booking.setStatus(BookingStatus.CHECKEDOUT.name());
         }
-        BookingDeposit bookingDeposit = bookingHomestay.getBooking().getBookingDeposits().stream()
-                .filter(d -> d.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny().get();
-        Long currentUserBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
-        currentUserBalance = currentUserBalance - bookingDeposit.getUnpaidAmount();
-        user.getPassengerProperty().getBalanceWallet().setTotalBalance(currentUserBalance);
-        Long currentOwnerBalance = landlord.getBalanceWallet().getTotalBalance();
-        currentOwnerBalance = currentOwnerBalance + bookingDeposit.getUnpaidAmount();
-        landlord.getBalanceWallet().setTotalBalance(currentOwnerBalance);
+        if (bookingHomestay.getPaymentMethod().equalsIgnoreCase(PaymentMethod.SWM_WALLET.name())) {
+            BookingDeposit bookingDeposit = bookingHomestay.getBooking().getBookingDeposits().stream()
+                    .filter(d -> d.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny()
+                    .get();
+            Long currentUserBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+            currentUserBalance = currentUserBalance - bookingDeposit.getUnpaidAmount();
+            user.getPassengerProperty().getBalanceWallet().setTotalBalance(currentUserBalance);
+            Long currentOwnerBalance = landlord.getBalanceWallet().getTotalBalance();
+            currentOwnerBalance = currentOwnerBalance + bookingDeposit.getUnpaidAmount();
+            landlord.getBalanceWallet().setTotalBalance(currentOwnerBalance);
+        }
 
         return bookingHomestay;
     }
