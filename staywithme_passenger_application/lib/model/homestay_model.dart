@@ -111,18 +111,29 @@ class RatingModel {
       {this.servicePoint,
       this.locationPoint,
       this.securityPoint,
+      this.homestayName,
       this.comment});
 
   double? servicePoint;
   double? locationPoint;
   double? securityPoint;
+  String? homestayName;
   String? comment;
 
   factory RatingModel.fromJson(Map<String, dynamic> json) => RatingModel(
       servicePoint: json["servicePoint"],
       locationPoint: json["locationPoint"],
       securityPoint: json["securityPoint"],
+      homestayName: json["homestayName"],
       comment: json["comment"]);
+  
+  Map<String, dynamic> toJson() => {
+    "securityPoint" : securityPoint,
+    "servicePoint" : servicePoint,
+    "locationPoint" : locationPoint,
+    "homestayName" : homestayName,
+    "comment" : comment
+  };
 }
 
 class HomestayListPagingModel {

@@ -798,13 +798,13 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                                                           Row(
                                                                             children: [
                                                                               Text(
-                                                                                data.homestays![index].name!,
+                                                                                utf8.decode(data.homestays![index].name!.runes.toList()),
                                                                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                                                                               ),
-                                                                              Text(
-                                                                                "(${data.homestays![index].availableRooms} rooms)",
-                                                                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                                                              ),
+                                                                              // Text(
+                                                                              //   "(${data.homestays![index].availableRooms} rooms)",
+                                                                              //   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                              // ),
                                                                             ],
                                                                           ),
                                                                           const SizedBox(
@@ -1126,12 +1126,9 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                                                           Row(
                                                                             children: [
                                                                               Text(
-                                                                                data.blocs![index].name!,
+                                                                                utf8.decode(data.blocs![index].name!.runes.toList()),
                                                                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                                                              ),
-                                                                              Text(
-                                                                                "(${data.blocs![index].homestays!.length} homestays)",
-                                                                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                                overflow: TextOverflow.ellipsis,
                                                                               ),
                                                                             ],
                                                                           ),

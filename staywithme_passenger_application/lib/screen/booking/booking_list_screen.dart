@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -47,6 +48,7 @@ class _BookingLoadingScreenState extends State<BookingLoadingScreen> {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
     final bookingId = contextArguments["bookingId"];
     final homestayType = contextArguments["homestayType"];
+    final viewDetail = contextArguments["viewDetail"];
     BlocBookingDateValidationModel? blocBookingValidation =
         contextArguments["blocBookingValidation"];
     bool? isBookingHomestay = contextArguments["isBookingHomestay"] ?? true;
@@ -72,7 +74,8 @@ class _BookingLoadingScreenState extends State<BookingLoadingScreen> {
                           bookingHomestayIndex: bookingHomestayIndex,
                           isBookingHomestay: isBookingHomestay,
                           context: context,
-                          blocBookingValidation: blocBookingValidation));
+                          blocBookingValidation: blocBookingValidation,
+                          viewDetail: viewDetail));
                 } else if (bookingData is ServerExceptionModel) {
                   return AlertDialog(
                     title: const Center(child: Text("Notice")),
@@ -142,7 +145,9 @@ class _BookingListScreenState extends State<BookingListScreen> {
           bookingEndDateTextEditingController.text =
               streamSnapshot.data!.booking!.bookingTo!;
           return WillPopScope(
-            onWillPop: () async => false,
+            onWillPop: () async {
+              return streamSnapshot.data!.viewDetail!;
+            },
             child: Scaffold(
                 backgroundColor: primaryColor,
                 body: SingleChildScrollView(
@@ -194,16 +199,18 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                 color: secondaryColor,
                                                 width: 1.0))),
                                     onTap: () {
-                                      showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime.now(),
-                                              lastDate: DateTime.now().add(
-                                                  const Duration(days: 365)))
-                                          .then((value) {
-                                        bookingStartDateTextEditingController
-                                            .text = dateFormat.format(value!);
-                                      });
+                                      if (!streamSnapshot.data!.viewDetail!) {
+                                        showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime.now(),
+                                                lastDate: DateTime.now().add(
+                                                    const Duration(days: 365)))
+                                            .then((value) {
+                                          bookingStartDateTextEditingController
+                                              .text = dateFormat.format(value!);
+                                        });
+                                      }
                                     },
                                   ),
                                 ],
@@ -249,41 +256,45 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                               width: 1.0)),
                                     ),
                                     onTap: () {
-                                      showDatePicker(
-                                              context: context,
-                                              initialDate: dateFormat
-                                                  .parse(
-                                                      bookingStartDateTextEditingController
-                                                          .text)
-                                                  .add(const Duration(days: 1)),
-                                              firstDate: dateFormat
-                                                  .parse(
-                                                      bookingStartDateTextEditingController
-                                                          .text)
-                                                  .add(const Duration(days: 1)),
-                                              lastDate: dateFormat
-                                                  .parse(
-                                                      bookingStartDateTextEditingController
-                                                          .text)
-                                                  .add(const Duration(
-                                                      days: 365)))
-                                          .then((value) {
-                                        bookingEndDateTextEditingController
-                                            .text = dateFormat.format(value!);
-                                        bookingListBloc.eventController.sink
-                                            .add(UpdateBookingDateEvent(
+                                      if (!streamSnapshot.data!.viewDetail!) {
+                                        showDatePicker(
                                                 context: context,
-                                                bookingEnd:
-                                                    bookingEndDateTextEditingController
-                                                        .text,
-                                                bookingStart:
-                                                    bookingStartDateTextEditingController
-                                                        .text,
-                                                booking: streamSnapshot
-                                                    .data!.booking!,
-                                                bookingId: streamSnapshot
-                                                    .data!.booking!.id));
-                                      });
+                                                initialDate: dateFormat
+                                                    .parse(
+                                                        bookingStartDateTextEditingController
+                                                            .text)
+                                                    .add(const Duration(
+                                                        days: 1)),
+                                                firstDate: dateFormat
+                                                    .parse(
+                                                        bookingStartDateTextEditingController
+                                                            .text)
+                                                    .add(const Duration(
+                                                        days: 1)),
+                                                lastDate: dateFormat
+                                                    .parse(
+                                                        bookingStartDateTextEditingController
+                                                            .text)
+                                                    .add(const Duration(
+                                                        days: 365)))
+                                            .then((value) {
+                                          bookingEndDateTextEditingController
+                                              .text = dateFormat.format(value!);
+                                          bookingListBloc.eventController.sink
+                                              .add(UpdateBookingDateEvent(
+                                                  context: context,
+                                                  bookingEnd:
+                                                      bookingEndDateTextEditingController
+                                                          .text,
+                                                  bookingStart:
+                                                      bookingStartDateTextEditingController
+                                                          .text,
+                                                  booking: streamSnapshot
+                                                      .data!.booking!,
+                                                  bookingId: streamSnapshot
+                                                      .data!.booking!.id));
+                                        });
+                                      }
                                     },
                                   ),
                                 ],
@@ -618,123 +629,182 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                                   right: 10),
                                                           child: Row(
                                                             children: [
-                                                              Expanded(
-                                                                flex: 1,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            backgroundColor: Colors
-                                                                                .red,
-                                                                            maximumSize: const Size(150,
-                                                                                50),
-                                                                            minimumSize: const Size(150,
-                                                                                50)),
-                                                                        onPressed:
-                                                                            () {
-                                                                          showDialog(
-                                                                            context:
-                                                                                context,
-                                                                            builder: (context) =>
-                                                                                AlertDialog(
-                                                                              title: const Center(child: Text("Notice")),
-                                                                              content: SizedBox(
-                                                                                height: 100,
-                                                                                child: Column(children: [
-                                                                                  const Text("Do you want to delete this homestay?"),
-                                                                                  const SizedBox(
-                                                                                    height: 10,
-                                                                                  ),
-                                                                                  Row(
-                                                                                    children: [
-                                                                                      Expanded(
-                                                                                          flex: 1,
-                                                                                          child: ElevatedButton(
-                                                                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                                                                                              onPressed: () {
-                                                                                                Navigator.pop(context);
-                                                                                              },
-                                                                                              child: const Text("No", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold, color: Colors.white)))),
-                                                                                      Expanded(
-                                                                                          flex: 1,
-                                                                                          child: ElevatedButton(
-                                                                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                                                                                              onPressed: () {
-                                                                                                bookingListBloc.eventController.sink.add(DeleteBookingHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
-                                                                                              },
-                                                                                              child: const Text("Yes", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold, color: Colors.white))))
-                                                                                    ],
-                                                                                  )
-                                                                                ]),
+                                                              !streamSnapshot
+                                                                      .data!
+                                                                      .viewDetail!
+                                                                  ? Expanded(
+                                                                      flex: 1,
+                                                                      child: ElevatedButton(
+                                                                          style: ElevatedButton.styleFrom(backgroundColor: Colors.red, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
+                                                                          onPressed: () {
+                                                                            showDialog(
+                                                                              context: context,
+                                                                              builder: (context) => AlertDialog(
+                                                                                title: const Center(child: Text("Notice")),
+                                                                                content: SizedBox(
+                                                                                  height: 100,
+                                                                                  child: Column(children: [
+                                                                                    const Text("Do you want to delete this homestay?"),
+                                                                                    const SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                    Row(
+                                                                                      children: [
+                                                                                        Expanded(
+                                                                                            flex: 1,
+                                                                                            child: ElevatedButton(
+                                                                                                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                                                                                                onPressed: () {
+                                                                                                  Navigator.pop(context);
+                                                                                                },
+                                                                                                child: const Text("No", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold, color: Colors.white)))),
+                                                                                        Expanded(
+                                                                                            flex: 1,
+                                                                                            child: ElevatedButton(
+                                                                                                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                                                                                                onPressed: () {
+                                                                                                  bookingListBloc.eventController.sink.add(DeleteBookingHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
+                                                                                                },
+                                                                                                child: const Text("Yes", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold, color: Colors.white))))
+                                                                                      ],
+                                                                                    )
+                                                                                  ]),
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                          );
-                                                                        },
-                                                                        child:
-                                                                            Row(
-                                                                          children: const [
-                                                                            Icon(
-                                                                              Icons.delete,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                            SizedBox(
-                                                                              width: 10,
-                                                                            ),
-                                                                            Text(
-                                                                              "Delete",
-                                                                              style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
-                                                                            ),
-                                                                          ],
-                                                                        )),
-                                                              ),
-                                                              Expanded(
-                                                                flex: 2,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            backgroundColor: Colors
-                                                                                .greenAccent,
-                                                                            maximumSize: const Size(150,
-                                                                                50),
-                                                                            minimumSize: const Size(150,
-                                                                                50)),
-                                                                        onPressed:
-                                                                            () {
-                                                                          bookingListBloc
-                                                                              .eventController
-                                                                              .sink
-                                                                              .add(ViewHomestayDetailScreenEvent(context: context, homestayName: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.name));
-                                                                        },
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: const [
-                                                                            Icon(
-                                                                              Icons.remove_red_eye,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                            SizedBox(
-                                                                              width: 10,
-                                                                            ),
-                                                                            Text(
-                                                                              "View",
-                                                                              style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
-                                                                            ),
-                                                                          ],
-                                                                        )),
-                                                              ),
+                                                                            );
+                                                                          },
+                                                                          child: Row(
+                                                                            children: const [
+                                                                              Icon(
+                                                                                Icons.delete,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 10,
+                                                                              ),
+                                                                              Text(
+                                                                                "Delete",
+                                                                                style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                            ],
+                                                                          )),
+                                                                    )
+                                                                  : const SizedBox(),
+                                                              streamSnapshot
+                                                                          .data!
+                                                                          .viewDetail! &&
+                                                                      streamSnapshot
+                                                                              .data!
+                                                                              .homestayType! ==
+                                                                          "homestay" &&
+                                                                      streamSnapshot
+                                                                              .data!
+                                                                              .booking!
+                                                                              .bookingHomestays![
+                                                                                  index]
+                                                                              .status! ==
+                                                                          "ACCEPTED"
+                                                                  ? Expanded(
+                                                                      flex: 2,
+                                                                      child: ElevatedButton(
+                                                                          style: ElevatedButton.styleFrom(backgroundColor: streamSnapshot.data!.isCheckInDate()! ? Colors.greenAccent : Colors.grey, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
+                                                                          onPressed: () {
+                                                                            if (streamSnapshot.data!.isCheckInDate()!) {
+                                                                              bookingListBloc.eventController.sink.add(CheckInForHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
+                                                                            }
+                                                                          },
+                                                                          child: Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            children: const [
+                                                                              Icon(
+                                                                                Icons.remove_red_eye,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 10,
+                                                                              ),
+                                                                              Text(
+                                                                                "Check-in",
+                                                                                style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                                                                              ),
+                                                                            ],
+                                                                          )),
+                                                                    )
+                                                                  : streamSnapshot
+                                                                              .data!
+                                                                              .viewDetail! &&
+                                                                          streamSnapshot.data!.homestayType! ==
+                                                                              "homestay" &&
+                                                                          streamSnapshot.data!.booking!.bookingHomestays![index].status! ==
+                                                                              "CHECKEDIN"
+                                                                      ? Expanded(
+                                                                          flex:
+                                                                              2,
+                                                                          child: ElevatedButton(
+                                                                              style: ElevatedButton.styleFrom(backgroundColor: streamSnapshot.data!.isCheckoutDate()! ? Colors.greenAccent : Colors.grey, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
+                                                                              onPressed: () {
+                                                                                // if (streamSnapshot.data!.isCheckoutDate()!) {
+                                                                                //   bookingListBloc.eventController.sink.add(CheckOutForHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
+                                                                                // }
+                                                                                bookingListBloc.eventController.sink.add(CheckOutForHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
+                                                                              },
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: const [
+                                                                                  Icon(
+                                                                                    Icons.remove_red_eye,
+                                                                                    color: Colors.white,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Check-out",
+                                                                                    style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                                                                                  ),
+                                                                                ],
+                                                                              )),
+                                                                        )
+                                                                      : Expanded(
+                                                                          flex:
+                                                                              2,
+                                                                          child: ElevatedButton(
+                                                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
+                                                                              onPressed: () {
+                                                                                bookingListBloc.eventController.sink.add(ViewHomestayDetailScreenEvent(context: context, homestayName: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.name));
+                                                                              },
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: const [
+                                                                                  Icon(
+                                                                                    Icons.remove_red_eye,
+                                                                                    color: Colors.white,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "View",
+                                                                                    style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                                                                                  ),
+                                                                                ],
+                                                                              )),
+                                                                        ),
                                                             ],
                                                           ),
                                                         ),
                                                       )
                                                     : const SizedBox(),
                                                 index ==
-                                                        streamSnapshot
-                                                                .data!
-                                                                .booking!
-                                                                .bookingHomestays!
-                                                                .length -
-                                                            1
+                                                            streamSnapshot
+                                                                    .data!
+                                                                    .booking!
+                                                                    .bookingHomestays!
+                                                                    .length -
+                                                                1 &&
+                                                        !streamSnapshot
+                                                            .data!.viewDetail!
                                                     ? GestureDetector(
                                                         onTap: () {
                                                           if (streamSnapshot
@@ -861,8 +931,11 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                                       .add_circle)),
                                                             ),
                                                             streamSnapshot.data!
-                                                                        .homestayType ==
-                                                                    "homestay"
+                                                                            .homestayType ==
+                                                                        "homestay" &&
+                                                                    !streamSnapshot
+                                                                        .data!
+                                                                        .viewDetail!
                                                                 ? Column(
                                                                     children: [
                                                                       const Text(
@@ -1219,11 +1292,14 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                       .homestayServices![index];
                                               return GestureDetector(
                                                 onTap: () {
-                                                  bookingListBloc
-                                                      .eventController.sink
-                                                      .add(ChooseNewHomestayServiceEvent(
-                                                          homestayService:
-                                                              homestayService));
+                                                  if (!streamSnapshot
+                                                      .data!.viewDetail!) {
+                                                    bookingListBloc
+                                                        .eventController.sink
+                                                        .add(ChooseNewHomestayServiceEvent(
+                                                            homestayService:
+                                                                homestayService));
+                                                  }
                                                 },
                                                 child: Container(
                                                   height: 50,
@@ -1366,11 +1442,14 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                           index];
                                               return GestureDetector(
                                                 onTap: () {
-                                                  bookingListBloc
-                                                      .eventController.sink
-                                                      .add(ChooseNewHomestayServiceEvent(
-                                                          homestayService:
-                                                              homestayService));
+                                                  if (!streamSnapshot
+                                                      .data!.viewDetail!) {
+                                                    bookingListBloc
+                                                        .eventController.sink
+                                                        .add(ChooseNewHomestayServiceEvent(
+                                                            homestayService:
+                                                                homestayService));
+                                                  }
                                                 },
                                                 child: Container(
                                                   height: 50,
@@ -1587,7 +1666,7 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                                                 streamSnapshot.data!.booking!.id,
                                                                             homestayName: streamSnapshot.data!.selectedHomestay()!.name,
                                                                             homestayType: streamSnapshot.data!.homestayType,
-                                                                            serviceNameList: streamSnapshot.data!.serviceList!.map((e) => e.name!).toList()));
+                                                                            serviceIdList: streamSnapshot.data!.serviceList!.map((e) => e.id!).toList()));
                                                                       },
                                                                       child:
                                                                           const Text(
@@ -1624,7 +1703,60 @@ class _BookingListScreenState extends State<BookingListScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        streamSnapshot.data!.homestayType == "bloc"
+                        streamSnapshot.data!.viewDetail!
+                            ? Center(
+                                child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: 190,
+                                    child: TextFormField(
+                                      controller: streamSnapshot.data!
+                                          .bookingInviteCodeTxtController(),
+                                      readOnly: true,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      decoration: const InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              borderSide: BorderSide(
+                                                  width: 1.0,
+                                                  color: Colors.black)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              borderSide: BorderSide(
+                                                  width: 1.0,
+                                                  color: Colors.black)),
+                                          label: Text("Invite Code"),
+                                          labelStyle: TextStyle(
+                                              fontFamily: "Lobster",
+                                              fontWeight: FontWeight.bold)),
+                                      onTap: () {
+                                        bookingListBloc.eventController.sink
+                                            .add(CopyInviteCodeEvent(
+                                                inviteCode: streamSnapshot.data!
+                                                    .bookingInviteCodeTxtController()
+                                                    .text));
+                                      },
+                                    ),
+                                  ),
+                                  streamSnapshot.data!.isCopied!
+                                      ? const Text("copy to clipboard",
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.green))
+                                      : const SizedBox()
+                                ],
+                              ))
+                            : const SizedBox(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        streamSnapshot.data!.homestayType == "bloc" &&
+                                !streamSnapshot.data!.viewDetail!
                             ? SizedBox(
                                 child: Column(children: [
                                   const Text(
@@ -1690,23 +1822,100 @@ class _BookingListScreenState extends State<BookingListScreen> {
                         const SizedBox(
                           height: 15,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: secondaryColor,
-                              minimumSize: const Size(200, 50),
-                              maximumSize: const Size(200, 50)),
-                          onPressed: () {
-                            bookingListBloc.eventController.sink
-                                .add(SubmitBookingEvent(context: context));
-                          },
-                          child: const Text(
-                            "Submit",
-                            style: TextStyle(
-                                fontFamily: "Lobster",
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ),
+                        !streamSnapshot.data!.viewDetail!
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: secondaryColor,
+                                    minimumSize: const Size(200, 50),
+                                    maximumSize: const Size(200, 50)),
+                                onPressed: () {
+                                  bookingListBloc.eventController.sink.add(
+                                      SubmitBookingEvent(context: context));
+                                },
+                                child: const Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                      fontFamily: "Lobster",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              )
+                            : streamSnapshot.data!.viewDetail! &&
+                                    streamSnapshot.data!.homestayType! ==
+                                        "bloc" &&
+                                    streamSnapshot.data!.booking!.status! ==
+                                        "ACCEPTED"
+                                ? ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: streamSnapshot.data!
+                                                .isCheckInDate()!
+                                            ? Colors.green
+                                            : Colors.grey,
+                                        minimumSize: const Size(200, 50),
+                                        maximumSize: const Size(200, 50)),
+                                    onPressed: () {
+                                      if (streamSnapshot.data!
+                                          .isCheckInDate()!) {
+                                        bookingListBloc.eventController.sink
+                                            .add(CheckInForBlocEvent(
+                                                context: context));
+                                      }
+                                    },
+                                    child: const Text(
+                                      "Check-in",
+                                      style: TextStyle(
+                                          fontFamily: "Lobster",
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  )
+                                : streamSnapshot.data!.viewDetail! &&
+                                        streamSnapshot.data!.booking!.status! ==
+                                            "CHECKEDIN"
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: streamSnapshot
+                                                    .data!
+                                                    .isCheckoutDate()!
+                                                ? Colors.green
+                                                : Colors.grey,
+                                            minimumSize: const Size(200, 50),
+                                            maximumSize: const Size(200, 50)),
+                                        onPressed: () {
+                                          if (streamSnapshot.data!
+                                              .isCheckoutDate()!) {
+                                            bookingListBloc.eventController.sink
+                                                .add(CheckOutForBlocEvent(
+                                                    context: context));
+                                          }
+                                        },
+                                        child: const Text(
+                                          "Check-out",
+                                          style: TextStyle(
+                                              fontFamily: "Lobster",
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      )
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                            minimumSize: const Size(200, 50),
+                                            maximumSize: const Size(200, 50)),
+                                        onPressed: () {
+                                          if (streamSnapshot.data!
+                                              .isCheckoutDate()!) {
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        child: const Text(
+                                          "Back",
+                                          style: TextStyle(
+                                              fontFamily: "Lobster",
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      )
                       ]),
                 )),
           );

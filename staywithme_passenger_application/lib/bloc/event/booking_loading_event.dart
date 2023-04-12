@@ -10,7 +10,8 @@ class GetBookingSuccessEvent extends BookingLoadingEvent {
       this.homestayType,
       this.bookingHomestayIndex,
       this.isBookingHomestay,
-      this.blocBookingValidation});
+      this.blocBookingValidation,
+      this.viewDetail});
 
   BuildContext? context;
   BookingModel? booking;
@@ -18,4 +19,5 @@ class GetBookingSuccessEvent extends BookingLoadingEvent {
   bool? isBookingHomestay;
   int? bookingHomestayIndex;
   BlocBookingDateValidationModel? blocBookingValidation;
+  bool? viewDetail;
 }

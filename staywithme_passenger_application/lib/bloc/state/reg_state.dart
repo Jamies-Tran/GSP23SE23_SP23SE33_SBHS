@@ -104,6 +104,8 @@ class RegisterState {
   String? validatePhone() {
     if (phone == "" || phone == null) {
       return "Enter phone";
+    } else if (phone!.length > 10 || phone!.length < 10) {
+      return "Invalid phone number";
     }
 
     return null;

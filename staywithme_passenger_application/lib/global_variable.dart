@@ -84,6 +84,28 @@ final bookingSavedHomestayTypeUrl =
 final addHomestayInBlocUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["ADD_HOMESTAY_BLOC"]}";
 
+final bookingHistoryUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["BOOKING_HISTORY"]}";
+
+final applyInviteCodeUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["APPLY_INVITE_CODE"]}";
+
+final homestayCheckInUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_CHECK_IN"]}";
+
+final blocCheckInUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_CHECK_IN"]}";
+
+final homestayCheckOutUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["HOMESTAY_CHECK_OUT"]}";
+
+final blocCheckOutUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_CHECK_OUT"]}";
+
+final ratingHomestayUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["RATING_HOMESTAY"]}";
+
+final ratingBlocUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["RATING_BLOC"]}";
+
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final dateFormat = DateFormat("yyyy-MM-dd");

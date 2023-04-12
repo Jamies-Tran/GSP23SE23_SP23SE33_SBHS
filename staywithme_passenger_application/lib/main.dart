@@ -10,6 +10,7 @@ import 'package:staywithme_passenger_application/screen/authenticate/log_in_scre
 import 'package:staywithme_passenger_application/screen/authenticate/register_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
 import 'package:staywithme_passenger_application/screen/authenticate/validate_otp_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_history_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/bloc_detail_screen.dart';
@@ -104,6 +105,8 @@ class MyApp extends StatelessWidget {
             const ProcessBookingScreen(),
         SelectNextHomestayScreen.selectNextHomestayScreenRoute: (context) =>
             const SelectNextHomestayScreen(),
+        BookingHistoryScreen.bookingHistoryScreenRoute: (context) =>
+            const BookingHistoryScreen(),
         IntroScreen.instroScreenRoute: (context) => const IntroScreen()
       },
     );

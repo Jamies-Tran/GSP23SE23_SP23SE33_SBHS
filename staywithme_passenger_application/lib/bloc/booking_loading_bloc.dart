@@ -29,7 +29,8 @@ class BookingLoadingBloc {
             "homestayType": event.homestayType,
             "bookingHomestayIndex": event.bookingHomestayIndex,
             "isBookingHomestay": event.isBookingHomestay,
-            "blocBookingValidation": event.blocBookingValidation
+            "blocBookingValidation": event.blocBookingValidation,
+            "viewDetail": event.viewDetail
           });
     }
     stateController.sink.add(BookingLoadingState(

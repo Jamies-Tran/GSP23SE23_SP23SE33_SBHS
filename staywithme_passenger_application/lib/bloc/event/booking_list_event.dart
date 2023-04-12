@@ -44,13 +44,13 @@ class ChooseNewHomestayServiceEvent extends BookingListEvent {
 class UpdateHomestayServiceEvent extends BookingListEvent {
   UpdateHomestayServiceEvent(
       {this.context,
-      this.serviceNameList,
+      this.serviceIdList,
       this.bookingId,
       this.homestayName,
       this.homestayType});
 
   BuildContext? context;
-  List<String>? serviceNameList;
+  List<int>? serviceIdList;
   int? bookingId;
   String? homestayName;
   String? homestayType;
@@ -114,4 +114,37 @@ class ChoosePaymentMethodEvent extends BookingListEvent {
   ChoosePaymentMethodEvent({this.paymentMethod});
 
   BlocPaymentMethod? paymentMethod;
+}
+
+class CopyInviteCodeEvent extends BookingListEvent {
+  CopyInviteCodeEvent({this.inviteCode});
+
+  String? inviteCode;
+}
+
+class CheckInForHomestayEvent extends BookingListEvent {
+  CheckInForHomestayEvent({this.context, this.homestayId});
+
+  BuildContext? context;
+  int? homestayId;
+}
+
+class CheckOutForHomestayEvent extends BookingListEvent {
+  CheckOutForHomestayEvent({this.context, this.homestayId});
+
+  BuildContext? context;
+  int? homestayId;
+}
+
+class CheckInForBlocEvent extends BookingListEvent {
+  CheckInForBlocEvent({this.context});
+
+  BuildContext? context;
+}
+
+class CheckOutForBlocEvent extends BookingListEvent {
+  CheckOutForBlocEvent({this.context, this.bookingHomestay});
+
+  BuildContext? context;
+  BookingHomestayModel? bookingHomestay;
 }

@@ -1,3 +1,4 @@
+import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class BlocHomestayModel {
@@ -9,6 +10,7 @@ class BlocHomestayModel {
       this.totalAverageRating,
       this.numberOfRating,
       this.homestays,
+      this.bookings,
       this.homestayServices,
       this.homestayRules,
       this.ratings});
@@ -20,6 +22,7 @@ class BlocHomestayModel {
   double? totalAverageRating;
   int? numberOfRating;
   List<HomestayInBlocModel>? homestays;
+  List<BookingModel>? bookings;
   List<HomestayServiceModel>? homestayServices;
   List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
@@ -34,6 +37,10 @@ class BlocHomestayModel {
           totalAverageRating: json["totalAverageRating"],
           homestays: List<HomestayInBlocModel>.from(
               json["homestays"].map((e) => HomestayInBlocModel.fromJson(e))),
+          bookings: json["blocs"] != null
+              ? List<BookingModel>.from(
+                  json["blocs"].map((e) => BookingModel.fromJson(e)))
+              : <BookingModel>[],
           homestayServices: json["homestayServices"] != null
               ? List<HomestayServiceModel>.from(json["homestayServices"]
                   .map((e) => HomestayServiceModel.fromJson(e)))

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,8 +38,9 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
     bool brownseHomestayFlag = contextArguments["brownseHomestayFlag"] ?? false;
     String? bookingStart = contextArguments["bookingStart"];
     String? bookingEnd = contextArguments["bookingEnd"];
-    BlocBookingDateValidationModel? blocBookingValidation =
-        contextArguments["blocBookingValidation"];
+    // BlocBookingDateValidationModel? blocBookingValidation =
+    //     contextArguments["blocBookingValidation"];
+    // bool? viewDetail = contextArguments["viewDetail"];
     final bookingStartDateTextEditingController = TextEditingController();
     final bookingEndDateTextEditingController = TextEditingController();
 
@@ -155,7 +157,8 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            data.name!,
+                                            utf8.decode(
+                                                data.name!.runes.toList()),
                                             style: const TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.bold,

@@ -211,7 +211,9 @@ class _ChooseServiceScreenState extends State<ChooseServiceScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  widget.homestayServiceList![index].name!,
+                                  utf8.decode(widget
+                                      .homestayServiceList![index].name!.runes
+                                      .toList()),
                                   style: const TextStyle(
                                       fontFamily: "Lobster",
                                       color: Colors.black,
@@ -357,7 +359,9 @@ class _ViewHomestayFacilityScreenState
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            widget.homestayFacilityList![index].name!,
+                            utf8.decode(widget
+                                .homestayFacilityList![index].name!.runes
+                                .toList()),
                             style: const TextStyle(
                                 fontFamily: "Lobster",
                                 color: Colors.black,
@@ -826,11 +830,13 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                                                   child: child,
                                                 ),
                                                 child: Text(
-                                                  snapshot
+                                                  utf8.decode(snapshot
                                                       .data!
                                                       .homestayServiceList![
                                                           index]
-                                                      .name!,
+                                                      .name!
+                                                      .runes
+                                                      .toList()),
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),

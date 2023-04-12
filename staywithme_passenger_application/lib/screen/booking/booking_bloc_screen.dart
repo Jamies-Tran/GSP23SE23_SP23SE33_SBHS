@@ -327,7 +327,10 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                                       width: 10,
                                     ),
                                     Text(
-                                      "${homestays[index].name}",
+                                      utf8.decode(homestays[index]
+                                          .name!
+                                          .runes
+                                          .toList()),
                                       overflow: TextOverflow.ellipsis,
                                     )
                                   ],
@@ -1257,7 +1260,8 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  Text(widget.bloc!.name!)
+                                  Text(utf8.decode(
+                                      widget.bloc!.name!.runes.toList()))
                                 ],
                               ),
                               const SizedBox(
@@ -1432,10 +1436,12 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  snapshot
+                                                  utf8.decode(snapshot
                                                       .data!
                                                       .blocServiceList![index]
-                                                      .name!,
+                                                      .name!
+                                                      .runes
+                                                      .toList()),
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),

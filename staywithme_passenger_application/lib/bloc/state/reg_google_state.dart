@@ -50,6 +50,8 @@ class CompleteGoogleRegisterState {
   String? validatePhone() {
     if (phone == null || phone == "") {
       return "Enter phone";
+    } else if (phone!.length > 10 || phone!.length < 10) {
+      return "Invalid phone number";
     }
 
     return null;
