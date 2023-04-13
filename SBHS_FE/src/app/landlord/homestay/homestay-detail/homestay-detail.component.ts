@@ -13,26 +13,7 @@ import { ImageService } from 'src/app/services/image.service';
 @Component({
   selector: 'app-homestay-detail',
   templateUrl: './homestay-detail.component.html',
-  styles: [`
-  .card-header{
-    h1:after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 3px;
-      background: #ee2c74;
-      margin-top: 5px;
-    }
-  }
-
-  .posttitle-text {
-    font-weight: 500;
-    border-left: 3px solid #ee2c74;
-    padding-left: 10px;
-    line-height: 1.5;
-    min-height: 27px;
-  }
-  `],
+  styleUrls: ['./homestay-detail.component.scss'],
 })
 export class HomestayDetailComponent implements OnInit {
   constructor(
