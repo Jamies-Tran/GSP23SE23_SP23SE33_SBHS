@@ -30,9 +30,9 @@ public interface IBookingService {
 
         List<BookingHomestay> getLandlordBookingHomestayList(String homestayName, String status);
 
-        Integer countBookingHomestayPending(String homestayName);
+        Boolean isHomestayHaveBookingPending(String homestayName);
 
-        Integer countBookingBlocHomestayPending(String blocName);
+        Boolean isBlocHomestayHaveBookingPending(String blocName);
 
         Booking updateSavedBookingServices(List<Long> serviceIdList, String homestayName, Long bookingId);
 

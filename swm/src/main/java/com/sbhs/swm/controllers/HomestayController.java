@@ -84,7 +84,7 @@ public class HomestayController {
                                 .collect(Collectors.toList());
                 homestayDtos.forEach(h -> {
                         h.setAddress(h.getAddress().split("_")[0]);
-                        h.setTotalBookingPending(bookingService.countBookingHomestayPending(h.getName()));
+                        h.setIsPendingBooking(bookingService.isHomestayHaveBookingPending(h.getName()));
                 });
 
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
@@ -108,7 +108,7 @@ public class HomestayController {
                                 .collect(Collectors.toList());
                 blocHomestayDtos.forEach(h -> {
                         h.setAddress(h.getAddress().split("_")[0]);
-                        h.setTotalBookingPending(bookingService.countBookingBlocHomestayPending(h.getName()));
+                        h.setIsPendingBooking(bookingService.isBlocHomestayHaveBookingPending(h.getName()));
                 });
 
                 BlocHomestayListPagingDto blocResponseListDto = new BlocHomestayListPagingDto(blocHomestayDtos,
@@ -164,7 +164,7 @@ public class HomestayController {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
                 responseHomestay.setAddress(responseHomestay.getAddress().split("_")[0]);
-                responseHomestay.setTotalBookingPending(bookingService.countBookingHomestayPending(name));
+                responseHomestay.setIsPendingBooking(bookingService.isHomestayHaveBookingPending(name));
 
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
         }
@@ -174,7 +174,7 @@ public class HomestayController {
                 BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
                 BlocHomestayResponseDto responseBloc = modelMapper.map(bloc, BlocHomestayResponseDto.class);
                 responseBloc.setAddress(responseBloc.getAddress().split("_")[0]);
-                responseBloc.setTotalBookingPending(bookingService.countBookingBlocHomestayPending(name));
+                responseBloc.setIsPendingBooking(bookingService.isBlocHomestayHaveBookingPending(name));
 
                 return new ResponseEntity<BlocHomestayResponseDto>(responseBloc, HttpStatus.OK);
         }

@@ -2,6 +2,7 @@ package com.sbhs.swm.implement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -675,7 +676,7 @@ public class BookingService implements IBookingService {
                     .filter(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
                     .findAny().get();
             BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(booking.getId(), homestayId)
-                    .orNull();
+                    .orElse(null);
             return bookingHomestay;
         }
         return null;
@@ -822,7 +823,8 @@ public class BookingService implements IBookingService {
 
     @Override
     public List<BookingHomestay> getLandlordBookingHomestayList(String homestayName, String status) {
-        List<BookingHomestay> bookingHomestayList = bookingHomestayRepo.findBookingHomestayByHomestayName(homestayName,
+        List<BookingHomestay> bookingHomestayList = bookingHomestayRepo.findBookingHomestayByHomestayNameAndStatus(
+                homestayName,
                 status);
         return bookingHomestayList;
     }
@@ -915,12 +917,6 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public Integer countBookingHomestayPending(String homestayName) {
-        Integer bookingHomestayPending = bookingHomestayRepo.countBookingHomestayPending(homestayName);
-        return bookingHomestayPending;
-    }
-
-    @Override
     public PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
             int page, int size, boolean isNextPage, boolean isPreviousPage) {
         List<Booking> bookingList = this.filterPassengerBookingByHost(filterBookingRequest.getIsHost());
@@ -975,14 +971,6 @@ public class BookingService implements IBookingService {
             bookingList = shareCodeBooking;
         }
         return bookingList;
-    }
-
-    @Override
-    public Integer countBookingBlocHomestayPending(String blocName) {
-        BlocHomestay bloc = homestayService.findBlocHomestayByName(blocName);
-        List<Booking> blocBookingList = bloc.getBookings();
-
-        return blocBookingList.size();
     }
 
     @Override
@@ -1162,6 +1150,20 @@ public class BookingService implements IBookingService {
         BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId).get();
         bookingHomestay.setPaymentMethod(paymentMethod);
         return bookingHomestay;
+    }
+
+    @Override
+    public Boolean isHomestayHaveBookingPending(String homestayName) {
+        Optional<BookingHomestay> checkPendingBookingHomestayOfHomestay = bookingHomestayRepo
+                .checkPendingBookingHomestay(homestayName, BookingStatus.PENDING.name());
+        return checkPendingBookingHomestayOfHomestay.isPresent();
+    }
+
+    @Override
+    public Boolean isBlocHomestayHaveBookingPending(String blocName) {
+        Optional<Booking> checkPendingBookingBlocHomestay = bookingRepo.checkBookingPendingBloc(blocName,
+                BookingStatus.PENDING.name());
+        return checkPendingBookingBlocHomestay.isPresent();
     }
 
 }
