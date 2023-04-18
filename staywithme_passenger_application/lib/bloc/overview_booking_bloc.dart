@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/overview_booking_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/overview_booking_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';

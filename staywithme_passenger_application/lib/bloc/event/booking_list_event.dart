@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 
 abstract class BookingListEvent {}
 
@@ -36,9 +36,10 @@ class ChooseViewServiceListEvent extends BookingListEvent {
 }
 
 class ChooseNewHomestayServiceEvent extends BookingListEvent {
-  ChooseNewHomestayServiceEvent({this.homestayService});
+  ChooseNewHomestayServiceEvent({this.homestayService, this.isServiceBooked});
 
   HomestayServiceModel? homestayService;
+  bool? isServiceBooked;
 }
 
 class UpdateHomestayServiceEvent extends BookingListEvent {
@@ -113,7 +114,7 @@ class ChooseHomestayListInBlocEvent extends BookingListEvent {
 class ChoosePaymentMethodEvent extends BookingListEvent {
   ChoosePaymentMethodEvent({this.paymentMethod});
 
-  BlocPaymentMethod? paymentMethod;
+  PaymentMethod? paymentMethod;
 }
 
 class CopyInviteCodeEvent extends BookingListEvent {
@@ -147,4 +148,12 @@ class CheckOutForBlocEvent extends BookingListEvent {
 
   BuildContext? context;
   BookingHomestayModel? bookingHomestay;
+}
+
+class UpdatePaymentMethodEvent extends BookingListEvent {
+  UpdatePaymentMethodEvent({this.context, this.homestayId, this.paymentMethod});
+
+  BuildContext? context;
+  int? homestayId;
+  PaymentMethod? paymentMethod;
 }

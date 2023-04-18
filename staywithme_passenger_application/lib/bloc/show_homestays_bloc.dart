@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:staywithme_passenger_application/bloc/event/show_homestays_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/show_homestays_state.dart';
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
@@ -181,7 +180,7 @@ class ShowHomestaysBloc {
           event.context!, BookingLoadingScreen.bookingLoadingScreen,
           arguments: {
             "bookingId": _booking!.id!,
-            "homestayType": _booking!.homestayType!,
+            "homestayType": _booking!.homestayType!.toLowerCase(),
             "blocBookingValidation": _blocBookingValidation
           });
     }

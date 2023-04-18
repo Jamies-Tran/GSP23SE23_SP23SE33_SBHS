@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 
 abstract class OverviewBookingEvent {}
 

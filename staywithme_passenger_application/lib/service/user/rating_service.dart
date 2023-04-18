@@ -11,14 +11,14 @@ import 'package:staywithme_passenger_application/service/share_preference/share_
 abstract class IRatingService {
   Future<dynamic> ratingHomestay(RatingModel rating);
 
-  Future<dynamic> ratingBloc(List<RatingModel> ratingList, String blocName);
+  Future<dynamic> ratingBloc(RatingModel rating);
 }
 
 class RatingService extends IRatingService {
   @override
-  Future ratingBloc(List<RatingModel> ratingList, String blocName) async {
+  Future ratingBloc(RatingModel rating) async {
     final client = http.Client();
-    final uri = Uri.parse("$ratingBlocUrl?blocName=$blocName");
+    final uri = Uri.parse(ratingBlocUrl);
     try {
       final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
       final accessToken = userLoginInfo["accessToken"];
@@ -28,12 +28,11 @@ class RatingService extends IRatingService {
                 "content-type": "application/json",
                 "Authorization": "Bearer $accessToken"
               },
-              body: json.encode(ratingList.map((e) => e.toJson())))
+              body: json.encode(rating.toJson()))
           .timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 200) {
-        List<RatingModel> responseRatingList = List<RatingModel>.from(
-            json.decode(response.body).map((e) => RatingModel.fromJson(e)));
-        return responseRatingList;
+        RatingModel rating = RatingModel.fromJson(json.decode(response.body));
+        return rating;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

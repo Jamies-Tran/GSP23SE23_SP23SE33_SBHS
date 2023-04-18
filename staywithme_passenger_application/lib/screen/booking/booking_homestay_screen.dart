@@ -532,9 +532,6 @@ class _ViewHomestayRuleScreenState extends State<ViewHomestayRuleScreen> {
   }
 }
 
-// ignore: constant_identifier_names
-enum PaymentMethod { swm_wallet, cash }
-
 class OverviewBookingScreen extends StatefulWidget {
   const OverviewBookingScreen(
       {super.key,

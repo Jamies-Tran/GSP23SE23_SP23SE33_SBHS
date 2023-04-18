@@ -26,6 +26,7 @@ import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/payment_history_screen.dart';
+import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 void main() async {
@@ -99,6 +100,8 @@ class MyApp extends StatelessWidget {
             const ShowBlocHomestayListScreen(),
         BookingListScreen.bookingListScreenRoute: (context) =>
             const BookingListScreen(),
+        RatingHomestayScreen.ratingHomestayScreenRoute: (context) =>
+            const RatingHomestayScreen(),
         BookingLoadingScreen.bookingLoadingScreen: (context) =>
             const BookingLoadingScreen(),
         ProcessBookingScreen.processBookingScreenRoute: (context) =>

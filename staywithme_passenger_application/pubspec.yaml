@@ -84,6 +84,9 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - images/swm.png
+    - images/location.png
+    - images/security.png
+    - images/service.png
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

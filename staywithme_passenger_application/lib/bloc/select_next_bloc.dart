@@ -54,7 +54,14 @@ class SelectNextHomestayBloc {
   void eventHandler(SelectNextHomestayEvent event) {
     if (event is OnTabChooseFilterNextHomestayEvent) {
       Navigator.pushNamed(event.context!, FilterScreen.filterScreenRoute,
-          arguments: {"homestayType": event.homestayType});
+          arguments: {
+            "homestayType": _homestayType,
+            "bookingId": _bookingId,
+            "brownseHomestayFlag": _brownseHomestayFlag,
+            "bookingStart": _bookingStart,
+            "bookingEnd": _bookingEnd,
+            "blocBookingValidation": _blocBookingValidation
+          });
     } else if (event is ViewNextHomestayDetailEvent) {
       Navigator.pushNamed(
           event.context!, HomestayDetailScreen.homestayDetailScreenRoute,

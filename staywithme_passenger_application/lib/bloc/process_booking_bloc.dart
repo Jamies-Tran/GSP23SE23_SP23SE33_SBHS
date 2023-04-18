@@ -9,13 +9,9 @@ class ProcessBookingBloc {
   final eventController = StreamController<ProcessBookingEvent>();
   final stateController = StreamController<ProcessBookingState>();
 
-  String? _paymentMethod;
-  String? _homestayType;
-
   ProcessBookingState initData(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-    _paymentMethod = contextArguments["paymentMethod"];
-    _homestayType = contextArguments["homestayType"];
+
     return ProcessBookingState(
         bookingId: contextArguments["bookingId"],
         homestayType: contextArguments["homestayType"],

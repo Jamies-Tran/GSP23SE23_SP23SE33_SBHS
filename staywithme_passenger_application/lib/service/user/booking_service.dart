@@ -58,6 +58,9 @@ abstract class IBookingService {
   Future<dynamic> checkOutForHomestay(int bookingId, int homestayId);
 
   Future<dynamic> checkOutForBloc(int bookingId);
+
+  Future<dynamic> updatePaymentMethod(
+      int bookingId, int homestayId, String paymentMethod);
 }
 
 class BookingService extends IBookingService {
@@ -644,6 +647,35 @@ class BookingService extends IBookingService {
         BookingHomestayModel booking =
             BookingHomestayModel.fromJson(json.decode(response.body));
         return booking;
+      } else {
+        ServerExceptionModel serverExceptionModel =
+            ServerExceptionModel.fromJson(json.decode(response.body));
+        return serverExceptionModel;
+      }
+    } on TimeoutException catch (e) {
+      return e;
+    } on SocketException catch (e) {
+      return e;
+    }
+  }
+
+  @override
+  Future updatePaymentMethod(
+      int bookingId, int homestayId, String paymentMethod) async {
+    final client = http.Client();
+    final uri = Uri.parse(
+        "$updatePaymentMethodUrl?bookingId=$bookingId&homestayId=$homestayId&paymentMethod=$paymentMethod");
+    try {
+      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
+      final accessToken = userLoginInfo["accessToken"];
+      final response = await client.put(uri, headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer $accessToken"
+      });
+      if (response.statusCode == 200) {
+        BookingHomestayModel bookingHomestay =
+            BookingHomestayModel.fromJson(json.decode(response.body));
+        return bookingHomestay;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

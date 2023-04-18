@@ -163,6 +163,17 @@ class FilterHomestayBloc {
             "homestayType": _homestayType,
             "position": event.position
           });
+    } else if (event is OnClickSearchNextHomestayEvent) {
+      Navigator.pushNamed(event.context!,
+          SelectNextHomestayScreen.selectNextHomestayScreenRoute,
+          arguments: {
+            "homestayType": _homestayType,
+            "bookingId": event.bookingId,
+            "brownseHomestayFlag": event.brownseHomestayFlag,
+            "bookingStart": event.bookingStart,
+            "bookingEnd": event.bookingEnd,
+            "blocBookingValidation": event.blocBookingValidation
+          });
     }
 
     stateController.sink.add(

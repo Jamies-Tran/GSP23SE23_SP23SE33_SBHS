@@ -101,6 +101,9 @@ final homestayCheckOutUrl =
 final blocCheckOutUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["BLOC_CHECK_OUT"]}";
 
+final updatePaymentMethodUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["UPDATE_PAYMENT"]}";
+
 final ratingHomestayUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["RATING_HOMESTAY"]}";
 
@@ -112,6 +115,10 @@ final dateFormat = DateFormat("yyyy-MM-dd");
 final connectionTimeOut = int.parse(dotenv.env["CONNECTION_TIMEOUT"]!);
 const primaryColor = Colors.orange;
 const secondaryColor = Colors.deepOrangeAccent;
+
+// payment method
+// ignore: constant_identifier_names
+enum PaymentMethod { swm_wallet, cash }
 
 String? getCityProvinceName(String cityProvince, bool shorten) {
   if (shorten) {

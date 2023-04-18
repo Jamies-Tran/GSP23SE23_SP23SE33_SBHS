@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:staywithme_passenger_application/bloc/event/booking_list_event.dart';
 
 import 'package:staywithme_passenger_application/bloc/state/booking_list_state.dart';
+import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
@@ -15,6 +16,7 @@ import 'package:staywithme_passenger_application/screen/booking/booking_list_scr
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -27,23 +29,23 @@ class BookingListBloc {
   final _bookingHomestayChosenList = <BookingHomestayModel>[];
   BookingModel? _booking;
   String? _homestayType;
-  bool? _isBookingHomestay = true;
+  bool? _isBookingHomestay;
   bool? _activeUpdateService = false;
   int? _bookingHomestayIndex = 0;
   bool? _viewDetail = false;
   BlocBookingDateValidationModel? _blocBookingValidation;
-  BlocPaymentMethod? _paymentMethod;
+  PaymentMethod? _paymentMethod;
   final List<HomestayServiceModel> _serviceList = <HomestayServiceModel>[];
   bool _isCopied = false;
-  bool _isRating = false;
 
   BookingListState initData(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
     _booking = contextArguments["booking"];
     _homestayType = contextArguments["homestayType"];
     _blocBookingValidation = contextArguments["blocBookingValidation"];
-    _paymentMethod = BlocPaymentMethod.swm_wallet;
+    _paymentMethod = PaymentMethod.swm_wallet;
     _viewDetail = contextArguments["viewDetail"] ?? false;
+    _isBookingHomestay = contextArguments["isBookingHomestay"] ?? true;
     return BookingListState(
       booking: contextArguments["booking"],
       homestayType: contextArguments["homestayType"],
@@ -53,7 +55,7 @@ class BookingListBloc {
       serviceList: _serviceList,
       blocBookingValidation: contextArguments["blocBookingValidation"],
       activeUpdateService: false,
-      paymentMethod: BlocPaymentMethod.swm_wallet,
+      paymentMethod: PaymentMethod.swm_wallet,
       viewDetail: contextArguments["viewDetail"] ?? false,
       isCopied: false,
     );
@@ -123,8 +125,10 @@ class BookingListBloc {
       String homestayName = _homestayType == "homestay"
           ? event.homestayName!
           : _booking!.bloc!.name!;
+
       final bookingData = await bookingService.updateBookingServices(
           event.serviceIdList!, event.bookingId!, homestayName);
+
       if (bookingData is BookingModel) {
         Navigator.pushReplacementNamed(
             event.context!, BookingLoadingScreen.bookingLoadingScreen,
@@ -159,6 +163,7 @@ class BookingListBloc {
       }
     } else if (event is CancelUpdateServiceEvent) {
       _activeUpdateService = false;
+      _serviceList.clear();
       Navigator.pushNamed(
           event.context!, BookingLoadingScreen.bookingLoadingScreen,
           arguments: {
@@ -188,8 +193,7 @@ class BookingListBloc {
           filterByBookingDateRange: FilterByBookingDate(
               start: _booking!.bookingFrom,
               end: _booking!.bookingTo,
-              totalReservation:
-                  _booking!.bookingHomestays!.first.totalReservation),
+              totalReservation: 5),
         );
       }
       Navigator.pushReplacementNamed(event.context!,
@@ -261,10 +265,10 @@ class BookingListBloc {
     } else if (event is SubmitBookingEvent) {
       String paymentMethod = "";
       switch (_paymentMethod) {
-        case BlocPaymentMethod.cash:
+        case PaymentMethod.cash:
           paymentMethod = "CASH";
           break;
-        case BlocPaymentMethod.swm_wallet:
+        case PaymentMethod.swm_wallet:
           paymentMethod = "SWM_WALLET";
           break;
         case null:
@@ -288,6 +292,55 @@ class BookingListBloc {
           });
     } else if (event is ChoosePaymentMethodEvent) {
       _paymentMethod = event.paymentMethod!;
+    } else if (event is UpdatePaymentMethodEvent) {
+      String paymentMethod = "";
+      switch (event.paymentMethod) {
+        case PaymentMethod.swm_wallet:
+          paymentMethod = "SWM_WALLET";
+          break;
+        case PaymentMethod.cash:
+          paymentMethod = "CASH";
+          break;
+        default:
+          break;
+      }
+      final updatePaymentData = await bookingService.updatePaymentMethod(
+          _booking!.id!, event.homestayId!, paymentMethod);
+      if (updatePaymentData is BookingHomestayModel) {
+        Navigator.pushReplacementNamed(
+            event.context!, BookingLoadingScreen.bookingLoadingScreen,
+            arguments: {
+              "bookingId": _booking!.id,
+              "homestayType": _homestayType
+            });
+      } else if (updatePaymentData is ServerExceptionModel) {
+        showDialog(
+          context: event.context!,
+          builder: (context) => AlertDialog(
+            title: const Center(
+              child: Text("Error"),
+            ),
+            content: SizedBox(
+              height: 100,
+              child: Text(updatePaymentData.message!),
+            ),
+          ),
+        );
+      } else if (updatePaymentData is SocketException ||
+          updatePaymentData is TimeoutException) {
+        showDialog(
+          context: event.context!,
+          builder: (context) => const AlertDialog(
+            title: Center(
+              child: Text("Error"),
+            ),
+            content: SizedBox(
+              height: 100,
+              child: Text("Can't connect to server"),
+            ),
+          ),
+        );
+      }
     } else if (event is CopyInviteCodeEvent) {
       await Clipboard.setData(ClipboardData(text: event.inviteCode));
       _isCopied = true;
@@ -300,7 +353,6 @@ class BookingListBloc {
             arguments: {
               "bookingId": _booking!.id,
               "homestayType": _homestayType,
-              "blocBookingValidation": _blocBookingValidation,
               "viewDetail": _viewDetail
             });
       } else if (checkInData is ServerExceptionModel) {
@@ -336,12 +388,12 @@ class BookingListBloc {
           _booking!.id!, event.homestayId!);
       if (checkOutData is BookingHomestayModel) {
         Navigator.pushReplacementNamed(
-            event.context!, BookingLoadingScreen.bookingLoadingScreen,
+            event.context!, RatingHomestayScreen.ratingHomestayScreenRoute,
             arguments: {
-              "bookingId": _booking!.id,
-              "homestayType": _homestayType,
-              "blocBookingValidation": _blocBookingValidation,
-              "viewDetail": _viewDetail
+              "booking": _booking,
+              "bookingHomestay": checkOutData,
+              "viewDetail": _viewDetail,
+              "homestayType": _homestayType
             });
       } else if (checkOutData is ServerExceptionModel) {
         showDialog(
@@ -375,9 +427,9 @@ class BookingListBloc {
       final checkOutData = await bookingService.checkOutForBloc(_booking!.id!);
       if (checkOutData is BookingModel) {
         Navigator.pushReplacementNamed(
-            event.context!, BookingLoadingScreen.bookingLoadingScreen,
+            event.context!, RatingHomestayScreen.ratingHomestayScreenRoute,
             arguments: {
-              "bookingId": _booking!.id,
+              "booking": checkOutData,
               "homestayType": _homestayType,
               "blocBookingValidation": _blocBookingValidation,
               "viewDetail": _viewDetail

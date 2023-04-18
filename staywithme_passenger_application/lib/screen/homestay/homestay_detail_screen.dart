@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_detail_event.dart';
 import 'package:staywithme_passenger_application/bloc/homestay_detail_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
-import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';

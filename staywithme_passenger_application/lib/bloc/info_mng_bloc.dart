@@ -23,7 +23,7 @@ class InfoManagementBloc {
   final _bookingService = locator.get<IBookingService>();
   final formKey = GlobalKey<FormState>();
 
-  bool _inputInviteCode = false;
+  final bool _inputInviteCode = false;
 
   String? _validInviteCode;
   String? _inviteCode = "";

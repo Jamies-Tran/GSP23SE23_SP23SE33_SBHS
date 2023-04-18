@@ -8,6 +8,7 @@ import 'package:staywithme_passenger_application/bloc/state/filter_homestay_stat
 
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/auto_complete_model.dart';
+import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/location/location_service.dart';
@@ -60,10 +61,17 @@ class _FilterScreenState extends State<FilterScreen> {
   Widget build(BuildContext context) {
     List<String> facilities = ["None"];
     List<String> services = ["None"];
+
     int homestayHighestPrice = 100000;
     int homestayServiceHighestPrice = 100000;
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
-
+    int? bookingId = contextArguments["bookingId"];
+    bool? brownseHomestayFlag =
+        contextArguments["brownseHomestayFlag"] ?? false;
+    String? bookingStart = contextArguments["bookingStart"];
+    String? bookingEnd = contextArguments["bookingEnd"];
+    BlocBookingDateValidationModel? blocBookingValidation =
+        contextArguments["blocBookingValidation"];
     FilterAddtionalInformationModel? filterAdditional =
         contextArguments["filterAddtionalInformation"];
     Position? position = contextArguments["position"];
@@ -634,13 +642,29 @@ class _FilterScreenState extends State<FilterScreen> {
                                 minimumSize: const Size(150, 50),
                                 backgroundColor: primaryColor),
                             onPressed: () {
-                              filterHomestayBloc.eventController.sink.add(
-                                  OnClickSearchHomestayEvent(
-                                      context: context,
-                                      searchFilterModel: snapshot.data!
-                                          .generateSearchFilterModel(),
-                                      homestayType: homestayType,
-                                      position: position));
+                              if (brownseHomestayFlag!) {
+                                filterHomestayBloc.eventController.sink.add(
+                                    OnClickSearchNextHomestayEvent(
+                                        context: context,
+                                        bookingId: bookingId,
+                                        blocBookingValidation:
+                                            blocBookingValidation,
+                                        bookingStart: bookingStart,
+                                        bookingEnd: bookingEnd,
+                                        filterOption: snapshot.data!
+                                            .generateSearchFilterModel()
+                                            .filterOption,
+                                        brownseHomestayFlag:
+                                            brownseHomestayFlag));
+                              } else {
+                                filterHomestayBloc.eventController.sink.add(
+                                    OnClickSearchHomestayEvent(
+                                        context: context,
+                                        searchFilterModel: snapshot.data!
+                                            .generateSearchFilterModel(),
+                                        homestayType: homestayType,
+                                        position: position));
+                              }
                             },
                             child: const Text(
                               "Search",
