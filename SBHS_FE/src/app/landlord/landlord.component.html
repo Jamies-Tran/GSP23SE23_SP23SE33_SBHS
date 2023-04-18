@@ -40,7 +40,7 @@
                  <!--  Homestay -->
                  <mat-accordion multi class="sidenav-nav-link">
                   <mat-expansion-panel class="bg-transparent shadow-none my-0"
-                    [hideToggle]="!isExpanded ? 'true' :'false'">
+                    [hideToggle]="!isExpanded ? 'true' :'false'"  [expanded]="isExpanded">
                     <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
                       [style.padding]="!isExpanded ? '0!important' : ''"
                       [class.active]="router.url.includes('/Homestay')"
@@ -94,7 +94,7 @@
 
                 <!-- Block Homestay -->
                 <mat-accordion multi class="sidenav-nav-link">
-                  <mat-expansion-panel class="bg-transparent shadow-none my-0"
+                  <mat-expansion-panel class="bg-transparent shadow-none my-0" [expanded]="isExpanded"
                     [hideToggle]="!isExpanded ? 'true' :'false'">
                     <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
                       [style.padding]="!isExpanded ? '0!important' : ''"

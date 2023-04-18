@@ -6,10 +6,11 @@
     <mat-step editable [stepControl]="informationFormGroup">
       <form [formGroup]="informationFormGroup" (ngSubmit)="informationForm()" #formone="ngForm">
         <ng-template matStepLabel>Basic Information</ng-template>
-        <h2 class="mb-3">Basic Information</h2>
 
-        <div class="row w-100">
-          <div class="col-xxl-7">
+
+        <div class="row w-100 justify-content-center">
+          <div class="col-xxl-8 col-xl-8 col-lg-9 col-9">
+            <h2 class="my-4">Basic Information</h2>
             <div class="input-content basic-information card">
               <div class="add-input card-body ">
                 <div class="row">
@@ -102,35 +103,9 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-1 d-none d-xl-block"></div>
 
-          <div class="col-xxl-4 d-none d-xl-block">
-            <div class="input-content card w-100 basic-information">
-              <div class="add-input card-body ">
-                <div class="row">
-                  <div class="col-1">
-                    <i class="fa-regular fa-heart"></i>
-                  </div>
-                  <div class="col-11">
-                    <div class="d-flex flex-column">
-                      <h5 class="text-break mb-4">What needs to be included in my address?</h5>
-                      <div>
-                        <ul class="mb-0">
-                          <li><span class="text-break">This name will be seen by passenger when they search for a place
-                              to stay.</span> </li>
-                          <li><span class="text-break">Include both your street name and number for the entire
-                              property</span> </li>
-                          <li><span class="text-break">Correctly spell the street name</span> </li>
-                          <li><span class="text-break">Use the physical address of the property, not your office or home
-                              address</span> </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
+
         </div>
 
       </form>
@@ -140,10 +115,11 @@
     <!-- Facility -->
     <mat-step editable [stepControl]="facilityFormGroup">
       <ng-template matStepLabel>Facility</ng-template>
-      <h2 class="mb-3">What can pasengers use at your homestay?</h2>
 
-      <div class="row w-100">
-        <div class="col-xxl-7">
+
+      <div class="row w-100 justify-content-center">
+        <div class="col-xxl-8 col-xl-8 col-lg-9 col-9 ">
+          <h2 class="my-4">What can pasengers use at your homestay?</h2>
           <div class="input-content basic-information card">
             <div class="add-input card-body ">
               <div class="row">
@@ -353,35 +329,8 @@
             </div>
           </div>
         </div>
-        <div class="col-xxl-1 d-none d-xl-block"></div>
 
-        <!-- <div class="col-xxl-4 d-none d-xl-block">
-          <div class="input-content card w-100 basic-information">
-            <div class="add-input card-body ">
-              <div class="row">
-                <div class="col-1">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-                <div class="col-11">
-                  <div class="d-flex flex-column">
-                    <h5 class="text-break mb-4">What needs to be included in my address?</h5>
-                    <div>
-                      <ul class="mb-0">
-                        <li><span class="text-break">This name will be seen by passenger when they search for a place
-                            to stay.</span> </li>
-                        <li><span class="text-break">Include both your street name and number for the entire
-                            property</span> </li>
-                        <li><span class="text-break">Correctly spell the street name</span> </li>
-                        <li><span class="text-break">Use the physical address of the property, not your office or home
-                            address</span> </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+
       </div>
     </mat-step>
     <!-- Facility -->
@@ -389,10 +338,11 @@
     <!-- House Rules -->
     <mat-step editable>
       <ng-template matStepLabel>House Rules</ng-template>
-      <h2 class="mb-3">House Rules</h2>
+
       <form [formGroup]="houseRuleFormGroup" (ngSubmit)="houseRuleForm()" #formthree="ngForm">
-        <div class="row w-100">
-          <div class="col-xxl-7">
+        <div class="row w-100 justify-content-center">
+          <div class="col-xxl-8 col-xl-8 col-lg-9 col-9">
+            <h2 class="my-4">House Rules</h2>
             <div class="input-content basic-information card">
               <div class="add-input card-body ">
                 <div class="row">
@@ -470,28 +420,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-1 d-none d-xl-block"></div>
-          <div class="col-xxl-4 d-none d-xl-block">
-            <div class="input-content card w-100 basic-information">
-              <div class="add-input card-body ">
-                <div class="row">
-                  <div class="col-1">
-                    <i class="fa-regular fa-heart"></i>
-                  </div>
-                  <div class="col-11">
-                    <div class="d-flex flex-column">
-                      <h5 class="text-break mb-4">What if my house rules change?</h5>
-                      <div>
-                        <span class="text-break">You can easily customize these house rules later, and you can set
-                          additional house rules on the Policies page of the Extranet after completing
-                          registration.</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </form>
     </mat-step>
@@ -499,10 +428,10 @@
     <!-- Service -->
     <mat-step editable>
       <ng-template matStepLabel>Service</ng-template>
-      <h2 class="mb-3">What can pasengers use service at your homestay?</h2>
 
-      <div class="row w-100">
-        <div class="col-xxl-7">
+      <div class="row w-100 justify-content-center">
+        <div class="col-xxl-8 col-xl-8 col-lg-9 col-9">
+          <h2 class="my-4">What can pasengers use service at your homestay?</h2>
           <div class="input-content basic-information card">
             <div class="add-input card-body ">
               <div class="row">
@@ -695,39 +624,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xxl-1 d-none d-xl-block"></div>
-
-        <div class="col-xxl-4 d-none d-xl-block">
-          <div class="input-content card w-100 basic-information">
-            <div class="add-input card-body ">
-              <div class="row">
-                <div class="col-1">
-                  <i class="fa-regular fa-heart"></i>
-                </div>
-                <div class="col-11">
-                  <div class="d-flex flex-column">
-                    <h5 class="text-break mb-4">What needs to be included in my address?</h5>
-                    <div>
-                      <ul class="mb-0">
-                        <li><span class="text-break">This name will be seen by passenger when they search for a place
-                            to stay.</span> </li>
-                        <li><span class="text-break">Include both your street name and number for the entire
-                            property</span> </li>
-                        <li><span class="text-break">Correctly spell the street name</span> </li>
-                        <li><span class="text-break">Use the physical address of the property, not your office or home
-                            address</span> </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-
-
-
     </mat-step>
     <!-- Service -->
 
@@ -736,10 +633,11 @@
       <ng-template matStepLabel>Image</ng-template>
       <form>
 
-        <h2 class="m-3">What does your homestay look like?</h2>
 
-        <div class="row w-100 m-0">
-          <div class="col-xxl-7">
+
+        <div class="row w-100  justify-content-center">
+          <div class="col-xxl-8 col-xl-8 col-lg-9 col-9">
+            <h2 class="my-4">What does your homestay look like?</h2>
             <div class="input-content basic-information card">
               <div class="add-input card-body ">
                 <div class="row">
@@ -802,35 +700,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xxl-1 d-none d-xl-block"></div>
 
-          <div class="col-xxl-4 d-none d-xl-block">
-            <div class="input-content card w-100 basic-information">
-              <div class="add-input card-body ">
-                <div class="row">
-                  <div class="col-1">
-                    <i class="fa-regular fa-heart"></i>
-                  </div>
-                  <div class="col-11">
-                    <div class="d-flex flex-column">
-                      <h5 class="text-break mb-4">What needs to be included in my address?</h5>
-                      <div>
-                        <ul class="mb-0">
-                          <li><span class="text-break">This name will be seen by passenger when they search for a place
-                              to stay.</span> </li>
-                          <li><span class="text-break">Include both your street name and number for the entire
-                              property</span> </li>
-                          <li><span class="text-break">Correctly spell the street name</span> </li>
-                          <li><span class="text-break">Use the physical address of the property, not your office or home
-                              address</span> </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
 
