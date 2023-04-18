@@ -8,7 +8,17 @@ import org.springframework.data.repository.query.Param;
 import com.sbhs.swm.models.BookingHomestayService;
 
 public interface BookingServiceRepo extends JpaRepository<BookingHomestayService, Long> {
+    @Query(value = "delete from BookingHomestayService b where b.booking.id = :bookingId and b.homestayService.id = :serviceId")
+    @Modifying
+    void deleteBookingHomestayServiceByBookingIdAndServiceId(@Param("bookingId") Long bookingId,
+            @Param("serviceId") Long serviceId);
+
     @Query(value = "delete from BookingHomestayService b where b.booking.id = :id")
     @Modifying
-    void deleteBookingHomestayService(@Param("id") Long bookingId);
+    void deleteBookingHomestayService(@Param("id") Long id);
+
+    @Query(value = "delete from BookingHomestayService b where b.booking.id = :id and b.homestayName = :homestayName")
+    @Modifying
+    void deleteBookingHomestayServiceByBookingIdAndHomestayName(@Param("id") Long id,
+            @Param("homestayName") String homestayName);
 }

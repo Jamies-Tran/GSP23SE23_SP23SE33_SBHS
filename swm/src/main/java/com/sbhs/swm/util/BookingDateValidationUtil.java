@@ -22,9 +22,8 @@ public class BookingDateValidationUtil {
         }
         Date bookedStart = dateFormatUtil.formatGivenDate(bookingHomestay.getBooking().getBookingFrom());
         Date bookedEnd = dateFormatUtil.formatGivenDate(bookingHomestay.getBooking().getBookingTo());
-        if (bookingHomestay.getStatus() != BookingStatus.CHECKEDOUT.name()
-                && bookingHomestay.getStatus() != BookingStatus.PENDING.name()
-                && bookingHomestay.getStatus() != BookingStatus.SAVED.name()) {
+        if (bookingHomestay.getStatus().equalsIgnoreCase(BookingStatus.ACCEPTED.name())
+                || bookingHomestay.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDIN.name())) {
             if ((bookedStart.after(currentStart) && bookedStart.before(currentEnd))
                     && (bookedEnd.after(currentEnd) && bookedEnd.after(currentStart))) {
                 return BookingDateValidationString.ON_BOOKING_PERIOD.name();

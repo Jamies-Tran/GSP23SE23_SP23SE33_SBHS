@@ -59,6 +59,10 @@ public interface IHomestayService {
                         int page, int size,
                         boolean isNextPage, boolean isPreviousPage);
 
+        public Integer getHomestayNumberOfReview(String homestayName);
+
+        public Integer getBlocHomestayNumberOfReview(String blocName);
+
         // public List<Homestay> filterByAddress(List<Homestay> homestays, String
         // address, boolean isGeometry);
 

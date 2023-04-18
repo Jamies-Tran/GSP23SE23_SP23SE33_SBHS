@@ -249,7 +249,10 @@ public class HomestayController {
                                                 .stream()
                                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
                                                 .collect(Collectors.toList());
-                                homestayResponseList.forEach(h -> h.setAddress(h.getAddress().split("_")[0]));
+                                homestayResponseList.forEach(h -> {
+                                        h.setAddress(h.getAddress().split("_")[0]);
+                                        h.setNumberOfRating(homestayService.getHomestayNumberOfReview(h.getName()));
+                                });
 
                                 homestayListPagingDto.setHomestays(homestayResponseList);
                                 homestayListPagingDto.setBlocs(new ArrayList<>());
@@ -263,7 +266,10 @@ public class HomestayController {
                                 List<BlocHomestayResponseDto> blocResponseList = blocs.getPageList().stream()
                                                 .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
                                                 .collect(Collectors.toList());
-                                blocResponseList.forEach(b -> b.setAddress(b.getAddress().split("_")[0]));
+                                blocResponseList.forEach(b -> {
+                                        b.setAddress(b.getAddress().split("_")[0]);
+                                        b.setNumberOfRating(homestayService.getBlocHomestayNumberOfReview(b.getName()));
+                                });
 
                                 homestayListPagingDto.setBlocs(blocResponseList);
                                 homestayListPagingDto.setHomestays(new ArrayList<>());

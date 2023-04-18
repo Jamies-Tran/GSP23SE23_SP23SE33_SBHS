@@ -1,8 +1,5 @@
 package com.sbhs.swm.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,12 +35,10 @@ public class RatingController {
 
     @PostMapping("/bloc")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    public ResponseEntity<?> ratingBlocHomestay(@RequestBody List<RatingRequestDto> ratingRequestList,
-            String blocName) {
-        List<Rating> ratingList = ratingService.ratingBloc(ratingRequestList, blocName);
-        List<RatingResponseDto> responseRatingList = ratingList.stream()
-                .map(r -> modelMapper.map(r, RatingResponseDto.class)).collect(Collectors.toList());
+    public ResponseEntity<?> ratingBlocHomestay(@RequestBody RatingRequestDto ratingRequest) {
+        Rating rating = ratingService.ratingBloc(ratingRequest);
+        RatingResponseDto responseRating = modelMapper.map(rating, RatingResponseDto.class);
 
-        return new ResponseEntity<List<RatingResponseDto>>(responseRatingList, HttpStatus.OK);
+        return new ResponseEntity<RatingResponseDto>(responseRating, HttpStatus.OK);
     }
 }

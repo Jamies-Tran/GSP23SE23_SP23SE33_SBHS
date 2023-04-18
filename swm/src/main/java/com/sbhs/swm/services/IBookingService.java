@@ -16,6 +16,8 @@ public interface IBookingService {
 
         BookingHomestay createSaveBookingForHomestay(BookingHomestayRequestDto bookingHomestayRequest);
 
+        BookingHomestay updateBookingHomestayPaymentMethod(Long bookingId, Long homestayId, String paymentMethod);
+
         Booking updateSavedBooking(BookingUpdateRequestDto newBooking, Long bookingId);
 
         BookingHomestay checkInForHomestay(Long bookingId, Long homestayId);
@@ -73,4 +75,8 @@ public interface IBookingService {
         BookingHomestay acceptBookingForHomestay(Long bookingId, Long homestayId);
 
         BookingHomestay rejectBookingForHomestay(Long bookingId, Long homestayId, String message);
+
+        Booking acceptBookingForBloc(Long bookingId);
+
+        Booking rejectBookingForBloc(Long bookingId, String message);
 }

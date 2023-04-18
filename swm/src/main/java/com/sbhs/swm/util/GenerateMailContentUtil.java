@@ -191,7 +191,7 @@ public class GenerateMailContentUtil {
                 .append("</li>")
                 .append("<li style='font-weight:bold'>").append("The homestay locate at ")
                 .append(bookingHomestay.getHomestay().getAddress()
-                        .split(bookingHomestay.getHomestay().getAddress().split("_")[0]))
+                        .split("_")[0])
                 .append("</li>").append("<li style='font-weight:bold'>").append("Total booking price ")
                 .append(bookingTotalPrice).append("</li>");
         // .append("</ul>");
@@ -210,6 +210,45 @@ public class GenerateMailContentUtil {
         return informMailBuilder.toString();
     }
 
+    public static String generateInformAcceptBookingForBloc(Booking booking) {
+        StringBuilder informMailBuilder = new StringBuilder();
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat vndNumberFormat = NumberFormat.getCurrencyInstance(locale);
+
+        int duration = dateFormatUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
+        String bookingTotalPrice = vndNumberFormat.format(booking.getTotalBookingPrice().doubleValue());
+
+        SwmUser user = booking.getPassenger().getUser();
+        informMailBuilder.append("<h1>").append("Dear ").append(user.getUsername()).append("</h1>")
+                .append("</br>")
+                .append("<p>").append("Your booking for block ").append(booking.getBloc().getName())
+                .append(" in booking ").append(booking.getCode())
+                .append(" has been accepted.").append("</br>").append("Quick information:").append("</br>")
+                .append("<ul>")
+                .append("<li style='font-weight:bold'>").append("You'll stay there for ").append(duration)
+                .append(" days.From ").append(booking.getBookingFrom()).append(" to ").append(booking.getBookingTo())
+                .append("</li>")
+                .append("<li style='font-weight:bold'>").append("The homestay locate at ")
+                .append(booking.getBloc().getAddress()
+                        .split(booking.getBloc().getAddress().split("_")[0]))
+                .append("</li>").append("<li style='font-weight:bold'>").append("Total booking price ")
+                .append(bookingTotalPrice).append("</li>");
+        // .append("</ul>");
+
+        if (booking.getBookingHomestayServices().stream()
+                .filter(s -> s.getHomestayName().equals(booking.getBloc().getName())).findAny()
+                .isPresent()) {
+            List<BookingHomestayService> bookingHomestayServiceList = booking.getBookingHomestayServices().stream()
+                    .filter(s -> s.getHomestayName().equals(booking.getBloc().getName()))
+                    .collect(Collectors.toList());
+            informMailBuilder.append("<li style='font-weight:bold'>").append("You've booked ")
+                    .append(bookingHomestayServiceList.size()).append(" services").append("</li>");
+        }
+
+        informMailBuilder.append("<p>Sinerely</p>").append("</br>").append("<h2>Stay With Me</h2>");
+        return informMailBuilder.toString();
+    }
+
     public static String generateInformRejectBookingForHomestay(BookingHomestay bookingHomestay, String message) {
         Booking booking = bookingHomestay.getBooking();
         String bookingCode = booking.getCode();
@@ -219,6 +258,27 @@ public class GenerateMailContentUtil {
         informMailBuilder.append("<h1>").append("Dear ").append(user.getUsername()).append("</h1>")
                 .append("</br>")
                 .append("<p>").append("Your homestay ").append(bookingHomestay.getHomestay().getName())
+                .append(" in booking ").append(bookingCode).append(" has been rejected.").append("</p>").append("</br>")
+                .append("<p>")
+                .append("Here is message from landlord: ").append("</p>").append("</br>")
+                .append("<p style='font-weight:bold'>").append(message).append("</p>").append("</br>").append("<p>")
+                .append("You can contact landlord by: ").append("</br>").append("<ul>")
+                .append("<li style='font-weight:bold'>").append("Name: ").append(landlord.getUsername()).append("</li>")
+                .append("<li style='font-weight:bold'>").append("Email: ").append(landlord.getEmail()).append("</li>")
+                .append("<li style='font-weight:bold'>").append("Phone: ").append(landlord.getPhone()).append("</li>")
+                .append("</ul>");
+        return informMailBuilder.toString();
+    }
+
+    public static String generateInformRejectBookingForBloc(Booking booking, String message) {
+
+        String bookingCode = booking.getCode();
+        SwmUser user = booking.getPassenger().getUser();
+        SwmUser landlord = booking.getBloc().getLandlord().getUser();
+        StringBuilder informMailBuilder = new StringBuilder();
+        informMailBuilder.append("<h1>").append("Dear ").append(user.getUsername()).append("</h1>")
+                .append("</br>")
+                .append("<p>").append("Your block ").append(booking.getBloc().getName())
                 .append(" in booking ").append(bookingCode).append(" has been rejected.").append("</p>").append("</br>")
                 .append("<p>")
                 .append("Here is message from landlord: ").append("</p>").append("</br>")

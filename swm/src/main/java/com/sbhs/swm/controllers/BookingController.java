@@ -226,7 +226,7 @@ public class BookingController {
         return new ResponseEntity<Boolean>(canPassengerMakeBooking, HttpStatus.OK);
     }
 
-    @PutMapping("/accept")
+    @PutMapping("/homestay/accept")
     @Authorization("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> acceptBookingForHomestay(Long bookingId, Long homestayId) {
         BookingHomestay bookingHomestay = bookingService.acceptBookingForHomestay(bookingId, homestayId);
@@ -237,14 +237,50 @@ public class BookingController {
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
     }
 
-    @PutMapping("/reject")
+    @PutMapping("/homestay/reject")
     @Authorization("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> rejectBookingForHomestay(Long bookingId, Long homestayId, @RequestBody String message) {
         BookingHomestay bookingHomestay = bookingService.rejectBookingForHomestay(bookingId, homestayId, message);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
                 BookingHomestayResponseDto.class);
         responseBookingHomestay.getHomestay()
-                .setAddress(responseBookingHomestay.getHomestay().getAddress().split("-")[0]);
+                .setAddress(responseBookingHomestay.getHomestay().getAddress().split("_")[0]);
+        return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @PutMapping("/bloc/accept")
+    @Authorization("hasRole('ROLE_LANDLORD')")
+    public ResponseEntity<?> acceptBookingForBloc(Long bookingId) {
+        Booking booking = bookingService.acceptBookingForBloc(bookingId);
+        BlocHomestayResponseDto bloc = modelMapper.map(booking.getBloc(), BlocHomestayResponseDto.class);
+        bloc.setAddress(bloc.getAddress().split("_")[0]);
+        BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
+        responseBooking.setBlocResponse(bloc);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
+    @PutMapping("/bloc/reject")
+    @Authorization("hasRole('ROLE_LANDLORD')")
+    public ResponseEntity<?> rejectBookingForBloc(Long bookingId, @RequestBody String message) {
+        Booking booking = bookingService.rejectBookingForBloc(bookingId, message);
+        BlocHomestayResponseDto bloc = modelMapper.map(booking.getBloc(), BlocHomestayResponseDto.class);
+        bloc.setAddress(bloc.getAddress().split("_")[0]);
+        BookingResponseDto responseBooking = modelMapper.map(booking,
+                BookingResponseDto.class);
+        responseBooking.setBlocResponse(bloc);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
+    @PutMapping("/homestay/payment-method")
+    @Authorization("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> updateBookingHomestayPaymentMethod(Long bookingId, Long homestayId, String paymentMethod) {
+        BookingHomestay bookingHomestay = bookingService.updateBookingHomestayPaymentMethod(bookingId, homestayId,
+                paymentMethod);
+        BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
+                BookingHomestayResponseDto.class);
+
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
     }
 
@@ -335,6 +371,8 @@ public class BookingController {
                 BookingResponseDto.class);
         BookingInviteCodeResponseDto bookingInviteCode = modelMapper.map(booking.getInviteCode(),
                 BookingInviteCodeResponseDto.class);
+        BlocHomestayResponseDto resposneBloc = modelMapper.map(booking.getBloc(), BlocHomestayResponseDto.class);
+        responseBooking.setBlocResponse(resposneBloc);
         responseBooking.setInviteCode(bookingInviteCode);
 
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
@@ -348,6 +386,8 @@ public class BookingController {
                 BookingResponseDto.class);
         BookingInviteCodeResponseDto bookingInviteCode = modelMapper.map(booking.getInviteCode(),
                 BookingInviteCodeResponseDto.class);
+        BlocHomestayResponseDto resposneBloc = modelMapper.map(booking.getBloc(), BlocHomestayResponseDto.class);
+        responseBooking.setBlocResponse(resposneBloc);
         responseBooking.setInviteCode(bookingInviteCode);
 
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);

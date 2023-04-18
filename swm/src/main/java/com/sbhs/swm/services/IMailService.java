@@ -3,6 +3,7 @@ package com.sbhs.swm.services;
 import org.springframework.lang.Nullable;
 
 import com.sbhs.swm.models.BlocHomestay;
+import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.Homestay;
@@ -30,4 +31,8 @@ public interface IMailService {
     public void informBookingForHomestayAccepted(BookingHomestay bookingHomestay);
 
     public void informBookingForHomestayRejected(BookingHomestay bookingHomestay, String message);
+
+    public void informBookingForBlocAccepted(Booking booking);
+
+    public void informBookingForBlocRejected(Booking booking, String message);
 }

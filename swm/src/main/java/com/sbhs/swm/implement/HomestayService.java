@@ -494,4 +494,18 @@ public class HomestayService implements IHomestayService {
         return pagedListHolder;
     }
 
+    @Override
+    public Integer getHomestayNumberOfReview(String homestayName) {
+        Homestay homestay = this.findHomestayByName(homestayName);
+
+        return homestay.getRatings().size();
+    }
+
+    @Override
+    public Integer getBlocHomestayNumberOfReview(String blocName) {
+        BlocHomestay bloc = this.findBlocHomestayByName(blocName);
+
+        return bloc.getRatings().size();
+    }
+
 }

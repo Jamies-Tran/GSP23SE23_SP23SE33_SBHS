@@ -34,7 +34,7 @@ public class PaymentController {
         private ModelMapper modelMapper;
 
         @PutMapping
-        @PreAuthorize("hasRole('ROLE_PASSENGER')")
+        @PreAuthorize("hasAnyRole('ROLE_PASSENGER', 'ROLE_LANDLORD')")
         public ResponseEntity<?> passengerPayment(@RequestParam Long amount, @RequestParam String walletType) {
                 MomoCaptureWalletDto momoCaptureWalletDtoResponse = paymentService.processPayment(amount, walletType);
 
