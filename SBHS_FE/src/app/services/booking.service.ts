@@ -43,12 +43,12 @@ export class BookingService {
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json ',
-        Authorization: 'Bearer ' + localStorage.getItem('userToken'),
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
-    const url = `${this.REST_API_SERVER}/api/booking/accept?bookingId=${bookingId}&homestayId=${homestayId}`;
+    const url = `${this.REST_API_SERVER}/api/booking/homestay/accept?bookingId=${bookingId}&homestayId=${homestayId}`;
     return this.httpClient
-      .put<any>(url, null, this.httpOptions)
+      .put<any>(url,null,this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -66,7 +66,48 @@ export class BookingService {
       }),
     };
     const value = {message:message};
-    const url = `${this.REST_API_SERVER}/api/booking/reject?bookingId=${bookingId}&homestayId=${homestayId}`;
+    const url = `${this.REST_API_SERVER}/api/booking/homestay/reject?bookingId=${bookingId}&homestayId=${homestayId}`;
+    return this.httpClient
+      .put<any>(url, value, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+
+
+
+  // PUT
+  // /api/booking/bloc/accept  acceptBookingForBloc
+  public acceptBookingForBloc(
+    bookingId: number,
+    homestayId: number
+  ): Observable<any> {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url = `${this.REST_API_SERVER}/api/booking/Bloc/accept?bookingId=${bookingId}&homestayId=${homestayId}`;
+    return this.httpClient
+      .put<any>(url,null,this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  // PUT
+  // /api/booking/reject rejectBookingForBloc
+  public rejectBookingForBloc(
+    bookingId: number,
+    homestayId: number,
+    message:string
+  ): Observable<any> {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        Authorization: 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const value = {message:message};
+    const url = `${this.REST_API_SERVER}/api/booking/Bloc/reject?bookingId=${bookingId}&homestayId=${homestayId}`;
     return this.httpClient
       .put<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));

@@ -36,5 +36,5 @@ export interface Homestay {
   ratings: [];
   status: string;
   totalAverageRating: number;
-  totalBookingPending: number;
+  isPendingBooking: boolean;
 }

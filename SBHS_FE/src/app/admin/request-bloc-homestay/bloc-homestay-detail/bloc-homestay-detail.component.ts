@@ -53,6 +53,7 @@ export class BlocHomestayDetailComponent {
             console.log('data' , data);
             this.id=value.id;
             this.datas = {
+              id:value.id,
               name:value.name,
               address:value.address,
               businessLicense:value.businessLicense,
@@ -62,7 +63,7 @@ export class BlocHomestayDetailComponent {
               homestays:value.homestays,
               homestayRules:value.homestayRules,
               ratings:value.ratings,
-              totalBookingPending: value.totalBookingPending,
+              isPendingBooking: value.isPendingBooking,
             }
             if(this.datas.status != "ACTIVATING" && this.datas.status != "PENDING" ){
               this.datas.status = 'REJECTED';

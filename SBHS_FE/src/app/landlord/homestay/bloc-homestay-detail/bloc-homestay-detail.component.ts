@@ -48,6 +48,7 @@ export class BlocHomestayDetailComponent {
             this.urls4 = [];
             console.log('data' , data);
             this.datas = {
+              id:value.id,
               name:value.name,
               address:value.address,
               businessLicense:value.businessLicense,
@@ -57,7 +58,7 @@ export class BlocHomestayDetailComponent {
               homestays:value.homestays,
               homestayRules:value.homestayRules,
               ratings:value.ratings,
-              totalBookingPending: value.totalBookingPending,
+              isPendingBooking: value.isPendingBooking,
             }
             console.log('datas' , this.datas);
             for(let homestay of this.datas.homestays){
@@ -96,5 +97,9 @@ export class BlocHomestayDetailComponent {
       this.openDialogMessage();
       console.log(error);
     }
+  }
+  scrollBooking(){
+    const element = document.getElementById("booking") as any;
+    element.scrollIntoView({ behavior: 'smooth'});
   }
 }

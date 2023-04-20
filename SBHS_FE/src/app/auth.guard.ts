@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-      console.log(childRoute)
+
     if (localStorage.getItem('userToken') != null && localStorage.getItem('role') == 'ADMIN') {
       return true
     } else if (localStorage.getItem('userToken') != null && localStorage.getItem('role') == 'LANDLORD') {
@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      console.log(route)
+
     if (localStorage.getItem('userToken') != null && localStorage.getItem('role') == 'ADMIN') {
       return true
     } else if (localStorage.getItem('userToken') != null && localStorage.getItem('role') == 'LANDLORD') {

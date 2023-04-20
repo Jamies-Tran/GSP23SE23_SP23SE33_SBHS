@@ -50,7 +50,7 @@
           <div class="col-sm-4" *ngFor="let item of valueActivating">
             <div class="card">
               <div class="card-body pt-0">
-                <h5 class="card-header text-center text-white w-100 bg-success "> {{item.status}} </h5>
+                <h5  [matBadgeHidden]="!item.isPendingBooking" [matBadge]="'!'" matBadgePosition="after" matBadgeColor="warn" matBadgeSize="small" class="card-header text-center text-white w-100" [class]="item.status == 'ACTIVATING' ? 'bg-success' : item.status == 'PENDING' ? 'bg-warning bg-gradient' : item.status == 'REJECT' ? 'bg-danger bg-gradient' : 'bg-secondary bg-gradient'"> {{item.status}} </h5>
                 <div class="image img-fluid w-100" routerLink="../BlockHomestayDetail" (click)="getHomestayName(item.name)">
                   <img [src]="item.imgURL">
                 </div>
@@ -59,8 +59,8 @@
                 </div>
                 <div class="button">
                   <!-- <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)" (click)="deleteHomestay()">Delete</a> -->
-                  <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)"
-                    (click)="openDialog()">Delete</a>
+                  <!-- <a mat-raised-button color="warn" mat-button (click)="getHomestayId(item.id)"
+                    (click)="openDialog()">Delete</a> -->
                   <a mat-raised-button color="primary" routerLink="../BlockHomestayDetail"
                     (click)="getHomestayName(item.name)">Edit</a>
 

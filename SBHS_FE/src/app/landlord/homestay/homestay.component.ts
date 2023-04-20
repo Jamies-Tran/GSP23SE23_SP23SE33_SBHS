@@ -22,7 +22,7 @@ export class HomestayComponent implements OnInit {
   public username = localStorage.getItem('usernameLogined') as string;
   ngOnInit(): void {
     this.username = localStorage.getItem('usernameLogined') as string;
-    console.log(this.username);
+
     this.getHomestayActivating();
     this.getHomestayPending();
     this.getHomestayReject();
@@ -32,7 +32,7 @@ export class HomestayComponent implements OnInit {
     this.valuePending = [];
 
     this.http.getHomestayByLandlord('PENDING').subscribe(async (data) => {
-      console.log('data:', data['homestays']);
+      console.log('data pending:', data['homestays']);
       for (let i of data['homestays'].reverse()) {
         var imgUrl;
         await this.image
@@ -57,7 +57,7 @@ export class HomestayComponent implements OnInit {
     this.valueActivating = [];
 
     this.http.getHomestayByLandlord('ACTIVATING').subscribe(async (data) => {
-      console.log('data:', data['homestays']);
+      console.log('data active:', data['homestays']);
       for (let i of data['homestays'].reverse()) {
         var imgUrl;
         await this.image
@@ -69,7 +69,7 @@ export class HomestayComponent implements OnInit {
               name: i.name,
               id: i.id,
               status: i.status,
-              totalBookingPending: i.totalBookingPending,
+              isPendingBooking: i.isPendingBooking,
             });
           })
           .catch((error) => {
@@ -82,7 +82,7 @@ export class HomestayComponent implements OnInit {
     this.valueReject =[];
 
     this.http.getHomestayByLandlord('REJECTED_LICENSE_NOT_MATCHED').subscribe(async (data) => {
-      console.log('data:', data['homestays']);
+      console.log('data reject:', data['homestays']);
       for (let i of data['homestays'].reverse()) {
         var imgUrl;
         await this.image

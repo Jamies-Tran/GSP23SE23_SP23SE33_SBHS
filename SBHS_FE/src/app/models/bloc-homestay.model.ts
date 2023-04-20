@@ -1,4 +1,5 @@
 export interface BlocHomestay {
+  id:number;
   name: string;
   address: string;
   businessLicense: string;
@@ -23,5 +24,5 @@ export interface BlocHomestay {
   ];
   homestayRules: [{ id: number; description: string }];
   ratings: [];
-  totalBookingPending:number;
+  isPendingBooking:boolean;
 }

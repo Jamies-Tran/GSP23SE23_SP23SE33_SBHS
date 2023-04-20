@@ -64,7 +64,7 @@ export class BookingComponent implements OnInit {
                 name: i.name,
                 id: i.id,
                 status: i.status,
-                totalBookingPending: i.totalBookingPending,
+                isPendingBooking: i.isPendingBooking,
               });
             })
             .catch((error) => {
@@ -96,7 +96,7 @@ export class BookingComponent implements OnInit {
               name: i.name,
               id: i.id,
               status: i.status,
-              totalBookingPending: i.totalBookingPending,
+              isPendingBooking: i.isPendingBooking,
             });
           })
           .catch((error) => {

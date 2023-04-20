@@ -66,6 +66,8 @@ export class BlocHomestayComponent {
               name: i.name,
               id: i.id,
               status: i.status,
+              isPendingBooking:i.isPendingBooking
+
             });
           })
           .catch((error) => {
@@ -89,6 +91,8 @@ export class BlocHomestayComponent {
               name: i.name,
               id: i.id,
               status: i.status,
+              isPendingBooking:i.isPendingBooking
+
             });
           })
           .catch((error) => {

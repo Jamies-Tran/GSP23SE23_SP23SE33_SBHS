@@ -56,7 +56,7 @@ export class HomestayDetailComponent implements OnInit {
             const value = data;
             this.urls = [];
             this.urls4 = [];
-            console.log(value.homestayFacilities);
+
             this.datas = {
               id: value.id,
               address: value.address,
@@ -72,7 +72,7 @@ export class HomestayDetailComponent implements OnInit {
               ratings: value.rating,
               status: value.status,
               totalAverageRating: value.totalAverageRating,
-              totalBookingPending: value.totalBookingPending,
+              isPendingBooking: value.isPendingBooking as boolean,
             };
             console.log('value', value);
             console.log('this.datas', this.datas);

@@ -76,7 +76,7 @@ export class HomestayDetailComponent implements OnInit {
               ratings: value.rating,
               status: value.status,
               totalAverageRating: value.totalAverageRating,
-              totalBookingPending: value.totalBookingPending,
+              isPendingBooking: value.isPendingBooking,
             };
             console.log('value', value);
             console.log('this.datas', this.datas);

@@ -22,7 +22,7 @@
                 class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-2">{{datas.status}}</small>
             </div>
             <div>
-              <button [matBadgeHidden]="!datasBooking" [matBadge]="datasBooking.length"
+              <button [matBadgeHidden]="!datas.isPendingBooking" [matBadge]="'!'"
                 matBadgePosition="after" matBadgeColor="warn" matBadgeSize="small" mat-stroked-button
                 class="d-inline-flex mb-3 px-2 py-1 fw-semibold   border  rounded-2 text-uppercase  "
                 (click)="showBooking = !showBooking">{{showBooking == true ? 'Homestay' : 'Booking'}} </button>
@@ -61,7 +61,8 @@
 
         <div class="row w-100 m-0 ">
           <div class="col-3 p-0" *ngFor="let url of urls4">
-            <div class="w-100 pe-1 overflow-hidden" style="height:120px"><img [src]="url" class=" img-fluid" style="object-fit: cover;"></div>
+            <div class="w-100 pe-1 overflow-hidden" style="height:120px">
+              <img [src]="url" class=" img-fluid w-100 h-100" style="object-fit: cover;"></div>
           </div>
         </div>
       </div>

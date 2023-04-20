@@ -22,9 +22,10 @@
                 class="d-inline-flex mb-3 px-2 py-1 fw-semibold text-danger-emphasis bg-danger-subtle border border-danger-subtle rounded-2">{{datas.status}}</small>
             </div>
             <div>
-              <button [matBadgeHidden]="!datas.totalBookingPending" [matBadge]="datas.totalBookingPending"
-                matBadgePosition="after" matBadgeColor="warn" matBadgeSize="small" mat-stroked-button
-                class="d-inline-flex mb-3 px-2 py-1 fw-semibold   border  rounded-2 text-uppercase  ">Booking</button>
+              <button [matBadgeHidden]="!datas.isPendingBooking" [matBadge]="'!'" matBadgePosition="after"
+                matBadgeColor="warn" matBadgeSize="small" mat-stroked-button
+                class="d-inline-flex mb-3 px-2 py-1 fw-semibold   border  rounded-2 text-uppercase  "
+                (click)="scrollBooking()">Booking</button>
             </div>
           </div>
         </div>
@@ -60,8 +61,9 @@
 
         <div class="row w-100 m-0 ">
           <div class="col-3 p-0" *ngFor="let url of urls4">
-            <div class="w-100 pe-1 overflow-hidden" style="height:120px"><img [src]="url" class=" img-fluid"
-                style="object-fit: cover;"></div>
+            <div class="w-100 pe-1 overflow-hidden" style="height:120px">
+              <img [src]="url" class=" img-fluid w-100 h-100" style="object-fit: cover;">
+            </div>
           </div>
         </div>
       </div>
@@ -251,11 +253,11 @@
             </div>
           </div>
         </div>
-        <div class="card-body p-0">
+        <div class="card-body p-0" id="booking">
 
           <mat-accordion class="example-headers-align w-100  " multi>
             <mat-expansion-panel class="" *ngFor="let homestay of datas.homestays ; let i =index;">
-              <mat-expansion-panel-header class="">
+              <mat-expansion-panel-header class="" >
                 <mat-panel-title class="fs-5">
                   {{i+1}}. {{homestay.name}}
                 </mat-panel-title>
