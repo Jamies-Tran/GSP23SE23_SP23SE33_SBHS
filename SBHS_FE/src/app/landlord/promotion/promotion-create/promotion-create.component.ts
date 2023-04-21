@@ -1,24 +1,15 @@
-import { MediaMatcher } from '@angular/cdk/layout';
-import { DatePipe } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from 'src/app/pop-up/message/message.component';
 import { SuccessComponent } from 'src/app/pop-up/success/success.component';
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss'],
+  selector: 'app-promotion-create',
+  templateUrl: './promotion-create.component.html',
+  styleUrls: ['./promotion-create.component.scss']
 })
-export class TestComponent implements OnInit
-{
+export class PromotionCreateComponent implements OnInit {
 
   constructor(public dialog: MatDialog) {}
 
@@ -59,6 +50,7 @@ export class TestComponent implements OnInit
       startMonth:this.startMonth,
       endDay:this.endDay,
       endMonth:this.endMonth,
+      checked:false
     });
     for (let index = 1; index < 31; index++) {
       this.valueday30.push(index);
@@ -85,7 +77,8 @@ export class TestComponent implements OnInit
       endDay: '1',
       startMonth: '1',
       endMonth: '1',
-      description: ''
+      description: '',
+      checked:false
     });
   }
 

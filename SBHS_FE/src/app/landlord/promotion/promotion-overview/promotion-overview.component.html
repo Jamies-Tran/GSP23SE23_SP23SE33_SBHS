@@ -1,0 +1,414 @@
+<div class="container">
+  <div class="col">
+    <div class="row row-header">
+      <!--  x4 -->
+      <!-- 1 -->
+      <div class="header col-xl-3 col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center" >
+              <div class="col">
+                <p class="m-0">Total Profit</p>
+                <div class="numbers">
+                  10.000.000 đ
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bot-red"></div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="header col-xl-3 col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center" >
+              <div class="col">
+                <p class="m-0">Total Booking</p>
+                <div class="numbers">
+                  10.000.000 đ
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bot-blue"></div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="header col-xl-3 col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center" >
+              <div class="col">
+                <p class="m-0">Total Promotion</p>
+                <div class="numbers">
+                  10.000.000 đ
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bot-yellogreen"></div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="header col-xl-3 col-md-6 mb-2">
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center" >
+              <div class="col">
+                <p class="m-0">? ? ?</p>
+                <div class="numbers">
+                  10.000.000 đ
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bot-organe"></div>
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="container-fluid mt--6 chart">
+      <div class="row profit">
+        <div class="col  ">
+          <div class="body card mb-4">
+            <mat-tab-group>
+              <!-- in progress -->
+              <mat-tab label="In Progress">
+                <table class="table  table-hover mt-2" style="height:60vh">
+                  <thead class="table-light">
+                    <tr class="fw-5">
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Percent</th>
+                      <th>Start Day</th>
+                      <th>End Day</th>
+                      <th>View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr matRipple *ngFor="let post of valuesProgress | paginate:{
+                      id: 'paginationProgress',
+                      itemsPerPage: tableSizeProgress,
+                    currentPage: pageProgress,
+                    totalItems: countProgress
+                    };
+                    let i = index">
+                    <!-- id -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)">
+                        {{post.id}}
+                      </td>
+                      <!-- name -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)">
+                        {{post.name}}
+                      </td>
+                      <!-- percent -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- Start Day -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- End Day -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- View -->
+                      <td class="pt-0">
+                        <button routerLink="../Promotion/PromotionDetail" mat-icon-button color="primary"
+                          (click)="onItemSelector(post.id, post.name);"><mat-icon> visibility</mat-icon></button>
+                      </td>
+                    </tr>
+
+
+                    <tr *ngIf="valuesProgress.length < 1">
+                      <td></td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 2">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 3">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 4">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 5">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- pagination -->
+                <div class="row w-100">
+                  <div class="col-sm-6">
+
+                  </div>
+                  <div class="col-sm-6 d-flex justify-content-center">
+                    <pagination-controls id="paginationProgress" previousLabel="Prev" nextLabel="Next"
+                      (pageChange)="onTableDataChangeProgress($event)">
+                    </pagination-controls>
+                  </div>
+
+                </div>
+              </mat-tab>
+              <!-- Waiting -->
+              <mat-tab label="Waiting">
+                <table class="table  table-hover mt-2" style="height:60vh">
+                  <thead class="table-light">
+                    <tr class="fw-5">
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Percent</th>
+                      <th>Start Day</th>
+                      <th>End Day</th>
+                      <th>View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr matRipple *ngFor="let post of valuesProgress | paginate:{
+                      id: 'paginationProgress',
+                      itemsPerPage: tableSizeProgress,
+                    currentPage: pageProgress,
+                    totalItems: countProgress
+                    };
+                    let i = index">
+                    <!-- id -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)">
+                        {{post.id}}
+                      </td>
+                      <!-- name -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)">
+                        {{post.name}}
+                      </td>
+                      <!-- percent -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- Start Day -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- End Day -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- View -->
+                      <td class="pt-0">
+                        <button routerLink="../Promotion/PromotionDetail" mat-icon-button color="primary"
+                          (click)="onItemSelector(post.id, post.name);"><mat-icon> visibility</mat-icon></button>
+                      </td>
+                    </tr>
+
+
+                    <tr *ngIf="valuesProgress.length < 1">
+                      <td></td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 2">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 3">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 4">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 5">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- pagination -->
+                <div class="row w-100">
+                  <div class="col-sm-6">
+
+                  </div>
+                  <div class="col-sm-6 d-flex justify-content-center">
+                    <pagination-controls id="paginationProgress" previousLabel="Prev" nextLabel="Next"
+                      (pageChange)="onTableDataChangeProgress($event)">
+                    </pagination-controls>
+                  </div>
+
+                </div>
+              </mat-tab>
+              <!-- Progressed -->
+              <mat-tab label="Progressed">
+                <table class="table  table-hover mt-2" style="height:60vh">
+                  <thead class="table-light">
+                    <tr class="fw-5">
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Percent</th>
+                      <th>Start Day</th>
+                      <th>End Day</th>
+                      <th>View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr matRipple *ngFor="let post of valuesProgress | paginate:{
+                      id: 'paginationProgress',
+                      itemsPerPage: tableSizeProgress,
+                    currentPage: pageProgress,
+                    totalItems: countProgress
+                    };
+                    let i = index">
+                    <!-- id -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)">
+                        {{post.id}}
+                      </td>
+                      <!-- name -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)">
+                        {{post.name}}
+                      </td>
+                      <!-- percent -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- Start Day -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- End Day -->
+                      <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
+                        (click)="onItemSelector(post.id, post.name)" class="text-center">
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                      </td>
+                      <!-- View -->
+                      <td class="pt-0">
+                        <button routerLink="../Promotion/PromotionDetail" mat-icon-button color="primary"
+                          (click)="onItemSelector(post.id, post.name);"><mat-icon> visibility</mat-icon></button>
+                      </td>
+                    </tr>
+
+
+                    <tr *ngIf="valuesProgress.length < 1">
+                      <td></td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 2">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 3">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 4">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr *ngIf="valuesProgress.length < 5">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- pagination -->
+                <div class="row w-100">
+                  <div class="col-sm-6">
+
+                  </div>
+                  <div class="col-sm-6 d-flex justify-content-center">
+                    <pagination-controls id="paginationProgress" previousLabel="Prev" nextLabel="Next"
+                      (pageChange)="onTableDataChangeProgress($event)">
+                    </pagination-controls>
+                  </div>
+
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

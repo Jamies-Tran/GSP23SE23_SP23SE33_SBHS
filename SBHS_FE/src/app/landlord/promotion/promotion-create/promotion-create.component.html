@@ -40,7 +40,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <div class="row p-0 m-0">
+                  <div class="row p-0 m-0 mb-2">
                     <div class="col-6 p-0">Start day</div>
 
                     <div class="col-6 ">End day</div>
@@ -119,13 +119,68 @@
                   <div class="username">
                     <mat-form-field class="input-username w-100" appearance="outline">
                       <mat-label>
-                        Mô tả</mat-label>
-                      <textarea matInput type="text" required [(ngModel)]="value.description"
+                        Description</mat-label>
+                      <textarea matInput type="text" required [(ngModel)]="value.description"[ngModelOptions]="{standalone: true}"
                         name="txtdescription{{i}}"></textarea>
                     </mat-form-field>
                   </div>
                 </div>
               </div>
+              <div class="row mb-3">
+                <div class="col">
+                    <section class="example-section">
+                      <mat-checkbox class="example-margin" style="font-weight: 500; letter-spacing:0.8px ; " [(ngModel)]="value.checked" [ngModelOptions]="{standalone: true}" labelPosition="before" color="primary">
+                        Promotion for Passenger VIP
+                      </mat-checkbox>
+                    </section>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <h5>Homestay</h5>
+                  <section class="example-section">
+                   <p class="m-0">
+                     <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                      Homestay A
+                    </mat-checkbox>
+                   </p>
+                   <p class="m-0">
+                     <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                      Homestay A
+                    </mat-checkbox>
+                   </p>
+                   <p class="m-0">
+                     <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                      Homestay A
+                    </mat-checkbox>
+                   </p>
+
+                  </section>
+                </div>
+                <div class="col-6">
+                  <h5>Block Homestay</h5>
+                  <section class="example-section">
+                    <p class="m-0">
+                      <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                       Block Homestay A
+                     </mat-checkbox>
+                    </p>
+                    <p class="m-0">
+                      <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                        Block Homestay A
+                     </mat-checkbox>
+                    </p>
+                    <p class="m-0">
+                      <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                        Block Homestay A
+                     </mat-checkbox>
+                    </p>
+
+                   </section>
+                </div>
+              </div>
+
               <hr>
 
               <div class="text-center  login-button-div">
@@ -133,7 +188,7 @@
                   (click)="removeItems(i)">
                   <span class="fs-5">
                     <mat-icon><i class="fa-solid fa-xmark m-0 p-0 fs-5"></i></mat-icon>
-                    Xóa sản phẩm
+                    Delete
                   </span>
 
                 </button>
@@ -152,7 +207,7 @@
               (click)="addMoreItems()">
               <span class="fs-5">
                 <mat-icon><i class="fa-solid fa-plus m-0 p-0 fs-5"></i></mat-icon>
-                Tạo thêm sản phẩm
+                Add more
               </span>
 
             </button>
@@ -161,7 +216,7 @@
           <div class="text-center pt-1  pb-1 login-button-div">
             <button class="login-button btn btn-primary btn-block w-100 fa-lg gradient-custom-2 mb-3" mat-raised-button
               type="submit" [disabled]="!myForm.valid">
-              Hoàn tất tạo sản phẩm</button>
+              Submit </button>
           </div>
         </form>
       </div>

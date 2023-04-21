@@ -43,6 +43,9 @@ import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { BookingComponent } from './booking/booking.component';
 import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landlord.component';
+import { PromotionOverviewComponent } from './promotion/promotion-overview/promotion-overview.component';
+import { PromotionDetailComponent } from './promotion/promotion-detail/promotion-detail.component';
+import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
 
 
 @NgModule({
@@ -57,6 +60,9 @@ import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landl
     BlocHomestayComponent,
     BookingComponent,
     DashboardLandlordComponent,
+    PromotionOverviewComponent,
+    PromotionDetailComponent,
+    PromotionCreateComponent,
 
   ],
   imports: [

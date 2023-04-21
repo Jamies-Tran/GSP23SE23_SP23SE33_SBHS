@@ -15,9 +15,14 @@
     }
   }
 
+  .profit{
+    .card-body{
+      padding: 16px 15px 16px;
+    }
+  }
+
   .card {
     box-shadow: 0 6px 10px -4px rgb(0 0 0 / 15%);
-
     .numbers {
       font-size: 2em;
 
@@ -27,32 +32,14 @@
         line-height: 1.4em;
         word-break: break-word;
       }
-
-      .inline {
+      .inline{
         line-height: 45px;
       }
     }
 
     .card-footer {
-      padding: 0 15px 15px;
-      background-color: unset;
+      padding: 0 6px 6px;
       border-top: unset;
-
-      hr {
-        margin-top: 0;
-        margin-bottom: 15px;
-
-      }
-
-      .status {
-        color: #88837a;
-        font-weight: 300;
-        font-size: 1rem;
-
-        p {
-          text-align: center;
-        }
-      }
     }
   }
 
@@ -76,22 +63,18 @@
 
     .pull-right {
       float: right;
+      span{
 
-      span {
-
-        border-radius: 1rem;
-        padding: 1px 6px;
+      border-radius: 1rem;
+      padding: 1px 6px;
       }
-
-      .label-green {
+      .label-green{
         background-color: yellowgreen;
       }
-
-      .label-blue {
+      .label-blue{
         background-color: #18FFFF;
       }
-
-      .label-red {
+      .label-red{
         background-color: #EE6666;
         padding: 1px 9px;
       }
@@ -99,39 +82,33 @@
     }
 
 
-    .yellowgreen {
+     .yellowgreen{
       border-left: 4px yellowgreen solid;
     }
-
-    .blue {
+    .blue{
       border-left: 4px #18FFFF solid;
     }
-
-    .red {
+     .red{
       border-left: 4px #F50057 solid;
     }
   }
 }
-
 input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  transition: background-color 5000s ease-in-out 0s;
-}
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+  }
 
-.bot-organe {
-  border-bottom: 4px solid #FF6D00;
-}
-
-.bot-red {
-  border-bottom: 4px solid #F50057;
-}
-
-.bot-yellogreen {
-  border-bottom: 4px solid yellowgreen;
-}
-
-.bot-blue {
-  border-bottom: 4px solid #18FFFF;
-}
+  .bot-organe{
+    border-bottom: 4px solid #ffc400;
+  }
+  .bot-red{
+    border-bottom: 4px solid #F50057;
+  }
+  .bot-yellogreen{
+    border-bottom: 4px solid yellowgreen;
+  }
+  .bot-blue{
+    border-bottom: 4px solid #18FFFF;
+  }

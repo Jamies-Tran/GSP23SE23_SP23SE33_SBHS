@@ -37,110 +37,109 @@
                     <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Dashboard</span>
                   </mat-list-item>
 
-                 <!--  Homestay -->
-                 <mat-accordion multi class="sidenav-nav-link">
-                  <mat-expansion-panel class="bg-transparent shadow-none my-0"
-                    [hideToggle]="!isExpanded ? 'true' :'false'"  [expanded]="isExpanded">
-                    <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
-                      [style.padding]="!isExpanded ? '0!important' : ''"
-                      [class.active]="router.url.includes('/Homestay')"
-                      >
-                      <mat-panel-title [style.display]="!isExpanded ? 'flex!important' : ''"
-                        [style.margin-right]="!isExpanded ? '0!important' : ''"
-                        [style.margin-left]="!isExpanded ? '8px!important' : ''"
-                        [style.text-align]="!isExpanded ? 'center!important' : ''">
-                        <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
-                          [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
-                          home
-                        </mat-icon>
-                        <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Manage
-                          Homestay</span>
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-
-
-                    <ng-template matExpansionPanelContent>
-                      <mat-nav-list class="p-0">
-                        <mat-list-item class="sidenav-nav-link w-100 p-0"
-                          [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/HomestayList"
-                          routerLinkActive="active">
+                  <!--  Homestay -->
+                  <mat-accordion multi class="sidenav-nav-link">
+                    <mat-expansion-panel class="bg-transparent shadow-none my-0"
+                      [hideToggle]="!isExpanded ? 'true' :'false'" [expanded]="isExpanded">
+                      <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
+                        [style.padding]="!isExpanded ? '0!important' : ''"
+                        [class.active]="router.url.includes('/Homestay')">
+                        <mat-panel-title [style.display]="!isExpanded ? 'flex!important' : ''"
+                          [style.margin-right]="!isExpanded ? '0!important' : ''"
+                          [style.margin-left]="!isExpanded ? '8px!important' : ''"
+                          [style.text-align]="!isExpanded ? 'center!important' : ''">
                           <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
-                            [style.margin]="!isExpanded ? '0!important' : ''"
-                            [style.width]="!isExpanded ? '100%' : ''">
-                            list_alt
+                            [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
+                            home
                           </mat-icon>
-                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>List
+                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Manage
+                            Homestay</span>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+
+                      <ng-template matExpansionPanelContent>
+                        <mat-nav-list class="p-0">
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/HomestayList"
+                            routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              list_alt
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>List
                             </span>
-                        </mat-list-item>
-                        <mat-list-item class="sidenav-nav-link w-100 p-0"
-                          [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/HomestayCreate"
-                          routerLinkActive="active">
+                          </mat-list-item>
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/HomestayCreate"
+                            routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              add_home
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Create
+                            </span>
+                          </mat-list-item>
+                        </mat-nav-list>
+                      </ng-template>
+
+                    </mat-expansion-panel>
+
+
+
+                  </mat-accordion>
+
+                  <!-- Block Homestay -->
+                  <mat-accordion multi class="sidenav-nav-link">
+                    <mat-expansion-panel class="bg-transparent shadow-none my-0" [expanded]="isExpanded"
+                      [hideToggle]="!isExpanded ? 'true' :'false'">
+                      <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
+                        [style.padding]="!isExpanded ? '0!important' : ''"
+                        [class.active]="router.url.includes('/BlockHomestay')">
+                        <mat-panel-title [style.display]="!isExpanded ? 'flex!important' : ''"
+                          [style.margin-right]="!isExpanded ? '0!important' : ''"
+                          [style.margin-left]="!isExpanded ? '8px!important' : ''"
+                          [style.text-align]="!isExpanded ? 'center!important' : ''">
+
                           <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
-                            [style.margin]="!isExpanded ? '0!important' : ''"
-                            [style.width]="!isExpanded ? '100%' : ''">
-                            add_home
+                            [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
+                            holiday_village
                           </mat-icon>
-                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Create
+                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Manage
+                            Block Homestay</span>
+
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <ng-template matExpansionPanelContent>
+                        <mat-nav-list class="p-0">
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="BlockHomestay/BlockHomestayList" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              list_alt
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>List
                             </span>
-                        </mat-list-item>
-                      </mat-nav-list>
-                    </ng-template>
-
-                  </mat-expansion-panel>
-
-
-
-                </mat-accordion>
-
-                <!-- Block Homestay -->
-                <mat-accordion multi class="sidenav-nav-link">
-                  <mat-expansion-panel class="bg-transparent shadow-none my-0" [expanded]="isExpanded"
-                    [hideToggle]="!isExpanded ? 'true' :'false'">
-                    <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
-                      [style.padding]="!isExpanded ? '0!important' : ''"
-                      [class.active]="router.url.includes('/BlockHomestay')">
-                      <mat-panel-title [style.display]="!isExpanded ? 'flex!important' : ''"
-                        [style.margin-right]="!isExpanded ? '0!important' : ''"
-                        [style.margin-left]="!isExpanded ? '8px!important' : ''"
-                        [style.text-align]="!isExpanded ? 'center!important' : ''">
-
-                        <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
-                          [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
-                          holiday_village
-                        </mat-icon>
-                        <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Manage
-                          Block Homestay</span>
-
-                      </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <ng-template matExpansionPanelContent>
-                      <mat-nav-list class="p-0">
-                        <mat-list-item class="sidenav-nav-link w-100 p-0"
-                          [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="BlockHomestay/BlockHomestayList"
-                          routerLinkActive="active">
-                          <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
-                            [style.margin]="!isExpanded ? '0!important' : ''"
-                            [style.width]="!isExpanded ? '100%' : ''">
-                            list_alt
-                          </mat-icon>
-                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>List
+                          </mat-list-item>
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="BlockHomestay/BlockHomestayCreate" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              add_home
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Create
                             </span>
-                        </mat-list-item>
-                        <mat-list-item class="sidenav-nav-link w-100 p-0"
-                          [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="BlockHomestay/BlockHomestayCreate"
-                          routerLinkActive="active">
-                          <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
-                            [style.margin]="!isExpanded ? '0!important' : ''"
-                            [style.width]="!isExpanded ? '100%' : ''">
-                            add_home
-                          </mat-icon>
-                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Create
-                            </span>
-                        </mat-list-item>
-                      </mat-nav-list>
-                    </ng-template>
-                  </mat-expansion-panel>
-                </mat-accordion>
+                          </mat-list-item>
+                        </mat-nav-list>
+                      </ng-template>
+                    </mat-expansion-panel>
+                  </mat-accordion>
 
                   <!-- items -->
                   <!-- Homestay -->
@@ -155,17 +154,56 @@
                     <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Booking</span>
                   </mat-list-item>
 
-                  <!-- items -->
-                  <!-- Homestay -->
-                  <mat-list-item class="sidenav-nav-link w-100 p-0"
-                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Homestay/Promotion"
-                    routerLinkActive="active">
-                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
-                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
-                      <span class="material-symbols-outlined"> percent </span>
-                    </mat-icon>
-                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Promotion</span>
-                  </mat-list-item>
+
+
+                  <!-- Promotion -->
+                  <mat-accordion multi class="sidenav-nav-link">
+                    <mat-expansion-panel class="bg-transparent shadow-none my-0" [expanded]="isExpanded"
+                      [hideToggle]="!isExpanded ? 'true' :'false'">
+                      <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
+                        [style.padding]="!isExpanded ? '0!important' : ''"
+                        [class.active]="router.url.includes('/BlockHomestay')">
+                        <mat-panel-title [style.display]="!isExpanded ? 'flex!important' : ''"
+                          [style.margin-right]="!isExpanded ? '0!important' : ''"
+                          [style.margin-left]="!isExpanded ? '8px!important' : ''"
+                          [style.text-align]="!isExpanded ? 'center!important' : ''">
+
+                          <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                            [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
+                            percent
+                          </mat-icon>
+                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Promotion</span>
+
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <ng-template matExpansionPanelContent>
+                        <mat-nav-list class="p-0">
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="Promotion/PromotionOverview" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              leaderboard
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Overview
+                            </span>
+                          </mat-list-item>
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="Promotion/PromotionCreate" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              new_label
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Create
+                            </span>
+                          </mat-list-item>
+                        </mat-nav-list>
+                      </ng-template>
+                    </mat-expansion-panel>
+                  </mat-accordion>
 
 
 

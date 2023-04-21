@@ -13,6 +13,9 @@ import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/blo
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import { BookingComponent } from './booking/booking.component';
 import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landlord.component';
+import { PromotionDetailComponent } from './promotion/promotion-detail/promotion-detail.component';
+import { PromotionOverviewComponent } from './promotion/promotion-overview/promotion-overview.component';
+import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
 
 
 const routes: Routes = [
@@ -89,6 +92,23 @@ const routes: Routes = [
       {
         path: 'Booking',
         component: BookingComponent,
+      },
+      {
+        path: 'Promotion',
+        children: [
+          {
+            path: 'PromotionDetail',
+            component: PromotionDetailComponent,
+          },
+          {
+            path: 'PromotionOverview',
+            component: PromotionOverviewComponent,
+          },
+          {
+            path: 'PromotionCreate',
+            component: PromotionCreateComponent,
+          },
+        ],
       },
 
     ],
