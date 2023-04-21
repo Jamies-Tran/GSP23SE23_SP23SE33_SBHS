@@ -35,6 +35,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
+import { ChatComponent } from './chat/chat.component';
+
+
 
 @NgModule({
   declarations: [
@@ -45,7 +48,8 @@ import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.compo
     RequestBlocHomestayComponent,
     HomestayDetailComponent,
     BlocHomestayDetailComponent,
-    DashboardAdminComponent
+    DashboardAdminComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,

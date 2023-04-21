@@ -5,7 +5,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from '../pop-up/message/message.component';
 import { UserService } from '../services/user.service';
-
+declare var Tawk_API: any;
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -29,7 +29,10 @@ export class AdminComponent implements OnInit {
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
   public avatarUrl = '';
+
   ngOnInit(): void {
+
+    Tawk_API.hideWidget();
     this.username = localStorage.getItem('usernameLogined') as string;
     this.role = localStorage.getItem('role');
 
@@ -60,6 +63,7 @@ export class AdminComponent implements OnInit {
     );
   }
   public logout() {
+    Tawk_API.showWidget();
     localStorage.clear();
     console.log('token' , localStorage.getItem('userToken'));
     this.router.navigate(['/Login'], { relativeTo: this.route });

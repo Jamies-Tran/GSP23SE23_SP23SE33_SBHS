@@ -10,6 +10,8 @@ import { AuthGuard } from '../auth.guard';
 import { HomestayDetailComponent } from './request-homestay/homestay-detail/homestay-detail.component';
 import { BlocHomestayDetailComponent } from './request-bloc-homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
+import { TestComponent } from '../test/test/test.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   {
@@ -63,6 +65,14 @@ const routes: Routes = [
             component: BlocHomestayDetailComponent
           }
         ]
+      },
+      {
+        path: 'Test',
+        component: TestComponent,
+      },
+      {
+        path: 'Chat',
+        component: ChatComponent,
       },
     ],
   },

@@ -1,4 +1,4 @@
-<div class="vh-100 v-100" [class.example-is-mobile]="mobileQuery.matches">
+<div class="vh-100 v-100" [class.example-is-mobile]="mobileQuery.matches" >
 
   <mat-sidenav-container class="example-container vh-100 vw-100" [autosize]=" mobileQuery.matches ? 'false' : 'true' ">
 
@@ -40,7 +40,7 @@
                   <!--  Homestay -->
                   <mat-accordion multi class="sidenav-nav-link">
                     <mat-expansion-panel class="bg-transparent shadow-none my-0"
-                      [hideToggle]="!isExpanded ? 'true' :'false'" [expanded]="isExpanded">
+                      [hideToggle]="!isExpanded ? 'true' :'false'"  >
                       <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
                         [style.padding]="!isExpanded ? '0!important' : ''"
                         [class.active]="router.url.includes('/Homestay')">
@@ -93,7 +93,7 @@
 
                   <!-- Block Homestay -->
                   <mat-accordion multi class="sidenav-nav-link">
-                    <mat-expansion-panel class="bg-transparent shadow-none my-0" [expanded]="isExpanded"
+                    <mat-expansion-panel class="bg-transparent shadow-none my-0"
                       [hideToggle]="!isExpanded ? 'true' :'false'">
                       <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
                         [style.padding]="!isExpanded ? '0!important' : ''"
@@ -158,7 +158,7 @@
 
                   <!-- Promotion -->
                   <mat-accordion multi class="sidenav-nav-link">
-                    <mat-expansion-panel class="bg-transparent shadow-none my-0" [expanded]="isExpanded"
+                    <mat-expansion-panel class="bg-transparent shadow-none my-0"
                       [hideToggle]="!isExpanded ? 'true' :'false'">
                       <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
                         [style.padding]="!isExpanded ? '0!important' : ''"
@@ -269,6 +269,7 @@
 
               <div class="w-100 overflow-auto h-100 main-content" id="right">
                 <router-outlet></router-outlet>
+
               </div>
 
             </div>
