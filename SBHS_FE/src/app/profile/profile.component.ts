@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from '../pop-up/message/message.component';
 import { SuccessComponent } from '../pop-up/success/success.component';
 import { UserService } from '../services/user.service';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit {
   password: any;
   isUpdate = false;
 
-  constructor(public dialog: MatDialog, private http: UserService) {
+  constructor(public dialog: MatDialog, private http: UserService, private httpPayment: PaymentService) {
     const currentYear = new Date().getFullYear();
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 1);
@@ -133,4 +134,24 @@ export class ProfileComponent implements OnInit {
     cashOut: false,
     editProfile: false,
   };
+
+  public amount !:number;
+  public addMoney() {
+    if(this.amount < 1000){
+      this.message = "Please input amount more 1.000 đ";
+      this.openDialogMessage();
+      return;
+    }else{
+      this.httpPayment.passengerPayment(this.amount).subscribe(
+      (data) => {
+        console.log(data);
+        location.href = data['payUrl'];
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+    }
+
+  }
 }

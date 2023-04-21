@@ -2,7 +2,8 @@
   <div class="row w-100">
     <div class="col-xl-3 col-lg-4">
       <div class="card">
-        <img class="card-img-top img-fluid" src="https://firebasestorage.googleapis.com/v0/b/stay-with-me-356017.appspot.com/o/landlord%2Favatar%2Fdefault.png?alt=media&token=d62361f3-6391-44f5-80a7-b22bda704b04">
+        <img class="card-img-top img-fluid"
+          src="https://firebasestorage.googleapis.com/v0/b/stay-with-me-356017.appspot.com/o/landlord%2Favatar%2Fdefault.png?alt=media&token=d62361f3-6391-44f5-80a7-b22bda704b04">
         <div class="card-body text-center">
           <!-- <h5 class=" card-title m-0">{{username}} </h5>
           <div class="cart-text"><span> {{email}} </span></div>
@@ -17,14 +18,22 @@
                     Total Balance
                   </div>
                   <div class="text-center money">
-                     <span class="fs-5 ">{{balance | currency:'VND'}}</span>
-                   </div>
+                    <span class="fs-5 ">{{balance | currency:'VND'}}</span>
+                  </div>
 
                 </div>
 
               </section>
             </aside>
             <div class="box-footer">
+
+
+              <div class="btn-add" matRipple (click)="toggle.editProfile = !toggle.editProfile;
+              showDiv.editProfile = !showDiv.editProfile;
+              showDiv.addBalance=false;showDiv.cashOut = false;showDiv.changePass= false;"
+                [ngClass]="{'active' : toggle.editProfile, 'default': !toggle.editProfile}"> <i
+                  class="fa-solid fa-arrow-right-from-bracket"></i> Profile </div>
+
 
               <div class="btn-add" matRipple (click)="toggle.addBalance = !toggle.addBalance;
                 showDiv.addBalance= !showDiv.addBalance;
@@ -34,30 +43,27 @@
                 Add Balance
               </div>
 
-              <div class="btn-add" matRipple (click)="toggle.cashOut = !toggle.cashOut;
+              <!-- <div class="btn-add" matRipple (click)="toggle.cashOut = !toggle.cashOut;
                 showDiv.cashOut = !showDiv.cashOut;
                 showDiv.changePass= false; showDiv.addBalance = false;showDiv.editProfile= false;"
                 [ngClass]="{'active' : toggle.cashOut, 'default': !toggle.cashOut}"> <i
-                  class="fa-solid fa-arrow-right-from-bracket"></i> Cash Out </div>
+                  class="fa-solid fa-arrow-right-from-bracket"></i> Cash Out </div> -->
 
-              <div class="btn-add" matRipple (click)="toggle.editProfile = !toggle.editProfile;
-              showDiv.editProfile = !showDiv.editProfile;
-              showDiv.addBalance=false;showDiv.cashOut = false;showDiv.changePass= false;"
-                [ngClass]="{'active' : toggle.editProfile, 'default': !toggle.editProfile}"> <i
-                  class="fa-solid fa-arrow-right-from-bracket"></i> Update Profile </div>
 
-              <div class="btn-add" matRipple routerLink="/ForgetPassword">
+
+              <!-- <div class="btn-add" matRipple routerLink="/ForgetPassword">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Change Password
-              </div>
+              </div> -->
             </div>
           </div>
 
         </div>
       </div>
     </div>
-    <div class="col-xl-9 col-lg-8">
+
+    <div class="col-xl-9 col-lg-8" *ngIf="showDiv.editProfile">
       <div class="card">
-        <form >
+        <form>
           <div class="card-header border-0">
             <h1 class="">Thông tin tài khoản</h1>
           </div>
@@ -110,8 +116,8 @@
                   <div class="username">
                     <mat-form-field class="input-username w-100" appearance="outline">
                       <mat-label>Ngày sinh </mat-label>
-                      <input matInput name="updateDob" id="date" [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
-                        [readonly]="isUpdate == true ? 'false' : 'true'" [(ngModel)]="dob">
+                      <input matInput name="updateDob" id="date" [matDatepicker]="picker" [min]="minDate"
+                        [max]="maxDate" [readonly]="isUpdate == true ? 'false' : 'true'" [(ngModel)]="dob">
                       <mat-datepicker-toggle matIconSuffix [for]="picker" *ngIf="isUpdate"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                       <mat-icon matPrefix><i class="fa-solid fa-calendar-days"></i></mat-icon>
@@ -137,7 +143,7 @@
               </div>
 
 
-              <div class="row" *ngIf="!isUpdate">
+              <!-- <div class="row" *ngIf="!isUpdate">
                 <hr>
 
                 <div class="">
@@ -163,10 +169,10 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
             </div>
-            <hr>
+            <!-- <hr>
             <div class="username w-100" *ngIf="!isUpdate">
               <div class="text-center p-0 login-button-div w-100">
                 <button class="login-button btn  btn-block w-100 fa-lg  mb-3 fs-5" mat-raised-button
@@ -186,14 +192,50 @@
                   </span>
                 </button>
               </div>
-            </div>
-            <div>
+            </div> -->
 
-
-            </div>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Add Balance -->
+    <div class="col-xl-9 col-lg-8">
+      <div class="card" *ngIf="showDiv.addBalance">
+
+        <div class="card-header">
+          <h1>Add Balance</h1>
+        </div>
+        <div class="card-row-addBalance">
+          <div>
+            <img src="/assets/images/logo-momo.png" class="logo-momo">
+          </div>
+          <div class="p-header-text">
+            <p>How much balance would you like to add?</p>
+          </div>
+          <div class="p-text">
+            <p>Type or select the amount below</p>
+          </div>
+          <div class="input-cash">
+            <mat-form-field class="cash-input" appearance="outline">
+              <mat-label>Cash</mat-label>
+              <span matPrefix> <i class="fa-solid fa-dong-sign"></i> &nbsp;</span>
+              <input type="number" matInput placeholder="1.000" [(ngModel)]="amount">
+            </mat-form-field>
+          </div>
+          <div class="total-cash">
+            <h2>Total: {{amount | currency:'VND'}}</h2>
+          </div>
+
+
+
+        </div>
+        <div class="button">
+          <button class="btn-denied" mat-raised-button>Cancel</button>
+          <button class="btn-accept" color="primary" mat-raised-button (click)="addMoney()">Submit</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
