@@ -30,9 +30,6 @@ public class Landlord extends BaseModel {
     @Column
     private @Setter String status = LandlordStatus.PENDING.name();
 
-    @OneToMany(mappedBy = "landlord")
-    private @Setter List<Promotion> promotions;
-
     @Column
     private @Setter String idCardFrontImageUrl;
 

@@ -13,6 +13,7 @@ public interface PromotionRepo extends JpaRepository<Promotion, Long> {
     @Query(value = "select p from Promotion p where p.code = :code")
     Optional<Promotion> findPromotionByCode(@Param("code") String code);
 
-    @Query(value = "select p from Promotion p where p.landlord.user.username = :username or p.admin.user.username = :username or p.passenger.user.username = :username")
-    List<Promotion> findPromotionByOwner(@Param("username") String username);
+    @Query(value = "select p from Promotion p where p.status = :status and p.homestayType = :homestayType")
+    List<Promotion> findPromotionListByStatusAndHomestayType(@Param("status") String status,
+            @Param("homestayType") String homestayType);
 }

@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,7 +31,7 @@ public class Passenger extends BaseModel {
     private Long id;
 
     @OneToMany(mappedBy = "passenger")
-    private @Setter List<Promotion> promotionWallet;
+    private @Setter List<Promotion> promotions;
 
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     @JoinColumn(name = "passenger_wallet_id", referencedColumnName = "id")
@@ -44,6 +46,7 @@ public class Passenger extends BaseModel {
     @OneToOne(mappedBy = "passengerProperty", cascade = { CascadeType.REFRESH, CascadeType.MERGE })
     private @Setter SwmUser user;
 
-    @OneToMany(mappedBy = "passenger")
+    @ManyToMany
+    @JoinTable(name = "invite_guest", joinColumns = @JoinColumn(name = "passener_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "invite_id", referencedColumnName = "id"))
     private @Setter List<BookingInviteCode> inviteCodes;
 }

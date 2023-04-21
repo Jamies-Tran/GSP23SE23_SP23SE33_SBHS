@@ -1,7 +1,6 @@
 package com.sbhs.swm.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,6 +25,6 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
     List<Booking> findBookingByHomestayType(@Param("homestayType") String homestayType);
 
     @Query(value = "select b from Booking b where b.bloc.name = :blocName and b.status = :status")
-    Optional<Booking> checkBookingPendingBloc(@Param("blocName") String blocName, @Param("status") String status);
+    List<Booking> checkBookingPendingBloc(@Param("blocName") String blocName, @Param("status") String status);
 
 }

@@ -3,6 +3,7 @@ package com.sbhs.swm.dto.response;
 import java.util.List;
 
 import com.sbhs.swm.dto.BookingDepositDto;
+import com.sbhs.swm.dto.PromotionDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +28,5 @@ public class BookingResponseDto {
     private List<BookingHomestayResponseDto> bookingHomestays;
     private List<BookingServiceResponseDto> bookingHomestayServices;
     private List<BookingDepositDto> bookingDeposits;
+    private List<PromotionDto> promotions;
 }

@@ -24,7 +24,7 @@ public class BalanceWallet extends BaseModel {
     private Long id;
 
     @Column
-    private @Setter long totalBalance = 0;
+    private @Setter long totalBalance = 9000000;
 
     @OneToOne(mappedBy = "balanceWallet")
     private @Setter Passenger passenger;

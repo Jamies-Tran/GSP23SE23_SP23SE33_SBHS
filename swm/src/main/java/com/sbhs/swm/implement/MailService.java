@@ -178,9 +178,9 @@ public class MailService implements IMailService {
     }
 
     @Override
-    public void informBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode) {
+    public void informBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode, String username) {
         String ingformShareCodeInformMail = GenerateMailContentUtil
-                .generateInformBookingSharedCodeHadBeenApplied(bookingShareCode);
+                .generateInformBookingSharedCodeHadBeenApplied(bookingShareCode, username);
         SwmUser bookingHost = bookingShareCode.getBooking().getPassenger().getUser();
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);

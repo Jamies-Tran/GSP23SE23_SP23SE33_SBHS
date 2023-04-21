@@ -5,8 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.ManyToOne;
+
+import com.sbhs.swm.models.status.PromotionStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,32 +27,21 @@ public class Promotion extends BaseModel {
     private @Setter String code;
 
     @Column
-    private @Setter Long discountAmount;
-
-    @Column
-    private @Setter String discountType;
-
-    @Column
-    private @Setter String promotionType;
-
-    @Column
-    private @Setter String startDate;
+    private @Setter int discountAmount;
 
     @Column
     private @Setter String endDate;
 
     @Column
-    private @Setter String status;
+    private @Setter String status = PromotionStatus.NEW.name();
+
+    @Column
+    private @Setter String homestayType;
 
     @ManyToOne
     private @Setter Passenger passenger;
 
     @ManyToOne
-    private @Setter Landlord landlord;
+    private @Setter Booking booking;
 
-    @ManyToOne
-    private @Setter Admin admin;
-
-    @ManyToOne
-    private @Setter Homestay homestay;
 }

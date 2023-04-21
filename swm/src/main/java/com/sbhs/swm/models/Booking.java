@@ -67,4 +67,7 @@ public class Booking extends BaseModel {
     @JoinColumn(name = "invite_id", referencedColumnName = "id")
     private @Setter BookingInviteCode inviteCode;
 
+    @OneToMany(mappedBy = "booking")
+    private @Setter List<Promotion> promotions;
+
 }

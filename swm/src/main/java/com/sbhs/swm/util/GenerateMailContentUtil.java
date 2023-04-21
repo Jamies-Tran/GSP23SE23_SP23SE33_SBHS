@@ -156,14 +156,15 @@ public class GenerateMailContentUtil {
         return informMailBuilder.toString();
     }
 
-    public static String generateInformBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode) {
+    public static String generateInformBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode,
+            String username) {
         StringBuilder informMailBuilder = new StringBuilder();
         SwmUser bookingHost = bookingShareCode.getBooking().getPassenger().getUser();
-        SwmUser bookingGuest = bookingShareCode.getPassenger().getUser();
+
         String bookingCode = bookingShareCode.getBooking().getCode();
         informMailBuilder.append("<h1>").append("Dear ").append(bookingHost.getUsername()).append("</h1>")
                 .append("</br>")
-                .append("<p>").append("Currently, user ").append(bookingGuest.getUsername())
+                .append("<p>").append("Currently, user ").append(username)
                 .append(" use share code on your booking ").append(bookingCode).append("<br>").append("<p>")
                 .append("Now you can share the remain deposit with your guest.").append("</p>").append("</br>");
         return informMailBuilder.toString();

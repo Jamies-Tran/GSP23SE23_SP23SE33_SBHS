@@ -12,9 +12,8 @@ import lombok.Setter;
 public class PromotionDto {
     private Long id;
     private String code;
-    private String startDate;
     private String endDate;
     private String status;
-    private Long discountAmount;
-    private String discountType;
+    private Integer discountAmount;
+    private String homestayType;
 }

@@ -1,4 +1,4 @@
-package com.sbhs.swm.dto.response;
+package com.sbhs.swm.dto.paging;
 
 import java.util.List;
 
@@ -13,9 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PassengerResponseDto extends BaseResponseDto {
-    private Long id;
-    private BalanceWalletResponseDto balanceWallet;
-    private List<BookingResponseDto> bookings;
+public class PromotionListPagingDto {
     private List<PromotionDto> promotions;
+    int pageNumber;
 }

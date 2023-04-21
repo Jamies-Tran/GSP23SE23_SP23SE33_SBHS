@@ -26,7 +26,7 @@ public interface IMailService {
 
     public void lowBalanceInformToLandlord(String username);
 
-    public void informBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode);
+    public void informBookingSharedCodeHadBeenApplied(BookingInviteCode bookingShareCode, String username);
 
     public void informBookingForHomestayAccepted(BookingHomestay bookingHomestay);
 

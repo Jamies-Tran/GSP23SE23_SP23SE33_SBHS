@@ -1,8 +1,7 @@
 package com.sbhs.swm.models.status;
 
 public enum PromotionStatus {
-    NOT_ACTIVATING,
-    ACTIVATING,
+    NEW,
     EXPIRED,
     USED;
 }
