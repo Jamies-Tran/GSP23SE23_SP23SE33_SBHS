@@ -16,6 +16,7 @@ import lombok.Setter;
 public class PassengerResponseDto extends BaseResponseDto {
     private Long id;
     private BalanceWalletResponseDto balanceWallet;
+
     private List<BookingResponseDto> bookings;
     private List<PromotionDto> promotions;
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbhs.swm.dto.request.RatingRequestDto;
 import com.sbhs.swm.dto.response.RatingResponseDto;
 import com.sbhs.swm.models.Rating;
+
 import com.sbhs.swm.services.IRatingService;
 
 @RestController
@@ -29,6 +30,8 @@ public class RatingController {
     public ResponseEntity<?> ratingHomestay(@RequestBody RatingRequestDto ratingRequest) {
         Rating rating = ratingService.ratingHomestay(ratingRequest);
         RatingResponseDto responseRating = modelMapper.map(rating, RatingResponseDto.class);
+        responseRating.setAvatar(rating.getPassenger().getUser().getAvatarUrl());
+        responseRating.setUsername(rating.getPassenger().getUser().getUsername());
 
         return new ResponseEntity<RatingResponseDto>(responseRating, HttpStatus.OK);
     }

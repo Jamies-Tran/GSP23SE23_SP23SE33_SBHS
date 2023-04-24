@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sbhs.swm.dto.request.LoginRequestDto;
 import com.sbhs.swm.dto.request.SwmUserRequestDto;
+import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
+import com.sbhs.swm.dto.response.BookingResponseDto;
 import com.sbhs.swm.dto.response.LandlordResponseDto;
 import com.sbhs.swm.dto.response.LoginResponseDto;
 import com.sbhs.swm.dto.response.PassengerResponseDto;
 import com.sbhs.swm.dto.response.SwmUserResponseDto;
+import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.security.JwtConfiguration;
 import com.sbhs.swm.services.IUserService;
@@ -69,7 +72,17 @@ public class UserController {
     public ResponseEntity<?> getUserInfo(String username) {
         SwmUser user = userService.findUserByUsername(username);
         SwmUserResponseDto responseUser = modelMapper.map(user, SwmUserResponseDto.class);
-
+        for (Booking b : user.getPassengerProperty().getBookings()) {
+            for (BookingResponseDto bResponse : responseUser.getPassengerProperty().getBookings()) {
+                if (b.getId() == bResponse.getId()) {
+                    if (b.getBloc() != null) {
+                        BlocHomestayResponseDto responseBloc = modelMapper.map(b.getBloc(),
+                                BlocHomestayResponseDto.class);
+                        bResponse.setBlocResponse(responseBloc);
+                    }
+                }
+            }
+        }
         user.getRoles().forEach(r -> {
             if (r.getName().equalsIgnoreCase("passenger")) {
                 responseUser

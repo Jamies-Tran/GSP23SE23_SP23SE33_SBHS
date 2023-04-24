@@ -24,5 +24,5 @@ public class HomestayInBlocResponseDto {
 
     private List<HomestayImageDto> homestayImages;
     private List<HomestayFacilityDto> homestayFacilities;
-    private List<RatingResponseDto> ratings;
+    // private List<RatingResponseDto> ratings;
 }

@@ -26,6 +26,7 @@ public class HomestayResponseDto extends BaseResponseDto {
     private Integer roomCapacity;
     private Double totalAverageRating;
     private Integer numberOfRating = 0;
+    private BlocHomestayResponseDto blocResponse;
     private String status;
     private List<HomestayImageDto> homestayImages;
     private List<HomestayFacilityDto> homestayFacilities;

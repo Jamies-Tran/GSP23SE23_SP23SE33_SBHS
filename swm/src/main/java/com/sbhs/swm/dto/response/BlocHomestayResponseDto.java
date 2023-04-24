@@ -23,7 +23,7 @@ public class BlocHomestayResponseDto extends BaseResponseDto {
     private Double totalAverageRating;
     private Integer numberOfRating = 0;
     private List<HomestayServiceDto> homestayServices;
-    private List<HomestayInBlocResponseDto> homestays;
+    private List<HomestayResponseDto> homestays;
     private List<HomestayRuleResponseDto> homestayRules;
     private List<RatingResponseDto> ratings;
     private Boolean isPendingBooking;

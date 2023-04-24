@@ -28,11 +28,13 @@ import com.sbhs.swm.dto.request.HomestaySearchFilter;
 import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
 import com.sbhs.swm.dto.response.FilterAdditionalResponseDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
+import com.sbhs.swm.dto.response.RatingResponseDto;
 import com.sbhs.swm.dto.response.TotalBlocFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromLocationResponseDto;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
+import com.sbhs.swm.models.Rating;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IHomestayService;
 
@@ -163,7 +165,24 @@ public class HomestayController {
         public ResponseEntity<?> getHomestayDetailByName(@RequestParam String name) {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
+                for (RatingResponseDto ratingResponse : responseHomestay.getRatings()) {
+                        for (Rating rating : homestay.getRatings()) {
+                                if (rating.getId() == ratingResponse.getId()) {
+                                        ratingResponse.setUsername(rating.getPassenger().getUser().getUsername());
+                                        ratingResponse.setAvatar(rating.getPassenger().getUser().getAvatarUrl());
+                                }
+                        }
+                }
+                if (homestay.getBloc() != null) {
+                        BlocHomestayResponseDto responseBloc = modelMapper.map(homestay.getBloc(),
+                                        BlocHomestayResponseDto.class);
+                        responseHomestay.setBlocResponse(responseBloc);
+                        responseHomestay.getBlocResponse()
+                                        .setAddress(responseHomestay.getBlocResponse().getAddress().split("_")[0]);
+
+                }
                 responseHomestay.setAddress(responseHomestay.getAddress().split("_")[0]);
+
                 responseHomestay.setIsPendingBooking(bookingService.isHomestayHaveBookingPending(name));
 
                 return new ResponseEntity<HomestayResponseDto>(responseHomestay, HttpStatus.OK);
@@ -173,6 +192,14 @@ public class HomestayController {
         public ResponseEntity<?> getBlocHomestayDetailByName(@RequestParam String name) {
                 BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
                 BlocHomestayResponseDto responseBloc = modelMapper.map(bloc, BlocHomestayResponseDto.class);
+                for (RatingResponseDto ratingResponse : responseBloc.getRatings()) {
+                        for (Rating rating : bloc.getRatings()) {
+                                if (rating.getId() == ratingResponse.getId()) {
+                                        ratingResponse.setUsername(rating.getPassenger().getUser().getUsername());
+                                        ratingResponse.setAvatar(rating.getPassenger().getUser().getAvatarUrl());
+                                }
+                        }
+                }
                 responseBloc.setAddress(responseBloc.getAddress().split("_")[0]);
                 responseBloc.setIsPendingBooking(bookingService.isBlocHomestayHaveBookingPending(name));
 
