@@ -28,6 +28,7 @@ import com.sbhs.swm.dto.request.HomestaySearchFilter;
 import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
 import com.sbhs.swm.dto.response.FilterAdditionalResponseDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
+import com.sbhs.swm.dto.response.PromotionCampaignResponseDto;
 import com.sbhs.swm.dto.response.RatingResponseDto;
 import com.sbhs.swm.dto.response.TotalBlocFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
@@ -88,6 +89,21 @@ public class HomestayController {
                         h.setAddress(h.getAddress().split("_")[0]);
                         h.setIsPendingBooking(bookingService.isHomestayHaveBookingPending(h.getName()));
                 });
+                for (Homestay h : homestays.getPageList()) {
+                        for (HomestayResponseDto hResponse : homestayDtos) {
+                                if (h.getId() == hResponse.getId()) {
+                                        if (h.getCampaigns() != null) {
+                                                List<PromotionCampaignResponseDto> responseCampaign = h.getCampaigns()
+                                                                .stream()
+                                                                .map(c -> modelMapper.map(c,
+                                                                                PromotionCampaignResponseDto.class))
+                                                                .collect(Collectors.toList());
+                                                hResponse.setCampaignListResponse(responseCampaign);
+                                        }
+
+                                }
+                        }
+                }
 
                 HomestayListPagingDto homestayResponseListDto = new HomestayListPagingDto(homestayDtos,
                                 new ArrayList<>(),
@@ -112,7 +128,21 @@ public class HomestayController {
                         h.setAddress(h.getAddress().split("_")[0]);
                         h.setIsPendingBooking(bookingService.isBlocHomestayHaveBookingPending(h.getName()));
                 });
+                for (BlocHomestay b : blocs.getPageList()) {
+                        for (BlocHomestayResponseDto bResponse : blocHomestayDtos) {
+                                if (b.getId() == bResponse.getId()) {
+                                        if (b.getCampaigns() != null) {
+                                                List<PromotionCampaignResponseDto> responseCampaigns = b.getCampaigns()
+                                                                .stream()
+                                                                .map(c -> modelMapper.map(c,
+                                                                                PromotionCampaignResponseDto.class))
+                                                                .collect(Collectors.toList());
+                                                bResponse.setCampaignListResponse(responseCampaigns);
+                                        }
 
+                                }
+                        }
+                }
                 BlocHomestayListPagingDto blocResponseListDto = new BlocHomestayListPagingDto(blocHomestayDtos,
                                 blocs.getPage());
 
@@ -130,6 +160,21 @@ public class HomestayController {
                 List<BlocHomestayResponseDto> blocHomestayDtos = blocs.getPageList().stream()
                                 .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
                                 .collect(Collectors.toList());
+                for (BlocHomestay b : blocs.getPageList()) {
+                        for (BlocHomestayResponseDto bResponse : blocHomestayDtos) {
+                                if (b.getId() == bResponse.getId()) {
+                                        if (b.getCampaigns() != null) {
+                                                List<PromotionCampaignResponseDto> responseCampaigns = b.getCampaigns()
+                                                                .stream()
+                                                                .map(c -> modelMapper.map(c,
+                                                                                PromotionCampaignResponseDto.class))
+                                                                .collect(Collectors.toList());
+                                                bResponse.setCampaignListResponse(responseCampaigns);
+                                        }
+
+                                }
+                        }
+                }
                 blocHomestayDtos.forEach(b -> {
                         b.setAddress(b.getAddress().split("_")[0]);
 
@@ -151,6 +196,21 @@ public class HomestayController {
                 List<HomestayResponseDto> homestayDtos = homestays.getPageList().stream()
                                 .map(b -> modelMapper.map(b, HomestayResponseDto.class))
                                 .collect(Collectors.toList());
+                for (Homestay h : homestays.getPageList()) {
+                        for (HomestayResponseDto hResponse : homestayDtos) {
+                                if (h.getId() == hResponse.getId()) {
+                                        if (h.getCampaigns() != null) {
+                                                List<PromotionCampaignResponseDto> responseCampaign = h.getCampaigns()
+                                                                .stream()
+                                                                .map(c -> modelMapper.map(c,
+                                                                                PromotionCampaignResponseDto.class))
+                                                                .collect(Collectors.toList());
+                                                hResponse.setCampaignListResponse(responseCampaign);
+                                        }
+
+                                }
+                        }
+                }
                 homestayDtos.forEach(b -> {
                         b.setAddress(b.getAddress().split("_")[0]);
 
@@ -172,6 +232,12 @@ public class HomestayController {
                                         ratingResponse.setAvatar(rating.getPassenger().getUser().getAvatarUrl());
                                 }
                         }
+                }
+                if (homestay.getCampaigns() != null) {
+                        List<PromotionCampaignResponseDto> responsePromotions = homestay.getCampaigns().stream()
+                                        .map(h -> modelMapper.map(h, PromotionCampaignResponseDto.class))
+                                        .collect(Collectors.toList());
+                        responseHomestay.setCampaignListResponse(responsePromotions);
                 }
                 if (homestay.getBloc() != null) {
                         BlocHomestayResponseDto responseBloc = modelMapper.map(homestay.getBloc(),
@@ -202,6 +268,10 @@ public class HomestayController {
                 }
                 responseBloc.setAddress(responseBloc.getAddress().split("_")[0]);
                 responseBloc.setIsPendingBooking(bookingService.isBlocHomestayHaveBookingPending(name));
+                List<PromotionCampaignResponseDto> responseCampaigns = bloc.getCampaigns().stream()
+                                .map(c -> modelMapper.map(c, PromotionCampaignResponseDto.class))
+                                .collect(Collectors.toList());
+                responseBloc.setCampaignListResponse(responseCampaigns);
 
                 return new ResponseEntity<BlocHomestayResponseDto>(responseBloc, HttpStatus.OK);
         }
@@ -255,6 +325,21 @@ public class HomestayController {
                                 .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
                                 .collect(Collectors.toList());
                 responseBlocList.forEach(b -> b.setAddress(b.getAddress().split("_")[0]));
+                for (BlocHomestay b : blocs.getContent()) {
+                        for (BlocHomestayResponseDto bResponse : responseBlocList) {
+                                if (b.getId() == bResponse.getId()) {
+                                        if (b.getCampaigns() != null) {
+                                                List<PromotionCampaignResponseDto> responseCampaigns = b.getCampaigns()
+                                                                .stream()
+                                                                .map(c -> modelMapper.map(c,
+                                                                                PromotionCampaignResponseDto.class))
+                                                                .collect(Collectors.toList());
+                                                bResponse.setCampaignListResponse(responseCampaigns);
+                                        }
+
+                                }
+                        }
+                }
                 BlocHomestayListPagingDto blocHomestayListPagingDto = new BlocHomestayListPagingDto(responseBlocList,
                                 blocs.getNumber());
                 return new ResponseEntity<BlocHomestayListPagingDto>(blocHomestayListPagingDto, HttpStatus.OK);
@@ -280,7 +365,22 @@ public class HomestayController {
                                         h.setAddress(h.getAddress().split("_")[0]);
                                         h.setNumberOfRating(homestayService.getHomestayNumberOfReview(h.getName()));
                                 });
+                                for (Homestay h : homestays.getPageList()) {
+                                        for (HomestayResponseDto hResponse : homestayResponseList) {
+                                                if (h.getId() == hResponse.getId()) {
+                                                        if (h.getCampaigns() != null) {
+                                                                List<PromotionCampaignResponseDto> responseCampaign = h
+                                                                                .getCampaigns()
+                                                                                .stream()
+                                                                                .map(c -> modelMapper.map(c,
+                                                                                                PromotionCampaignResponseDto.class))
+                                                                                .collect(Collectors.toList());
+                                                                hResponse.setCampaignListResponse(responseCampaign);
+                                                        }
 
+                                                }
+                                        }
+                                }
                                 homestayListPagingDto.setHomestays(homestayResponseList);
                                 homestayListPagingDto.setBlocs(new ArrayList<>());
                                 homestayListPagingDto.setPageNumber(homestays.getPage());
@@ -297,7 +397,22 @@ public class HomestayController {
                                         b.setAddress(b.getAddress().split("_")[0]);
                                         b.setNumberOfRating(homestayService.getBlocHomestayNumberOfReview(b.getName()));
                                 });
+                                for (BlocHomestay b : blocs.getPageList()) {
+                                        for (BlocHomestayResponseDto bResponse : blocResponseList) {
+                                                if (b.getId() == bResponse.getId()) {
+                                                        if (b.getCampaigns() != null) {
+                                                                List<PromotionCampaignResponseDto> responseCampaigns = b
+                                                                                .getCampaigns()
+                                                                                .stream()
+                                                                                .map(c -> modelMapper.map(c,
+                                                                                                PromotionCampaignResponseDto.class))
+                                                                                .collect(Collectors.toList());
+                                                                bResponse.setCampaignListResponse(responseCampaigns);
+                                                        }
 
+                                                }
+                                        }
+                                }
                                 homestayListPagingDto.setBlocs(blocResponseList);
                                 homestayListPagingDto.setHomestays(new ArrayList<>());
                                 homestayListPagingDto.setPageNumber(blocs.getPage());

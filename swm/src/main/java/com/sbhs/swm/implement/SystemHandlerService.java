@@ -19,6 +19,7 @@ public class SystemHandlerService {
 
     @Scheduled(fixedDelay = 60000)
     public void promotionCampaignHandler() {
+
         promotionCampaignService.updatePromotionCampaignStatus();
     }
 

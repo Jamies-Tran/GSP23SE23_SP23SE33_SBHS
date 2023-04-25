@@ -1000,7 +1000,9 @@ public class BookingService implements IBookingService {
         Long currentOwnerBalance = landlord.getBalanceWallet().getTotalBalance();
         currentOwnerBalance = currentOwnerBalance + bookingDeposit.getUnpaidAmount();
         landlord.getBalanceWallet().setTotalBalance(currentOwnerBalance);
-        LocalDateTime calculateExpiredDate = LocalDateTime.from(dateFormatUtil.formatDateTimeNow().toInstant())
+        LocalDate localDateNow = LocalDate.parse(dateFormatUtil.formatDateTimeNowToString(),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate calculateExpiredDate = LocalDate.from(localDateNow)
                 .plusDays(30);
 
         List<Promotion> promotionList = new ArrayList<>();

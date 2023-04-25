@@ -72,13 +72,15 @@ public class UserController {
     public ResponseEntity<?> getUserInfo(String username) {
         SwmUser user = userService.findUserByUsername(username);
         SwmUserResponseDto responseUser = modelMapper.map(user, SwmUserResponseDto.class);
-        for (Booking b : user.getPassengerProperty().getBookings()) {
-            for (BookingResponseDto bResponse : responseUser.getPassengerProperty().getBookings()) {
-                if (b.getId() == bResponse.getId()) {
-                    if (b.getBloc() != null) {
-                        BlocHomestayResponseDto responseBloc = modelMapper.map(b.getBloc(),
-                                BlocHomestayResponseDto.class);
-                        bResponse.setBlocResponse(responseBloc);
+        if (user.getPassengerProperty() != null) {
+            for (Booking b : user.getPassengerProperty().getBookings()) {
+                for (BookingResponseDto bResponse : responseUser.getPassengerProperty().getBookings()) {
+                    if (b.getId() == bResponse.getId()) {
+                        if (b.getBloc() != null) {
+                            BlocHomestayResponseDto responseBloc = modelMapper.map(b.getBloc(),
+                                    BlocHomestayResponseDto.class);
+                            bResponse.setBlocResponse(responseBloc);
+                        }
                     }
                 }
             }

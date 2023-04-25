@@ -25,43 +25,47 @@ import com.sbhs.swm.services.IPromotionCampaignService;
 @RequestMapping("/api/campaign")
 public class PromotionCampaignController {
 
-    @Autowired
-    private IPromotionCampaignService promotionCampaignService;
+        @Autowired
+        private IPromotionCampaignService promotionCampaignService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+        @Autowired
+        private ModelMapper modelMapper;
 
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_LANDLORD')")
-    public ResponseEntity<?> createPromotionCampaign(@RequestBody PromotionCampaignRequestDto promotionRequest) {
-        PromotionCampaign promotionCampaign = promotionCampaignService.createPromotionCampaign(promotionRequest);
-        PromotionCampaignResponseDto responseCampaign = modelMapper.map(promotionCampaign,
-                PromotionCampaignResponseDto.class);
+        @PostMapping
+        @PreAuthorize("hasRole('ROLE_LANDLORD')")
+        public ResponseEntity<?> createPromotionCampaign(@RequestBody PromotionCampaignRequestDto promotionRequest) {
+                PromotionCampaign promotionCampaign = promotionCampaignService
+                                .createPromotionCampaign(promotionRequest);
+                PromotionCampaignResponseDto responseCampaign = modelMapper.map(promotionCampaign,
+                                PromotionCampaignResponseDto.class);
 
-        return new ResponseEntity<PromotionCampaignResponseDto>(responseCampaign, HttpStatus.OK);
-    }
+                return new ResponseEntity<PromotionCampaignResponseDto>(responseCampaign, HttpStatus.OK);
+        }
 
-    @GetMapping("/list")
-    @PreAuthorize("hasAnyRole('ROLE_LANDLORD', 'ROLE_PASSENGER')")
-    public ResponseEntity<?> getPromotionCampaignListByStatus(String status, int page, int size, boolean isNextPage,
-            boolean isPreviousPage) {
-        PagedListHolder<PromotionCampaign> promotionCampaignPagedList = promotionCampaignService
-                .getPromotionCampaignListByStatus(status, page, size, isNextPage, isPreviousPage);
-        List<PromotionCampaignResponseDto> responseCampaignList = promotionCampaignPagedList.getPageList().stream()
-                .map(p -> modelMapper.map(p, PromotionCampaignResponseDto.class)).collect(Collectors.toList());
-        CampaignListPagingDto campaignListPagingDto = new CampaignListPagingDto();
-        campaignListPagingDto.setCampaignList(responseCampaignList);
-        campaignListPagingDto.setPageNumber(promotionCampaignPagedList.getPage());
-        return new ResponseEntity<CampaignListPagingDto>(campaignListPagingDto, HttpStatus.OK);
-    }
+        @GetMapping("/list")
+        @PreAuthorize("hasAnyRole('ROLE_LANDLORD', 'ROLE_PASSENGER')")
+        public ResponseEntity<?> getPromotionCampaignListByStatus(String status, int page, int size, boolean isNextPage,
+                        boolean isPreviousPage) {
+                PagedListHolder<PromotionCampaign> promotionCampaignPagedList = promotionCampaignService
+                                .getPromotionCampaignListByStatus(status, page, size, isNextPage, isPreviousPage);
+                List<PromotionCampaignResponseDto> responseCampaignList = promotionCampaignPagedList.getPageList()
+                                .stream()
+                                .map(p -> modelMapper.map(p, PromotionCampaignResponseDto.class))
+                                .collect(Collectors.toList());
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_LANDLORD', 'ROLE_PASSENGER')")
-    public ResponseEntity<?> getPromotionCampaignById(Long id) {
-        PromotionCampaign promotionCampaign = promotionCampaignService.getPromotionCampaignById(id);
-        PromotionCampaignResponseDto responseCampaign = modelMapper.map(promotionCampaign,
-                PromotionCampaignResponseDto.class);
+                CampaignListPagingDto campaignListPagingDto = new CampaignListPagingDto();
+                campaignListPagingDto.setCampaignList(responseCampaignList);
+                campaignListPagingDto.setPageNumber(promotionCampaignPagedList.getPage());
+                return new ResponseEntity<CampaignListPagingDto>(campaignListPagingDto, HttpStatus.OK);
+        }
 
-        return new ResponseEntity<PromotionCampaignResponseDto>(responseCampaign, HttpStatus.OK);
-    }
+        @GetMapping
+        @PreAuthorize("hasAnyRole('ROLE_LANDLORD', 'ROLE_PASSENGER')")
+        public ResponseEntity<?> getPromotionCampaignById(Long id) {
+                PromotionCampaign promotionCampaign = promotionCampaignService.getPromotionCampaignById(id);
+                PromotionCampaignResponseDto responseCampaign = modelMapper.map(promotionCampaign,
+                                PromotionCampaignResponseDto.class);
+
+                return new ResponseEntity<PromotionCampaignResponseDto>(responseCampaign, HttpStatus.OK);
+        }
 }
