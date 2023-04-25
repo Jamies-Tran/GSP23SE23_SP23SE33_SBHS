@@ -165,8 +165,8 @@ export class RequestAccountLandlordComponent implements OnInit {
     dialogRef.afterClosed().subscribe(()=>{
       setTimeout(() =>{
         this.getStatusLandlord();
-      } , 4000)
-    })
+      } , 4500)
+    });
   }
 }
 
