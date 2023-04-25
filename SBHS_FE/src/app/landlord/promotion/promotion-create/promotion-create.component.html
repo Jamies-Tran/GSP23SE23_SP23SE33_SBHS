@@ -3,14 +3,11 @@
     <div class="login-row row mt-3 ">
       <div class="login-col col-12 col-md-10 col-lg-9 col-xl-8">
         <form (ngSubmit)="addItems(myForm)" #myForm="ngForm">
-
-          <div class="login-card card rounded  border-0 mb-4" *ngFor="let value of items; let i = index">
+          <div class="login-card card rounded  border-0 mb-4" >
             <div class="login-card-body card-body  ">
-
               <div class="login-text text-center w-100 ">
-                <h2>Create Promotion - No.{{i+1}}</h2>
+                <h2>Create Promotion</h2>
               </div>
-
               <div class="row">
                 <div class="col-12 col-md-6">
                   <!-- name -->
@@ -18,9 +15,8 @@
                     <mat-form-field class="input-username w-100" appearance="outline">
                       <mat-label>
                         Name</mat-label>
-                      <input matInput type="text" required [(ngModel)]="value.name" [ngModelOptions]="{standalone: true}" name="txtname{{i}}">
-
-
+                      <input matInput type="text" required [(ngModel)]="name"
+                        [ngModelOptions]="{standalone: true}" name="txtname">
                     </mat-form-field>
                   </div>
                 </div>
@@ -30,88 +26,33 @@
                     <mat-form-field class="input-username w-100" appearance="outline">
                       <mat-label>
                         Percent</mat-label>
-                      <input matInput type="number" required [(ngModel)]="value.percent" [ngModelOptions]="{standalone: true}" name="txtpercent{{i}}">
-
-
+                      <input matInput type="tel" required [(ngModel)]="discountPercent"
+                        [ngModelOptions]="{standalone: true}" name="txtpercent"
+                        pattern="^[0]\d{9}$" maxlength="2" minlength="1" >
                     </mat-form-field>
                   </div>
                 </div>
-
               </div>
               <div class="row">
                 <div class="col">
                   <div class="row p-0 m-0 mb-2">
-                    <div class="col-6 p-0">Start day</div>
-
-                    <div class="col-6 ">End day</div>
-
-                  </div>
-                  <div class="row p-0 m-0">
-                    <div class="col-6 p-0">
-                      <div class="row m-0 p-0">
-                        <div class="col-6 ps-0">
-                          <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Day</mat-label>
-                            <mat-select value="1" [(ngModel)]="value.startDay" [ngModelOptions]="{standalone: true}"
-                              *ngIf="startMonth =='1' || startMonth =='3' || startMonth =='5' || startMonth =='7' ||startMonth =='8' ||startMonth =='10' || startMonth =='12'">
-                              <mat-option *ngFor="let item of valueday31" value="{{item}}">{{item}}</mat-option>
-                            </mat-select>
-                            <mat-select value="1" [(ngModel)]="value.startDay" [ngModelOptions]="{standalone: true}"
-                              *ngIf="startMonth =='4' || startMonth =='6' || startMonth =='9' || startMonth =='11'">
-                              <mat-option *ngFor="let item of valueday30" value="{{item}}">{{item}}</mat-option>
-                            </mat-select>
-                            <mat-select value="1" [(ngModel)]="value.startDay" [ngModelOptions]="{standalone: true}" *ngIf="startMonth =='2'">
-                              <mat-option *ngFor="let item of valueday28" value="{{item}}">{{item}}</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-6 ps-0">
-                          <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Month</mat-label>
-                            <mat-select value="1" [(ngModel)]="value.startMonth" [ngModelOptions]="{standalone: true}">
-                              <mat-option *ngFor="let name of valueMonthName; let i = index" value="{{i+1}}">{{name}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-6 pe-0">
-                      <div class="row m-0 p-0">
-                        <div class="col-6 ps-0">
-                          <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Day</mat-label>
-                            <mat-select value="1" [(ngModel)]="value.endDay" [ngModelOptions]="{standalone: true}"
-                              *ngIf="endMonth =='1' || endMonth =='3' || endMonth =='5' || endMonth =='7' ||endMonth =='8' ||endMonth =='10' || endMonth =='12'">
-                              <mat-option *ngFor="let item of valueday31" value="{{item}}">{{item}}</mat-option>
-                            </mat-select>
-                            <mat-select value="1" [(ngModel)]="value.endDay" [ngModelOptions]="{standalone: true}"
-                              *ngIf="endMonth =='4' || endMonth =='6' || endMonth =='9' || endMonth =='11'">
-                              <mat-option *ngFor="let item of valueday30" value="{{item}}">{{item}}</mat-option>
-                            </mat-select>
-                            <mat-select value="1" [(ngModel)]="value.endDay" [ngModelOptions]="{standalone: true}" *ngIf="endMonth =='2'">
-                              <mat-option *ngFor="let item of valueday28" value="{{item}}">{{item}}</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
-                        <div class="col-6 p-0">
-                          <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Month</mat-label>
-                            <mat-select value="1" [(ngModel)]="value.endMonth" [ngModelOptions]="{standalone: true}">
-                              <mat-option *ngFor="let name of valueMonthName; let i = index" value="{{i+1}}">{{name}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                        </div>
+                    <div class="col p-0">
+                      <div class="reg-input">
+                        <mat-form-field class="input-username w-100" appearance="outline">
+                          <mat-label>Enter a date range</mat-label>
+                          <mat-date-range-input [rangePicker]="picker" [min]="minDateStart" [max]="maxDate">
+                            <input matStartDate [(ngModel)]="startDate" name="startDate"
+                              [ngModelOptions]="{standalone: true}" placeholder="Start date">
+                            <input matEndDate [(ngModel)]="endDate" name="endDate"
+                              [ngModelOptions]="{standalone: true}" placeholder="End date">
+                          </mat-date-range-input>
+                          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
                       </div>
                     </div>
                   </div>
                 </div>
-
-
-
-
               </div>
               <div class="row">
                 <div class="col">
@@ -120,97 +61,62 @@
                     <mat-form-field class="input-username w-100" appearance="outline">
                       <mat-label>
                         Description</mat-label>
-                      <textarea matInput type="text" required [(ngModel)]="value.description"[ngModelOptions]="{standalone: true}"
-                        name="txtdescription{{i}}"></textarea>
+                      <textarea matInput type="text" required [(ngModel)]="description"
+                        [ngModelOptions]="{standalone: true}" name="txtdescription"></textarea>
                     </mat-form-field>
                   </div>
                 </div>
               </div>
-              <div class="row mb-3">
-                <div class="col">
-                    <section class="example-section">
-                      <mat-checkbox class="example-margin" style="font-weight: 500; letter-spacing:0.8px ; " [(ngModel)]="value.checked" [ngModelOptions]="{standalone: true}" labelPosition="before" color="primary">
-                        Promotion for Passenger VIP
-                      </mat-checkbox>
-                    </section>
-
-                </div>
-              </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-6 ">
                   <h5>Homestay</h5>
                   <section class="example-section">
-                   <p class="m-0">
-                     <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
-                      Homestay A
-                    </mat-checkbox>
-                   </p>
-                   <p class="m-0">
-                     <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
-                      Homestay A
-                    </mat-checkbox>
-                   </p>
-                   <p class="m-0">
-                     <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
-                      Homestay A
-                    </mat-checkbox>
-                   </p>
-
+                    <p class="m-0" *ngFor="let homestay of valueHomestay; let i = index">
+                      <mat-checkbox class="example-margin" [(ngModel)]="homestay.status" name="homestay{{i}}  "
+                        [ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                        {{homestay.name}}
+                      </mat-checkbox>
+                    </p>
                   </section>
                 </div>
                 <div class="col-6">
                   <h5>Block Homestay</h5>
                   <section class="example-section">
-                    <p class="m-0">
-                      <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
-                       Block Homestay A
-                     </mat-checkbox>
+                    <p class="m-0" *ngFor="let bloc of valueBloc; let i = index">
+                      <mat-checkbox class="example-margin" [(ngModel)]="bloc.status" name="bloc{{i}}  "
+                        [ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
+                        {{bloc.name}}
+                      </mat-checkbox>
                     </p>
-                    <p class="m-0">
-                      <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
-                        Block Homestay A
-                     </mat-checkbox>
-                    </p>
-                    <p class="m-0">
-                      <mat-checkbox class="example-margin"  [(ngModel)]="value.homestay"[ngModelOptions]="{standalone: true}" labelPosition="after" color="primary">
-                        Block Homestay A
-                     </mat-checkbox>
-                    </p>
-
-                   </section>
+                  </section>
                 </div>
               </div>
-
               <hr>
-
-              <div class="text-center  login-button-div">
-                <button class="login-button btn  btn-block w-100 fa-lg" type="button" mat-raised-button color="warn"
-                  (click)="removeItems(i)">
-                  <span class="fs-5">
-                    <mat-icon><i class="fa-solid fa-xmark m-0 p-0 fs-5"></i></mat-icon>
-                    Delete
-                  </span>
-
-                </button>
+              <h5 class="text-start">Image Promotion</h5>
+              <div class="row">
+                <!-- col left -->
+                <div class="col">
+                  <div ngx-dropzone class="upload" [multiple]="false" [accept]="'image/*'"
+                    (change)="onSelect($event)" *ngIf="showDiv" [(ngModel)]="file"  [ngModelOptions]="{standalone: true}" name="image">
+                    <ngx-dropzone-label>
+                      <div>
+                        <i class="fas fa-cloud-upload-alt icon-upload"></i>
+                        <header>Drop files here or click to upload *</header>
+                      </div>
+                    </ngx-dropzone-label>
+                  </div>
+                  <div class="wrapper text-center" *ngFor="let f of files">
+                    <ngx-dropzone-image-preview class="image-preview overflow-hidden"
+                      ngProjectAs="ngx-dropzone-preview" [file]="f" [removable]="true"
+                      (removed)="onRemove(f)">
+                    </ngx-dropzone-image-preview>
+                    <ngx-dropzone-label ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
+                      (removed)="onRemove(f)">{{
+                      f.name }}</ngx-dropzone-label>
+                  </div>
+                </div>
               </div>
-
-
-
-
-
-
             </div>
-          </div>
-          <hr>
-          <div class="text-center  login-button-div">
-            <button class="login-button btn  btn-block w-100 fa-lg" type="button" mat-raised-button
-              (click)="addMoreItems()">
-              <span class="fs-5">
-                <mat-icon><i class="fa-solid fa-plus m-0 p-0 fs-5"></i></mat-icon>
-                Add more
-              </span>
-
-            </button>
           </div>
           <hr>
           <div class="text-center pt-1  pb-1 login-button-div">

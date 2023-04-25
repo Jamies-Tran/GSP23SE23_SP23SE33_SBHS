@@ -1,91 +1,86 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Promotion } from 'src/app/models/promotion.model';
 import { MessageComponent } from 'src/app/pop-up/message/message.component';
 import { SuccessComponent } from 'src/app/pop-up/success/success.component';
+import { HomestayService } from 'src/app/services/homestay.service';
+import { PromotionService } from 'src/app/services/promotion.service';
+import { DatePipe } from '@angular/common';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-promotion-create',
   templateUrl: './promotion-create.component.html',
-  styleUrls: ['./promotion-create.component.scss']
+  styleUrls: ['./promotion-create.component.scss'],
 })
 export class PromotionCreateComponent implements OnInit {
+  constructor(
+    public dialog: MatDialog,
+    private httpHomestay: HomestayService,
+    private httpPromotion: PromotionService,
+    public datepipe: DatePipe,
+    private storage: AngularFireStorage,
+  ) {}
 
-  constructor(public dialog: MatDialog) {}
-
-  items: any[] = [];
+  items!: Promotion;
   message: any;
-  Error: string = '';
-  valueday30: Array<number> = [];
-  valueday31: Array<number> = [];
-  valueday28: Array<number> = [];
-  valueMonth: Array<number> = [];
-  valueMonthName: Array<string> = [
-    'January ',
-    'February ',
-    'March ',
-    'April ',
-    'May ',
-    'June ',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November ',
-    'December ',
-  ];
-  startDay = '1';
-  endDay = '1';
-  startMonth = '1';
-  endMonth = '1';
-  description = '';
-  flag = false;
+  valueHomestay: any = [];
+  valueBloc: any = [];
+  minDateStart!: Date;
+  maxDate!: Date;
+  name!: string;
+  discountPercent!: number;
+  description!: string;
+  startDate!: string;
+  endDate!: string;
+  thumbnailUrl!: string;
+  blocNameList: string[] = [];
+  homestayNameList: string[] = [];
+  files: File[] = [];
+  file!: File;
+  showDiv = true;
 
   ngOnInit(): void {
-    this.items.push({
-      name: '',
-      percent: '',
-      description: '',
-      startDay:this.startDay,
-      startMonth:this.startMonth,
-      endDay:this.endDay,
-      endMonth:this.endMonth,
-      checked:false
-    });
-    for (let index = 1; index < 31; index++) {
-      this.valueday30.push(index);
-    }
-    for (let index = 1; index < 32; index++) {
-      this.valueday31.push(index);
-    }
-    for (let index = 1; index < 29; index++) {
-      this.valueday28.push(index);
-    }
-    for (let index = 1; index < 13; index++) {
-      this.valueMonth.push(index);
-    }
-
+    this.getHomestayActivating();
+    this.getBlocActivating();
+    const currentYear = new Date().getFullYear();
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate());
+    this.minDateStart = new Date(currentDate);
+    this.maxDate = new Date(currentYear + 0, currentDate.getMonth() + 6, 0);
+    console.log('maxDate', this.maxDate);
   }
 
-
-
-  addMoreItems() {
-    this.items.push({
-      name: '',
-      percent: '',
-      startDay: '1',
-      endDay: '1',
-      startMonth: '1',
-      endMonth: '1',
-      description: '',
-      checked:false
-    });
+  getHomestayActivating() {
+    this.valueHomestay = [];
+    this.httpHomestay
+      .getHomestayByLandlord('ACTIVATING')
+      .subscribe(async (data) => {
+        console.log('data homestay:', data['homestays']);
+        for (let i of data['homestays'].reverse()) {
+          this.valueHomestay.push({
+            name: i.name,
+            status: false,
+          });
+        }
+      });
   }
 
-  removeItems(i: any) {
-    this.items.splice(i, 1);
+  getBlocActivating() {
+    this.valueBloc = [];
+    this.httpHomestay
+      .getBlocByLandlord('ACTIVATING')
+      .subscribe(async (data) => {
+        console.log('data blocs:', data['blocs']);
+        for (let i of data['blocs'].reverse()) {
+          this.valueBloc.push({
+            name: i.name,
+            status: false,
+          });
+        }
+      });
   }
-
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
@@ -97,7 +92,117 @@ export class PromotionCreateComponent implements OnInit {
       data: this.message,
     });
   }
-  addItems(form: NgForm){
-    console.log('submit items:' , this.items);
+
+  addItems(form: NgForm) {
+    this.convert(this.startDate, this.endDate);
+    if (this.valid() == true) {
+      let homestay = [];
+      for (let i of this.valueHomestay) {
+        if (i.status == true) {
+          homestay.push(i.name);
+        }
+      }
+      let bloc = [];
+      for (let i of this.valueBloc) {
+        if (i.status == true) {
+          bloc.push(i.name);
+        }
+      }
+      this.items={
+        name: this.name,
+        description: this.description,
+        blocNameList: bloc,
+        discountPercent: this.discountPercent as number,
+        endDate: this.endDate,
+        homestayNameList: homestay,
+        startDate: this.startDate,
+        thumbnailUrl: this.thumbnailUrl,
+      };
+      console.log('submit items:', this.items);
+      try {
+        this.httpPromotion.createPromotionCampaign(this.items).subscribe( (data)=>{
+          const datas = data;
+          for(this.file of this.files){
+            const path = 'campaign/' + this.name +  this.file.name;
+          const fileRef = this.storage.ref(path);
+          this.storage.upload(path, this.file);
+          }
+          this.message = 'Create Promotion Success';
+          this.openDialogSuccess();
+        });
+      } catch (error) {
+        this.message = error as string;
+      this.openDialogMessage();
+      console.log(error);
+      }
+
+    } else {
+      this.openDialogMessage();
+    }
+  }
+  checked = false;
+  public valid() {
+    this.checked = false;
+    if (this.name == '' || !this.name) {
+      this.message = 'Please enter name promotion';
+      return;
+    } else if (
+      this.discountPercent >= 50 ||
+      this.discountPercent <= 1 ||
+      !this.discountPercent
+    ) {
+      this.message = 'Discount Percent between 1% and 50%';
+      return;
+    }
+    for (let i of this.valueHomestay) {
+      if (i.status == true) {
+        this.checked = true;
+      }
+    }
+    for (let i of this.valueBloc) {
+      if (i.status == true) {
+        this.checked = true;
+      }
+    }
+    if (this.checked == false) {
+      this.message = 'Please choose Homestay or Block-Homestay';
+      return;
+    } else return true;
+  }
+
+  dob: any;
+  convert(startDate: any, endDate: any): void {
+    var date = new Date(startDate),
+      mnth = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2);
+    this.startDate = [date.getFullYear(), mnth, day].join('-');
+    console.log('convert', this.startDate);
+
+    var date = new Date(endDate),
+      mnth = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2);
+    this.endDate = [date.getFullYear(), mnth, day].join('-');
+    console.log('convert', this.endDate);
+  }
+
+  onSelect(files: any) {
+    console.log(event);
+    this.files.push(...files.addedFiles);
+    if (this.files.length >= 1) {
+      this.showDiv = false;
+    }
+
+    for (this.file of this.files) {
+      this.thumbnailUrl = this.name + this.file.name;
+    }
+  }
+  onRemove(event: File) {
+    this.files.splice(this.files.indexOf(event), 1);
+
+    if (this.files.length >= 1) {
+      this.showDiv = false;
+    } else {
+      this.showDiv = true;
+    }
   }
 }

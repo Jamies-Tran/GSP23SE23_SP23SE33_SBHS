@@ -19,6 +19,22 @@ export class BookingService {
   private handleError(error: HttpErrorResponse) {
     return throwError(error.error['message']);
   }
+
+  //  GET
+  //  /api/booking/landlord/bloc/booking-list
+  public getBookingBlocForLandlord(name: string , status:string): Observable<any> {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        Authorization: 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url = `${this.REST_API_SERVER}/api/booking/landlord/bloc/booking-list?blocName=${name}&status=${status}`;
+    return this.httpClient
+      .get<any>(url, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   //  GET
   //  /api/booking/landlord/booking-list
   public getBookingForLandlord(name: string , status:string): Observable<any> {
@@ -28,7 +44,7 @@ export class BookingService {
         Authorization: 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
-    const url = `${this.REST_API_SERVER}/api/booking/landlord/booking-list?homestayName=${name}&status=${status}`;
+    const url = `${this.REST_API_SERVER}/api/booking/landlord/homestay/booking-list?homestayName=${name}&status=${status}`;
     return this.httpClient
       .get<any>(url, this.httpOptions)
       .pipe(catchError(this.handleError));

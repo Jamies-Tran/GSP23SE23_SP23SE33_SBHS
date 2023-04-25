@@ -3,14 +3,14 @@
     <div class="row row-header">
       <!--  x4 -->
       <!-- 1 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
+      <div class="header col-xl-6 col-md-6 mb-6">
         <div class="card">
           <div class="card-body">
             <div class="row align-items-center" >
               <div class="col">
                 <p class="m-0">Total Profit</p>
                 <div class="numbers">
-                  10.000.000 đ
+                  {{totalProfit | currency:'VND'}}
                 </div>
               </div>
             </div>
@@ -20,14 +20,14 @@
       </div>
 
       <!-- 2 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
+      <div class="header col-xl-6 col-md-6 mb-6">
         <div class="card">
           <div class="card-body">
             <div class="row align-items-center" >
               <div class="col">
                 <p class="m-0">Total Booking</p>
                 <div class="numbers">
-                  10.000.000 đ
+                  {{totalBooking}}
                 </div>
               </div>
             </div>
@@ -36,39 +36,6 @@
         </div>
       </div>
 
-      <!-- 3 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
-        <div class="card">
-          <div class="card-body">
-            <div class="row align-items-center" >
-              <div class="col">
-                <p class="m-0">Total Promotion</p>
-                <div class="numbers">
-                  10.000.000 đ
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer bot-yellogreen"></div>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
-        <div class="card">
-          <div class="card-body">
-            <div class="row align-items-center" >
-              <div class="col">
-                <p class="m-0">? ? ?</p>
-                <div class="numbers">
-                  10.000.000 đ
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer bot-organe"></div>
-        </div>
-      </div>
 
 
 
@@ -112,17 +79,17 @@
                       <!-- percent -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                       {{post.discountPercentage}}
                       </td>
                       <!-- Start Day -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                        {{post.startDate}}
                       </td>
                       <!-- End Day -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                        {{post.endDate}}
                       </td>
                       <!-- View -->
                       <td class="pt-0">
@@ -201,11 +168,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr matRipple *ngFor="let post of valuesProgress | paginate:{
-                      id: 'paginationProgress',
-                      itemsPerPage: tableSizeProgress,
-                    currentPage: pageProgress,
-                    totalItems: countProgress
+                    <tr matRipple *ngFor="let post of valuesPending | paginate:{
+                      id: 'paginationPending',
+                      itemsPerPage: tableSizePending,
+                    currentPage: pagePending,
+                    totalItems: countPending
                     };
                     let i = index">
                     <!-- id -->
@@ -221,17 +188,17 @@
                       <!-- percent -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                       {{post.discountPercentage}}
                       </td>
                       <!-- Start Day -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                        {{post.startDate}}
                       </td>
                       <!-- End Day -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                        {{post.endDate}}
                       </td>
                       <!-- View -->
                       <td class="pt-0">
@@ -241,7 +208,7 @@
                     </tr>
 
 
-                    <tr *ngIf="valuesProgress.length < 1">
+                    <tr *ngIf="valuesPending.length < 1">
                       <td></td>
                       <td> </td>
                       <td> </td>
@@ -249,7 +216,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 2">
+                    <tr *ngIf="valuesPending.length < 2">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -257,7 +224,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 3">
+                    <tr *ngIf="valuesPending.length < 3">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -265,7 +232,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 4">
+                    <tr *ngIf="valuesPending.length < 4">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -273,7 +240,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 5">
+                    <tr *ngIf="valuesPending.length < 5">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -289,8 +256,8 @@
 
                   </div>
                   <div class="col-sm-6 d-flex justify-content-center">
-                    <pagination-controls id="paginationProgress" previousLabel="Prev" nextLabel="Next"
-                      (pageChange)="onTableDataChangeProgress($event)">
+                    <pagination-controls id="paginationPending" previousLabel="Prev" nextLabel="Next"
+                      (pageChange)="onTableDataChangePending($event)">
                     </pagination-controls>
                   </div>
 
@@ -310,11 +277,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr matRipple *ngFor="let post of valuesProgress | paginate:{
-                      id: 'paginationProgress',
-                      itemsPerPage: tableSizeProgress,
-                    currentPage: pageProgress,
-                    totalItems: countProgress
+                    <tr matRipple *ngFor="let post of valuesProgressed | paginate:{
+                      id: 'paginationProgressed',
+                      itemsPerPage: tableSizeProgressed,
+                    currentPage: pageProgressed,
+                    totalItems: countProgressed
                     };
                     let i = index">
                     <!-- id -->
@@ -330,17 +297,17 @@
                       <!-- percent -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                       {{post.discountPercentage}}
                       </td>
                       <!-- Start Day -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                        {{post.startDate}}
                       </td>
                       <!-- End Day -->
                       <td [style.cursor]="'pointer'" routerLink="../Promotion/PromotionDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5 "> ! </span>
+                        {{post.endDate}}
                       </td>
                       <!-- View -->
                       <td class="pt-0">
@@ -350,7 +317,7 @@
                     </tr>
 
 
-                    <tr *ngIf="valuesProgress.length < 1">
+                    <tr *ngIf="valuesProgressed.length < 1">
                       <td></td>
                       <td> </td>
                       <td> </td>
@@ -358,7 +325,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 2">
+                    <tr *ngIf="valuesProgressed.length < 2">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -366,7 +333,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 3">
+                    <tr *ngIf="valuesProgressed.length < 3">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -374,7 +341,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 4">
+                    <tr *ngIf="valuesProgressed.length < 4">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -382,7 +349,7 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr *ngIf="valuesProgress.length < 5">
+                    <tr *ngIf="valuesProgressed.length < 5">
                       <td></td>
                       <td></td>
                       <td></td>
@@ -398,8 +365,8 @@
 
                   </div>
                   <div class="col-sm-6 d-flex justify-content-center">
-                    <pagination-controls id="paginationProgress" previousLabel="Prev" nextLabel="Next"
-                      (pageChange)="onTableDataChangeProgress($event)">
+                    <pagination-controls id="paginationProgressed" previousLabel="Prev" nextLabel="Next"
+                      (pageChange)="onTableDataChangeProgressed($event)">
                     </pagination-controls>
                   </div>
 

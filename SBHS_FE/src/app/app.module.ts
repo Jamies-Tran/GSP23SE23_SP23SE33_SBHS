@@ -182,7 +182,7 @@ export const MY_DATE_FORMATS = {
     MatCheckboxModule,
     MatChipsModule,
     MatStepperModule,
-    MatDatepickerModule,
+
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,

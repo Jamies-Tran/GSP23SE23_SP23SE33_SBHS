@@ -5,11 +5,11 @@ import { LandlordComponent } from './landlord.component';
 // Module
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { MatRippleModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { matSelectAnimations, MatSelectModule } from '@angular/material/select';
 import { MatPaginatedTabHeader, MatTabsModule } from '@angular/material/tabs';
@@ -46,6 +46,8 @@ import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landl
 import { PromotionOverviewComponent } from './promotion/promotion-overview/promotion-overview.component';
 import { PromotionDetailComponent } from './promotion/promotion-detail/promotion-detail.component';
 import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MY_DATE_FORMATS } from '../app.module';
 
 
 @NgModule({
@@ -94,7 +96,12 @@ import { PromotionCreateComponent } from './promotion/promotion-create/promotion
     MatGridListModule,
     MatExpansionModule,
     MatBadgeModule,
+    MatDatepickerModule,
     NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
   ],
+  providers: [
+    DatePipe,
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ]
 })
 export class LandlordModule {}

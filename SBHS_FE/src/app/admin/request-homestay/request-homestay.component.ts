@@ -68,7 +68,7 @@ export class RequestHomestayComponent implements OnInit {
     this.httpAdmin.activeHomestay(this.name).subscribe(
       (data) => {
         if (data != null) {
-          this.message = ' Homestay hav accept';
+          this.message = ' Homestay have accept';
           this.openDialogSuccess();
           this.getStatusHomestay();
         }
