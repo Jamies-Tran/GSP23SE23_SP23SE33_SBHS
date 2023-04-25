@@ -14,6 +14,10 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
     @Query(value = "select b from Booking b where b.passenger.user.username = :username and b.status = :status")
     List<Booking> findBookingByUsernameAndStatus(@Param("username") String username, @Param("status") String status);
 
+    @Query(value = "select b from Booking b where b.bloc.name = :blocName and b.status = :status")
+    List<Booking> findBookingBlocListByBlocNameAndStatus(@Param("blocName") String blocName,
+            @Param("status") String status);
+
     @Query(value = "select b from Booking b where b.status != 'SAVED'")
     List<Booking> findAllAvailableBooking();
 

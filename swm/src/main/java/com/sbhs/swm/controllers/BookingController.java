@@ -33,7 +33,7 @@ import com.sbhs.swm.dto.response.BookingHomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingHomestayResponseForLandlordDto;
 import com.sbhs.swm.dto.response.BookingInviteCodeResponseDto;
 import com.sbhs.swm.dto.response.BookingResponseDto;
-
+import com.sbhs.swm.dto.response.BookingResponseForLandlordDto;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingHomestay;
 
@@ -121,9 +121,9 @@ public class BookingController {
         return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
     }
 
-    @GetMapping("/landlord/booking-list")
+    @GetMapping("/landlord/homestay/booking-list")
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
-    public ResponseEntity<?> getBookingForLandlord(String homestayName, String status) {
+    public ResponseEntity<?> getBookingHomestayForLandlord(String homestayName, String status) {
         List<BookingHomestay> bookingHomestayList = bookingService.getLandlordBookingHomestayList(homestayName, status);
         List<BookingHomestayResponseForLandlordDto> responseBookingList = bookingHomestayList.stream()
                 .map(h -> modelMapper.map(h, BookingHomestayResponseForLandlordDto.class)).collect(Collectors.toList());
@@ -132,6 +132,17 @@ public class BookingController {
         responseBookingHomestayList.setBookingList(responseBookingList);
 
         return new ResponseEntity<BookingHomestayListResponseDto>(responseBookingHomestayList, HttpStatus.OK);
+    }
+
+    @GetMapping("/landlord/bloc/booking-list")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    public ResponseEntity<?> getBookingBlocForLandlord(String blocName, String status) {
+        List<Booking> bookingList = bookingService.getLandlordBookingBlocList(blocName, status);
+        List<BookingResponseForLandlordDto> responseBookingList = bookingList.stream()
+                .map(h -> modelMapper.map(h, BookingResponseForLandlordDto.class)).collect(Collectors.toList());
+        responseBookingList.forEach(b -> b.getBloc().setAddress(b.getBloc().getAddress().split("_")[0]));
+
+        return new ResponseEntity<List<BookingResponseForLandlordDto>>(responseBookingList, HttpStatus.OK);
     }
 
     @PutMapping

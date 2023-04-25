@@ -1184,4 +1184,10 @@ public class BookingService implements IBookingService {
         return checkPendingBookingBlocHomestay.size() > 0;
     }
 
+    @Override
+    public List<Booking> getLandlordBookingBlocList(String blocName, String status) {
+        List<Booking> bookings = bookingRepo.findBookingBlocListByBlocNameAndStatus(blocName, status);
+        return bookings;
+    }
+
 }
