@@ -12,10 +12,12 @@ import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.Promotion;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.PromotionStatus;
 import com.sbhs.swm.repositories.PromotionRepo;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IPromotionService;
 import com.sbhs.swm.services.IUserService;
+import com.sbhs.swm.util.DateTimeUtil;
 
 @Service
 public class PromotionService implements IPromotionService {
@@ -28,6 +30,9 @@ public class PromotionService implements IPromotionService {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private DateTimeUtil dateTimeUtil;
 
     @Override
     public Promotion getPromotionByCode(String code) {
@@ -79,6 +84,19 @@ public class PromotionService implements IPromotionService {
     public void removePromotion(Long bookingId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removePromotion'");
+    }
+
+    @Override
+    @Transactional
+    public void updatePromotionStatus() {
+        List<Promotion> promotions = promotionRepo.findAll();
+        for (Promotion p : promotions) {
+            if (!p.getStatus().equalsIgnoreCase(PromotionStatus.USED.name())) {
+                if (dateTimeUtil.formatGivenDate(p.getEndDate()).compareTo(dateTimeUtil.formatDateTimeNow()) == 0) {
+                    p.setStatus(PromotionStatus.EXPIRED.name());
+                }
+            }
+        }
     }
 
 }

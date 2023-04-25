@@ -38,10 +38,12 @@ import com.sbhs.swm.models.LandlordCommission;
 import com.sbhs.swm.models.Passenger;
 
 import com.sbhs.swm.models.Promotion;
+import com.sbhs.swm.models.PromotionCampaign;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.BookingShareCodeStatus;
 import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.models.status.DepositStatus;
+import com.sbhs.swm.models.status.PromotionCampaignStatus;
 import com.sbhs.swm.models.status.PromotionStatus;
 import com.sbhs.swm.models.type.CommissionType;
 import com.sbhs.swm.models.type.HomestayType;
@@ -872,6 +874,18 @@ public class BookingService implements IBookingService {
         Booking booking = bookingHomestay.getBooking();
 
         bookingHomestay.setStatus(BookingStatus.CHECKEDOUT.name());
+        if (bookingHomestay.getHomestay().getCampaigns() != null) {
+            for (PromotionCampaign p : bookingHomestay.getHomestay().getCampaigns()) {
+                if (p.getStatus().equalsIgnoreCase(PromotionCampaignStatus.PROGRESSING.name())) {
+                    Long currentProfit = p.getTotalProfit();
+                    Long currentBooking = p.getTotalBooking();
+                    currentProfit = currentProfit + bookingHomestay.getTotalBookingPrice();
+                    currentBooking = currentBooking + 1;
+                    p.setTotalProfit(currentProfit);
+                    p.setTotalBooking(currentBooking);
+                }
+            }
+        }
         if (booking.getBookingHomestays().stream()
                 .allMatch(b -> b.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name()))) {
             booking.setStatus(BookingStatus.CHECKEDOUT.name());
@@ -966,6 +980,18 @@ public class BookingService implements IBookingService {
         Landlord landlord = booking.getBloc().getLandlord();
         booking.setStatus(BookingStatus.CHECKEDOUT.name());
         booking.getBookingHomestays().forEach(b -> b.setStatus(BookingStatus.CHECKEDOUT.name()));
+        if (booking.getBloc().getCampaigns() != null) {
+            for (PromotionCampaign p : booking.getBloc().getCampaigns()) {
+                if (p.getStatus().equalsIgnoreCase(PromotionCampaignStatus.PROGRESSING.name())) {
+                    Long currentProfit = p.getTotalProfit();
+                    Long currentBooking = p.getTotalBooking();
+                    currentProfit = currentProfit + booking.getTotalBookingPrice();
+                    currentBooking = currentBooking + 1;
+                    p.setTotalProfit(currentProfit);
+                    p.setTotalBooking(currentBooking);
+                }
+            }
+        }
         BookingDeposit bookingDeposit = booking.getBookingDeposits().stream()
                 .filter(d -> d.getDepositForHomestay().equals(booking.getBloc().getName())).findAny().get();
         Long currentUserBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();

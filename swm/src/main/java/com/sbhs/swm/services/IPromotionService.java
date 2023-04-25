@@ -18,4 +18,5 @@ public interface IPromotionService {
 
     void removePromotion(Long bookingId);
 
+    void updatePromotionStatus();
 }
