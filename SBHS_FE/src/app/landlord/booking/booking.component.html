@@ -9,8 +9,10 @@
           <div class="body card mb-4">
             <mat-tab-group>
               <!-- Hometsay -->
-              <mat-tab label="Homestay">
-
+              <mat-tab >
+                <ng-template mat-tab-label>
+                  <span  [matBadgeHidden]="valuesHomestay.length == 0" matBadge="!" matBadgePosition="after" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small">Homestay</span>
+                </ng-template>
 
                 <table class="table  table-hover mt-2" style="height:60vh">
                   <thead class="table-light">
@@ -95,15 +97,17 @@
                 </div>
               </mat-tab>
               <!-- Block -hometsay -->
-              <mat-tab label="Block-Homestay">
-
+              <mat-tab >
+                <ng-template mat-tab-label>
+                  <span  [matBadgeHidden]="valuesBloc.length == 0" matBadge="!" matBadgePosition="after" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small">Block-Homestay</span>
+                </ng-template>
 
                 <table class="table  table-hover mt-2" style="height:60vh">
                   <thead class="table-light">
                     <tr class="fw-5">
                       <th>ID</th>
                       <th>Name</th>
-                      <th>Booking</th>
+                      <th class="text-center">Booking</th>
                       <th>View</th>
                     </tr>
                   </thead>

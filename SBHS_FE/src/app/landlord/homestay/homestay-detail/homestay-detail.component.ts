@@ -127,7 +127,6 @@ export class HomestayDetailComponent implements OnInit {
                 bloc: i.booking.bloc,
                 bookingHomestayServices: i.booking.bookingHomestayServices,
                 totalBookingPrice: i.totalBookingPrice,
-                totalReservation: i.totalReservation,
                 paymentMethod: i.paymentMethod,
               });
             }
@@ -172,6 +171,7 @@ export class HomestayDetailComponent implements OnInit {
       data: {
         bookingId: bookingId,
         homestayId: homestayId,
+        type:"homestay"
       },
       disableClose: true,
     });

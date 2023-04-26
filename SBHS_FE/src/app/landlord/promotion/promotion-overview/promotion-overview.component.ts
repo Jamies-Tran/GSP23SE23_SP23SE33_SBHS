@@ -72,7 +72,7 @@ getPromotionProgressing() {
         endDate:i.endDate,
         totalProfit:i.totalProfit,
         totalBooking:i.totalBooking,
-        discountPercentage:i.discountPercentage
+        discountPercentage:i.discountPercent
       });
       this.totalBooking += i.totalBooking;
       this.totalProfit += i.totalProfit;
@@ -94,7 +94,7 @@ getPromotionPending() {
         endDate:i.endDate,
         totalProfit:i.totalProfit,
         totalBooking:i.totalBooking,
-        discountPercentage:i.discountPercentage
+        discountPercentage:i.discountPercent
       });
     }
   });
@@ -113,7 +113,7 @@ getPromotionProgressed() {
         endDate:i.endDate,
         totalProfit:i.totalProfit,
         totalBooking:i.totalBooking,
-        discountPercentage:i.discountPercentage
+        discountPercentage:i.discountPercent
       });
       this.totalBooking += i.totalBooking;
       this.totalProfit += i.totalProfit;

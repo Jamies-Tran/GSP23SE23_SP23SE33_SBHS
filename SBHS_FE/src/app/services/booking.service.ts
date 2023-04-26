@@ -103,7 +103,7 @@ export class BookingService {
         'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
       }),
     };
-    const url = `${this.REST_API_SERVER}/api/booking/Bloc/accept?bookingId=${bookingId}&homestayId=${homestayId}`;
+    const url = `${this.REST_API_SERVER}/api/booking/bloc/accept?bookingId=${bookingId}`;
     return this.httpClient
       .put<any>(url,null,this.httpOptions)
       .pipe(catchError(this.handleError));
@@ -123,7 +123,7 @@ export class BookingService {
       }),
     };
     const value = {message:message};
-    const url = `${this.REST_API_SERVER}/api/booking/Bloc/reject?bookingId=${bookingId}&homestayId=${homestayId}`;
+    const url = `${this.REST_API_SERVER}/api/booking/bloc/reject?bookingId=${bookingId}`;
     return this.httpClient
       .put<any>(url, value, this.httpOptions)
       .pipe(catchError(this.handleError));

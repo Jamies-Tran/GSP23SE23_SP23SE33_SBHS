@@ -129,6 +129,15 @@ export class PromotionCreateComponent implements OnInit {
           }
           this.message = 'Create Promotion Success';
           this.openDialogSuccess();
+          this.name = '';
+          this.discountPercent =0;
+          this.startDate = '';
+          this.endDate = '';
+          this.description = '';
+          this.files = [];
+          this.getHomestayActivating();
+          this.getBlocActivating();
+          this.showDiv = true;
         });
       } catch (error) {
         this.message = error as string;
