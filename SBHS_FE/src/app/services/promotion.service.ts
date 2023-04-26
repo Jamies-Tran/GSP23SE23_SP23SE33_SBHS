@@ -31,7 +31,7 @@ export class PromotionService {
       }),
     };
     const url =
-      `${this.REST_API_SERVER}/api/campaign?id=${id}`;
+      `${this.REST_API_SERVER}/api/campaign?campaignId=${id}`;
     return this.httpClient
       .get<any>(url,this.httpOptions)
       .pipe(catchError(this.handleError));

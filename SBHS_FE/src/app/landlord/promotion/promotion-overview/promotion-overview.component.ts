@@ -33,7 +33,7 @@ onTableDataChangeProgress(event: any) {
 public onItemSelector(id: number, createdBy: string) {
   this.id = id;
   this.username = createdBy;
-  localStorage.setItem('id', id + '');
+  sessionStorage.setItem('id', id + '');
   sessionStorage.setItem('name' ,createdBy );
 }
 // valuesProgressed
