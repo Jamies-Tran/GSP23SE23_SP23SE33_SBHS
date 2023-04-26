@@ -1,7 +1,7 @@
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
+import 'package:staywithme_passenger_application/model/campaign_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
-import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 
 class OverviewBookingState {
   OverviewBookingState(
@@ -25,7 +25,15 @@ class OverviewBookingState {
     DateTime bookingStartDate = DateTime.parse(bookingStart!);
     DateTime bookingEndDate = DateTime.parse(bookingEnd!);
     int duration = bookingEndDate.difference(bookingStartDate).inDays;
-    int totalBookingPrice = homestay!.price! * duration;
+    int currentHomestayPrice = homestay!.price!;
+    for (CampaignModel c in homestay!.campaigns!) {
+      if (c.status == "PROGRESSING") {
+        int discountAmount =
+            currentHomestayPrice * c.discountPercentage! ~/ 100;
+        currentHomestayPrice = currentHomestayPrice - discountAmount;
+      }
+    }
+    int totalBookingPrice = currentHomestayPrice * duration;
     return totalBookingPrice;
   }
 

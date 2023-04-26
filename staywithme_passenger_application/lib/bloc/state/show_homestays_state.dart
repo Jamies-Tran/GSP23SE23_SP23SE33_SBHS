@@ -14,9 +14,9 @@ class ShowHomestaysState {
   BlocBookingDateValidationModel? blocBookingValidation;
   BookingModel? booking;
   String? paymentMethod;
-  List<HomestayInBlocModel>? selectedBlocHomestayList;
+  List<HomestayModel>? selectedBlocHomestayList;
 
-  bool isBlocHomestayFree(HomestayInBlocModel homestay) {
+  bool isBlocHomestayFree(HomestayModel homestay) {
     for (HomestayModel h in blocBookingValidation!.homestays!) {
       if (h.id == homestay.id) {
         return true;
@@ -25,7 +25,7 @@ class ShowHomestaysState {
     return false;
   }
 
-  bool isBlocHomestayBookedByUser(HomestayInBlocModel homestay) {
+  bool isBlocHomestayBookedByUser(HomestayModel homestay) {
     for (BookingHomestayModel b in booking!.bookingHomestays!) {
       if (b.homestay!.id == homestay.id) {
         return true;
@@ -34,8 +34,8 @@ class ShowHomestaysState {
     return false;
   }
 
-  bool isHomestaySelected(HomestayInBlocModel homestay) {
-    for (HomestayInBlocModel h in selectedBlocHomestayList!) {
+  bool isHomestaySelected(HomestayModel homestay) {
+    for (HomestayModel h in selectedBlocHomestayList!) {
       if (h.id == homestay.id) {
         return true;
       }

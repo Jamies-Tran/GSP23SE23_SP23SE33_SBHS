@@ -3,6 +3,7 @@ import 'package:staywithme_passenger_application/service/authentication/auth_ser
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service/image_service.dart';
 import 'package:staywithme_passenger_application/service/location/location_service.dart';
+import 'package:staywithme_passenger_application/service/promotion/promotion_service.dart';
 import 'package:staywithme_passenger_application/service/user/auto_complete_service.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
@@ -27,4 +28,5 @@ void setup() {
   locator.registerLazySingleton<IImageService>(() => ImageService());
   locator.registerLazySingleton<IBookingService>(() => BookingService());
   locator.registerLazySingleton<IRatingService>(() => RatingService());
+  locator.registerLazySingleton<IPromotionService>(() => PromotionService());
 }

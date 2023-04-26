@@ -15,10 +15,22 @@ class OnCheckValidBookingDateEvent extends HomestayDetailEvent {
 
 class CreateBookingEvent extends HomestayDetailEvent {
   CreateBookingEvent(
-      {this.context, this.homestay, this.bookingStart, this.bookingEnd});
+      {this.context,
+      this.homestay,
+      this.bookingStart,
+      this.bookingEnd,
+      this.brownseHomestayFlag});
 
   BuildContext? context;
   HomestayModel? homestay;
+  bool? brownseHomestayFlag;
   String? bookingStart;
   String? bookingEnd;
+}
+
+class ViewBlocEvent extends HomestayDetailEvent {
+  ViewBlocEvent({this.context, this.blocName});
+
+  BuildContext? context;
+  String? blocName;
 }

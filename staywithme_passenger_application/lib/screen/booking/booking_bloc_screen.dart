@@ -210,7 +210,8 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
         widget.blocBookingDateValidation!.homestays!;
     return StreamBuilder<ChooseHomestayState>(
       stream: chooseHomestayBloc.stateController.stream,
-      initialData: chooseHomestayBloc.initData(widget.bookingBlocList),
+      initialData:
+          chooseHomestayBloc.initData(widget.bookingBlocList, widget.bloc!),
       builder: (context, snapshot) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -255,7 +256,10 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                 itemBuilder: (context, index) {
                   BookingBlocModel bookingBloc = BookingBlocModel(
                       homestayName: homestays[index].name,
-                      totalBookingPrice: homestays[index].price);
+                      totalBookingPrice: snapshot.data!.onCampaign()
+                          ? snapshot.data!
+                              .newHomestayInBlocPrice(homestays[index])
+                          : homestays[index].price);
                   return TweenAnimationBuilder(
                     tween: Tween<double>(begin: 0, end: 1),
                     duration: Duration(seconds: index + 2),
@@ -336,9 +340,10 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 10,
+                                  width: 20,
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
                                       "Price: ",
@@ -354,12 +359,37 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    Text(
-                                      currencyFormat
-                                          .format(homestays[index].price),
-                                      style: const TextStyle(
-                                          fontFamily: "Lobster"),
-                                    )
+                                    snapshot.data!.onCampaign()
+                                        ? Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                currencyFormat.format(
+                                                    homestays[index].price),
+                                                style: const TextStyle(
+                                                    fontFamily: "Lobster",
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                    color: Colors.red),
+                                              ),
+                                              Text(
+                                                currencyFormat.format(snapshot
+                                                    .data!
+                                                    .newHomestayInBlocPrice(
+                                                        homestays[index])),
+                                                style: const TextStyle(
+                                                    fontFamily: "Lobster"),
+                                              )
+                                            ],
+                                          )
+                                        : Text(
+                                            currencyFormat.format(snapshot.data!
+                                                .newHomestayInBlocPrice(
+                                                    homestays[index])),
+                                            style: const TextStyle(
+                                                fontFamily: "Lobster"),
+                                          )
                                   ],
                                 )
                               ]),

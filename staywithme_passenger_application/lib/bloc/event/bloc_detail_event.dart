@@ -4,14 +4,11 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 
 abstract class BlocHomestayDetailEvent {}
 
-class OnGetBlocAvailableHomestayListEvent extends BlocHomestayDetailEvent {
-  OnGetBlocAvailableHomestayListEvent(
-      {this.bookingStart, this.bookingEnd, this.blocName, this.msg});
+class ChooseBookingDateForBlocEvent extends BlocHomestayDetailEvent {
+  ChooseBookingDateForBlocEvent({this.context, this.bloc});
 
-  String? bookingStart;
-  String? bookingEnd;
-  String? blocName;
-  String? msg;
+  BuildContext? context;
+  BlocHomestayModel? bloc;
 }
 
 class CreateBookingEvent extends BlocHomestayDetailEvent {
@@ -27,4 +24,11 @@ class CreateBookingEvent extends BlocHomestayDetailEvent {
   BlocBookingDateValidationModel? blocBookingDateValidation;
   String? bookingStart;
   String? bookingEnd;
+}
+
+class ViewHomestayEvent extends BlocHomestayDetailEvent {
+  ViewHomestayEvent({this.context, this.homestayName});
+
+  BuildContext? context;
+  String? homestayName;
 }

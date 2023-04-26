@@ -4,6 +4,8 @@ abstract class IImageService {
   Future<dynamic> getAreaImage(String area);
 
   Future<dynamic> getHomestayImage(String img);
+
+  Future<dynamic> getCampaignImage(String img);
 }
 
 class ImageService extends IImageService {
@@ -26,6 +28,17 @@ class ImageService extends IImageService {
     try {
       String url =
           await fireStorage.child("homestay").child(img).getDownloadURL();
+      return url;
+    } on FirebaseException {
+      return null;
+    }
+  }
+
+  @override
+  Future getCampaignImage(String img) async {
+    try {
+      String url =
+          await fireStorage.child("campaign").child(img).getDownloadURL();
       return url;
     } on FirebaseException {
       return null;

@@ -37,7 +37,8 @@ class _RatingHomestayScreenState extends State<RatingHomestayScreen> {
             case "homestay":
               homestayImageUrl = streamSnapshot.data!.bookingHomestay!.homestay!
                   .homestayImages!.first.imageUrl!;
-              homestayName = streamSnapshot.data!.booking!.bloc!.name!;
+              homestayName =
+                  streamSnapshot.data!.bookingHomestay!.homestay!.name!;
               address = streamSnapshot.data!.bookingHomestay!.homestay!.address!
                   .split(",")
                   .first;

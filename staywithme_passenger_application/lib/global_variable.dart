@@ -109,6 +109,20 @@ final ratingHomestayUrl =
 
 final ratingBlocUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["RATING_BLOC"]}";
 
+final getPromotionByCodeUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["PROMOTION"]}";
+
+final getPromotionListByStatusUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["PROMOTION_LIST"]}";
+
+final applyPromotionUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["PROMOTION_APPLY"]}";
+
+final campaignListUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["CAMPAIGN_LIST"]}";
+
+final campaignUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["CAMPAIGN"]}";
+
 // common variable
 final currencyFormat = NumberFormat("#,##0");
 final dateFormat = DateFormat("yyyy-MM-dd");

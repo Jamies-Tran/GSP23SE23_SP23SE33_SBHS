@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/choose_homestay_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/choose_homestay_state.dart';
+import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
@@ -12,11 +13,14 @@ class ChooseHomestayBloc {
   final stateController = StreamController<ChooseHomestayState>();
 
   List<BookingBlocModel> _bookingBlocModelList = <BookingBlocModel>[];
+  BlocHomestayModel? _bloc;
 
-  ChooseHomestayState initData(List<BookingBlocModel>? bookingBlocList) {
+  ChooseHomestayState initData(
+      List<BookingBlocModel>? bookingBlocList, BlocHomestayModel bloc) {
     _bookingBlocModelList = bookingBlocList ?? <BookingBlocModel>[];
+    _bloc = bloc;
     return ChooseHomestayState(
-        bookingBlocList: bookingBlocList ?? <BookingBlocModel>[]);
+        bookingBlocList: bookingBlocList ?? <BookingBlocModel>[], bloc: bloc);
   }
 
   void dispose() {
@@ -81,7 +85,7 @@ class ChooseHomestayBloc {
             });
       }
     }
-    stateController.sink
-        .add(ChooseHomestayState(bookingBlocList: _bookingBlocModelList));
+    stateController.sink.add(ChooseHomestayState(
+        bookingBlocList: _bookingBlocModelList, bloc: _bloc));
   }
 }

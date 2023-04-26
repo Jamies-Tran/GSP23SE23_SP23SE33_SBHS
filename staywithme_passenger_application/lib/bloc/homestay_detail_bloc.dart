@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_detail_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
-import 'package:staywithme_passenger_application/model/exc_model.dart';
-import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/choose_booking_date_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/bloc_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
@@ -130,57 +129,17 @@ class HomestayDetailBloc {
                       onPressed: () async {
                         await _bookingService.deleteBooking(
                             bookingHomestayData.bookingHomestayId!.bookingId!);
-                        final bookingData = await _bookingService.createBooking(
-                            HomestayType.homestay.name,
-                            event.bookingStart!,
-                            event.bookingEnd!);
-                        if (bookingData is BookingModel) {
-                          Navigator.pushNamed(event.context!,
-                              BookingHomestayScreen.bookingHomestayScreenRoute,
-                              arguments: {
-                                "homestay": event.homestay,
-                                "bookingId": bookingData.id,
-                                "bookingStart": event.bookingStart,
-                                "bookingEnd": event.bookingEnd
-                              });
-                        } else if (bookingData is ServerExceptionModel) {
-                          showDialog(
-                            context: event.context!,
-                            builder: (context) => AlertDialog(
-                              title: const Center(child: Text("Notice")),
-                              content: SizedBox(
-                                  height: 200,
-                                  width: 200,
-                                  child: Text("${bookingData.message}")),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Cancel")),
-                              ],
-                            ),
-                          );
-                        } else if (bookingData is TimeoutException ||
-                            bookingData is SocketException) {
-                          showDialog(
-                            context: event.context!,
-                            builder: (context) => AlertDialog(
-                              title: const Center(child: Text("Notice")),
-                              content: const SizedBox(
-                                  height: 200,
-                                  width: 200,
-                                  child: Text("Network error")),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Cancel")),
-                              ],
-                            ),
-                          );
-                        }
+
+                        Navigator.pushNamed(
+                            event.context!,
+                            ChooseBookingDateForHomestayScreen
+                                .chooseBookingDateForHomestayScreenRoute,
+                            arguments: {
+                              "homestay": event.homestay,
+                              "bookingStart": event.bookingStart,
+                              "bookingEnd": event.bookingEnd,
+                              "brownseHomestayFlag": event.brownseHomestayFlag
+                            });
                       },
                       child: const Text(
                         "Create new",
@@ -189,57 +148,72 @@ class HomestayDetailBloc {
                 ]),
           );
         } else {
-          final bookingData = await _bookingService.createBooking(
-              HomestayType.homestay.name,
-              event.bookingStart!,
-              event.bookingEnd!);
-          if (bookingData is BookingModel) {
-            Navigator.pushNamed(event.context!,
-                BookingHomestayScreen.bookingHomestayScreenRoute,
-                arguments: {
-                  "homestay": event.homestay,
-                  "bookingId": bookingData.id,
-                  "bookingStart": event.bookingStart,
-                  "bookingEnd": event.bookingEnd
-                });
-          } else if (bookingData is ServerExceptionModel) {
-            showDialog(
-              context: event.context!,
-              builder: (context) => AlertDialog(
-                title: const Center(child: Text("Notice")),
-                content: SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: Text("${bookingData.message}")),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel")),
-                ],
-              ),
-            );
-          } else if (bookingData is TimeoutException ||
-              bookingData is SocketException) {
-            showDialog(
-              context: event.context!,
-              builder: (context) => AlertDialog(
-                title: const Center(child: Text("Notice")),
-                content: const SizedBox(
-                    height: 200, width: 200, child: Text("Network error")),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel")),
-                ],
-              ),
-            );
-          }
+          //   final bookingData = await _bookingService.createBooking(
+          //       HomestayType.homestay.name,
+          //       event.bookingStart!,
+          //       event.bookingEnd!);
+          //   if (bookingData is BookingModel) {
+          //     Navigator.pushNamed(event.context!,
+          //         BookingHomestayScreen.bookingHomestayScreenRoute,
+          //         arguments: {
+          //           "homestay": event.homestay,
+          //           "bookingId": bookingData.id,
+          //           "bookingStart": event.bookingStart,
+          //           "bookingEnd": event.bookingEnd
+          //         });
+          //   } else if (bookingData is ServerExceptionModel) {
+          //     showDialog(
+          //       context: event.context!,
+          //       builder: (context) => AlertDialog(
+          //         title: const Center(child: Text("Notice")),
+          //         content: SizedBox(
+          //             height: 200,
+          //             width: 200,
+          //             child: Text("${bookingData.message}")),
+          //         actions: [
+          //           TextButton(
+          //               onPressed: () {
+          //                 Navigator.pop(context);
+          //               },
+          //               child: const Text("Cancel")),
+          //         ],
+          //       ),
+          //     );
+          //   } else if (bookingData is TimeoutException ||
+          //       bookingData is SocketException) {
+          //     showDialog(
+          //       context: event.context!,
+          //       builder: (context) => AlertDialog(
+          //         title: const Center(child: Text("Notice")),
+          //         content: const SizedBox(
+          //             height: 200, width: 200, child: Text("Network error")),
+          //         actions: [
+          //           TextButton(
+          //               onPressed: () {
+          //                 Navigator.pop(context);
+          //               },
+          //               child: const Text("Cancel")),
+          //         ],
+          //       ),
+          //     );
+          //   }
+          // }
+          Navigator.pushNamed(
+              event.context!,
+              ChooseBookingDateForHomestayScreen
+                  .chooseBookingDateForHomestayScreenRoute,
+              arguments: {
+                "homestay": event.homestay,
+                "bookingStart": event.bookingStart,
+                "bookingEnd": event.bookingEnd,
+                "brownseHomestayFlag": event.brownseHomestayFlag
+              });
         }
       }
+    } else if (event is ViewBlocEvent) {
+      Navigator.pushNamed(
+          event.context!, BlocDetailScreen.blocDetailScreenRoute,
+          arguments: {"blocName": event.blocName});
     }
     stateController.sink.add(HomestayDetailState(
         msg: _msg,

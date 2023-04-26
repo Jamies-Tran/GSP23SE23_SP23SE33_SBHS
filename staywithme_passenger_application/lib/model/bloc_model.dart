@@ -1,4 +1,5 @@
 import 'package:staywithme_passenger_application/model/booking_model.dart';
+import 'package:staywithme_passenger_application/model/campaign_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class BlocHomestayModel {
@@ -13,7 +14,8 @@ class BlocHomestayModel {
       this.bookings,
       this.homestayServices,
       this.homestayRules,
-      this.ratings});
+      this.ratings,
+      this.campaigns});
 
   String? name;
   String? address;
@@ -21,38 +23,42 @@ class BlocHomestayModel {
   String? status;
   double? totalAverageRating;
   int? numberOfRating;
-  List<HomestayInBlocModel>? homestays;
+  List<HomestayModel>? homestays;
   List<BookingModel>? bookings;
   List<HomestayServiceModel>? homestayServices;
   List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
+  List<CampaignModel>? campaigns;
 
-  factory BlocHomestayModel.fromJson(Map<String, dynamic> json) =>
-      BlocHomestayModel(
-          name: json["name"],
-          address: json["address"],
-          cityProvince: json["cityProvince"],
-          numberOfRating: json["numberOfRating"],
-          status: json["status"],
-          totalAverageRating: json["totalAverageRating"],
-          homestays: List<HomestayInBlocModel>.from(
-              json["homestays"].map((e) => HomestayInBlocModel.fromJson(e))),
-          bookings: json["blocs"] != null
-              ? List<BookingModel>.from(
-                  json["blocs"].map((e) => BookingModel.fromJson(e)))
-              : <BookingModel>[],
-          homestayServices: json["homestayServices"] != null
-              ? List<HomestayServiceModel>.from(json["homestayServices"]
-                  .map((e) => HomestayServiceModel.fromJson(e)))
-              : <HomestayServiceModel>[],
-          ratings: json["ratings"] != null
-              ? List<RatingModel>.from(
-                  json["ratings"].map((e) => RatingModel.fromJson(e)))
-              : <RatingModel>[],
-          homestayRules: json["homestayRules"] != null
-              ? List<HomestayRuleModel>.from(json["homestayRules"]
-                  .map((e) => HomestayRuleModel.fromJson(e)))
-              : <HomestayRuleModel>[]);
+  factory BlocHomestayModel.fromJson(Map<String, dynamic> json) => BlocHomestayModel(
+      name: json["name"],
+      address: json["address"],
+      cityProvince: json["cityProvince"],
+      numberOfRating: json["numberOfRating"],
+      status: json["status"],
+      totalAverageRating: json["totalAverageRating"],
+      homestays: List<HomestayModel>.from(
+          json["homestays"].map((e) => HomestayModel.fromJson(e))),
+      bookings: json["blocs"] != null
+          ? List<BookingModel>.from(
+              json["blocs"].map((e) => BookingModel.fromJson(e)))
+          : <BookingModel>[],
+      homestayServices: json["homestayServices"] != null
+          ? List<HomestayServiceModel>.from(json["homestayServices"]
+              .map((e) => HomestayServiceModel.fromJson(e)))
+          : <HomestayServiceModel>[],
+      ratings: json["ratings"] != null
+          ? List<RatingModel>.from(
+              json["ratings"].map((e) => RatingModel.fromJson(e)))
+          : <RatingModel>[],
+      homestayRules: json["homestayRules"] != null
+          ? List<HomestayRuleModel>.from(
+              json["homestayRules"].map((e) => HomestayRuleModel.fromJson(e)))
+          : <HomestayRuleModel>[],
+      campaigns: json["campaignListResponse"] != null
+          ? List<CampaignModel>.from(
+              json["campaignListResponse"].map((e) => CampaignModel.fromJson(e)))
+          : <CampaignModel>[]);
 }
 
 class HomestayInBlocModel {

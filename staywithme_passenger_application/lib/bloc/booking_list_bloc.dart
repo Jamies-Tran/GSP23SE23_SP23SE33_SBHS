@@ -13,8 +13,8 @@ import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/promotion_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
-import 'package:staywithme_passenger_application/screen/homestay/process_booking_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 
@@ -259,6 +259,7 @@ class BookingListBloc {
           event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
           arguments: {
             "homestayName": event.homestayName,
+            "isHomestayInBloc": _booking!.homestayType == "BLOC",
             "bookingViewHomestayDetailFlag": true,
             "viewDetail": _viewDetail,
           });
@@ -274,10 +275,17 @@ class BookingListBloc {
         case null:
           break;
       }
+      // Navigator.pushReplacementNamed(
+      //     event.context!, ProcessBookingScreen.processBookingScreenRoute,
+      //     arguments: {
+      //       "bookingId": _booking!.id,
+      //       "homestayType": _homestayType,
+      //       "paymentMethod": paymentMethod
+      //     });
       Navigator.pushReplacementNamed(
-          event.context!, ProcessBookingScreen.processBookingScreenRoute,
+          event.context!, PromotionScreen.promotionScreenRoute,
           arguments: {
-            "bookingId": _booking!.id,
+            "booking": _booking,
             "homestayType": _homestayType,
             "paymentMethod": paymentMethod
           });

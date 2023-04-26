@@ -9,7 +9,6 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
-import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 import 'package:staywithme_passenger_application/service/user/rating_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';

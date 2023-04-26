@@ -1,4 +1,5 @@
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
+import 'package:staywithme_passenger_application/model/campaign_model.dart';
 
 class HomestayModel {
   HomestayModel(
@@ -12,11 +13,13 @@ class HomestayModel {
       this.totalAverageRating,
       this.numberOfRating,
       this.status,
+      this.bloc,
       this.homestayImages,
       this.homestayFacilities,
       this.homestayServices,
       this.homestayRules,
-      this.ratings});
+      this.ratings,
+      this.campaigns});
 
   int? id;
   String? name;
@@ -28,43 +31,53 @@ class HomestayModel {
   double? totalAverageRating;
   int? numberOfRating;
   String? status;
+  BlocHomestayModel? bloc;
   List<HomestayImageModel>? homestayImages;
   List<HomestayFacilityModel>? homestayFacilities;
   List<HomestayServiceModel>? homestayServices;
   List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
+  List<CampaignModel>? campaigns;
 
   factory HomestayModel.fromJson(Map<String, dynamic> json) => HomestayModel(
-      id: json["id"],
-      name: json["name"],
-      price: json["price"],
-      address: json["address"],
-      cityProvince: json["cityProvince"],
-      availableRooms: json["availableRooms"],
-      roomCapacity: json["roomCapacity"],
-      totalAverageRating: json["totalAverageRating"],
-      numberOfRating: json["numberOfRating"],
-      status: json["status"],
-      homestayImages: json["homestayImages"] != null
-          ? List<HomestayImageModel>.from(
-              json["homestayImages"].map((e) => HomestayImageModel.fromJson(e)))
-          : <HomestayImageModel>[],
-      homestayFacilities: json["homestayFacilities"] != null
-          ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
-              .map((e) => HomestayFacilityModel.fromJson(e)))
-          : <HomestayFacilityModel>[],
-      homestayServices: json["homestayServices"] != null
-          ? List<HomestayServiceModel>.from(json["homestayServices"]
-              .map((e) => HomestayServiceModel.fromJson(e)))
-          : <HomestayServiceModel>[],
-      homestayRules: json["homestayRules"] != null
-          ? List<HomestayRuleModel>.from(
-              json["homestayRules"].map((e) => HomestayRuleModel.fromJson(e)))
-          : <HomestayRuleModel>[],
-      ratings: json["ratings"] != null
-          ? List<RatingModel>.from(
-              json["ratings"].map((e) => RatingModel.fromJson(e)))
-          : <RatingModel>[]);
+        id: json["id"],
+        name: json["name"],
+        price: json["price"],
+        address: json["address"],
+        cityProvince: json["cityProvince"],
+        availableRooms: json["availableRooms"],
+        roomCapacity: json["roomCapacity"],
+        totalAverageRating: json["totalAverageRating"],
+        numberOfRating: json["numberOfRating"],
+        status: json["status"],
+        bloc: json["blocResponse"] != null
+            ? BlocHomestayModel.fromJson(json["blocResponse"])
+            : null,
+        homestayImages: json["homestayImages"] != null
+            ? List<HomestayImageModel>.from(json["homestayImages"]
+                .map((e) => HomestayImageModel.fromJson(e)))
+            : <HomestayImageModel>[],
+        homestayFacilities: json["homestayFacilities"] != null
+            ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
+                .map((e) => HomestayFacilityModel.fromJson(e)))
+            : <HomestayFacilityModel>[],
+        homestayServices: json["homestayServices"] != null
+            ? List<HomestayServiceModel>.from(json["homestayServices"]
+                .map((e) => HomestayServiceModel.fromJson(e)))
+            : <HomestayServiceModel>[],
+        homestayRules: json["homestayRules"] != null
+            ? List<HomestayRuleModel>.from(
+                json["homestayRules"].map((e) => HomestayRuleModel.fromJson(e)))
+            : <HomestayRuleModel>[],
+        ratings: json["ratings"] != null
+            ? List<RatingModel>.from(
+                json["ratings"].map((e) => RatingModel.fromJson(e)))
+            : <RatingModel>[],
+        campaigns: json["campaignListResponse"] != null
+            ? List<CampaignModel>.from(json["campaignListResponse"]
+                .map((e) => CampaignModel.fromJson(e)))
+            : <CampaignModel>[],
+      );
 
   Map<String, dynamic> toJson() => {"name": name, "price": price};
 }
@@ -112,28 +125,34 @@ class RatingModel {
       this.locationPoint,
       this.securityPoint,
       this.homestayName,
-      this.comment});
+      this.comment,
+      this.username,
+      this.avatar});
 
   double? servicePoint;
   double? locationPoint;
   double? securityPoint;
   String? homestayName;
   String? comment;
+  String? username;
+  String? avatar;
 
   factory RatingModel.fromJson(Map<String, dynamic> json) => RatingModel(
       servicePoint: json["servicePoint"],
       locationPoint: json["locationPoint"],
       securityPoint: json["securityPoint"],
       homestayName: json["homestayName"],
-      comment: json["comment"]);
-  
+      comment: json["comment"],
+      avatar: json["avatar"],
+      username: json["username"]);
+
   Map<String, dynamic> toJson() => {
-    "securityPoint" : securityPoint,
-    "servicePoint" : servicePoint,
-    "locationPoint" : locationPoint,
-    "homestayName" : homestayName,
-    "comment" : comment
-  };
+        "securityPoint": securityPoint,
+        "servicePoint": servicePoint,
+        "locationPoint": locationPoint,
+        "homestayName": homestayName,
+        "comment": comment
+      };
 }
 
 class HomestayListPagingModel {

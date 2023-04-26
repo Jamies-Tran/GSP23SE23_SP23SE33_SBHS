@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:staywithme_passenger_application/model/bloc_model.dart';
+import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 abstract class ShowHomestaysEvent {}
 
 class SelectHomestayInBlocEvent extends ShowHomestaysEvent {
   SelectHomestayInBlocEvent({this.homestay});
 
-  HomestayInBlocModel? homestay;
+  HomestayModel? homestay;
 }
 
 class AddHomestayInBlocEvent extends ShowHomestaysEvent {

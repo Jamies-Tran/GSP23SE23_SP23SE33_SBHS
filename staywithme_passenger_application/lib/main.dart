@@ -13,6 +13,8 @@ import 'package:staywithme_passenger_application/screen/authenticate/validate_ot
 import 'package:staywithme_passenger_application/screen/booking/booking_history_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/choose_booking_date_screen.dart';
+import 'package:staywithme_passenger_application/screen/booking/promotion_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/bloc_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_bloc_screen.dart';
 
@@ -90,6 +92,12 @@ class MyApp extends StatelessWidget {
         MainScreen.mainScreenRoute: (context) => const MainScreen(),
         HomestayDetailScreen.homestayDetailScreenRoute: (context) =>
             const HomestayDetailScreen(),
+        ChooseBookingDateForHomestayScreen
+                .chooseBookingDateForHomestayScreenRoute:
+            (context) => const ChooseBookingDateForHomestayScreen(),
+        ChooseBookingDateForBlocHomestayScreen
+                .chooseBookingDateForBlocHomestayScreenRoute:
+            (context) => const ChooseBookingDateForBlocHomestayScreen(),
         BlocDetailScreen.blocDetailScreenRoute: (context) =>
             const BlocDetailScreen(),
         BookingHomestayScreen.bookingHomestayScreenRoute: (context) =>
@@ -104,6 +112,8 @@ class MyApp extends StatelessWidget {
             const RatingHomestayScreen(),
         BookingLoadingScreen.bookingLoadingScreen: (context) =>
             const BookingLoadingScreen(),
+        PromotionScreen.promotionScreenRoute: (context) =>
+            const PromotionScreen(),
         ProcessBookingScreen.processBookingScreenRoute: (context) =>
             const ProcessBookingScreen(),
         SelectNextHomestayScreen.selectNextHomestayScreenRoute: (context) =>

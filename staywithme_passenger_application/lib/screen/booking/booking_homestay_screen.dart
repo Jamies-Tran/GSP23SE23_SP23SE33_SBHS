@@ -707,20 +707,20 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Row(
-                                      children: [
-                                        const Text(
-                                          "Total reservation:",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(snapshot.data!.totalReservation
-                                            .toString())
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     const Text(
+                                    //       "Total reservation:",
+                                    //       style: TextStyle(
+                                    //           fontWeight: FontWeight.bold),
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 10,
+                                    //     ),
+                                    //     Text(snapshot.data!.totalReservation
+                                    //         .toString())
+                                    //   ],
+                                    // ),
                                   ]),
                                 ),
                                 const SizedBox(

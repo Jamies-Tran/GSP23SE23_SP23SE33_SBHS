@@ -2309,7 +2309,7 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                       SubmitBookingEvent(context: context));
                                 },
                                 child: const Text(
-                                  "Submit",
+                                  "Next",
                                   style: TextStyle(
                                       fontFamily: "Lobster",
                                       fontWeight: FontWeight.bold,
@@ -2591,7 +2591,7 @@ class _ShowBlocHomestayListScreenState
                     child: ListView.builder(
                         itemCount: snapshot.data!.bloc!.homestays!.length,
                         itemBuilder: (context, index) {
-                          HomestayInBlocModel homestay =
+                          HomestayModel homestay =
                               snapshot.data!.bloc!.homestays![index];
                           return Column(
                             children: [

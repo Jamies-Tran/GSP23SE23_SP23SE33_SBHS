@@ -1,4 +1,5 @@
 import 'package:staywithme_passenger_application/model/booking_model.dart';
+import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class PassengerModel {
   PassengerModel(
@@ -58,9 +59,11 @@ class PassengerPropertyModel {
 
   factory PassengerPropertyModel.fromJson(Map<String, dynamic> json) =>
       PassengerPropertyModel(
-          id: json["id"],
-          balanceWalletModel:
-              BalanceWalletModel.fromJson(json["balanceWallet"]));
+        id: json["id"],
+        balanceWalletModel: BalanceWalletModel.fromJson(
+          json["balanceWallet"],
+        ),
+      );
 
   Map<String, dynamic> toJson() =>
       {"id": id, "passengerWallet": balanceWalletModel};

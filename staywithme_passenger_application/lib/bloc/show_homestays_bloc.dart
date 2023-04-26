@@ -7,6 +7,7 @@ import 'package:staywithme_passenger_application/bloc/state/show_homestays_state
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
+import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -21,8 +22,7 @@ class ShowHomestaysBloc {
   BlocBookingDateValidationModel? _blocBookingValidation;
   BookingModel? _booking;
   String? _paymentMethod;
-  final List<HomestayInBlocModel> _selectedBlocHomestayList =
-      <HomestayInBlocModel>[];
+  final List<HomestayModel> _selectedBlocHomestayList = <HomestayModel>[];
 
   ShowHomestaysState initData(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
@@ -35,7 +35,7 @@ class ShowHomestaysBloc {
         blocBookingValidation: contextArguments["blocBookingValidation"],
         booking: contextArguments["booking"],
         paymentMethod: contextArguments["paymentMethod"],
-        selectedBlocHomestayList: <HomestayInBlocModel>[]);
+        selectedBlocHomestayList: <HomestayModel>[]);
   }
 
   void dispose() {
@@ -51,8 +51,8 @@ class ShowHomestaysBloc {
 
   Future<void> eventHandler(ShowHomestaysEvent event) async {
     if (event is SelectHomestayInBlocEvent) {
-      HomestayInBlocModel? removeHomestay;
-      for (HomestayInBlocModel h in _selectedBlocHomestayList) {
+      HomestayModel? removeHomestay;
+      for (HomestayModel h in _selectedBlocHomestayList) {
         if (h.id == event.homestay!.id) {
           removeHomestay = h;
         }
