@@ -1,7 +1,6 @@
 package com.sbhs.swm.implement;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -601,14 +600,46 @@ public class BookingService implements IBookingService {
                 newBooking.getBookingTo());
         Long totalBookingPrice = 0L;
         Long totalServicePrice = 0L;
-        for (BookingHomestayUpdateRequestDto b : newBooking.getBookingHomestays()) {
-            Homestay homestay = homestayService.findHomestayByName(b.getHomestay().getName());
-            BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestay.getId())
-                    .get();
-            Long newTotalBookingPrice = homestay.getPrice() * duration;
-            bookingHomestay.setTotalBookingPrice(newTotalBookingPrice);
-            totalBookingPrice = totalBookingPrice + newTotalBookingPrice;
+        Long newTotalBookingPrice = 0L;
+        switch (HomestayType.valueOf(booking.getHomestayType().toUpperCase())) {
+            case HOMESTAY:
+                for (BookingHomestayUpdateRequestDto b : newBooking.getBookingHomestays()) {
+                    Homestay homestay = homestayService.findHomestayByName(b.getHomestay().getName());
+                    Long currentHomestayPrice = homestay.getPrice();
+                    for (PromotionCampaign c : homestay.getCampaigns()) {
+                        if (c.getStatus().equalsIgnoreCase(PromotionCampaignStatus.PROGRESSING.name())) {
+                            Long discountAmount = currentHomestayPrice * c.getDiscountPercent() / 100;
+                            currentHomestayPrice = currentHomestayPrice - discountAmount;
+                        }
+                    }
+                    BookingHomestay bookingHomestay = bookingHomestayRepo
+                            .findBookingHomestayById(bookingId, homestay.getId())
+                            .get();
+                    newTotalBookingPrice = currentHomestayPrice * duration;
+                    bookingHomestay.setTotalBookingPrice(newTotalBookingPrice);
+                    totalBookingPrice = totalBookingPrice + newTotalBookingPrice;
+                }
+                break;
+            case BLOC:
+                for (PromotionCampaign c : booking.getBloc().getCampaigns()) {
+                    if (c.getStatus().equalsIgnoreCase(PromotionCampaignStatus.PROGRESSING.name())) {
+                        for (BookingHomestayUpdateRequestDto b : newBooking.getBookingHomestays()) {
+                            Homestay homestay = homestayService.findHomestayByName(b.getHomestay().getName());
+                            Long currentHomestayPrice = homestay.getPrice();
+                            Long discountAmount = currentHomestayPrice * c.getDiscountPercent() / 100;
+                            currentHomestayPrice = currentHomestayPrice - discountAmount;
+                            newTotalBookingPrice = currentHomestayPrice * duration;
+                            BookingHomestay bookingHomestay = bookingHomestayRepo
+                                    .findBookingHomestayById(booking.getId(), homestay.getId()).get();
+                            bookingHomestay.setTotalBookingPrice(newTotalBookingPrice);
+                            totalBookingPrice = totalBookingPrice + newTotalBookingPrice;
+                        }
+                    }
+                }
+                break;
         }
+
+        // totalBookingPrice = totalBookingPrice + newTotalBookingPrice;
         for (BookingHomestayService s : booking.getBookingHomestayServices()) {
             totalServicePrice = totalServicePrice + s.getTotalServicePrice();
         }
@@ -1084,6 +1115,8 @@ public class BookingService implements IBookingService {
                     throw new InvalidException(
                             "You don't have enough balance. Please add more or choose pay by cash.");
                 }
+                // currentPassengerWalletBalance = currentPassengerWalletBalance -
+                // currentBookingTotalPrice;
                 Long paidDeposit = this.getBookingDeposit(currentBookingTotalPrice);
                 Long unpaidDeposit = currentBookingTotalPrice - paidDeposit;
                 booking.setTotalBookingDeposit(paidDeposit);
@@ -1160,8 +1193,13 @@ public class BookingService implements IBookingService {
 
     @Override
     public Booking rejectBookingForBloc(Long bookingId, String message) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rejectBookingForBloc'");
+        SwmUser user = userService.authenticatedUser();
+        Booking booking = this.findBookingById(bookingId);
+        booking.setStatus(BookingStatus.REJECTED.name());
+        booking.setUpdatedBy(user.getUsername());
+        booking.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
+        mailService.informBookingForBlocRejected(booking, message);
+        return booking;
     }
 
     @Override

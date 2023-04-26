@@ -61,8 +61,8 @@ public class PromotionCampaignController {
 
         @GetMapping
         @PreAuthorize("hasAnyRole('ROLE_LANDLORD', 'ROLE_PASSENGER')")
-        public ResponseEntity<?> getPromotionCampaignById(Long id) {
-                PromotionCampaign promotionCampaign = promotionCampaignService.getPromotionCampaignById(id);
+        public ResponseEntity<?> getPromotionCampaignById(Long campaignId) {
+                PromotionCampaign promotionCampaign = promotionCampaignService.getPromotionCampaignById(campaignId);
                 PromotionCampaignResponseDto responseCampaign = modelMapper.map(promotionCampaign,
                                 PromotionCampaignResponseDto.class);
 

@@ -14,7 +14,6 @@ import lombok.Setter;
 @Setter
 public class BookingUpdateRequestDto {
     private Long id;
-
     private String bookingFrom;
     private String bookingTo;
     private List<BookingHomestayUpdateRequestDto> bookingHomestays;

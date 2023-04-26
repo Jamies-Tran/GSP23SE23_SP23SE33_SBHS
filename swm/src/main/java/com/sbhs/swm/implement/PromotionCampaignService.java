@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbhs.swm.dto.request.PromotionCampaignRequestDto;
+import com.sbhs.swm.handlers.exceptions.InvalidException;
 import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
@@ -39,6 +40,17 @@ public class PromotionCampaignService implements IPromotionCampaignService {
     @Override
     public PromotionCampaign createPromotionCampaign(PromotionCampaignRequestDto promotionCampaignRequest) {
         SwmUser user = userService.authenticatedUser();
+        for (PromotionCampaign p : promotionCampaignRepo.findAll()) {
+            if (p.getStatus().equalsIgnoreCase(PromotionCampaignStatus.PROGRESSING.name())) {
+                for (Homestay h : p.getHomestays()) {
+                    for (String n : promotionCampaignRequest.getHomestayNameList()) {
+                        if (h.getName().equals(n)) {
+                            throw new InvalidException("This homestay is on another campaign");
+                        }
+                    }
+                }
+            }
+        }
         PromotionCampaign promotionCampaign = new PromotionCampaign();
         promotionCampaign.setName(promotionCampaignRequest.getName());
         promotionCampaign.setDescription(promotionCampaignRequest.getDescription());
@@ -46,11 +58,11 @@ public class PromotionCampaignService implements IPromotionCampaignService {
         promotionCampaign.setDiscountPercent(promotionCampaignRequest.getDiscountPercent());
         promotionCampaign.setStartDate(promotionCampaignRequest.getStartDate());
         promotionCampaign.setEndDate(promotionCampaignRequest.getEndDate());
-        if (dateTimeUtil.formatGivenDate(promotionCampaignRequest.getStartDate())
-                .compareTo(dateTimeUtil.formatDateTimeNow()) >= 0) {
+        if (dateTimeUtil.formatDateTimeNow()
+                .compareTo(dateTimeUtil.formatGivenDate(promotionCampaignRequest.getStartDate())) >= 0) {
             promotionCampaign.setStatus(PromotionCampaignStatus.PROGRESSING.name());
-        } else if (dateTimeUtil.formatGivenDate(promotionCampaignRequest.getStartDate())
-                .compareTo(dateTimeUtil.formatDateTimeNow()) == -1) {
+        } else if (dateTimeUtil.formatDateTimeNow()
+                .compareTo(dateTimeUtil.formatGivenDate(promotionCampaignRequest.getStartDate())) < 0) {
             promotionCampaign.setStatus(PromotionCampaignStatus.PENDING.name());
         }
 

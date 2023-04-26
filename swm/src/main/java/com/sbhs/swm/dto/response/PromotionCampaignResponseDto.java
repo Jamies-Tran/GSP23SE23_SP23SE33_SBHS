@@ -19,7 +19,7 @@ public class PromotionCampaignResponseDto {
     private String startDate;
     private String endDate;
     private String status;
-    private Integer discountPercentage;
+    private Integer discountPercent;
     private Long totalProfit;
     private Long totalBooking;
     private List<HomestayResponseDto> homestays;
