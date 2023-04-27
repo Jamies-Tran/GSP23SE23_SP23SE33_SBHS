@@ -1197,6 +1197,9 @@ public class BookingService implements IBookingService {
         SwmUser user = userService.authenticatedUser();
         Booking booking = this.findBookingById(bookingId);
         booking.setStatus(BookingStatus.REJECTED.name());
+        for (BookingHomestay b : booking.getBookingHomestays()) {
+            b.setStatus(BookingStatus.REJECTED.name());
+        }
         booking.setUpdatedBy(user.getUsername());
         booking.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
         mailService.informBookingForBlocRejected(booking, message);
