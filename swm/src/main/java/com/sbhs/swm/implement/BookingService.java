@@ -1192,6 +1192,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
+    @Transactional
     public Booking rejectBookingForBloc(Long bookingId, String message) {
         SwmUser user = userService.authenticatedUser();
         Booking booking = this.findBookingById(bookingId);
