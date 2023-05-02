@@ -58,21 +58,4 @@ public class PaymentController {
                 return new ResponseEntity<PaymentHistoryListPagingDto>(paymentHistoriesPagingDto, HttpStatus.OK);
         }
 
-        @GetMapping("/redirect")
-        public ResponseEntity<?> paymentResultHandling(@RequestParam String partnerCode, @RequestParam String orderId,
-                        @RequestParam String requestId, @RequestParam Long amount, @RequestParam String orderInfo,
-                        @RequestParam String orderType, @RequestParam Long transId, @RequestParam String resultCode,
-                        @RequestParam String message, @RequestParam String payType, @RequestParam String extraData,
-                        @RequestParam String signature, HttpServletResponse response) {
-
-                MomoCaptureWalletDto momoCaptureWalletDto = new MomoCaptureWalletDto(partnerCode, requestId, amount,
-                                orderId,
-                                orderInfo, orderType, resultCode, requestId, extraData, payType, signature, transId,
-                                message, null,
-                                extraData, signature);
-                MomoCaptureWalletDto momoCaptureWalletHandled = paymentService
-                                .paymentResultHandling(momoCaptureWalletDto);
-
-                return new ResponseEntity<MomoCaptureWalletDto>(momoCaptureWalletHandled, HttpStatus.OK);
-        }
 }
