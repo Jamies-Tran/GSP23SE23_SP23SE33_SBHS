@@ -503,7 +503,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   onSelectImageHomestay(files: any) {
     // set files
     this.homestayImageFiles.push(...files.addedFiles);
-    this.validImageHomestay();
+
   }
   // validate image
   validImageHomestay() {
@@ -514,6 +514,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       return;
     } else {
       this.flag = true;
+
       return true;
     }
   }
