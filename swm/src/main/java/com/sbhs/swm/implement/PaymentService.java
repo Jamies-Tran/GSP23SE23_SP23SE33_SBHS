@@ -54,7 +54,10 @@ public class PaymentService implements IPaymentService {
         private String getCreateOrderUrl;
 
         @Autowired
-        private String getRedirectUrl;
+        private String getWebRedirectUrl;
+
+        @Autowired
+        private String getMobileRedirectUrl;
 
         @Autowired
         private String getIpnUrl;
@@ -79,7 +82,14 @@ public class PaymentService implements IPaymentService {
                 momoCaptureWalletDto.setOrderId(orderId);
                 momoCaptureWalletDto.setOrderInfo(walletType);
                 momoCaptureWalletDto.setPartnerCode(getPartnerCode);
-                momoCaptureWalletDto.setRedirectUrl(getRedirectUrl);
+                switch (walletType.toUpperCase()) {
+                        case "LANDLORD_WALLET":
+                                momoCaptureWalletDto.setRedirectUrl(getWebRedirectUrl);
+                                break;
+                        case "PASSENGER_WALLET":
+                                momoCaptureWalletDto.setRedirectUrl(getMobileRedirectUrl);
+                                break;
+                }
                 momoCaptureWalletDto.setRequestId(requestId);
                 momoCaptureWalletDto.setRequestType(getRequestType);
                 momoCaptureWalletDto.setSignature(this.configSignature(amount, walletType, orderId, requestId));
@@ -94,7 +104,15 @@ public class PaymentService implements IPaymentService {
 
         private String configSignature(Long amount, String walletType, String orderId, String requestId) {
                 StringBuilder rawHashBuilder = new StringBuilder();
-
+                String getRedirectUrl = "";
+                switch (walletType.toUpperCase()) {
+                        case "LANDLORD_WALLET":
+                                getRedirectUrl = getWebRedirectUrl;
+                                break;
+                        case "PASSENGER_WALLET":
+                                getRedirectUrl = getMobileRedirectUrl;
+                                break;
+                }
                 rawHashBuilder.append("accessKey=").append(getAccessKey).append("&amount=")
                                 .append(amount.toString())
                                 .append("&extraData=").append(userService.authenticatedUser().getUsername())
@@ -141,7 +159,7 @@ public class PaymentService implements IPaymentService {
                         case LANDLORD_WALLET:
                                 long currentLandlordBalance = user.getLandlordProperty().getBalanceWallet()
                                                 .getTotalBalance();
-                                user.getPassengerProperty().getBalanceWallet()
+                                user.getLandlordProperty().getBalanceWallet()
                                                 .setTotalBalance(currentLandlordBalance
                                                                 + momoCaptureWalletDto.getAmount());
                                 PaymentHistory paymentHistoryForLandlord = new PaymentHistory();
@@ -153,6 +171,7 @@ public class PaymentService implements IPaymentService {
                                 paymentHistoryForLandlord.setPaymentMethod(PaymentMethod.SWM_WALLET.name());
                                 PaymentHistory savedPaymentHistoryForLandlord = paymentRepo
                                                 .save(paymentHistoryForLandlord);
+
                                 user.getLandlordProperty().getBalanceWallet().getLandlordWallet()
                                                 .setPaymentHistories(List.of(savedPaymentHistoryForLandlord));
                 }

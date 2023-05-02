@@ -22,8 +22,11 @@ public class MomoConfiguration {
     @Value("${momo.createOrderUrl}")
     private String createOrderUrl;
 
-    @Value("${momo.redirectUrl}")
-    private String redirectUrl;
+    @Value("${momo.web.redirectUrl}")
+    private String webRedirectUrl;
+
+    @Value("${momo.mobile.redirectUrl}")
+    private String mobileRedirectUrl;
 
     @Value("${momo.ipnUrl}")
     private String ipnUrl;
@@ -54,8 +57,13 @@ public class MomoConfiguration {
     }
 
     @Bean
-    public String getRedirectUrl() {
-        return redirectUrl;
+    public String getWebRedirectUrl() {
+        return webRedirectUrl;
+    }
+
+    @Bean
+    public String getMobileRedirectUrl() {
+        return mobileRedirectUrl;
     }
 
     @Bean

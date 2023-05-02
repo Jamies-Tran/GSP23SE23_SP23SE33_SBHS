@@ -1,14 +1,49 @@
 {
     "properties": [
         {
-            "name": "jwt.config.secret-key",
+            "name": "goong.apiKey",
             "type": "java.lang.String",
-            "description": "A description for 'jwt.config.secret-key'"
+            "description": "A description for 'goong.apiKey'"
         },
         {
-            "name": "jwt.config.duration",
+            "name": "momo.ipnUrl",
             "type": "java.lang.String",
-            "description": "A description for 'jwt.config.duration'"
+            "description": "A description for 'momo.ipnUrl'"
+        },
+        {
+            "name": "momo.mobile.redirectUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.mobile.redirectUrl'"
+        },
+        {
+            "name": "momo.web.redirectUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.web.redirectUrl'"
+        },
+        {
+            "name": "momo.createOrderUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.createOrderUrl'"
+        },
+        {
+            "name": "momo.requestType",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.requestType'"
+        },
+        {
+            "name": "momo.secretKey",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.secretKey'"
+        },
+        {
+            "name": "momo.accessKey",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.accessKey'"
+        },
+        {
+            "name": "momo.partnerCode",
+            "type": "java.lang.String",
+            "description": "A description for 'momo.partnerCode'"
         },
         {
             "name": "admin.username",
@@ -21,6 +56,11 @@
             "description": "A description for 'admin.password'"
         },
         {
+            "name": "admin.avatarUrl",
+            "type": "java.lang.String",
+            "description": "A description for 'admin.avatarUrl'"
+        },
+        {
             "name": "admin.email",
             "type": "java.lang.String",
             "description": "A description for 'admin.email'"
@@ -29,6 +69,11 @@
             "name": "admin.phone",
             "type": "java.lang.String",
             "description": "A description for 'admin.phone'"
+        },
+        {
+            "name": "admin.idCardNumber",
+            "type": "java.lang.String",
+            "description": "A description for 'admin.idCardNumber'"
         },
         {
             "name": "admin.address",
@@ -44,56 +89,6 @@
             "name": "admin.gender",
             "type": "java.lang.String",
             "description": "A description for 'admin.gender'"
-        },
-        {
-            "name": "admin.idCardNumber",
-            "type": "java.lang.String",
-            "description": "A description for 'admin.idCardNumber'"
-        },
-        {
-            "name": "admin.avatarUrl",
-            "type": "java.lang.String",
-            "description": "A description for 'admin.avatarUrl'"
-        },
-        {
-            "name": "momo.partnerCode",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.partnerCode'"
-        },
-        {
-            "name": "momo.accessKey",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.accessKey'"
-        },
-        {
-            "name": "momo.secretKey",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.secretKey'"
-        },
-        {
-            "name": "momo.requestType",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.requestType'"
-        },
-        {
-            "name": "momo.createOrderUrl",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.createOrderUrl'"
-        },
-        {
-            "name": "momo.redirectUrl",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.redirectUrl'"
-        },
-        {
-            "name": "momo.ipnUrl",
-            "type": "java.lang.String",
-            "description": "A description for 'momo.ipnUrl'"
-        },
-        {
-            "name": "goong.apiKey",
-            "type": "java.lang.String",
-            "description": "A description for 'goong.apiKey'"
         }
     ]
 }
