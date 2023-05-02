@@ -9,7 +9,13 @@ class BookingHistoryState {
 
   List<String> homestayTypeList = ["Homestay", "Block"];
 
-  List<String> statusList = ["All", "Pending", "Accepted", "Rejected"];
+  List<String> statusList() {
+    if (homestayType == "Homestay") {
+      return ["All", "Progressing", "Finished"];
+    } else {
+      return ["All", "Pending", "Accepted", "Rejected"];
+    }
+  }
 
   FilterBookingModel filterBookingModel() {
     if (status == "All") {

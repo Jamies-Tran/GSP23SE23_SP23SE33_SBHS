@@ -26,6 +26,9 @@ final userInfoUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["USER_INFORMATION"]}";
 
 final paymentUrl = "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT"]}";
 
+final depositHistoryUrl =
+    "${dotenv.env["DOMAIN"]}/${dotenv.env["DEPOSIT_HISTORY"]}";
+
 final paymentHistoryUrl =
     "${dotenv.env["DOMAIN"]}/${dotenv.env["PAYMENT_HISTORY"]}";
 

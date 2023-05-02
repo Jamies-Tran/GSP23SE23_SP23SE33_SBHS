@@ -182,7 +182,7 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
                       TextButton(
                           onPressed: () {},
                           child: const Text(
-                            "Cancle",
+                            "Cancel",
                             style: TextStyle(color: Colors.red),
                           ))
                     ]),

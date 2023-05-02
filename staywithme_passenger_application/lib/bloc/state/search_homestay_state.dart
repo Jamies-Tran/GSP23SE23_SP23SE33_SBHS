@@ -5,11 +5,24 @@ import 'package:staywithme_passenger_application/model/search_filter_model.dart'
 
 class SearchHomestayState {
   SearchHomestayState(
-      {this.homestayType, this.searchString, this.filterOptionModel});
+      {this.homestayType,
+      this.searchString,
+      this.filterOptionModel,
+      this.sortBy});
 
   String? homestayType;
   String? searchString;
+  String? sortBy;
   FilterOptionModel? filterOptionModel;
+
+  List<String> sortByList = [
+    "Rating",
+    "Name",
+    "Price",
+    "Capacity",
+    "Created Date",
+    "Bookings"
+  ];
 
   SearchFilterModel searchFilter() => SearchFilterModel(
       homestayType: homestayType,

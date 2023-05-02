@@ -85,6 +85,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - images/swm.png
+    - images/momo_icon.png
     - images/location.png
     - images/security.png
     - images/service.png

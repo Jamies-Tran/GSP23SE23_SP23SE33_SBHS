@@ -68,61 +68,62 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
               child: SafeArea(
                 child: Column(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 40),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.location_on,
-                                color: Colors.black, size: 20),
-                            Text("Find A Place",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black)),
-                          ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text("Sort by",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  color: Colors.black45,
+                                  letterSpacing: 1.0)),
+                        ]),
+                    SizedBox(
+                      width: 150,
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: DropdownButton(
+                            items: List<DropdownMenuItem<String>>.from(
+                                streamSnapshot.data!.sortByList
+                                    .map((e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(
+                                            e,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          ),
+                                        ))),
+                            icon: const Icon(
+                              Icons.sort,
+                              color: Colors.black,
+                            ),
+                            onChanged: (value) {
+                              searchHomestayBloc.eventController.sink
+                                  .add(ChooseSortByEvent(sortBy: value));
+                            },
+                            value: streamSnapshot.data!.sortBy,
+                            underline: Container(),
+                            isExpanded: true,
+                          ),
+                        ),
+                      ),
                     ),
-                    // GestureDetector(
-                    //   onTap: () => searchHomestayBloc.eventController.sink.add(
-                    //       OnTabChooseFilterEvent(
-                    //           context: context,
-                    //           position: position,
-                    //           homestayType: homestayType)),
-                    //   child: Container(
-                    //     width: 200,
-                    //     height: 50,
-                    //     decoration: const BoxDecoration(
-                    //         borderRadius: BorderRadius.all(Radius.circular(20)),
-                    //         color: primaryColor,
-                    //         border: Border.fromBorderSide(
-                    //             BorderSide(width: 2.0, color: Colors.black))),
-                    //     child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.center,
-                    //         children: const [
-                    //           Icon(
-                    //             Icons.filter_alt,
-                    //             color: Colors.black,
-                    //           ),
-                    //           SizedBox(
-                    //             width: 5,
-                    //           ),
-                    //           Text(
-                    //             "Choose filter",
-                    //             style: TextStyle(
-                    //                 fontFamily: "Lobster",
-                    //                 fontWeight: FontWeight.bold),
-                    //           )
-                    //         ]),
-                    //   ),
-                    // ),
-
+                    const SizedBox(
+                      height: 30,
+                    ),
                     FutureBuilder(
                       future: homestayService.getHomestayByFilter(
                           streamSnapshot.data!.searchFilter(),
                           0,
-                          5,
+                          20,
                           false,
-                          false),
+                          false,
+                          sortBy: streamSnapshot.data!.sortBy),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
@@ -451,9 +452,12 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                                 const SizedBox(
                                                                                   width: 5,
                                                                                 ),
-                                                                                Text(
-                                                                                  utf8.decode(data.homestays![index].address!.split(",").first.runes.toList()),
-                                                                                ),
+                                                                                Flexible(
+                                                                                  child: Text(
+                                                                                    utf8.decode(data.homestays![index].address!.split(",").first.runes.toList()),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                  ),
+                                                                                )
                                                                               ],
                                                                             ),
                                                                           ),
@@ -846,8 +850,11 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                                                               const SizedBox(
                                                                                 width: 5,
                                                                               ),
-                                                                              Text(
-                                                                                utf8.decode(data.blocs![index].address!.split(",").first.runes.toList()),
+                                                                              Flexible(
+                                                                                child: Text(
+                                                                                  utf8.decode(data.blocs![index].address!.split(",").first.runes.toList()),
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                ),
                                                                               ),
                                                                             ],
                                                                           ),

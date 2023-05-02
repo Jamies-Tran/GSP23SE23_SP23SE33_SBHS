@@ -494,7 +494,7 @@ class BookingService extends IBookingService {
       bool isNextPage, bool isPreviousPage) async {
     final client = http.Client();
     final uri = Uri.parse(
-        "$bookingHistoryUrl?filterBookingRequest=$filterBooking&page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
+        "$bookingHistoryUrl?page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
     try {
       final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
       final accessToken = userLoginInfo["accessToken"];

@@ -33,3 +33,9 @@ class OnViewBlocHomestayDetailEvent extends SearchHomestayEvent {
   BuildContext? context;
   String? blocName;
 }
+
+class ChooseSortByEvent extends SearchHomestayEvent {
+  ChooseSortByEvent({this.sortBy});
+
+  String? sortBy;
+}

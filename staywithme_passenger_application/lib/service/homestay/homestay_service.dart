@@ -20,7 +20,8 @@ abstract class IHomestayService {
       int page, int size, bool isNextPage, bool isPreviousPage);
 
   Future<dynamic> getHomestayByFilter(SearchFilterModel filter, int page,
-      int size, bool isNextPage, bool isPreviousPage);
+      int size, bool isNextPage, bool isPreviousPage,
+      {String? sortBy});
 
   Future<dynamic> getHomestayDetailByName(String name);
 
@@ -87,10 +88,11 @@ class HomestayService extends IHomestayService {
 
   @override
   Future getHomestayByFilter(SearchFilterModel filter, int page, int size,
-      bool isNextPage, bool isPreviousPage) async {
+      bool isNextPage, bool isPreviousPage,
+      {String? sortBy}) async {
     final client = http.Client();
     final uri = Uri.parse(
-        "$homestayByFilterUrl?page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
+        "$homestayByFilterUrl?page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage&sortBy=$sortBy");
     try {
       final response = await client.post(uri,
           headers: {"content-type": "application/json"},

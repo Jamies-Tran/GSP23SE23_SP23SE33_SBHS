@@ -20,15 +20,18 @@ class SearchHomestayBloc {
 
   String? _homestayType;
   String? _searchString;
+  String? _sortBy;
 
   SearchHomestayState initData(FilterOptionModel? filterOption,
       String? homestayType, String? searchString) {
     _homestayType = homestayType;
     _searchString = searchString;
+    _sortBy = "Rating";
     return SearchHomestayState(
         homestayType: _homestayType,
         searchString: _searchString,
-        filterOptionModel: filterOption);
+        filterOptionModel: filterOption,
+        sortBy: "Rating");
   }
 
   SearchHomestayBloc() {
@@ -51,7 +54,8 @@ class SearchHomestayBloc {
           event.context!, SearchHomestayScreen.searchHomestayScreenRoute,
           arguments: {
             "position": event.position,
-            "homestayType": _homestayType
+            "homestayType": _homestayType,
+            "searchString": _searchString
           });
     } else if (event is OnViewHomestayDetailEvent) {
       Navigator.pushNamed(
@@ -64,7 +68,12 @@ class SearchHomestayBloc {
       Navigator.pushNamed(
           event.context!, BlocDetailScreen.blocDetailScreenRoute,
           arguments: {"blocName": event.blocName});
+    } else if (event is ChooseSortByEvent) {
+      _sortBy = event.sortBy;
     }
-    stateController.sink.add(SearchHomestayState(homestayType: _homestayType));
+    stateController.sink.add(SearchHomestayState(
+        homestayType: _homestayType,
+        sortBy: _sortBy,
+        searchString: _searchString));
   }
 }

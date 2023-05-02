@@ -4,19 +4,19 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class BookingListState {
-  BookingListState({
-    this.booking,
-    this.homestayType,
-    this.isBookingHomestay,
-    this.activeUpdateService,
-    this.bookingHomestayChosenList,
-    this.bookingHomestayIndex,
-    this.blocBookingValidation,
-    this.serviceList = const <HomestayServiceModel>[],
-    this.paymentMethod,
-    this.viewDetail,
-    this.isCopied,
-  });
+  BookingListState(
+      {this.booking,
+      this.homestayType,
+      this.isBookingHomestay,
+      this.activeUpdateService,
+      this.bookingHomestayChosenList,
+      this.bookingHomestayIndex,
+      this.blocBookingValidation,
+      this.serviceList = const <HomestayServiceModel>[],
+      this.paymentMethod,
+      this.viewDetail,
+      this.isCopied,
+      this.isHost});
 
   BookingModel? booking;
   String? homestayType;
@@ -29,6 +29,7 @@ class BookingListState {
   PaymentMethod? paymentMethod;
   bool? viewDetail;
   bool? isCopied;
+  bool? isHost;
 
   int totalBookingServicePrice(String homestayName) {
     List<BookingServiceModel> bookingServiceList = booking!

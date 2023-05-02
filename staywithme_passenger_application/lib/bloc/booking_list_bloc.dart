@@ -37,6 +37,7 @@ class BookingListBloc {
   PaymentMethod? _paymentMethod;
   final List<HomestayServiceModel> _serviceList = <HomestayServiceModel>[];
   bool _isCopied = false;
+  bool _isHost = true;
 
   BookingListState initData(BuildContext context) {
     final contextArguments = ModalRoute.of(context)!.settings.arguments as Map;
@@ -46,19 +47,20 @@ class BookingListBloc {
     _paymentMethod = PaymentMethod.swm_wallet;
     _viewDetail = contextArguments["viewDetail"] ?? false;
     _isBookingHomestay = contextArguments["isBookingHomestay"] ?? true;
+    _isHost = contextArguments["isHost"] ?? true;
     return BookingListState(
-      booking: contextArguments["booking"],
-      homestayType: contextArguments["homestayType"],
-      bookingHomestayChosenList: <BookingHomestayModel>[],
-      isBookingHomestay: contextArguments["isBookingHomestay"] ?? true,
-      bookingHomestayIndex: contextArguments["bookingHomestayIndex"] ?? 0,
-      serviceList: _serviceList,
-      blocBookingValidation: contextArguments["blocBookingValidation"],
-      activeUpdateService: false,
-      paymentMethod: PaymentMethod.swm_wallet,
-      viewDetail: contextArguments["viewDetail"] ?? false,
-      isCopied: false,
-    );
+        booking: contextArguments["booking"],
+        homestayType: contextArguments["homestayType"],
+        bookingHomestayChosenList: <BookingHomestayModel>[],
+        isBookingHomestay: contextArguments["isBookingHomestay"] ?? true,
+        bookingHomestayIndex: contextArguments["bookingHomestayIndex"] ?? 0,
+        serviceList: _serviceList,
+        blocBookingValidation: contextArguments["blocBookingValidation"],
+        activeUpdateService: false,
+        paymentMethod: PaymentMethod.swm_wallet,
+        viewDetail: contextArguments["viewDetail"] ?? false,
+        isCopied: false,
+        isHost: contextArguments["isHost"] ?? true);
   }
 
   void dispose() {
@@ -512,17 +514,17 @@ class BookingListBloc {
     }
 
     stateController.sink.add(BookingListState(
-      bookingHomestayChosenList: _bookingHomestayChosenList,
-      booking: _booking,
-      homestayType: _homestayType,
-      isBookingHomestay: _isBookingHomestay,
-      bookingHomestayIndex: _bookingHomestayIndex,
-      serviceList: _serviceList,
-      blocBookingValidation: _blocBookingValidation,
-      activeUpdateService: _activeUpdateService,
-      paymentMethod: _paymentMethod,
-      viewDetail: _viewDetail,
-      isCopied: _isCopied,
-    ));
+        bookingHomestayChosenList: _bookingHomestayChosenList,
+        booking: _booking,
+        homestayType: _homestayType,
+        isBookingHomestay: _isBookingHomestay,
+        bookingHomestayIndex: _bookingHomestayIndex,
+        serviceList: _serviceList,
+        blocBookingValidation: _blocBookingValidation,
+        activeUpdateService: _activeUpdateService,
+        paymentMethod: _paymentMethod,
+        viewDetail: _viewDetail,
+        isCopied: _isCopied,
+        isHost: _isHost));
   }
 }

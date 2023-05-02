@@ -30,7 +30,8 @@ class BookingLoadingBloc {
             "bookingHomestayIndex": event.bookingHomestayIndex,
             "isBookingHomestay": event.isBookingHomestay,
             "blocBookingValidation": event.blocBookingValidation,
-            "viewDetail": event.viewDetail
+            "viewDetail": event.viewDetail,
+            "isHost": event.isHost
           });
     }
     stateController.sink.add(BookingLoadingState(

@@ -55,6 +55,7 @@ class _BookingLoadingScreenState extends State<BookingLoadingScreen> {
         contextArguments["blocBookingValidation"];
     bool? isBookingHomestay = contextArguments["isBookingHomestay"] ?? true;
     int? bookingHomestayIndex = contextArguments["bookingHomestayIndex"] ?? 0;
+    bool? isHost = contextArguments["isHost"];
     return Scaffold(
       body: FutureBuilder(
         future: bookingService.getBookingById(bookingId),
@@ -77,7 +78,8 @@ class _BookingLoadingScreenState extends State<BookingLoadingScreen> {
                           isBookingHomestay: isBookingHomestay,
                           context: context,
                           blocBookingValidation: blocBookingValidation,
-                          viewDetail: viewDetail));
+                          viewDetail: viewDetail,
+                          isHost: isHost));
                 } else if (bookingData is ServerExceptionModel) {
                   return AlertDialog(
                     title: const Center(child: Text("Notice")),
@@ -410,14 +412,23 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                utf8.decode(streamSnapshot.data!
-                                                    .booking!.bloc!.name!.runes
-                                                    .toList()),
-                                                style: const TextStyle(
-                                                    fontFamily: "Lobster",
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
+                                              Flexible(
+                                                child: Text(
+                                                  utf8.decode(streamSnapshot
+                                                      .data!
+                                                      .booking!
+                                                      .bloc!
+                                                      .name!
+                                                      .runes
+                                                      .toList()),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      fontFamily: "Lobster",
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20),
+                                                ),
                                               ),
                                               const SizedBox(
                                                 height: 10,
@@ -432,8 +443,9 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                     size: 15,
                                                   ),
                                                   const SizedBox(width: 5),
-                                                  Text(utf8.decode(
-                                                      streamSnapshot
+                                                  Flexible(
+                                                    child: Text(
+                                                      utf8.decode(streamSnapshot
                                                           .data!
                                                           .booking!
                                                           .bloc!
@@ -441,7 +453,11 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                           .split(",")
                                                           .first
                                                           .runes
-                                                          .toList())),
+                                                          .toList()),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                               Row(children: [
@@ -985,9 +1001,10 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                                                 ],
                                                                               )))
                                                                       : const SizedBox(),
-                                                                  streamSnapshot
+                                                                  streamSnapshot.data!.viewDetail! &&
+                                                                          streamSnapshot
                                                                               .data!
-                                                                              .viewDetail! &&
+                                                                              .isHost! &&
                                                                           streamSnapshot.data!.homestayType! ==
                                                                               "homestay" &&
                                                                           streamSnapshot.data!.booking!.bookingHomestays![index].status! ==

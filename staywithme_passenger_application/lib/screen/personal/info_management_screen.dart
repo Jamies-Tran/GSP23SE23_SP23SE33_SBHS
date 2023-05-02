@@ -220,190 +220,189 @@ class _PassengerInfoManagementScreenState
                                                     1.5,
                                                 50)),
                                         onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              content: SizedBox(
-                                                  height: 600,
-                                                  child: Center(
-                                                    child: Column(children: [
-                                                      const Text(
-                                                        "Total",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Lobster",
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w300),
-                                                      ),
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(50),
-                                                        width: 200,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          border: const Border
-                                                                  .fromBorderSide(
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .black45,
-                                                                  width: 1.0)),
-                                                        ),
-                                                        child: Center(
-                                                            child: Text(
-                                                          "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.totalBalance)} VND",
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .green),
-                                                        )),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      const Text(
-                                                        "Deposits",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Lobster",
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w300),
-                                                      ),
-                                                      Container(
-                                                        width: 200,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(50),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          border: const Border
-                                                                  .fromBorderSide(
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .black45,
-                                                                  width: 1.0)),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "- ${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.passengerWalletModel!.totalDeposit())} VND",
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .red),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      const Text(
-                                                        "Available",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Lobster",
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w300),
-                                                      ),
-                                                      Container(
-                                                        width: 200,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(50),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          border: const Border
-                                                                  .fromBorderSide(
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .black45,
-                                                                  width: 1.0)),
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.actualBalance)} VND",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .orange,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ]),
-                                                  )),
-                                              actions: [
-                                                ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.orange,
-                                                        maximumSize: Size(
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2,
-                                                            50),
-                                                        minimumSize: Size(
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                3,
-                                                            50)),
-                                                    onPressed: () {
-                                                      infoManagementBloc
-                                                          .eventController.sink
-                                                          .add(NavigateToPaymentHistoryScreenEvent(
-                                                              context: context,
-                                                              username: data
-                                                                  .username));
-                                                    },
-                                                    child: const Text(
-                                                        "Payment history")),
-                                                ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                        backgroundColor:
-                                                            Colors.green,
-                                                        maximumSize: Size(
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                3,
-                                                            50),
-                                                        minimumSize: Size(
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                3,
-                                                            50)),
-                                                    onPressed: () {
-                                                      infoManagementBloc
-                                                          .eventController
-                                                          .add(NavigateToAddBalanceScreenEvent(
-                                                              context: context,
-                                                              username: data
-                                                                  .username));
-                                                    },
-                                                    child: const Text(
-                                                        "Add balance"))
-                                              ],
-                                            ),
-                                          );
+                                          infoManagementBloc.eventController.add(
+                                              NavigateToPaymentHistoryScreenEvent(
+                                                  context: context,
+                                                  user: data));
+                                          // showDialog(
+                                          //   context: context,
+                                          //   builder: (context) => AlertDialog(
+                                          //     content: SizedBox(
+                                          //         height: 600,
+                                          //         child: Center(
+                                          //           child: Column(children: [
+                                          //             const Text(
+                                          //               "Total",
+                                          //               style: TextStyle(
+                                          //                   fontFamily:
+                                          //                       "Lobster",
+                                          //                   fontWeight:
+                                          //                       FontWeight
+                                          //                           .w300),
+                                          //             ),
+                                          //             Container(
+                                          //               padding:
+                                          //                   const EdgeInsets
+                                          //                       .all(50),
+                                          //               width: 200,
+                                          //               decoration:
+                                          //                   BoxDecoration(
+                                          //                 borderRadius:
+                                          //                     BorderRadius
+                                          //                         .circular(10),
+                                          //                 border: const Border
+                                          //                         .fromBorderSide(
+                                          //                     BorderSide(
+                                          //                         color: Colors
+                                          //                             .black45,
+                                          //                         width: 1.0)),
+                                          //               ),
+                                          //               child: Center(
+                                          //                   child: Text(
+                                          //                 "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.totalBalance)} VND",
+                                          //                 style:
+                                          //                     const TextStyle(
+                                          //                         color: Colors
+                                          //                             .green),
+                                          //               )),
+                                          //             ),
+                                          //             const SizedBox(
+                                          //               height: 20,
+                                          //             ),
+                                          //             const Text(
+                                          //               "Deposits",
+                                          //               style: TextStyle(
+                                          //                   fontFamily:
+                                          //                       "Lobster",
+                                          //                   fontWeight:
+                                          //                       FontWeight
+                                          //                           .w300),
+                                          //             ),
+                                          //             Container(
+                                          //               width: 200,
+                                          //               padding:
+                                          //                   const EdgeInsets
+                                          //                       .all(50),
+                                          //               decoration:
+                                          //                   BoxDecoration(
+                                          //                 borderRadius:
+                                          //                     BorderRadius
+                                          //                         .circular(10),
+                                          //                 border: const Border
+                                          //                         .fromBorderSide(
+                                          //                     BorderSide(
+                                          //                         color: Colors
+                                          //                             .black45,
+                                          //                         width: 1.0)),
+                                          //               ),
+                                          //               child: Center(
+                                          //                 child: Text(
+                                          //                   "- ${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.passengerWalletModel!.totalDeposit())} VND",
+                                          //                   style:
+                                          //                       const TextStyle(
+                                          //                           color: Colors
+                                          //                               .red),
+                                          //                 ),
+                                          //               ),
+                                          //             ),
+                                          //             const SizedBox(
+                                          //               height: 20,
+                                          //             ),
+                                          //             const Text(
+                                          //               "Available",
+                                          //               style: TextStyle(
+                                          //                   fontFamily:
+                                          //                       "Lobster",
+                                          //                   fontWeight:
+                                          //                       FontWeight
+                                          //                           .w300),
+                                          //             ),
+                                          //             Container(
+                                          //               width: 200,
+                                          //               padding:
+                                          //                   const EdgeInsets
+                                          //                       .all(50),
+                                          //               decoration:
+                                          //                   BoxDecoration(
+                                          //                 borderRadius:
+                                          //                     BorderRadius
+                                          //                         .circular(10),
+                                          //                 border: const Border
+                                          //                         .fromBorderSide(
+                                          //                     BorderSide(
+                                          //                         color: Colors
+                                          //                             .black45,
+                                          //                         width: 1.0)),
+                                          //               ),
+                                          //               child: Center(
+                                          //                 child: Text(
+                                          //                   "${currencyFormat.format(data.passengerPropertyModel!.balanceWalletModel!.actualBalance)} VND",
+                                          //                   style: const TextStyle(
+                                          //                       color: Colors
+                                          //                           .orange,
+                                          //                       overflow:
+                                          //                           TextOverflow
+                                          //                               .ellipsis),
+                                          //                 ),
+                                          //               ),
+                                          //             ),
+                                          //           ]),
+                                          //         )),
+                                          //     actions: [
+                                          //       ElevatedButton(
+                                          //           style: ElevatedButton.styleFrom(
+                                          //               backgroundColor:
+                                          //                   Colors.orange,
+                                          //               maximumSize: Size(
+                                          //                   MediaQuery.of(
+                                          //                               context)
+                                          //                           .size
+                                          //                           .width /
+                                          //                       2,
+                                          //                   50),
+                                          //               minimumSize: Size(
+                                          //                   MediaQuery.of(
+                                          //                               context)
+                                          //                           .size
+                                          //                           .width /
+                                          //                       3,
+                                          //                   50)),
+                                          //           onPressed: () {
+
+                                          //           },
+                                          //           child: const Text(
+                                          //               "Payment history")),
+                                          //       ElevatedButton(
+                                          //           style: ElevatedButton.styleFrom(
+                                          //               backgroundColor:
+                                          //                   Colors.green,
+                                          //               maximumSize: Size(
+                                          //                   MediaQuery.of(
+                                          //                               context)
+                                          //                           .size
+                                          //                           .width /
+                                          //                       3,
+                                          //                   50),
+                                          //               minimumSize: Size(
+                                          //                   MediaQuery.of(
+                                          //                               context)
+                                          //                           .size
+                                          //                           .width /
+                                          //                       3,
+                                          //                   50)),
+                                          //           onPressed: () {
+                                          //             infoManagementBloc
+                                          //                 .eventController
+                                          //                 .add(NavigateToAddBalanceScreenEvent(
+                                          //                     context: context,
+                                          //                     username: data
+                                          //                         .username));
+                                          //           },
+                                          //           child: const Text(
+                                          //               "Add balance"))
+                                          //     ],
+                                          //   ),
+                                          // );
                                         },
                                         child: const Text(
                                           "Wallet",

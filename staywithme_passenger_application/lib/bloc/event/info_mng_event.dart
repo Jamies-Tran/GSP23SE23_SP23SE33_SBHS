@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:staywithme_passenger_application/model/passenger_model.dart';
 
 abstract class InfoManagementEvent {}
 
@@ -10,10 +11,10 @@ class NavigateToAddBalanceScreenEvent extends InfoManagementEvent {
 }
 
 class NavigateToPaymentHistoryScreenEvent extends InfoManagementEvent {
-  NavigateToPaymentHistoryScreenEvent({this.context, this.username});
+  NavigateToPaymentHistoryScreenEvent({this.context, this.user});
 
   BuildContext? context;
-  String? username;
+  PassengerModel? user;
 }
 
 class NavigateToBookingHistoryScreenEvent extends InfoManagementEvent {

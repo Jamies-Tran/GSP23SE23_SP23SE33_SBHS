@@ -982,29 +982,34 @@ class _BlocDetailScreenState extends State<BlocDetailScreen> {
                                         blocData.homestayRules![index];
                                     return Container(
                                       margin: const EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                          left: 10, right: 10, bottom: 20),
+                                      child: Column(
                                         children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              utf8.decode(rule
-                                                  .description!.runes
-                                                  .toList()),
-                                              style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  utf8.decode(rule
+                                                      .description!.runes
+                                                      .toList()),
+                                                  style: const TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                              const Expanded(
+                                                flex: 1,
+                                                child: Icon(
+                                                  Icons.rule,
+                                                  color: Colors.green,
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          const Expanded(
-                                            flex: 1,
-                                            child: Icon(
-                                              Icons.rule,
-                                              color: Colors.green,
-                                            ),
-                                          )
                                         ],
                                       ),
                                     );
@@ -1230,7 +1235,7 @@ class _BlocDetailScreenState extends State<BlocDetailScreen> {
                                         blocData.homestayServices![index];
                                     return Container(
                                       margin: const EdgeInsets.only(
-                                          left: 10, right: 10),
+                                          left: 10, right: 10, bottom: 20),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -1241,7 +1246,7 @@ class _BlocDetailScreenState extends State<BlocDetailScreen> {
                                               utf8.decode(
                                                   ser.name!.runes.toList()),
                                               style: const TextStyle(
-                                                  fontSize: 20,
+                                                  fontSize: 15,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),

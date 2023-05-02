@@ -195,7 +195,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                     const EdgeInsets.only(left: 20, right: 20),
                                 child: DropdownButton(
                                   items: List<DropdownMenuItem<String>>.from(
-                                      streamSnapshot.data!.statusList
+                                      streamSnapshot.data!
+                                          .statusList()
                                           .map((e) => DropdownMenuItem(
                                               value: e,
                                               child: Text(
@@ -230,7 +231,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                       future: bookingService.getBookingHistory(
                           streamSnapshot.data!.filterBookingModel(),
                           0,
-                          5,
+                          20,
                           true,
                           true),
                       builder: (context, snapshot) {
@@ -288,13 +289,13 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                                                 .toLowerCase()));
                                               },
                                               child: Container(
-                                                height: 220,
+                                                height: 150,
                                                 padding:
                                                     const EdgeInsets.all(10),
                                                 margin: const EdgeInsets.only(
                                                     left: 10,
                                                     right: 10,
-                                                    bottom: 10),
+                                                    bottom: 5),
                                                 decoration: const BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.all(
@@ -326,7 +327,74 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                                                     .bold),
                                                       ),
                                                       const SizedBox(
-                                                        height: 10,
+                                                        height: 5,
+                                                      ),
+                                                      bookingHistoryData
+                                                                  .bookings![
+                                                                      index]
+                                                                  .homestayType! ==
+                                                              "HOMESTAY"
+                                                          ? Row(
+                                                              children: [
+                                                                const Text(
+                                                                  "Status:",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color:
+                                                                          secondaryColor),
+                                                                ),
+                                                                Text(
+                                                                  bookingHistoryData
+                                                                      .bookings![
+                                                                          index]
+                                                                      .status!,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: bookingHistoryData.bookings![index].status! ==
+                                                                              "PROGRESSING"
+                                                                          ? Colors
+                                                                              .grey
+                                                                          : Colors
+                                                                              .green),
+                                                                )
+                                                              ],
+                                                            )
+                                                          : Row(children: [
+                                                              const Text(
+                                                                "Status:",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color:
+                                                                        secondaryColor),
+                                                              ),
+                                                              Text(
+                                                                bookingHistoryData
+                                                                    .bookings![
+                                                                        index]
+                                                                    .status!,
+                                                                style: TextStyle(
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: bookingHistoryData.bookings![index].status! == "PENDING"
+                                                                        ? Colors.amber
+                                                                        : bookingHistoryData.bookings![index].status! == "ACCEPTED"
+                                                                            ? Colors.greenAccent
+                                                                            : bookingHistoryData.bookings![index].status! == "REJECTED"
+                                                                                ? Colors.redAccent
+                                                                                : bookingHistoryData.bookings![index].status! == "CHECKEDIN"
+                                                                                    ? Colors.green
+                                                                                    : bookingHistoryData.bookings![index].status! == "CHECKEDOUT"
+                                                                                        ? Colors.grey
+                                                                                        : Colors.black),
+                                                              )
+                                                            ]),
+                                                      const SizedBox(
+                                                        height: 15,
                                                       ),
                                                       Row(
                                                         children: [
@@ -432,148 +500,6 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                                           ),
                                                         ],
                                                       ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      bookingHistoryData
-                                                                  .bookings![
-                                                                      index]
-                                                                  .homestayType! ==
-                                                              "HOMESTAY"
-                                                          ? Column(
-                                                              children: [
-                                                                Row(
-                                                                  children: [
-                                                                    Expanded(
-                                                                      flex: 1,
-                                                                      child:
-                                                                          SizedBox(
-                                                                        child: Row(
-                                                                            children: [
-                                                                              const Text(
-                                                                                "Pending(s):",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.amber),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                width: 5,
-                                                                              ),
-                                                                              Text("${bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "PENDING").toList().isEmpty ? 0 : bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "PENDING").toList().length}")
-                                                                            ]),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 1,
-                                                                      child:
-                                                                          SizedBox(
-                                                                        child: Row(
-                                                                            children: [
-                                                                              const Text(
-                                                                                "Accepted(s):",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.greenAccent),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                width: 5,
-                                                                              ),
-                                                                              Text("${bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "ACCEPTED").toList().isEmpty ? 0 : bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "ACCEPTED").toList().length}")
-                                                                            ]),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                Row(
-                                                                  children: [
-                                                                    Expanded(
-                                                                        flex: 1,
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            const Text(
-                                                                              "Checked-in(s):",
-                                                                              style: TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 5,
-                                                                            ),
-                                                                            Text("${bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "CHECKEDIN").toList().length}")
-                                                                          ],
-                                                                        )),
-                                                                    Expanded(
-                                                                        flex: 1,
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            const Text(
-                                                                              "Checked-out(s):",
-                                                                              style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.bold),
-                                                                            ),
-                                                                            const SizedBox(
-                                                                              width: 5,
-                                                                            ),
-                                                                            Text("${bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "CHECKEDOUT").toList().length}")
-                                                                          ],
-                                                                        ))
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                SizedBox(
-                                                                  child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        const Text(
-                                                                          "Rejected(s):",
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Colors.redAccent),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          width:
-                                                                              5,
-                                                                        ),
-                                                                        Text(
-                                                                            "${bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "REJECTED").toList().isEmpty ? 0 : bookingHistoryData.bookings![index].bookingHomestays!.where((e) => e.status == "REJECTED").toList().length}")
-                                                                      ]),
-                                                                )
-                                                              ],
-                                                            )
-                                                          : Row(children: [
-                                                              const Expanded(
-                                                                flex: 1,
-                                                                child: Text(
-                                                                  "Status:",
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color:
-                                                                          secondaryColor),
-                                                                ),
-                                                              ),
-                                                              Expanded(
-                                                                flex: 1,
-                                                                child: Text(
-                                                                  bookingHistoryData
-                                                                      .bookings![
-                                                                          index]
-                                                                      .status!,
-                                                                  style: TextStyle(
-                                                                      fontWeight: FontWeight.bold,
-                                                                      color: bookingHistoryData.bookings![index].status! == "PENDING"
-                                                                          ? Colors.amber
-                                                                          : bookingHistoryData.bookings![index].status! == "ACCEPTED"
-                                                                              ? Colors.greenAccent
-                                                                              : bookingHistoryData.bookings![index].status! == "REJECTED"
-                                                                                  ? Colors.redAccent
-                                                                                  : Colors.black),
-                                                                ),
-                                                              )
-                                                            ]),
                                                     ]),
                                               ),
                                             ),

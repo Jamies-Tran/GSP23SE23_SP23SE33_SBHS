@@ -40,7 +40,8 @@ class BookingHistoryBloc {
           arguments: {
             "bookingId": event.bookingId,
             "homestayType": event.homestayType,
-            "viewDetail": true
+            "viewDetail": true,
+            "isHost": _isHost
           });
     }
     stateController.sink.add(BookingHistoryState(

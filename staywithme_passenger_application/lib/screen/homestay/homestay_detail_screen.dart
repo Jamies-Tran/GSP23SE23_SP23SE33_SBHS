@@ -1349,57 +1349,74 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                             const SizedBox(
                                               height: 10,
                                             ),
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                  left: 50),
-                                              height: 37.5 *
-                                                  data.homestayRules!.length,
-                                              child: ListView.builder(
-                                                padding: const EdgeInsets.only(
-                                                    left: 50, right: 50),
-                                                scrollDirection: Axis.vertical,
-                                                itemCount:
-                                                    data.homestayRules!.length,
-                                                itemBuilder: (context, index) {
-                                                  HomestayRuleModel rule = data
-                                                      .homestayRules![index];
-                                                  return Container(
+                                            data.homestayRules!.isNotEmpty
+                                                ? Container(
                                                     margin:
                                                         const EdgeInsets.only(
-                                                            bottom: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Text(
-                                                            utf8.decode(rule
-                                                                .description!
-                                                                .runes
-                                                                .toList()),
-                                                            style: const TextStyle(
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                            left: 50),
+                                                    height: 37.5 *
+                                                        data.homestayRules!
+                                                            .length,
+                                                    child: ListView.builder(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 50,
+                                                              right: 50),
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemCount: data
+                                                          .homestayRules!
+                                                          .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        HomestayRuleModel rule =
+                                                            data.homestayRules![
+                                                                index];
+                                                        return Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 20),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Expanded(
+                                                                flex: 1,
+                                                                child: Text(
+                                                                  utf8.decode(rule
+                                                                      .description!
+                                                                      .runes
+                                                                      .toList()),
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                              const Expanded(
+                                                                flex: 1,
+                                                                child: Icon(
+                                                                  Icons.rule,
+                                                                  color: Colors
+                                                                      .green,
+                                                                  size: 20,
+                                                                ),
+                                                              )
+                                                            ],
                                                           ),
-                                                        ),
-                                                        const Expanded(
-                                                          flex: 1,
-                                                          child: Icon(
-                                                            Icons.rule,
-                                                            color: Colors.green,
-                                                            size: 20,
-                                                          ),
-                                                        )
-                                                      ],
+                                                        );
+                                                      },
                                                     ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
+                                                  )
+                                                : const Text(
+                                                    "Homestay doesn't have any rule.",
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  ),
                                           ],
                                         )
                                       : const SizedBox(),
@@ -1437,7 +1454,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                             data.homestayFacilities![index];
                                         return Container(
                                           margin:
-                                              const EdgeInsets.only(bottom: 10),
+                                              const EdgeInsets.only(bottom: 20),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -1448,7 +1465,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                   utf8.decode(
                                                       fac.name!.runes.toList()),
                                                   style: const TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -1511,7 +1528,8 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                     margin:
                                                         const EdgeInsets.only(
                                                             left: 10,
-                                                            right: 10),
+                                                            right: 10,
+                                                            bottom: 20),
                                                     child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -1524,7 +1542,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                                 .name!.runes
                                                                 .toList()),
                                                             style: const TextStyle(
-                                                                fontSize: 20,
+                                                                fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),

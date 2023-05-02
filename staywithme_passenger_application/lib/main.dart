@@ -27,7 +27,7 @@ import 'package:staywithme_passenger_application/screen/intro_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/info_management_screen.dart';
-import 'package:staywithme_passenger_application/screen/personal/payment_history_screen.dart';
+import 'package:staywithme_passenger_application/screen/personal/passenger_wallet_screen.dart';
 import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
@@ -77,8 +77,8 @@ class MyApp extends StatelessWidget {
             (context) => const PassengerInfoManagementScreen(),
         AddBalanceScreen.addBalanceScreenRoute: (context) =>
             const AddBalanceScreen(),
-        PaymentHistoryScreen.paymentHistoryScreenRoute: (context) =>
-            const PaymentHistoryScreen(),
+        PassengerWalletScreen.passengerWalletScreen: (context) =>
+            const PassengerWalletScreen(),
         SendMailScreen.sendMailsCreenRoute: (context) => const SendMailScreen(),
         ValidateOtpScreen.validateOtpScreen: (context) =>
             const ValidateOtpScreen(),

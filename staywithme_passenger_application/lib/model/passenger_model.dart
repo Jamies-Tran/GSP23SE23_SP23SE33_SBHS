@@ -120,3 +120,21 @@ class BalanceWalletModel {
 
   Map<String, dynamic> toJson() => {"totalBalance": totalBalance};
 }
+
+class BookingDepositListPagingModel {
+  BookingDepositListPagingModel(
+      {this.bookingDeposits, this.pageNumber, this.totalPage});
+
+  List<BookingDepositModel>? bookingDeposits;
+  int? pageNumber;
+  int? totalPage;
+
+  factory BookingDepositListPagingModel.fromJson(Map<String, dynamic> json) =>
+      BookingDepositListPagingModel(
+          bookingDeposits: json["bookingDeposits"] != null
+              ? List<BookingDepositModel>.from(json["bookingDeposits"]
+                  .map((e) => BookingDepositModel.fromJson(e)))
+              : <BookingDepositModel>[],
+          pageNumber: json["pageNumber"],
+          totalPage: json["totalPage"]);
+}

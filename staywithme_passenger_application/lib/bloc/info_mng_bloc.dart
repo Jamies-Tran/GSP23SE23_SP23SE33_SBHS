@@ -10,7 +10,7 @@ import 'package:staywithme_passenger_application/screen/booking/booking_history_
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/personal/add_balance_screen.dart';
-import 'package:staywithme_passenger_application/screen/personal/payment_history_screen.dart';
+import 'package:staywithme_passenger_application/screen/personal/passenger_wallet_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -49,8 +49,8 @@ class InfoManagementBloc {
           arguments: {"username": event.username});
     } else if (event is NavigateToPaymentHistoryScreenEvent) {
       Navigator.pushNamed(
-          event.context!, PaymentHistoryScreen.paymentHistoryScreenRoute,
-          arguments: {"username": event.username});
+          event.context!, PassengerWalletScreen.passengerWalletScreen,
+          arguments: {"user": event.user});
     } else if (event is SignOutEvent) {
       await _fireAuthService.signOut();
       Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
@@ -63,23 +63,23 @@ class InfoManagementBloc {
         context: event.context!,
         builder: (context) => AlertDialog(
           title: const Center(
-            child: Text("Invite code"),
+            child: Text("Enter Invite Code"),
           ),
           content: SizedBox(
-            height: 150,
+            height: 120,
             width: 150,
             child: Column(children: [
               Form(
                 key: formKey,
                 child: Column(children: [
                   SizedBox(
-                    width: 150,
+                    width: 170,
                     child: TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Invite code empty";
                         }
-                        return null;
+                        return _validInviteCode;
                       },
                       decoration: const InputDecoration(
                           filled: true,
