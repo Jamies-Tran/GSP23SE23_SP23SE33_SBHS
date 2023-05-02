@@ -1,81 +1,61 @@
-import { Component , OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
 import { EChartsOption } from 'echarts';
+import { DashboardService } from 'src/app/services/dashboard.service';
 @Component({
   selector: 'app-dashboard-landlord',
   templateUrl: './dashboard-landlord.component.html',
-  styleUrls: ['./dashboard-landlord.component.scss']
+  styleUrls: ['./dashboard-landlord.component.scss'],
 })
 export class DashboardLandlordComponent implements OnInit {
-  profits!: EChartsOption ;
+  dashboardData: Response = {
+    totalProfit: 0,
+    totalPromotion: 0,
+    totalCommission: 0,
+    homestayTable: [
+      {
+        imgUrl: '123 pass-sign-or-stamp-vector-22523712 - Copy.jpg',
+        name: '123',
+        profit: 0,
+        totalBooking: 0,
+      },
+    ],
+    blocTable: [
+      {
+        imgUrl: '1233 pass-sign-or-stamp-vector-22523712 - Copy.jpg',
+        name: 'quan 9',
+        profit: 0,
+        totalBooking: 0,
+      },
+    ],
+  };
+
+  constructor(private http: DashboardService) {}
 
   ngOnInit(): void {
-    this.profits = {
-      title: {
-        text: 'Tổng doanh thu: 4.000.000',
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#6a7985',
-          },
-        },
-      },
-      legend: {
-        data: ['Doanh thu'],
-      },
-      toolbox: {
-        feature: {
-          restore: { show: true },
-          saveAsImage: {},
-        },
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true,
-      },
-      xAxis: [
-        {
-          type: 'category',
-          name: 'Tháng',
-          boundaryGap: false,
-          data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        },
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          name: 'Tiền',
-          position: 'left',
-          alignTicks: true,
-          axisLine: {
-            show: true,
-          },
-          axisLabel: {
-            formatter: '{value} đ',
-          },
-        },
-      ],
-      series: [
-        {
-          name: 'Doanh thu',
-          type: 'line',
-          stack: 'Total',
-          tooltip: {
-            formatter: '{value} đ',
-          },
-          emphasis: {
-            focus: 'series',
-          },
-
-          // data :this.values
-          data: [800000, 1000000, 3000000, 2000000, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        },
-      ],
-    };
+    this.getDashboardData();
   }
+  getDashboardData() {
+    this.http.getDashboardLandlord().subscribe((data) => {
+      this.dashboardData = data;
+      console.log(data);
+    });
+  }
+}
+export interface Response {
+  totalProfit: number;
+  totalPromotion: number;
+  totalCommission: number;
+  homestayTable: {
+    imgUrl: string;
+    name: string;
+    profit: number;
+    totalBooking: number;
+  }[];
+  blocTable: {
+    imgUrl: string;
+    name: string;
+    profit: number;
+    totalBooking: number;
+  }[];
 }
