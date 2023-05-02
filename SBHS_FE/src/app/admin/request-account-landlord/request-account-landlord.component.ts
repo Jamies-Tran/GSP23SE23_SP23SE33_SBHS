@@ -5,6 +5,7 @@ import { MessageComponent } from '../../pop-up/message/message.component';
 import { SuccessComponent } from '../../pop-up/success/success.component';
 import { ImageService } from '../../services/image.service';
 import { AdminService } from '../../services/admin.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-account-landlord',
@@ -18,25 +19,37 @@ export class RequestAccountLandlordComponent implements OnInit {
   valuesReject: data[] = [];
   message!: string;
   registerError: string = '';
-  constructor(private http: AdminService, public dialog: MatDialog,private image: ImageService,) {}
+  constructor(
+    private http: AdminService,
+    public dialog: MatDialog,
+    private image: ImageService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
   ngOnInit(): void {
-    this.valuesPending = [];
-    this.valuesBanned  = [];
-    this.valuesActive = [];
-    this.valuesReject =[];
-    this.getStatusLandlord();
-    console.log('length:', this.valuesPending.length);
-    if(localStorage.getItem('isAccept') == 'true'   ){
-      this.message = 'Account have accept';
-          this.openDialogSuccess();
-          localStorage.setItem('isAccept' , 'false');
+    let role = localStorage.getItem('role');
+    if (role == 'LANDLORD' && this.router.url.includes('/Admin')) {
+      this.router.navigate(['/Landlord/Dashboard'], {
+        relativeTo: this.route,
+      });
+    } else if(role == "ADMIN") {
+      this.valuesPending = [];
+      this.valuesBanned = [];
+      this.valuesActive = [];
+      this.valuesReject = [];
+      this.getStatusLandlord();
+      console.log('length:', this.valuesPending.length);
+      if (localStorage.getItem('isAccept') == 'true') {
+        this.message = 'Account have accept';
+        this.openDialogSuccess();
+        localStorage.setItem('isAccept', 'false');
+      }
+      if (localStorage.getItem('isReject') == 'true') {
+        this.message = 'Account have reject';
+        this.openDialogSuccess();
+        localStorage.setItem('isReject', 'false');
+      }
     }
-    if(localStorage.getItem('isReject') == 'true'   ){
-      this.message = 'Account have reject';
-          this.openDialogSuccess();
-          localStorage.setItem('isReject' , 'false');
-    }
-
   }
   public getStatusLandlord() {
     // Pending
@@ -61,9 +74,6 @@ export class RequestAccountLandlordComponent implements OnInit {
     });
   }
 
-
-
-
   public Id = 0;
   public createBy = '';
   public rejectMessage = '';
@@ -81,9 +91,9 @@ export class RequestAccountLandlordComponent implements OnInit {
     this.http.activateLandlordAccount(this.username).subscribe(
       (data) => {
         if (data != null) {
-          localStorage.setItem('isAccept' , 'true');
+          localStorage.setItem('isAccept', 'true');
           this.getStatusLandlord();
-          this.message = 'Accept Landlord Success'
+          this.message = 'Accept Landlord Success';
           this.openDialogSuccess();
         }
         console.log(data);
@@ -100,10 +110,7 @@ export class RequestAccountLandlordComponent implements OnInit {
     );
   }
 
-
-
   isChecked!: boolean;
-
 
   // Pending
   pagePending: number = 1;
@@ -116,33 +123,31 @@ export class RequestAccountLandlordComponent implements OnInit {
     this.valuesPending;
   }
 
-
   // Banned
   onTableDataChangeBanned(event: any) {
     // this.page = event;
     // this.valuesBanned;
   }
 
-    // Active
-    pageActive: number = 1;
-    countActive: number = 0;
-    tableSizeActive: number = 5;
+  // Active
+  pageActive: number = 1;
+  countActive: number = 0;
+  tableSizeActive: number = 5;
   // Active
   onTableDataChangeActive(event: any) {
     this.pageActive = event;
     this.valuesActive;
   }
 
-    // Reject
-    pageReject: number = 1;
-    countReject: number = 0;
-    tableSizeReject: number = 5;
+  // Reject
+  pageReject: number = 1;
+  countReject: number = 0;
+  tableSizeReject: number = 5;
   // Reject
   onTableDataChangeReject(event: any) {
     this.pageReject = event;
     this.valuesReject;
   }
-
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
@@ -160,12 +165,12 @@ export class RequestAccountLandlordComponent implements OnInit {
       data: {
         username: this.username,
       },
-      disableClose: true
+      disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(()=>{
-      setTimeout(() =>{
+    dialogRef.afterClosed().subscribe(() => {
+      setTimeout(() => {
         this.getStatusLandlord();
-      } , 4500)
+      }, 4500);
     });
   }
 }
@@ -176,6 +181,6 @@ export interface data {
   createdDate: string;
   type: string;
   status: string;
-  avatarUrl:string;
-  email:string;
+  avatarUrl: string;
+  email: string;
 }

@@ -6,10 +6,11 @@ import { SuccessComponent } from '../../pop-up/success/success.component';
 import { PendingHomestayComponent } from '../../pop-up/pending-homestay/pending-homestay.component';
 import { HomestayService } from '../../services/homestay.service';
 import { AdminService } from '../../services/admin.service';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-request-bloc-homestay',
   templateUrl: './request-bloc-homestay.component.html',
-  styleUrls: ['./request-bloc-homestay.component.scss']
+  styleUrls: ['./request-bloc-homestay.component.scss'],
 })
 export class RequestBlocHomestayComponent {
   valuesPending: data[] = [];
@@ -17,34 +18,47 @@ export class RequestBlocHomestayComponent {
   valuesActive: data[] = [];
   valuesReject: data[] = [];
   message!: string;
-  constructor(public dialog: MatDialog,private httpHomestay: HomestayService, private httpAdmin: AdminService ){}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private httpHomestay: HomestayService,
+    private httpAdmin: AdminService
+  ) {}
   ngOnInit(): void {
-    this.getStatusBlocHomestay();
+    let role = localStorage.getItem('role');
+    if(role == "LANDLORD" && this.router.url.includes('/Admin')){
+      this.router.navigate(['/Landlord/Dashboard'], {
+        relativeTo: this.route,});
+    } else if(role == "ADMIN"){
+      this.getStatusBlocHomestay();
+    }
+
   }
 
   public getStatusBlocHomestay() {
-  // Pending
-  this.httpHomestay.findBlocList('PENDING').subscribe((data) => {
-    this.valuesPending = data['blocs'];
-    console.log(this.valuesPending);
-  });
-  // Banned
-  this.httpHomestay.findBlocList('BANNED').subscribe((data) => {
-    this.valuesBanned = data['blocs'];
-    console.log(this.valuesBanned);
-  });
-  // Active
-  this.httpHomestay.findBlocList('ACTIVATING').subscribe((data) => {
-    this.valuesActive = data['blocs'];
-    console.log(data);
-  });
-  // Reject
-  this.httpHomestay.findBlocList('REJECTED_LICENSE_NOT_MATCHED').subscribe((data) => {
-    this.valuesReject = data['blocs'];
-    console.log(this.valuesReject);
-  });
-
-
+    // Pending
+    this.httpHomestay.findBlocList('PENDING').subscribe((data) => {
+      this.valuesPending = data['blocs'];
+      console.log(this.valuesPending);
+    });
+    // Banned
+    this.httpHomestay.findBlocList('BANNED').subscribe((data) => {
+      this.valuesBanned = data['blocs'];
+      console.log(this.valuesBanned);
+    });
+    // Active
+    this.httpHomestay.findBlocList('ACTIVATING').subscribe((data) => {
+      this.valuesActive = data['blocs'];
+      console.log(data);
+    });
+    // Reject
+    this.httpHomestay
+      .findBlocList('REJECTED_LICENSE_NOT_MATCHED')
+      .subscribe((data) => {
+        this.valuesReject = data['blocs'];
+        console.log(this.valuesReject);
+      });
   }
   public Id = 0;
   public createBy = '';
@@ -69,9 +83,8 @@ export class RequestBlocHomestayComponent {
         console.log(data);
       },
       (error) => {
-          this.message = error;
-          this.openDialogMessage();
-
+        this.message = error;
+        this.openDialogMessage();
       }
     );
   }
@@ -99,11 +112,9 @@ export class RequestBlocHomestayComponent {
       }
     );
   }
-  banned(){
+  banned() {}
 
-  }
-
-    // Pending
+  // Pending
   pagePending: number = 1;
   countPending: number = 0;
   tableSizePending: number = 5;
@@ -120,26 +131,25 @@ export class RequestBlocHomestayComponent {
     // this.valuesBanned;
   }
 
-     // Active
-     pageActive: number = 1;
-     countActive: number = 0;
-     tableSizeActive: number = 5;
+  // Active
+  pageActive: number = 1;
+  countActive: number = 0;
+  tableSizeActive: number = 5;
   // Active
   onTableDataChangeActive(event: any) {
     this.pageActive = event;
     this.valuesActive;
   }
 
-   // Reject
-   pageReject: number = 1;
-   countReject: number = 0;
-   tableSizeReject: number = 5;
+  // Reject
+  pageReject: number = 1;
+  countReject: number = 0;
+  tableSizeReject: number = 5;
   // Reject
   onTableDataChangeReject(event: any) {
     this.pageReject = event;
     this.valuesReject;
   }
-
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
@@ -161,11 +171,11 @@ export class RequestBlocHomestayComponent {
       },
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(()=>{
-      setTimeout(() =>{
+    dialogRef.afterClosed().subscribe(() => {
+      setTimeout(() => {
         this.getStatusBlocHomestay();
-      } , 4000)
-    })
+      }, 4000);
+    });
   }
 }
 export interface data {

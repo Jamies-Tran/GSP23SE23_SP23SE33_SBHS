@@ -24,7 +24,7 @@
     font-family: MuseoSans, Roboto, sans-serif !important;
     font-size: 20px;
     letter-spacing: 0.7px;
-    font-weight: 500;
+
 
   }
 }
@@ -42,7 +42,7 @@
 
 
 .first-content {
-  width: 100%;
+
   min-height: 91vh;
   height: 91vh;
   background: linear-gradient(140deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 30%, rgba(255, 255, 255, 0.7) 35%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0) 100%), url(/assets/images/bg-login.png);
@@ -53,34 +53,11 @@
   }
 
   .content-container {
-
-
     .content-box {
-      width: 100%;
       max-width: 1280px;
-      margin: 0px auto;
-      padding-left: 24px;
-      padding-right: 24px;
-
       .content {
-        flex-direction: column;
-        align-items: flex-start;
         max-width: 640px;
-        padding: 32px 0px;
-        display: flex;
 
-        .first-text {
-          margin-top: 80px;
-          font-size: 49px;
-          font-weight: 500;
-        }
-
-        .second-text {
-          margin-top: 16px;
-          margin-bottom: 36px;
-          font-size: 21px;
-          padding-right: 15px;
-        }
       }
     }
   }
@@ -88,19 +65,10 @@
 
 
 
-.r-c-8 {
-  margin-left: 6px;
-}
 
-.c-m-6-left {
-  padding-left: 0 !important;
-  padding-right: 6px !important;
-}
 
-.c-m-6-right {
-  padding-left: 6px !important;
-  padding-right: 0 !important;
-}
+
+
 
 
 
@@ -112,13 +80,7 @@
   }
 }
 
-.bg-image-vertical {
-  position: relative;
-  overflow: hidden;
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: auto 100%;
-}
+
 
 .password,
 .username {
@@ -136,12 +98,7 @@ input:-webkit-autofill:active {
 }
 
 .login-button-div {
-  display: flex;
-  justify-content: center;
   margin-top: -30px;
-  flex-direction: column;
-  align-items: flex-end;
-
   button {
     height: 45px;
   }
@@ -150,7 +107,7 @@ input:-webkit-autofill:active {
     font-size: large;
     letter-spacing: 2px;
     color: white;
-    font-size: 500;
+
   }
 
 }
@@ -246,16 +203,14 @@ input:-webkit-autofill:active {
 
 .login-gmail {
   float: left;
-  width: 100%;
-  text-align: center;
-  position: relative;
+
 
   span {
-    width: auto;
+
     display: inline-block;
     padding: 1px 20px;
     z-index: 1;
-    position: relative;
+
     font-size: 16px;
     color: #876d6d;
     text-transform: capitalize;

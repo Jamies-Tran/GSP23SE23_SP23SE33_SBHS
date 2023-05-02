@@ -11,20 +11,12 @@
 
 .btn-register {
   color: white !important;
-  font-weight: 500;
 }
 
 .li-login {
-
-  border-radius: 5px;
-  width: fit-content;
-
   button {
     color: rgb(1, 148, 243);
-    font-family: MuseoSans, Roboto, sans-serif !important;
-    font-size: 20px;
     letter-spacing: 0.7px;
-    font-weight: 500;
 
   }
 }
@@ -47,39 +39,25 @@
   }
 
   .content-container {
-    position: absolute;
     top: 0px;
     left: 0px;
-    width: 100%;
-    height: 100%;
     z-index: 1;
     background: linear-gradient(140deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.4) 80%, rgba(255, 255, 255, 0) 100%);
 
     .content-box {
-      width: 100%;
       max-width: 1280px;
-      margin: 0px auto;
-      padding-left: 24px;
-      padding-right: 24px;
 
       .content {
-        flex-direction: column;
-        align-items: flex-start;
         max-width: 640px;
-        padding: 32px 0px;
-        display: flex;
 
         .first-text {
           margin-top: 80px;
           font-size: 49px;
-          font-weight: 500;
+
         }
 
         .second-text {
-          margin-top: 16px;
-          margin-bottom: 36px;
           font-size: 21px;
-          padding-right: 15px;
         }
       }
     }
@@ -87,60 +65,33 @@
 }
 
 .second-content {
-  display: flex;
-  justify-content: center;
-
   .content-box {
-    width: 100%;
-    max-width: 1280px;
-
-    padding-left: 24px;
-    padding-right: 24px;
-
+    width: 80%;
     .content {
 
       .content-left {
-
-        align-items: flex-start;
-        padding: 32px 0px;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-
         .first-text {
           color: #4c4c4c;
-          margin-bottom: 16px;
           font-size: 48px;
-          font-weight: 500;
-          font-family: MuseoSans, Roboto, sans-serif !important;
         }
 
         .second-text {
-          margin-bottom: 16px;
           font-size: 16px;
-          font-family: MuseoSans, Roboto, sans-serif !important;
         }
 
         .content-graphic {
-          position: absolute;
           right: -46px;
           top: -18px;
           width: 230px;
           height: 230px;
           z-index: -1;
-          border-radius: 50%;
-          // background:  linear-gradient(to right, #FEF001db, #FFCE03db, #F2B104db, #F59E02db, #F79101db,  #F68002db,#FD6104db, #FD6104db);
           background: linear-gradient(to right, #FEF001, #FFCE03, #F2B104);
         }
 
       }
 
       .content-right {
-        border-radius: 30px;
-        overflow: hidden;
         height: 270px;
-        display: flex;
-        object-fit: contain;
 
         .carousel-item {
           img {
@@ -154,39 +105,23 @@
 }
 
 .third-content {
-
   height: 700px;
-  overflow: hidden;
-
 
   .contain-box {
     background-image: url(/assets/images/world-map-gray.png);
-    margin-bottom: 30px;
-
-    display: flex;
-    justify-content: center;
 
     .content {
-      padding-top: 15px;
-
       span {
         color: #4c4c4c;
-        margin-bottom: 16px;
-        font-weight: 500;
-        font-family: MuseoSans, Roboto, sans-serif !important;
       }
 
       .col-md-4 {
         background-image: url(/assets/images/homepage-1.png);
         box-sizing: border-box;
         background-size: cover;
-        border-radius: 6px;
         width: 33.33333%;
         height: 520px;
-
-        padding: 24px;
         color: white;
-
         span {
           color: white;
         }
@@ -194,19 +129,10 @@
 
       .colum-8 {
         background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 2%, rgba(0, 0, 0, 0.6) 18%, rgba(0, 0, 0, 0.5) 26%, rgba(0, 0, 0, 0.4) 36%, rgba(0, 0, 0, 0.2) 100%), url(/assets/images/homepage-2.png);
-
-
         box-sizing: border-box;
         background-size: cover;
-
-        border-radius: 6px;
         height: 260px;
-        margin-bottom: 12px;
-        margin-left: 6px;
-
-        padding: 24px;
         color: white;
-
         span {
           color: white;
         }
@@ -215,20 +141,14 @@
       .col-md-6 {
         box-sizing: border-box;
         height: 248px;
-        margin-bottom: 12px;
-
       }
 
       .bot-left {
         background-image: url(/assets/images/homepage-3.png);
         background-size: cover;
-
         height: 247px;
-        padding: 24px;
         box-sizing: border-box;
-        border-radius: 6px;
         color: white;
-
         span {
           color: white;
         }
@@ -237,15 +157,9 @@
       .bot-right {
         background-image: url(/assets/images/homepage-4.png);
         background-size: cover;
-
-
-
         height: 247px;
-        padding: 24px;
         box-sizing: border-box;
-        border-radius: 6px;
         color: white;
-
         span {
           color: white;
         }
@@ -256,19 +170,11 @@
 
 }
 
-.r-c-8 {
-  margin-left: 6px;
-}
 
-.c-m-6-left {
-  padding-left: 0 !important;
-  padding-right: 6px !important;
-}
 
-.c-m-6-right {
-  padding-left: 6px !important;
-  padding-right: 0 !important;
-}
+
+
+
 
 .footer {
   background-image: url(/assets/images/bg.jpg);
@@ -282,44 +188,36 @@
 }
 
 .latest-content {
-  width: 100%;
+
   height: 250px;
-  position: relative;
-  overflow: hidden;
+
 
   .banner {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 100%;
-    height: 100%;
+
     z-index: 1;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.9) 10%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0.4) 100%);
 
     .banner-contain {
-      height: 100%;
+
       -webkit-box-align: center;
-      align-items: center;
+
 
       .banner-box {
-        width: 100%;
+
         max-width: 1280px;
-        margin: 0px auto;
-        padding-left: 24px;
-        padding-right: 24px;
+
+
 
         .banner-content {
-          height: 100%;
+
           max-width: 640px;
-          flex-direction: column;
-          align-items: flex-start;
           -webkit-box-pack: center;
-          justify-content: center;
-          display: flex;
 
           .banner-solgan {
-            margin-top: 8px;
-            margin-bottom: 36px;
+
           }
 
           button {

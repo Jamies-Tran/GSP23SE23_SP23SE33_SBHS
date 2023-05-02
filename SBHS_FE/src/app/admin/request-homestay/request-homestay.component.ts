@@ -6,6 +6,7 @@ import { SuccessComponent } from '../../pop-up/success/success.component';
 import { PendingHomestayComponent } from '../../pop-up/pending-homestay/pending-homestay.component';
 import { HomestayService } from '../../services/homestay.service';
 import { AdminService } from '../../services/admin.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-homestay',
@@ -21,10 +22,20 @@ export class RequestHomestayComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private httpHomestay: HomestayService,
-    private httpAdmin: AdminService
+    private httpAdmin: AdminService,
+    private router: Router,
+    private route: ActivatedRoute
+    ,
   ) {}
   ngOnInit(): void {
-    this.getStatusHomestay();
+    let role = localStorage.getItem('role');
+    if(role == "LANDLORD" && this.router.url.includes('/Admin')){
+      this.router.navigate(['/Landlord/Dashboard'], {
+        relativeTo: this.route,});
+    } else if(role == "ADMIN"){
+      this.getStatusHomestay();
+    }
+
   }
 
   public getStatusHomestay() {

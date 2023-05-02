@@ -39,6 +39,11 @@ export class AccountLandlordDetailComponent implements OnInit {
   status !: string;
   ngOnInit(): void {
    this.getAccountDetail();
+   let role = localStorage.getItem('role');
+  if(role == "LANDLORD" && this.router.url.includes('/Admin')){
+    this.router.navigate(['/Landlord/Dashboard'], {
+      relativeTo: this.route,});
+  }
   }
   getAccountDetail(){
     this.username = '';

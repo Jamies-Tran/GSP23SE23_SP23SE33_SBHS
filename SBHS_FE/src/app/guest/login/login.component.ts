@@ -85,7 +85,15 @@ export class LoginLandlordComponent {
           this.router.navigate(['/Admin/Dashboard'], {
             relativeTo: this.route,
           });
-        } else this.router.navigate([''], {
+        } else if(data['roles'][0] === 'PASSENGER'){
+          localStorage.clear();
+          sessionStorage.clear();
+        this.message = 'Account passenger do not accept login';
+        this.openDialogMessage();
+
+        }
+
+        else this.router.navigate([''], {
           relativeTo: this.route,
         });
       },error =>{

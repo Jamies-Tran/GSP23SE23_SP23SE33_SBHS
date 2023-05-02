@@ -35,6 +35,10 @@ export class AdminComponent implements OnInit {
     Tawk_API.hideWidget();
     this.username = localStorage.getItem('usernameLogined') as string;
     this.role = localStorage.getItem('role');
+    if(this.role != "ADMIN" && this.router.url.includes('/Admin')){
+      this.router.navigate(['/Landlord/Dashboard'], {
+        relativeTo: this.route,});
+    }
 
     this.http.getUserInfo(this.username).subscribe(
       async (data) => {

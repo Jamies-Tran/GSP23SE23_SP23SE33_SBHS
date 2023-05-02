@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Homestay } from 'src/app/models/homestay.model';
 import { ActionPendingComponent } from 'src/app/pop-up/action-pending/action-pending.component';
 import { BookingPendingComponent } from 'src/app/pop-up/booking-pending/booking-pending.component';
@@ -22,12 +23,20 @@ export class HomestayDetailComponent implements OnInit {
     private http: HomestayService,
     private image: ImageService,
     public dialog: MatDialog,
-    private httpAdmin: AdminService
+    private httpAdmin: AdminService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    this.name = sessionStorage.getItem('name') as string;
-    this.getHomestay();
-
+    let role = localStorage.getItem('role');
+    if (role == 'LANDLORD' && this.router.url.includes('/Admin')) {
+      this.router.navigate(['/Landlord/Dashboard'], {
+        relativeTo: this.route,
+      });
+    } else if (role == 'ADMIN') {
+      this.name = sessionStorage.getItem('name') as string;
+      this.getHomestay();
+    }
   }
   name!: string;
   message!: string;
@@ -37,7 +46,6 @@ export class HomestayDetailComponent implements OnInit {
   urls4: string[] = [];
   priceTax!: number;
   showBooking = false;
-
 
   openDialogMessage() {
     this.dialog.open(MessageComponent, {
@@ -49,9 +57,8 @@ export class HomestayDetailComponent implements OnInit {
       data: this.message,
     });
   }
-  id:any;
+  id: any;
   getHomestay() {
-
     try {
       this.http.getHomestayDetailByName(this.name).subscribe({
         next: async (data: any) => {
@@ -59,10 +66,10 @@ export class HomestayDetailComponent implements OnInit {
             const value = data;
             this.urls = [];
             this.urls4 = [];
-            this.id=value.id;
+            this.id = value.id;
             console.log(value.homestayFacilities);
             this.datas = {
-              id:value.id,
+              id: value.id,
               address: value.address,
               availableRooms: value.availableRooms,
               businessLicense: value.businessLicense,
@@ -112,8 +119,7 @@ export class HomestayDetailComponent implements OnInit {
       console.log(error);
     }
   }
-  datasBooking:any[]=[];
-
+  datasBooking: any[] = [];
 
   public accept() {
     console.log('Accept');
@@ -127,25 +133,24 @@ export class HomestayDetailComponent implements OnInit {
         console.log(data);
       },
       (error) => {
-          this.message = error;
-          this.openDialogMessage();
-
+        this.message = error;
+        this.openDialogMessage();
       }
     );
   }
   openDialogAction() {
     localStorage.setItem('Homestay', 'true');
-    const dialogRef =this.dialog.open(PendingHomestayComponent, {
+    const dialogRef = this.dialog.open(PendingHomestayComponent, {
       data: {
         id: this.id,
         name: this.name,
       },
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(()=>{
-      setTimeout(() =>{
+    dialogRef.afterClosed().subscribe(() => {
+      setTimeout(() => {
         this.getHomestay();
-      } , 4000)
-    })
+      }, 4000);
+    });
   }
 }

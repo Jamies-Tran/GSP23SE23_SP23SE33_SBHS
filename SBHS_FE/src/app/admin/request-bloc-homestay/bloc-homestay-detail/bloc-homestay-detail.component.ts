@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BlocHomestay } from 'src/app/models/bloc-homestay.model';
 import { MessageComponent } from 'src/app/pop-up/message/message.component';
 import { PendingHomestayComponent } from 'src/app/pop-up/pending-homestay/pending-homestay.component';
@@ -18,11 +19,20 @@ export class BlocHomestayDetailComponent {
     private http: HomestayService,
     private image: ImageService,
     public dialog: MatDialog,
-    private httpAdmin:AdminService
+    private httpAdmin:AdminService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
   ngOnInit(): void {
-    this.name = sessionStorage.getItem('name') as string;
+    let role = localStorage.getItem('role');
+    if(role == "LANDLORD" && this.router.url.includes('/Admin')){
+      this.router.navigate(['/Landlord/Dashboard'], {
+        relativeTo: this.route,});
+    } else if(role == "ADMIN"){
+         this.name = sessionStorage.getItem('name') as string;
     this.getHomestay();
+    }
+
   }
   id:any;
   name!: string;
