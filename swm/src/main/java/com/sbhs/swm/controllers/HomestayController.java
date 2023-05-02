@@ -349,14 +349,14 @@ public class HomestayController {
         public ResponseEntity<?> filterHomestay(@RequestBody HomestaySearchFilter filter,
                         @RequestParam int page,
                         @RequestParam int size, @RequestParam boolean isNextPage,
-                        @RequestParam boolean isPreviousPage) {
+                        @RequestParam boolean isPreviousPage, String sortBy) {
                 HomestayListPagingDto homestayListPagingDto = new HomestayListPagingDto();
                 switch (filter.getHomestayType().toUpperCase()) {
                         case "HOMESTAY":
                                 PagedListHolder<Homestay> homestays = homestayService.getHomestayListFiltered(
                                                 filter.getFilterOption(), filter.getSearchString(), page, size,
                                                 isNextPage,
-                                                isPreviousPage);
+                                                isPreviousPage, sortBy);
                                 List<HomestayResponseDto> homestayResponseList = homestays.getPageList()
                                                 .stream()
                                                 .map(h -> modelMapper.map(h, HomestayResponseDto.class))
@@ -389,7 +389,7 @@ public class HomestayController {
                                 PagedListHolder<BlocHomestay> blocs = homestayService.getBlocListFiltered(
                                                 filter.getFilterOption(), filter.getSearchString(), page, size,
                                                 isNextPage,
-                                                isPreviousPage);
+                                                isPreviousPage, sortBy);
                                 List<BlocHomestayResponseDto> blocResponseList = blocs.getPageList().stream()
                                                 .map(b -> modelMapper.map(b, BlocHomestayResponseDto.class))
                                                 .collect(Collectors.toList());

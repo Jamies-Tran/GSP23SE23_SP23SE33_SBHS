@@ -1,6 +1,8 @@
 package com.sbhs.swm.implement;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +23,7 @@ import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.models.BlocHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.models.status.HomestayStatus;
 import com.sbhs.swm.models.status.LandlordStatus;
 import com.sbhs.swm.repositories.BlocHomestayRepo;
@@ -276,7 +279,7 @@ public class HomestayService implements IHomestayService {
     public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, String searchString, int page,
             int size,
             boolean isNextPage,
-            boolean isPreviousPage) {
+            boolean isPreviousPage, String sortBy) {
         List<Homestay> homestays = homestayRepo.getAllAvailableHomestay();
         if (StringUtils.hasLength(searchString)) {
             homestays = filterHomestayService.filterBySearchString(homestays, searchString);
@@ -319,6 +322,83 @@ public class HomestayService implements IHomestayService {
                         filterOption.getFilterByRatingRange().getLowest());
             }
         }
+
+        Collections.sort(homestays, new Comparator<Homestay>() {
+
+            @Override
+            public int compare(Homestay h1, Homestay h2) {
+                switch (sortBy.toUpperCase()) {
+                    case "BOOKINGS":
+                        if (h1.getBookingHomestays().stream()
+                                .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                .collect(Collectors.toList()).size() > h2.getBookingHomestays().stream()
+                                        .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                        .collect(Collectors.toList()).size()) {
+                            return -1;
+                        } else if (h1.getBookingHomestays().stream()
+                                .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                .collect(Collectors.toList()).size() < h2.getBookingHomestays().stream()
+                                        .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                        .collect(Collectors.toList()).size()) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+
+                    case "CREATED DATE":
+
+                        if (dateFormatUtil.differenceInDays(h1.getCreatedDate(),
+                                dateFormatUtil.formatDateTimeNowToString()) > dateFormatUtil.differenceInDays(
+                                        h2.getCreatedDate(), dateFormatUtil.formatDateTimeNowToString())) {
+                            return -1;
+                        } else if (dateFormatUtil.differenceInDays(h1.getCreatedDate(),
+                                dateFormatUtil.formatDateTimeNowToString()) < dateFormatUtil.differenceInDays(
+                                        h2.getCreatedDate(), dateFormatUtil.formatDateTimeNowToString())) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    case "RATING":
+                        if (h1.getTotalAverageRating() > h2.getTotalAverageRating()) {
+                            return 1;
+                        } else if (h1.getTotalAverageRating() < h2.getTotalAverageRating()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    case "CAPACITY":
+                        int firstCap = h1.getAvailableRooms() * h1.getRoomCapacity();
+                        int secondCap = h2.getAvailableRooms() * h2.getRoomCapacity();
+                        if (firstCap > secondCap) {
+                            return -1;
+                        } else if (firstCap < secondCap) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    case "NAME":
+                        return h1.getName().compareTo(h2.getName());
+                    case "PRICE":
+                        if (h1.getPrice() > h2.getPrice()) {
+                            return 1;
+                        } else if (h1.getPrice() < h2.getPrice()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+
+                    default:
+                        if (h1.getTotalAverageRating() > h2.getTotalAverageRating()) {
+                            return 1;
+                        } else if (h1.getTotalAverageRating() < h2.getTotalAverageRating()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                }
+            }
+
+        });
 
         PagedListHolder<Homestay> homestayPage = new PagedListHolder<>(homestays);
         homestayPage.setPage(page);
@@ -412,7 +492,7 @@ public class HomestayService implements IHomestayService {
     @Override
     public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, String searchString, int page,
             int size,
-            boolean isNextPage, boolean isPreviousPage) {
+            boolean isNextPage, boolean isPreviousPage, String sortBy) {
         List<BlocHomestay> blocs = blocHomestayRepo.getAllAvailableBlocs();
         if (StringUtils.hasLength(searchString)) {
             blocs = filterBlocHomestayService.filterBySearchString(blocs, searchString);
@@ -450,6 +530,112 @@ public class HomestayService implements IHomestayService {
                         filterOption.getFilterByRatingRange().getHighest());
             }
         }
+        Collections.sort(blocs, new Comparator<BlocHomestay>() {
+
+            @Override
+            public int compare(BlocHomestay h1, BlocHomestay h2) {
+                switch (sortBy.toUpperCase()) {
+                    case "BOOKING":
+                        if (h1.getBookings().stream()
+                                .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                .collect(Collectors.toList()).size() > h2.getBookings().stream()
+                                        .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                        .collect(Collectors.toList()).size()) {
+                            return -1;
+                        } else if (h1.getBookings().stream()
+                                .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                .collect(Collectors.toList()).size() < h2.getBookings().stream()
+                                        .filter(h -> !h.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
+                                        .collect(Collectors.toList()).size()) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+
+                    case "DATE":
+
+                        if (dateFormatUtil.differenceInDays(h1.getCreatedDate(),
+                                dateFormatUtil.formatDateTimeNowToString()) > dateFormatUtil.differenceInDays(
+                                        h2.getCreatedDate(), dateFormatUtil.formatDateTimeNowToString())) {
+                            return -1;
+                        } else if (dateFormatUtil.differenceInDays(h1.getCreatedDate(),
+                                dateFormatUtil.formatDateTimeNowToString()) < dateFormatUtil.differenceInDays(
+                                        h2.getCreatedDate(), dateFormatUtil.formatDateTimeNowToString())) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    case "RATING":
+                        if (h1.getTotalAverageRating() > h2.getTotalAverageRating()) {
+                            return 1;
+                        } else if (h1.getTotalAverageRating() < h2.getTotalAverageRating()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    case "HOMESTAY":
+                        int firstCap = h1.getHomestays().size();
+                        int secondCap = h2.getHomestays().size();
+                        if (firstCap > secondCap) {
+                            return -1;
+                        } else if (firstCap < secondCap) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    case "NAME":
+                        return h1.getName().compareTo(h2.getName());
+                    case "PRICE":
+                        List<Homestay> firstHomestaysInBloc = h1.getHomestays().stream()
+                                .sorted(new Comparator<Homestay>() {
+
+                                    @Override
+                                    public int compare(Homestay a1, Homestay a2) {
+                                        if (a1.getPrice() > a2.getPrice()) {
+                                            return 1;
+                                        } else if (a1.getPrice() < a2.getPrice()) {
+                                            return -1;
+                                        } else {
+                                            return 0;
+                                        }
+                                    }
+
+                                }).collect(Collectors.toList());
+                        List<Homestay> secondHomestaysInBloc = h2.getHomestays().stream()
+                                .sorted(new Comparator<Homestay>() {
+
+                                    @Override
+                                    public int compare(Homestay a1, Homestay a2) {
+                                        if (a1.getPrice() > a2.getPrice()) {
+                                            return 1;
+                                        } else if (a1.getPrice() < a2.getPrice()) {
+                                            return -1;
+                                        } else {
+                                            return 0;
+                                        }
+                                    }
+
+                                }).collect(Collectors.toList());
+                        if (firstHomestaysInBloc.get(0).getPrice() > secondHomestaysInBloc.get(0).getPrice()) {
+                            return 1;
+                        } else if (firstHomestaysInBloc.get(0).getPrice() < secondHomestaysInBloc.get(0).getPrice()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+
+                    default:
+                        if (h1.getTotalAverageRating() > h2.getTotalAverageRating()) {
+                            return 1;
+                        } else if (h1.getTotalAverageRating() < h2.getTotalAverageRating()) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                }
+            }
+
+        });
         PagedListHolder<BlocHomestay> pagedListHolder = new PagedListHolder<>(blocs);
         if (pagedListHolder.isLastPage() == false && isNextPage == true && isPreviousPage == false) {
             pagedListHolder.nextPage();

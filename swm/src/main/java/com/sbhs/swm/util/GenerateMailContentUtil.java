@@ -177,7 +177,7 @@ public class GenerateMailContentUtil {
 
         Booking booking = bookingHomestay.getBooking();
 
-        int duration = dateFormatUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
+        int duration = dateFormatUtil.differenceInDays(booking.getBookingFrom(), booking.getBookingTo());
         String bookingTotalPrice = vndNumberFormat.format(bookingHomestay.getTotalBookingPrice().doubleValue());
 
         SwmUser user = booking.getPassenger().getUser();
@@ -216,7 +216,7 @@ public class GenerateMailContentUtil {
         Locale locale = new Locale("vi", "VN");
         NumberFormat vndNumberFormat = NumberFormat.getCurrencyInstance(locale);
 
-        int duration = dateFormatUtil.calculateDurationBooking(booking.getBookingFrom(), booking.getBookingTo());
+        int duration = dateFormatUtil.differenceInDays(booking.getBookingFrom(), booking.getBookingTo());
         String bookingTotalPrice = vndNumberFormat.format(booking.getTotalBookingPrice().doubleValue());
 
         SwmUser user = booking.getPassenger().getUser();

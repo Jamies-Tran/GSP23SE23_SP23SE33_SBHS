@@ -53,11 +53,11 @@ public interface IHomestayService {
         public PagedListHolder<Homestay> getHomestayListFiltered(FilterOption filterOption, String searchString,
                         int page, int size,
                         boolean isNextPage,
-                        boolean isPreviousPage);
+                        boolean isPreviousPage, String sortBy);
 
         public PagedListHolder<BlocHomestay> getBlocListFiltered(FilterOption filterOption, String searchString,
                         int page, int size,
-                        boolean isNextPage, boolean isPreviousPage);
+                        boolean isNextPage, boolean isPreviousPage, String sortBy);
 
         public Integer getHomestayNumberOfReview(String homestayName);
 

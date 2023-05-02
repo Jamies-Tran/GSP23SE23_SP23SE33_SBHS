@@ -11,7 +11,7 @@ import com.sbhs.swm.handlers.exceptions.NotFoundException;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingInviteCode;
 import com.sbhs.swm.models.SwmUser;
-import com.sbhs.swm.models.status.BookingShareCodeStatus;
+import com.sbhs.swm.models.status.BookingInviteCodeStatus;
 import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.repositories.BookingInviteCodeRepo;
 import com.sbhs.swm.services.IBookingInviteCodeService;
@@ -51,13 +51,17 @@ public class BookingInviteCodeService implements IBookingInviteCodeService {
             throw new InvalidException("You can't apply invite code of your own");
         }
         Booking booking = bookingInviteCode.getBooking();
-        if (!booking.getStatus().equalsIgnoreCase(BookingStatus.ACCEPTED.name())) {
+        if (booking.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())
+                || booking.getStatus().equalsIgnoreCase(BookingStatus.PENDING.name())
+                || booking.getStatus().equalsIgnoreCase(BookingStatus.REJECTED.name())
+                || booking.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name())) {
             throw new InvalidException("Booking's not valid");
         }
-
+        List<BookingInviteCode> currentBookingInviteCodeList = user.getPassengerProperty().getInviteCodes();
+        currentBookingInviteCodeList.add(bookingInviteCode);
         bookingInviteCode.setPassengers(List.of(user.getPassengerProperty()));
-        bookingInviteCode.setStatus(BookingShareCodeStatus.USED.name());
-        user.getPassengerProperty().setInviteCodes(List.of(bookingInviteCode));
+        bookingInviteCode.setStatus(BookingInviteCodeStatus.USED.name());
+        user.getPassengerProperty().setInviteCodes(currentBookingInviteCodeList);
         mailService.informBookingSharedCodeHadBeenApplied(bookingInviteCode, user.getUsername());
 
         return bookingInviteCode;

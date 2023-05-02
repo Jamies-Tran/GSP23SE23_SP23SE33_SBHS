@@ -1,5 +1,9 @@
 package com.sbhs.swm.services;
 
+import org.springframework.beans.support.PagedListHolder;
+
+import com.sbhs.swm.models.BookingDeposit;
+
 import com.sbhs.swm.models.PasswordModificationOtp;
 import com.sbhs.swm.models.SwmUser;
 
@@ -29,4 +33,7 @@ public interface IUserService {
     public void deletePasswordOtp(String otp);
 
     public Long getUserActualBalance(String role, SwmUser user);
+
+    public PagedListHolder<BookingDeposit> getUserBookingDeposit(int page, int size, boolean isNextPage,
+            boolean isPreviousPage);
 }

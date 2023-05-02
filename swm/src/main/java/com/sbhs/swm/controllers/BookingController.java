@@ -60,7 +60,6 @@ public class BookingController {
         BookingResponseDto responseBookingSave = modelMapper.map(bookingSave, BookingResponseDto.class);
         responseBookingSave.setBookingHomestays(new ArrayList<>());
         responseBookingSave.setBookingHomestayServices(new ArrayList<>());
-        responseBookingSave.setBookingDeposits(new ArrayList<>());
 
         return new ResponseEntity<BookingResponseDto>(responseBookingSave, HttpStatus.OK);
 

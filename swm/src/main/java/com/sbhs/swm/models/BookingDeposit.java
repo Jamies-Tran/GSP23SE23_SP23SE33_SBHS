@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
+import com.sbhs.swm.models.status.DepositStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,9 @@ public class BookingDeposit {
 
     @Column
     private String depositForHomestay;
+
+    @Column
+    private @Setter String status = DepositStatus.UNPAID.name();
 
     @Column
     private @Setter Long paidAmount;

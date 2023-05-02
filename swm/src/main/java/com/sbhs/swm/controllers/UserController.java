@@ -7,9 +7,10 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbhs.swm.dto.BookingDepositDto;
+
+import com.sbhs.swm.dto.paging.BookingDepositListPagingDto;
 import com.sbhs.swm.dto.request.LoginRequestDto;
 import com.sbhs.swm.dto.request.SwmUserRequestDto;
 import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
@@ -27,7 +31,10 @@ import com.sbhs.swm.dto.response.LoginResponseDto;
 import com.sbhs.swm.dto.response.PassengerResponseDto;
 import com.sbhs.swm.dto.response.SwmUserResponseDto;
 import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.BookingDeposit;
+import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.SwmUser;
+import com.sbhs.swm.models.status.DepositStatus;
 import com.sbhs.swm.security.JwtConfiguration;
 import com.sbhs.swm.services.IUserService;
 
@@ -68,6 +75,21 @@ public class UserController {
         return new ResponseEntity<SwmUserResponseDto>(responseUser, HttpStatus.CREATED);
     }
 
+    @GetMapping("/booking-deposits")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> getUserDeposits(int page, int size, boolean isNextPage, boolean isPreviousPage) {
+        PagedListHolder<BookingDeposit> pagedListHolder = userService.getUserBookingDeposit(page, size, isNextPage,
+                isPreviousPage);
+        List<BookingDepositDto> responseBookingDepositList = pagedListHolder.getPageList().stream()
+                .map(d -> modelMapper.map(d, BookingDepositDto.class)).collect(Collectors.toList());
+        BookingDepositListPagingDto responseDepositListPaging = new BookingDepositListPagingDto();
+        responseDepositListPaging.setBookingDeposits(responseBookingDepositList);
+        responseDepositListPaging.setPageNumber(pagedListHolder.getPage());
+        responseDepositListPaging.setTotalPage(pagedListHolder.getPageCount());
+
+        return new ResponseEntity<BookingDepositListPagingDto>(responseDepositListPaging, HttpStatus.OK);
+    }
+
     @GetMapping("/info")
     public ResponseEntity<?> getUserInfo(String username) {
         SwmUser user = userService.findUserByUsername(username);
@@ -84,6 +106,23 @@ public class UserController {
                     }
                 }
             }
+            if (user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits() != null) {
+                Long unpaidDeposit = 0L;
+                Long userCurrentBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+                for (Deposit d : user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits()) {
+                    for (BookingDeposit bd : d.getBookingDeposits()) {
+                        if (bd.getStatus().equalsIgnoreCase(DepositStatus.UNPAID.name())) {
+                            unpaidDeposit = unpaidDeposit + bd.getUnpaidAmount();
+                        }
+                    }
+                }
+                userCurrentBalance = userCurrentBalance - unpaidDeposit;
+                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(userCurrentBalance);
+            } else {
+                Long userCurrentBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(userCurrentBalance);
+            }
+
         }
         user.getRoles().forEach(r -> {
             if (r.getName().equalsIgnoreCase("passenger")) {

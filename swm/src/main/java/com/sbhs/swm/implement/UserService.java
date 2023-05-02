@@ -1,11 +1,15 @@
 package com.sbhs.swm.implement;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +27,8 @@ import com.sbhs.swm.handlers.exceptions.UsernameDuplicateException;
 import com.sbhs.swm.handlers.exceptions.UsernameNotFoundException;
 import com.sbhs.swm.handlers.exceptions.VerifyPassModificationFailException;
 import com.sbhs.swm.models.BalanceWallet;
+import com.sbhs.swm.models.BookingDeposit;
+import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.Landlord;
 import com.sbhs.swm.models.LandlordWallet;
 import com.sbhs.swm.models.Passenger;
@@ -278,6 +284,36 @@ public class UserService implements IUserService {
             default:
                 return 0L;
         }
+    }
+
+    @Override
+    public PagedListHolder<BookingDeposit> getUserBookingDeposit(int page, int size, boolean isNextPage,
+            boolean isPreviousPage) {
+        SwmUser user = this.authenticatedUser();
+        List<BookingDeposit> userBookingDepositList = new ArrayList<>();
+        if (user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits() != null) {
+            for (Deposit d : user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits()) {
+                userBookingDepositList.addAll(d.getBookingDeposits());
+            }
+        }
+        Collections.sort(userBookingDepositList, new Comparator<BookingDeposit>() {
+
+            @Override
+            public int compare(BookingDeposit d1, BookingDeposit d2) {
+                return d1.getBooking().getCode().compareTo(d2.getBooking().getCode());
+            }
+
+        });
+        PagedListHolder<BookingDeposit> pagedListHolder = new PagedListHolder<>(
+                userBookingDepositList);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(size);
+        if (!pagedListHolder.isLastPage() && isNextPage == true && isPreviousPage == false) {
+            pagedListHolder.nextPage();
+        } else if (!pagedListHolder.isFirstPage() && isPreviousPage == true && isNextPage == false) {
+            pagedListHolder.previousPage();
+        }
+        return pagedListHolder;
     }
 
 }

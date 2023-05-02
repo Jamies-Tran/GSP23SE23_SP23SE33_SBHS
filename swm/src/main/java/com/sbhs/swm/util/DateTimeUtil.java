@@ -34,11 +34,11 @@ public class DateTimeUtil {
         return Period.between(birthdate, now).getYears();
     }
 
-    public int calculateDurationBooking(String bookingStart, String bookingEnd) {
-        LocalDate localStartDate = LocalDate.of(Integer.parseInt(bookingStart.split("-")[0]),
-                Integer.parseInt(bookingStart.split("-")[1]), Integer.parseInt(bookingStart.split("-")[2]));
-        LocalDate localEndDate = LocalDate.of(Integer.parseInt(bookingEnd.split("-")[0]),
-                Integer.parseInt(bookingEnd.split("-")[1]), Integer.parseInt(bookingEnd.split("-")[2]));
+    public int differenceInDays(String startDate, String endDate) {
+        LocalDate localStartDate = LocalDate.of(Integer.parseInt(startDate.split("-")[0]),
+                Integer.parseInt(startDate.split("-")[1]), Integer.parseInt(startDate.split("-")[2]));
+        LocalDate localEndDate = LocalDate.of(Integer.parseInt(endDate.split("-")[0]),
+                Integer.parseInt(endDate.split("-")[1]), Integer.parseInt(endDate.split("-")[2]));
         return Period.between(localStartDate, localEndDate).getDays();
     }
 
