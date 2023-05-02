@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -60,5 +61,8 @@ public class PromotionCampaign extends BaseModel {
     @ManyToMany
     @JoinTable(name = "campaign_bloc", joinColumns = @JoinColumn(name = "campaign_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "bloc_id", referencedColumnName = "id"))
     private @Setter List<BlocHomestay> blocs;
+
+    @ManyToOne
+    private @Setter Landlord landlord;
 
 }

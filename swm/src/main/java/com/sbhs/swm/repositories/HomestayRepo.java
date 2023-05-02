@@ -44,4 +44,5 @@ public interface HomestayRepo extends JpaRepository<Homestay, Long> {
 
     @Query(value = "select h.price from Homestay h where h.status = 'ACTIVATING' order by h.price desc")
     List<Long> getAllHomestayOrderByPrice();
+
 }

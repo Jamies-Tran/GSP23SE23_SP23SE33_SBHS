@@ -402,6 +402,7 @@ public class BookingService implements IBookingService {
         }
         SwmUser passengerUser = booking.getPassenger().getUser();
         Long currentBookingTotalPrice = booking.getTotalBookingPrice();
+
         switch (PaymentMethod.valueOf(paymentMethod.toUpperCase())) {
             case SWM_WALLET:
                 Long totalUnpaidDeposit = 0L;
@@ -429,6 +430,7 @@ public class BookingService implements IBookingService {
                 SwmUser landlordUser = booking.getBloc().getLandlord().getUser();
                 Long currentLandlordWalletBalance = landlordUser.getLandlordProperty().getBalanceWallet()
                         .getTotalBalance();
+
                 Long landlordTotalCommission = this.getLandlordCommission(currentBookingTotalPrice);
                 if (currentLandlordWalletBalance < landlordTotalCommission) {
                     throw new InvalidException("Cash payment is not available right now");
@@ -810,13 +812,19 @@ public class BookingService implements IBookingService {
                         landlordTotalCommission;
                 landlordUser.getLandlordProperty().getBalanceWallet()
                         .setTotalBalance(newLandlordWalletBalance);
+                List<LandlordCommission> currentLandlordCommissions = landlordUser.getLandlordProperty()
+                        .getBalanceWallet().getLandlordWallet().getLandlordCommissions();
                 LandlordCommission landlordCommission = new LandlordCommission();
                 landlordCommission.setCommission(landlordTotalCommission);
                 landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
+                landlordCommission.setCreatedBy(landlordUser.getUsername());
+                landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+
                 landlordCommission.setLandlordWallet(
                         landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
+                currentLandlordCommissions.add(landlordCommission);
                 landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
-                        .setLandlordCommissions(List.of(landlordCommission));
+                        .setLandlordCommissions(currentLandlordCommissions);
                 landlordCommission.setCreatedBy(landlordUser.getUsername());
                 landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
                 landlordCommissionList.add(landlordCommission);
@@ -959,6 +967,18 @@ public class BookingService implements IBookingService {
             BookingDeposit bookingDeposit = bookingHomestay.getBooking().getBookingDeposits().stream()
                     .filter(d -> d.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny()
                     .get();
+            List<LandlordCommission> currentLandlordCommissions = landlord.getBalanceWallet().getLandlordWallet()
+                    .getLandlordCommissions();
+            LandlordCommission landlordCommission = new LandlordCommission();
+            Long commissionAmount = this.getLandlordCommission(bookingHomestay.getTotalBookingPrice());
+            landlordCommission.setCommission(commissionAmount);
+            landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
+            landlordCommission.setCreatedBy(landlord.getUser().getUsername());
+            landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+            landlordCommission.setLandlordWallet(landlord.getBalanceWallet().getLandlordWallet());
+            currentLandlordCommissions.add(landlordCommission);
+            landlord.getBalanceWallet().getLandlordWallet().setLandlordCommissions(currentLandlordCommissions);
+            landlordCommissionRepo.save(landlordCommission);
             bookingDeposit.setStatus(DepositStatus.PAID.name());
             Long currentUserBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
             currentUserBalance = currentUserBalance - bookingDeposit.getUnpaidAmount();
@@ -966,6 +986,7 @@ public class BookingService implements IBookingService {
             Long currentOwnerBalance = landlord.getBalanceWallet().getTotalBalance();
             currentOwnerBalance = currentOwnerBalance + bookingDeposit.getUnpaidAmount();
             landlord.getBalanceWallet().setTotalBalance(currentOwnerBalance);
+
         }
 
         LocalDate localDateNow = LocalDate.parse(dateFormatUtil.formatDateTimeNowToString(),
@@ -1081,6 +1102,7 @@ public class BookingService implements IBookingService {
     public Booking checkOutForBloc(Long bookingId) {
         SwmUser user = userService.authenticatedUser();
         Booking booking = this.findBookingById(bookingId);
+
         Landlord landlord = booking.getBloc().getLandlord();
         booking.setStatus(BookingStatus.CHECKEDOUT.name());
         booking.getBookingHomestays().forEach(b -> b.setStatus(BookingStatus.CHECKEDOUT.name()));
@@ -1096,15 +1118,29 @@ public class BookingService implements IBookingService {
                 }
             }
         }
-        BookingDeposit bookingDeposit = booking.getBookingDeposits().stream()
-                .filter(d -> d.getDepositForHomestay().equals(booking.getBloc().getName())).findAny().get();
-        Long currentUserBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
-        currentUserBalance = currentUserBalance - bookingDeposit.getUnpaidAmount();
-        user.getPassengerProperty().getBalanceWallet().setTotalBalance(currentUserBalance);
-        Long currentOwnerBalance = landlord.getBalanceWallet().getTotalBalance();
-        currentOwnerBalance = currentOwnerBalance + bookingDeposit.getUnpaidAmount();
-        landlord.getBalanceWallet().setTotalBalance(currentOwnerBalance);
-        bookingDeposit.setStatus(DepositStatus.PAID.name());
+        if (booking.getBookingHomestays().stream().map(bh -> bh.getPaymentMethod()).findFirst().get()
+                .equalsIgnoreCase(PaymentMethod.SWM_WALLET.name())) {
+            BookingDeposit bookingDeposit = booking.getBookingDeposits().stream()
+                    .filter(d -> d.getDepositForHomestay().equals(booking.getBloc().getName())).findAny().get();
+            Long currentUserBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+            currentUserBalance = currentUserBalance - bookingDeposit.getUnpaidAmount();
+            user.getPassengerProperty().getBalanceWallet().setTotalBalance(currentUserBalance);
+            List<LandlordCommission> currentLandlordCommissions = landlord.getBalanceWallet().getLandlordWallet()
+                    .getLandlordCommissions();
+            LandlordCommission landlordCommission = new LandlordCommission();
+            landlordCommission.setCommission(this.getLandlordCommission(booking.getTotalBookingPrice()));
+            landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
+            landlordCommission.setCreatedBy(landlord.getUser().getUsername());
+            landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
+            landlordCommission.setLandlordWallet(landlord.getBalanceWallet().getLandlordWallet());
+            currentLandlordCommissions.add(landlordCommission);
+            landlord.getBalanceWallet().getLandlordWallet().setLandlordCommissions(currentLandlordCommissions);
+            landlordCommissionRepo.save(landlordCommission);
+            Long currentOwnerBalance = landlord.getBalanceWallet().getTotalBalance();
+            currentOwnerBalance = currentOwnerBalance + bookingDeposit.getUnpaidAmount();
+            landlord.getBalanceWallet().setTotalBalance(currentOwnerBalance);
+            bookingDeposit.setStatus(DepositStatus.PAID.name());
+        }
         LocalDate localDateNow = LocalDate.parse(dateFormatUtil.formatDateTimeNowToString(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate calculateExpiredDate = LocalDate.from(localDateNow)
@@ -1272,13 +1308,16 @@ public class BookingService implements IBookingService {
                         landlordTotalCommission;
                 landlordUser.getLandlordProperty().getBalanceWallet()
                         .setTotalBalance(newLandlordWalletBalance);
+                List<LandlordCommission> currentLandlordCommissions = landlordUser.getLandlordProperty()
+                        .getBalanceWallet().getLandlordWallet().getLandlordCommissions();
                 LandlordCommission landlordCommission = new LandlordCommission();
                 landlordCommission.setCommission(landlordTotalCommission);
                 landlordCommission.setCommissionType(CommissionType.PAID_COMMISSION.name());
                 landlordCommission.setLandlordWallet(
                         landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet());
+                currentLandlordCommissions.add(landlordCommission);
                 landlordUser.getLandlordProperty().getBalanceWallet().getLandlordWallet()
-                        .setLandlordCommissions(List.of(landlordCommission));
+                        .setLandlordCommissions(currentLandlordCommissions);
                 landlordCommission.setCreatedBy(landlordUser.getUsername());
                 landlordCommission.setCreatedDate(dateFormatUtil.formatDateTimeNowToString());
                 landlordCommissionRepo.save(landlordCommission);

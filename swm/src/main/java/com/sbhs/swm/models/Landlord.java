@@ -47,4 +47,7 @@ public class Landlord extends BaseModel {
 
     @OneToOne(mappedBy = "landlordProperty")
     private @Setter SwmUser user;
+
+    @OneToMany(mappedBy = "landlord")
+    private @Setter List<PromotionCampaign> campaigns;
 }
