@@ -188,18 +188,24 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.commonFacilities = {
       tv: this.facilityFormGroup.controls.tv.value!,
       tvAmount: this.facilityFormGroup.controls['tvAmount'].value as string,
+
       wifi: this.facilityFormGroup.controls.wifi.value!,
       wifiAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
-      fan: this.facilityFormGroup.controls.wifi.value!,
-      fanAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
-      wardrobe: this.facilityFormGroup.controls.wifi.value!,
-      wardrobeAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
-      table: this.facilityFormGroup.controls.wifi.value!,
-      tableAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
-      chair: this.facilityFormGroup.controls.wifi.value!,
-      chairAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
-      airCondition: this.facilityFormGroup.controls.wifi.value!,
-      airConditionAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
+
+      fan: this.facilityFormGroup.controls.fan.value!,
+      fanAmount: this.facilityFormGroup.controls['fanAmount'].value as string,
+
+      wardrobe: this.facilityFormGroup.controls.wardrobe.value!,
+      wardrobeAmount: this.facilityFormGroup.controls['wardrobeAmount'].value as string,
+
+      table: this.facilityFormGroup.controls.table.value!,
+      tableAmount: this.facilityFormGroup.controls['tableAmount'].value as string,
+
+      chair: this.facilityFormGroup.controls.chair.value!,
+      chairAmount: this.facilityFormGroup.controls['chairAmount'].value as string,
+
+      airCondition: this.facilityFormGroup.controls.airCondition.value!,
+      airConditionAmount: this.facilityFormGroup.controls['airConditionAmount'].value as string,
     };
 
     for (let items of this.newFacility) {
@@ -293,7 +299,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   // New Facility
   newFacility: any[] = [];
   addFacility() {
-    this.newFacility.push({ name: '', status: false, price: 0 });
+    this.newFacility.push({ name: '', status: false, price: 1 });
     console.log(this.newFacility);
   }
   removeFacility(i: any) {
@@ -600,9 +606,11 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.facilityFormGroup.controls.wardrobeAmount.disable();
     this.facilityFormGroup.controls.tableAmount.disable();
     this.facilityFormGroup.controls.chairAmount.disable();
+    this.facilityFormGroup.controls.airConditionAmount.disable();
     this.newFacility = [];
     this.homestayImageFiles = [];
     this.priceTax = 0;
+    this.homestayImages = [];
     this.stepper2.reset();
   }
   removeHomestay(i: any) {
@@ -624,7 +632,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   }[] = [];
   isLinear = true;
 
-
+// save homestay
   setHomestay() {
     this.isLinear = false;
     if (this.validImageHomestay() == true) {
@@ -827,6 +835,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.data.homestayServices = this.homestayServices;
     this.data.homestays = this.homestays;
     console.log('data', this.data);
+    console.log('homestays', this.homestays);
 
 
 

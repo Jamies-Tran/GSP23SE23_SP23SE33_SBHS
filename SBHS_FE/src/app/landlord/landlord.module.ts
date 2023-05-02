@@ -5,7 +5,7 @@ import { LandlordComponent } from './landlord.component';
 // Module
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
@@ -101,6 +101,7 @@ import { MY_DATE_FORMATS } from '../app.module';
   ],
   providers: [
     DatePipe,
+    CurrencyPipe,
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ]
 })

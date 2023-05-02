@@ -11,6 +11,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MessageComponent } from '../../../pop-up/message/message.component';
 import { SuccessComponent } from '../../../pop-up/success/success.component';
 import { GoongService } from '../../../services/goong.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-register-homestay',
@@ -26,7 +27,8 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private httpHomestay: HomestayService,
     private httpGoong: GoongService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private currencyPipe: CurrencyPipe
   ) {}
 
   // homestayName: string = '';
@@ -91,7 +93,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     } else {
       this.result = '';
       this.flag = true;
-      this.stepper.selectedIndex = 1;
+      this.stepper.next();
     }
   }
 
@@ -176,21 +178,18 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       });
     }
 
-    for(let f of this.newFacility){
-      this.homestayFacilities.push({name:f.name , quantity:f.price});
+    for (let f of this.newFacility) {
+      this.homestayFacilities.push({ name: f.name, quantity: f.price });
     }
     console.log('facilities:', this.homestayFacilities);
 
-
     // console.log(this.homestayFacilities)
-
   }
   enableInputTv() {
     if (this.facilityFormGroup.controls.tv.value == true) {
       this.facilityFormGroup.controls.tvAmount.enable();
       this.facilityFormGroup.controls.tvAmount.clearValidators();
       this.facilityFormGroup.controls.tvAmount.setValue('1');
-
     } else {
       this.facilityFormGroup.controls.tvAmount.disable();
       this.facilityFormGroup.controls.tvAmount.reset();
@@ -203,7 +202,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       this.facilityFormGroup.controls.wifiAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.wifiAmount.disable();
-        this.facilityFormGroup.controls.wifiAmount.reset();
+      this.facilityFormGroup.controls.wifiAmount.reset();
     }
   }
   // fan
@@ -290,7 +289,6 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     pet: false,
     children: false,
     party: false,
-
   });
   homestayRules: any[] = [];
   houseRuleForm() {
@@ -307,8 +305,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     }
     if (this.houseRuleFormGroup.value['party'] === true) {
       this.homestayRules.push({ description: 'Parties/envents allowed' });
-    }
-   else {
+    } else {
       this.result = '';
       this.flag = true;
       this.stepper.selectedIndex = 3;
@@ -493,7 +490,6 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     console.log('onselect: ', files);
     // set files
     this.homestayImageFiles.push(...files.addedFiles);
-    this.validImageHomestay();
   }
   // validate image
   validImageHomestay() {
@@ -502,7 +498,10 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       this.message = 'Upload at least 5 photos of your homestay';
       this.openDialogMessage();
       return;
-    } else this.flag = true;
+    } else {
+      this.flag = true;
+      this.stepper.next();
+    }
   }
   // xóa file hình
   onRemoveHomestayImage(event: File) {
@@ -518,7 +517,6 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
   calcPriceTax(event: any) {
     var priceToFixed = (this.price * 0.95).toFixed();
     this.priceTax = priceToFixed;
-    this.validPrice();
   }
   validPrice() {
     if (this.price === 0) {
@@ -526,7 +524,10 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         'Please Set the price per night for this homestay and more than 0';
       this.openDialogMessage();
       return;
-    } else this.flag = true;
+    } else {
+      this.flag = true;
+      this.stepper.next();
+    }
   }
 
   // register submit
@@ -600,8 +601,8 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         this.file.name;
     }
     console.log(this.homestayImages);
-    for(let f of this.homestayServices){
-      if(!f.price){
+    for (let f of this.homestayServices) {
+      if (!f.price) {
         this.homestayServices[this.homestayServices.indexOf(f)].price = 0;
       }
     }

@@ -322,7 +322,8 @@
                         <span class="text-muted text-uppercase">{{item.name}} </span>
                       </div>
                       <div class="col-6">
-                        <span> {{item.price | currency:'VND'}} </span>
+                        <span *ngIf="item.price !== 0"> {{item.price | currency:'VND'}} </span>
+                        <span *ngIf="item.price == 0"> Free </span>
                       </div>
                     </div>
                   </div>
