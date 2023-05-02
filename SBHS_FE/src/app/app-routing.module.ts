@@ -12,6 +12,7 @@ import { TestTwoComponent } from './test/test-two/test-two.component';
 import { TestThreeComponent } from './test/test-three/test-three.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './auth.guard';
+import { BalanceSuccessComponent } from './pop-up/balance-success/balance-success.component';
 
 const routes: Routes = [
   { path: '', component: WelcomePageComponent },
@@ -56,6 +57,10 @@ const routes: Routes = [
   {
     path: 'Profile',
     component: ProfileComponent
+  },
+  {
+    path: 'Success',
+    component: BalanceSuccessComponent
   },
 ];
 

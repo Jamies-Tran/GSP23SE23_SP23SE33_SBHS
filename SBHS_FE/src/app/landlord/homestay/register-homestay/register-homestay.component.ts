@@ -59,7 +59,9 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     this.homestayName = formInformationFormGroupValue.homestayName.value!;
     this.address = formInformationFormGroupValue.address.value!;
     this.totalRoom = parseInt(formInformationFormGroupValue.number.value!);
-    this.roomCapacity = parseInt(formInformationFormGroupValue.roomCapacity.value!);
+    this.roomCapacity = parseInt(
+      formInformationFormGroupValue.roomCapacity.value!
+    );
     this.isHomestayLicense =
       formInformationFormGroupValue.homestayLicense.value!;
     if (this.homestayName === '') {
@@ -75,20 +77,18 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       this.openDialogMessage();
       return;
     } else if (!this.isHomestayLicense) {
-      this.message =
-        'Please upload at a photo of your Homestay License';
-        this.openDialogMessage();
+      this.message = 'Please upload at a photo of your Homestay License';
+      this.openDialogMessage();
       return;
-    } else if(this.totalRoom >100){
+    } else if (this.totalRoom > 100) {
       this.message = 'Total room must be less than 100';
       this.openDialogMessage();
       return;
-    }else if(this.roomCapacity >20){
+    } else if (this.roomCapacity > 20) {
       this.message = 'Room Capacity must be less than 20';
       this.openDialogMessage();
       return;
-    }
-    else {
+    } else {
       this.result = '';
       this.flag = true;
       this.stepper.selectedIndex = 1;
@@ -101,68 +101,109 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     tvAmount: [{ value: '', disabled: true }],
     wifi: false,
     wifiAmount: [{ value: '', disabled: true }],
-    fan:false,
-    wardrobe:false,
-    table:false,
-    chair:false,
+    fan: false,
+    wardrobe: false,
+    table: false,
+    chair: false,
+    airCondition: false,
     fanAmount: [{ value: '', disabled: true }],
     wardrobeAmount: [{ value: '', disabled: true }],
     tableAmount: [{ value: '', disabled: true }],
     chairAmount: [{ value: '', disabled: true }],
+    airConditionAmount: [{ value: '', disabled: true }],
   });
   homestayFacilities: Array<{ name: string; quantity: string }> = [];
   facilityForm() {
+    this.homestayFacilities = [];
     console.log(this.facilityFormGroup.value);
     // tv
-    if(this.facilityFormGroup.controls.tv.value == true){
-      this.homestayFacilities.push({name:'tv', quantity:this.facilityFormGroup.controls['tvAmount'].value as string})
+    if (this.facilityFormGroup.controls.tv.value == true) {
+      this.homestayFacilities.push({
+        name: 'tv',
+        quantity: this.facilityFormGroup.controls['tvAmount'].value as string,
+      });
     }
 
     // wifi
-    if(this.facilityFormGroup.controls.wifi.value == true){
-      this.homestayFacilities.push({name:'wifi', quantity:this.facilityFormGroup.controls['wifiAmount'].value as string})
+    if (this.facilityFormGroup.controls.wifi.value == true) {
+      this.homestayFacilities.push({
+        name: 'wifi',
+        quantity: this.facilityFormGroup.controls['wifiAmount'].value as string,
+      });
     }
 
     // fan
-    if(this.facilityFormGroup.controls.fan.value == true){
-      this.homestayFacilities.push({name:'fan', quantity:this.facilityFormGroup.controls['fanAmount'].value as string})
+    if (this.facilityFormGroup.controls.fan.value == true) {
+      this.homestayFacilities.push({
+        name: 'fan',
+        quantity: this.facilityFormGroup.controls['fanAmount'].value as string,
+      });
+    }
+
+    // airCondition
+    if (this.facilityFormGroup.controls.airCondition.value == true) {
+      this.homestayFacilities.push({
+        name: 'airCondition',
+        quantity: this.facilityFormGroup.controls['airConditionAmount']
+          .value as string,
+      });
     }
 
     // wardrobe
-    if(this.facilityFormGroup.controls.wardrobe.value == true){
-      this.homestayFacilities.push({name:'wardrobe', quantity:this.facilityFormGroup.controls['wardrobeAmount'].value as string})
+    if (this.facilityFormGroup.controls.wardrobe.value == true) {
+      this.homestayFacilities.push({
+        name: 'wardrobe',
+        quantity: this.facilityFormGroup.controls['wardrobeAmount']
+          .value as string,
+      });
     }
 
     // table
-    if(this.facilityFormGroup.controls.table.value == true){
-      this.homestayFacilities.push({name:'table', quantity:this.facilityFormGroup.controls['tableAmount'].value as string})
+    if (this.facilityFormGroup.controls.table.value == true) {
+      this.homestayFacilities.push({
+        name: 'table',
+        quantity: this.facilityFormGroup.controls['tableAmount']
+          .value as string,
+      });
     }
 
     // chair
-    if(this.facilityFormGroup.controls.chair.value == true){
-      this.homestayFacilities.push({name:'chair', quantity:this.facilityFormGroup.controls['chairAmount'].value as string})
+    if (this.facilityFormGroup.controls.chair.value == true) {
+      this.homestayFacilities.push({
+        name: 'chair',
+        quantity: this.facilityFormGroup.controls['chairAmount']
+          .value as string,
+      });
     }
 
+    for(let f of this.newFacility){
+      this.homestayFacilities.push({name:f.name , quantity:f.price});
+    }
+    console.log('facilities:', this.homestayFacilities);
 
-    console.log('facilities:' , this.homestayFacilities)
 
     // console.log(this.homestayFacilities)
-    this.stepper.selectedIndex = 2;
+
   }
   enableInputTv() {
     if (this.facilityFormGroup.controls.tv.value == true) {
       this.facilityFormGroup.controls.tvAmount.enable();
       this.facilityFormGroup.controls.tvAmount.clearValidators();
+      this.facilityFormGroup.controls.tvAmount.setValue('1');
+
     } else {
       this.facilityFormGroup.controls.tvAmount.disable();
+      this.facilityFormGroup.controls.tvAmount.reset();
     }
   }
   enableInputWifi() {
     if (this.facilityFormGroup.controls.wifi.value == true) {
       this.facilityFormGroup.controls.wifiAmount.enable();
       this.facilityFormGroup.controls.wifiAmount.clearValidators();
+      this.facilityFormGroup.controls.wifiAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.wifiAmount.disable();
+        this.facilityFormGroup.controls.wifiAmount.reset();
     }
   }
   // fan
@@ -170,8 +211,21 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.fan.value == true) {
       this.facilityFormGroup.controls.fanAmount.enable();
       this.facilityFormGroup.controls.fanAmount.clearValidators();
+      this.facilityFormGroup.controls.fanAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.fanAmount.disable();
+      this.facilityFormGroup.controls.fanAmount.reset();
+    }
+  }
+  // airCondition
+  enableInputAirCondition() {
+    if (this.facilityFormGroup.controls.airCondition.value == true) {
+      this.facilityFormGroup.controls.airConditionAmount.enable();
+      this.facilityFormGroup.controls.airConditionAmount.clearValidators();
+      this.facilityFormGroup.controls.airConditionAmount.setValue('1');
+    } else {
+      this.facilityFormGroup.controls.airConditionAmount.disable();
+      this.facilityFormGroup.controls.airConditionAmount.reset();
     }
   }
   // wardrobe
@@ -179,8 +233,10 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.wardrobe.value == true) {
       this.facilityFormGroup.controls.wardrobeAmount.enable();
       this.facilityFormGroup.controls.wardrobeAmount.clearValidators();
+      this.facilityFormGroup.controls.wardrobeAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.wardrobeAmount.disable();
+      this.facilityFormGroup.controls.wardrobeAmount.reset();
     }
   }
   // table
@@ -188,16 +244,20 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.table.value == true) {
       this.facilityFormGroup.controls.tableAmount.enable();
       this.facilityFormGroup.controls.tableAmount.clearValidators();
+      this.facilityFormGroup.controls.tableAmount.setValue('1');
     } else {
-      this.facilityFormGroup.controls.table.disable();
+      this.facilityFormGroup.controls.tableAmount.disable();
+      this.facilityFormGroup.controls.tableAmount.reset();
     }
   }
   enableInputchair() {
     if (this.facilityFormGroup.controls.chair.value == true) {
       this.facilityFormGroup.controls.chairAmount.enable();
       this.facilityFormGroup.controls.chairAmount.clearValidators();
+      this.facilityFormGroup.controls.chairAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.chairAmount.disable();
+      this.facilityFormGroup.controls.chairAmount.reset();
     }
   }
   // New Facility
@@ -230,12 +290,12 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     pet: false,
     children: false,
     party: false,
-    checkIn: [''],
-    checkOut: [''],
+
   });
   homestayRules: any[] = [];
   houseRuleForm() {
-    console.log(this.houseRuleFormGroup.value);
+    this.homestayRules = [];
+
     if (this.houseRuleFormGroup.value['pet'] === true) {
       this.homestayRules.push({ description: 'non pet' });
     }
@@ -248,20 +308,14 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     if (this.houseRuleFormGroup.value['party'] === true) {
       this.homestayRules.push({ description: 'Parties/envents allowed' });
     }
-    if (this.houseRuleFormGroup.controls.checkIn.value == '') {
-      this.message = 'Please enter Check-in';
-      this.openDialogMessage();
-      return;
-    } else if (this.houseRuleFormGroup.controls.checkOut.value == '') {
-      this.message = 'Please enter Check-out';
-      this.openDialogMessage();
-      return;
-    } else {
+   else {
       this.result = '';
       this.flag = true;
       this.stepper.selectedIndex = 3;
+      console.log(this.houseRuleFormGroup.value);
       // this.stepper.next();
     }
+    console.log(this.houseRuleFormGroup.value);
   }
 
   // Service
@@ -274,11 +328,10 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     spaPrice: [{ value: '', disabled: true }],
     airportShuttle: false,
     airportShuttlePrice: [{ value: '', disabled: true }],
-    carRental: false,
-    carRentalPrice: [{ value: '', disabled: true }],
   });
-  homestayServices:Array<{ name: string; price: number }> = [];
+  homestayServices: Array<{ name: string; price: number }> = [];
   serviceForm() {
+    this.homestayServices = [];
     var valid = false;
     console.log(this.serviceFormGroup.value);
     console.log(this.newService);
@@ -304,13 +357,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
           .value as unknown as number,
       });
     }
-    if (this.serviceFormGroup.controls.carRental.value === true) {
-      this.homestayServices.push({
-        name: 'Car Rental',
-        price: this.serviceFormGroup.controls.carRentalPrice
-          .value as unknown as number,
-      });
-    }
+
     if (this.serviceFormGroup.controls.sauna.value === true) {
       this.homestayServices.push({
         name: 'Sauna',
@@ -326,14 +373,14 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
           this.message = 'Please enter New Service Name';
           this.openDialogMessage();
           return;
-        } else {valid = true;
-        this.homestayServices.push({name:items.name, price:items.price});}
+        } else {
+          valid = true;
+          this.homestayServices.push({ name: items.name, price: items.price });
+        }
       }
     } else {
       valid = true;
     }
-
-
   }
 
   enableInputBreakfast() {
@@ -357,13 +404,7 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
       this.serviceFormGroup.controls.airportShuttlePrice.disable();
     }
   }
-  enableInputCarRental() {
-    if (this.serviceFormGroup.controls.carRental.value === true) {
-      this.serviceFormGroup.controls.carRentalPrice.enable();
-    } else {
-      this.serviceFormGroup.controls.carRentalPrice.disable();
-    }
-  }
+
   enableInputSauna() {
     if (this.serviceFormGroup.controls.sauna.value === true) {
       this.serviceFormGroup.controls.saunaPrice.enable();
@@ -378,13 +419,11 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
 
   addService() {
     this.newService.push({ name: '', price: '', status: false });
-
   }
 
   @ViewChild('stepper') stepper!: MatStepper;
   removeService(i: any) {
     this.newService.splice(i, 1);
-
   }
 
   step1() {
@@ -454,23 +493,23 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     console.log('onselect: ', files);
     // set files
     this.homestayImageFiles.push(...files.addedFiles);
-    this.validImageHomestay()
+    this.validImageHomestay();
   }
   // validate image
-  validImageHomestay(){
+  validImageHomestay() {
     this.flag = false;
-    if(this.homestayImageFiles.length < 5){
-      this.message = "Upload at least 5 photos of your homestay"
+    if (this.homestayImageFiles.length < 5) {
+      this.message = 'Upload at least 5 photos of your homestay';
       this.openDialogMessage();
-      return
-    }else this.flag = true
+      return;
+    } else this.flag = true;
   }
   // xóa file hình
   onRemoveHomestayImage(event: File) {
     console.log(event);
     this.homestayImageFiles.splice(this.homestayImageFiles.indexOf(event), 1);
     console.log('xoa file:', this.homestayImageFiles);
-    this.validImageHomestay()
+    this.validImageHomestay();
   }
 
   // Price
@@ -481,12 +520,13 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
     this.priceTax = priceToFixed;
     this.validPrice();
   }
-  validPrice(){
-    if(this.price === 0){
-      this.message = "Please Set the price per night for this homestay and more than 0"
+  validPrice() {
+    if (this.price === 0) {
+      this.message =
+        'Please Set the price per night for this homestay and more than 0';
       this.openDialogMessage();
       return;
-    }else this.flag = true;
+    } else this.flag = true;
   }
 
   // register submit
@@ -537,9 +577,12 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
-      this.homestayImages.push({ imageUrl: this.informationFormGroup.controls.homestayName.value +
-        ' ' +
-        this.file.name });
+      this.homestayImages.push({
+        imageUrl:
+          this.informationFormGroup.controls.homestayName.value +
+          ' ' +
+          this.file.name,
+      });
     }
 
     // homestayLicenseFiles
@@ -551,17 +594,24 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
         this.file.name;
       const fileRef = this.storage.ref(path);
       this.storage.upload(path, this.file);
-      this.homestayLicense = this.informationFormGroup.controls.homestayName.value +
-      ' ' +
-      this.file.name;
+      this.homestayLicense =
+        this.informationFormGroup.controls.homestayName.value +
+        ' ' +
+        this.file.name;
     }
     console.log(this.homestayImages);
+    for(let f of this.homestayServices){
+      if(!f.price){
+        this.homestayServices[this.homestayServices.indexOf(f)].price = 0;
+      }
+    }
 
     if (this.flag === true) {
-      this.httpHomestay.createHomestay(
+      this.httpHomestay
+        .createHomestay(
           this.homestayName,
           this.address,
-          this.totalRoom+"",
+          this.totalRoom + '',
           this.homestayLicense,
           this.homestayImages,
           this.homestayServices,
@@ -575,14 +625,11 @@ export class RegisterHomestayComponent implements OnInit, AfterViewInit {
             this.result = 'Register Homestay Success';
             this.message = 'Register Homestay Success';
             this.openDialogSuccess();
-            setTimeout(() =>{
+            setTimeout(() => {
               this.router.navigate(['/Landlord/Homestay/HomestayList'], {
-              relativeTo: this.route,
-            });
-           }, 3000);
-
-
-
+                relativeTo: this.route,
+              });
+            }, 3000);
           },
           (error) => {
             this.result = error;

@@ -137,17 +137,17 @@
                         </div>
                       </div>
                     </div>
-                    <hr>
+                    <!-- <hr> -->
                     <!-- Checkin - Check out -->
-                    <div>
+                    <!-- <div>
                       <div class="row">
                         <div class="col-xxl-6 col-6 city-select">
                           <h6 class="mb-0">Check-in <span class="text-danger">*</span></h6>
                           <mat-form-field appearance="outline" class="w-100 select-form">
                             <mat-select name="check-in" formControlName="checkIn" required>
-                              <mat-option value="12:00">12:00</mat-option>
-                              <mat-option value="13:00">13:00</mat-option>
-                              <mat-option value="14:00">14:00</mat-option>
+                              <mat-option value="12">12:00</mat-option>
+                              <mat-option value="13">13:00</mat-option>
+                              <mat-option value="14">14:00</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
@@ -155,14 +155,14 @@
                           <h6 class="mb-0">Check-out <span class="text-danger">*</span></h6>
                           <mat-form-field appearance="outline" class="w-100 select-form">
                             <mat-select name="check-out" formControlName="checkOut" required>
-                              <mat-option value="111">11:00</mat-option>
                               <mat-option value="10">10:00</mat-option>
+                              <mat-option value="11">11:00</mat-option>
                               <mat-option value="12">12:00</mat-option>
                             </mat-select>
                           </mat-form-field>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <br>
                     <hr>
                     <div class="add-btn d-flex flex-row ">
@@ -269,29 +269,7 @@
                       <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
 
-                    <!-- Car Rental -->
-                    <div class="row mb-2">
-                      <div
-                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
-                        <i class="fas fa-tv"></i>
-                      </div>
-                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
-                        <span>Car Rental</span>
-                      </div>
-                      <div
-                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
-                        <mat-checkbox color="primary" formControlName="carRental" name="Car Rental"
-                          (change)="enableInputCarRental()"></mat-checkbox>
-                      </div>
-                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
-                        <div class="col-input">
-                          <input name="Car Rental Inputt" type="number" pattern="[0~9]*" min="1000" class="form-control"
-                            minlength="4" maxlength="10" matInput placeholder="Price" formControlName="carRentalPrice"
-                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
-                        </div>
-                      </div>
-                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
-                    </div>
+
 
                     <!-- Sauna -->
                     <div class="row mb-2">
@@ -501,7 +479,7 @@
 
 <!-- Information Homestay -->
 <div class="container" *ngIf="homestayShow">
-  <mat-stepper linear #stepper2>
+  <mat-stepper [linear]="isLinear" #stepper2>
     <!-- <mat-stepper #stepper> -->
     <!-- Basic Information -->
     <mat-step editable [stepControl]="homestayInformationFormGroup">
@@ -671,6 +649,29 @@
                       <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
                     </div>
                     <!-- fan -->
+                     <!-- air-condition -->
+                     <div class="row mb-2">
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <i class="fa-regular fa-snowflake"></i></div>
+                      <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 d-flex align-items-center">
+                        <span>Air-condition</span>
+                      </div>
+                      <div
+                        class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 d-flex align-items-center p-0 justify-content-center">
+                        <mat-checkbox color="primary" formControlName="airCondition"
+                          (change)="enableInputAirCondition()"></mat-checkbox>
+                      </div>
+                      <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5">
+                        <div class="col-input">
+                          <input name="airConditionInput" type="number" pattern="[0~9]*" min="1" class="form-control"
+                            minlength="1" maxlength="3" matInput placeholder="Amount" formControlName="airConditionAmount"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" />
+                        </div>
+                      </div>
+                      <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
+                    </div>
+                    <!-- airCondition -->
                     <!-- wardrobe -->
                     <div class="row mb-2">
                       <div

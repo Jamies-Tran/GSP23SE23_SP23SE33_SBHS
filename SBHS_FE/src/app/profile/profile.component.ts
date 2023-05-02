@@ -145,7 +145,7 @@ export class ProfileComponent implements OnInit {
       this.httpPayment.passengerPayment(this.amount).subscribe(
       (data) => {
         console.log(data);
-        location.href = data['payUrl'];
+        window.open(data['payUrl']);
       },
       (error) => {
         alert(error);

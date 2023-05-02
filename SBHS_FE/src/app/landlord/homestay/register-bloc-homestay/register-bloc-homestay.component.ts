@@ -19,7 +19,7 @@ import { HomestayService } from '../../../services/homestay.service';
 })
 export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
   data!: Data;
-
+  isEdit = false;
   constructor(
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
@@ -123,10 +123,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     wardrobe:false,
     table:false,
     chair:false,
+    airCondition: false,
     fanAmount: [{ value: '', disabled: true }],
     wardrobeAmount: [{ value: '', disabled: true }],
     tableAmount: [{ value: '', disabled: true }],
     chairAmount: [{ value: '', disabled: true }],
+    airConditionAmount: [{ value: '', disabled: true }],
   });
   homestayFacilities: Array<{ name: string; quantity: number }> = [];
   commonFacilities = {
@@ -134,6 +136,16 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     tvAmount: '',
     wifi: false,
     wifiAmount: '',
+    fan:false,
+    fanAmount:'',
+    wardrobe:false,
+    wardrobeAmount:'',
+    table:false,
+    tableAmount:'',
+    chair:false,
+    chairAmount:'',
+    airCondition:false,
+    airConditionAmount:'',
   };
   facilityForm() {
     this.homestayFacilities = [];
@@ -178,6 +190,16 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       tvAmount: this.facilityFormGroup.controls['tvAmount'].value as string,
       wifi: this.facilityFormGroup.controls.wifi.value!,
       wifiAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
+      fan: this.facilityFormGroup.controls.wifi.value!,
+      fanAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
+      wardrobe: this.facilityFormGroup.controls.wifi.value!,
+      wardrobeAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
+      table: this.facilityFormGroup.controls.wifi.value!,
+      tableAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
+      chair: this.facilityFormGroup.controls.wifi.value!,
+      chairAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
+      airCondition: this.facilityFormGroup.controls.wifi.value!,
+      airConditionAmount: this.facilityFormGroup.controls['wifiAmount'].value as string,
     };
 
     for (let items of this.newFacility) {
@@ -196,16 +218,21 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.tv.value == true) {
       this.facilityFormGroup.controls.tvAmount.enable();
       this.facilityFormGroup.controls.tvAmount.clearValidators();
+      this.facilityFormGroup.controls.tvAmount.setValue('1');
+
     } else {
       this.facilityFormGroup.controls.tvAmount.disable();
+      this.facilityFormGroup.controls.tvAmount.reset();
     }
   }
   enableInputWifi() {
     if (this.facilityFormGroup.controls.wifi.value == true) {
       this.facilityFormGroup.controls.wifiAmount.enable();
       this.facilityFormGroup.controls.wifiAmount.clearValidators();
+      this.facilityFormGroup.controls.wifiAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.wifiAmount.disable();
+        this.facilityFormGroup.controls.wifiAmount.reset();
     }
   }
   // fan
@@ -213,8 +240,21 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.fan.value == true) {
       this.facilityFormGroup.controls.fanAmount.enable();
       this.facilityFormGroup.controls.fanAmount.clearValidators();
+      this.facilityFormGroup.controls.fanAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.fanAmount.disable();
+      this.facilityFormGroup.controls.fanAmount.reset();
+    }
+  }
+  // airCondition
+  enableInputAirCondition() {
+    if (this.facilityFormGroup.controls.airCondition.value == true) {
+      this.facilityFormGroup.controls.airConditionAmount.enable();
+      this.facilityFormGroup.controls.airConditionAmount.clearValidators();
+      this.facilityFormGroup.controls.airConditionAmount.setValue('1');
+    } else {
+      this.facilityFormGroup.controls.airConditionAmount.disable();
+      this.facilityFormGroup.controls.airConditionAmount.reset();
     }
   }
   // wardrobe
@@ -222,8 +262,10 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.wardrobe.value == true) {
       this.facilityFormGroup.controls.wardrobeAmount.enable();
       this.facilityFormGroup.controls.wardrobeAmount.clearValidators();
+      this.facilityFormGroup.controls.wardrobeAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.wardrobeAmount.disable();
+      this.facilityFormGroup.controls.wardrobeAmount.reset();
     }
   }
   // table
@@ -231,16 +273,20 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     if (this.facilityFormGroup.controls.table.value == true) {
       this.facilityFormGroup.controls.tableAmount.enable();
       this.facilityFormGroup.controls.tableAmount.clearValidators();
+      this.facilityFormGroup.controls.tableAmount.setValue('1');
     } else {
-      this.facilityFormGroup.controls.table.disable();
+      this.facilityFormGroup.controls.tableAmount.disable();
+      this.facilityFormGroup.controls.tableAmount.reset();
     }
   }
   enableInputchair() {
     if (this.facilityFormGroup.controls.chair.value == true) {
       this.facilityFormGroup.controls.chairAmount.enable();
       this.facilityFormGroup.controls.chairAmount.clearValidators();
+      this.facilityFormGroup.controls.chairAmount.setValue('1');
     } else {
       this.facilityFormGroup.controls.chairAmount.disable();
+      this.facilityFormGroup.controls.chairAmount.reset();
     }
   }
 
@@ -260,11 +306,11 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     pet: false,
     children: false,
     party: false,
-    checkIn: ['', Validators.required],
-    checkOut: ['', Validators.required],
+
   });
   homestayRules: any[] = [];
   houseRuleForm() {
+    this.homestayRules = [];
     console.log(this.houseRuleFormGroup.value);
     this.flag = false;
     if (this.houseRuleFormGroup.value['pet'] === true) {
@@ -279,20 +325,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     if (this.houseRuleFormGroup.value['party'] === true) {
       this.homestayRules.push({ description: 'Parties/envents allowed' });
     }
-    if (this.houseRuleFormGroup.controls.checkIn.value == '') {
-      this.message = 'Please enter Check-in';
-      this.openDialogMessage();
-      return;
-    } else if (this.houseRuleFormGroup.controls.checkOut.value == '') {
-      this.message = 'Please enter Check-out';
-      this.openDialogMessage();
-      return;
-    } else {
+
       this.result = '';
       this.flag = true;
       // this.stepper.selectedIndex = 2;
       this.stepper.next();
-    }
+
     console.log(this.homestayRules);
   }
 
@@ -306,11 +344,11 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     spaPrice: [{ value: '', disabled: true }],
     airportShuttle: false,
     airportShuttlePrice: [{ value: '', disabled: true }],
-    carRental: false,
-    carRentalPrice: [{ value: '', disabled: true }],
+
   });
   homestayServices: Array<{ name: string; price: number }> = [];
   serviceForm() {
+    this.homestayServices = [];
     var valid = false;
     console.log(this.serviceFormGroup.value);
     console.log(this.newService);
@@ -336,13 +374,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           .value as unknown as number,
       });
     }
-    if (this.serviceFormGroup.controls.carRental.value === true) {
-      this.homestayServices.push({
-        name: 'Car Rental',
-        price: this.serviceFormGroup.controls.carRentalPrice
-          .value as unknown as number,
-      });
-    }
+
     if (this.serviceFormGroup.controls.sauna.value === true) {
       this.homestayServices.push({
         name: 'Sauna',
@@ -390,13 +422,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       this.serviceFormGroup.controls.airportShuttlePrice.disable();
     }
   }
-  enableInputCarRental() {
-    if (this.serviceFormGroup.controls.carRental.value === true) {
-      this.serviceFormGroup.controls.carRentalPrice.enable();
-    } else {
-      this.serviceFormGroup.controls.carRentalPrice.disable();
-    }
-  }
+
   enableInputSauna() {
     if (this.serviceFormGroup.controls.sauna.value === true) {
       this.serviceFormGroup.controls.saunaPrice.enable();
@@ -560,6 +586,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     addFacility: any[];
     imageFile: File[];
   }[] = [];
+
   addHomestay() {
     this.blocShow = false;
     this.overviewShow = false;
@@ -567,6 +594,12 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     this.price = 0;
     this.homestayInformationFormGroup.reset();
     this.facilityFormGroup.reset();
+    this.facilityFormGroup.controls.tvAmount.disable();
+    this.facilityFormGroup.controls.wifiAmount.disable();
+    this.facilityFormGroup.controls.fanAmount.disable();
+    this.facilityFormGroup.controls.wardrobeAmount.disable();
+    this.facilityFormGroup.controls.tableAmount.disable();
+    this.facilityFormGroup.controls.chairAmount.disable();
     this.newFacility = [];
     this.homestayImageFiles = [];
     this.priceTax = 0;
@@ -589,12 +622,17 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     roomCapacity: number;
     imageUrl: File;
   }[] = [];
+  isLinear = true;
+
+
   setHomestay() {
+    this.isLinear = false;
     if (this.validImageHomestay() == true) {
       this.blocShow = false;
       this.overviewShow = true;
       this.homestayShow = false;
       if (this.isEdit == false) {
+        console.log(this.isEdit);
         if (this.homestayImageFiles.length != 0) {
           for (this.file of this.homestayImageFiles) {
             this.homestayImages.push({ imageUrl:  this.homestayInformationFormGroup.controls.name.value + ' ' + this.file.name });
@@ -649,6 +687,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
           this.validImageHomestay();
         }
       } else {
+        console.log(this.isEdit);
         if (this.homestayImageFiles.length != 0) {
           this.homestays[this.index].name = this.homestayInformationFormGroup
             .controls.name.value as string;
@@ -703,13 +742,13 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     }
   }
 
-  isEdit = false;
+
   index: any;
+
   getHomestayDetail(i: any) {
     this.blocShow = false;
     this.overviewShow = false;
     this.homestayShow = true;
-    this.stepper2.selectedIndex = 0;
     this.index = i;
     this.isEdit = true;
     this.price = 0;
@@ -744,6 +783,8 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
       this.homestayImages.push({ imageUrl: this.file.name });
     }
     this.price = detail.price;
+    console.log(this.isEdit);
+    this.stepper2.selectedIndex = 0;
   }
 
   // validate
