@@ -42,9 +42,41 @@ export class DashboardAdminComponent implements OnInit {
   getDashboardData() {
     this.http.getDashboardAdmin().subscribe((data) => {
       this.dashboardData = data;
+      for(let img of this.dashboardData.landlordTable){
+        if(!img.imageUrl){
+          this.dashboardData.landlordTable[this.dashboardData.landlordTable.indexOf(img)].imageUrl = 'https://firebasestorage.googleapis.com/v0/b/stay-with-me-356017.appspot.com/o/landlord%2Favatar%2Fdefault.png?alt=media&token=d62361f3-6391-44f5-80a7-b22bda704b04';
+        }
+      }
+      for(let img of this.dashboardData.passengerTable){
+        if(!img.imageUrl){
+          this.dashboardData.passengerTable[this.dashboardData.passengerTable.indexOf(img)].imageUrl = 'https://firebasestorage.googleapis.com/v0/b/stay-with-me-356017.appspot.com/o/landlord%2Favatar%2Fdefault.png?alt=media&token=d62361f3-6391-44f5-80a7-b22bda704b04';
+        }
+      }
       console.log(data);
     });
   }
+  // Landlord
+  pageLandlord: number = 1;
+  countLandlord: number = 0;
+  tableSizeLandlord: number = 10;
+
+  // Landlord
+  onTableDataChangeLandlord(event: any) {
+    this.pageLandlord = event;
+    this.dashboardData.landlordTable;
+  }
+
+  // Passenger
+  pagePassenger: number = 1;
+  countPassenger: number = 0;
+  tableSizePassenger: number = 10;
+
+  // Bloc
+  onTableDataChangePassenger(event: any) {
+    this.pagePassenger = event;
+    this.dashboardData.passengerTable;
+  }
+
 }
 export interface Response {
   totalProfit: number;

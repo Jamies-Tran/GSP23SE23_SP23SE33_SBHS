@@ -1,13 +1,12 @@
-
 <div class="container">
   <div class="col">
     <div class="row row-header">
       <!--  x4 -->
       <!-- 1 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
+      <div class="header col-xl-4 col-xxl-4 col-md-3 mb-2">
         <div class="card">
           <div class="card-body">
-            <div class="row align-items-center" >
+            <div class="row align-items-center">
               <div class="col">
                 <p class="m-0">Total Profit</p>
                 <div class="numbers">
@@ -21,10 +20,10 @@
       </div>
 
       <!-- 2 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
+      <div class="header col-xl-4 col-xxl-4 col-md-3 mb-2">
         <div class="card">
           <div class="card-body">
-            <div class="row align-items-center" >
+            <div class="row align-items-center">
               <div class="col">
                 <p class="m-0">Total Promotion</p>
                 <div class="numbers">
@@ -38,10 +37,10 @@
       </div>
 
       <!-- 3 -->
-      <div class="header col-xl-3 col-md-6 mb-2">
+      <div class="header col-xl-4 col-xxl-4 col-md-3 mb-2">
         <div class="card">
           <div class="card-body">
-            <div class="row align-items-center" >
+            <div class="row align-items-center">
               <div class="col">
                 <p class="m-0">Total Commission</p>
                 <div class="numbers">
@@ -56,51 +55,89 @@
 
     </div>
 
-      <mat-tab-group>
-        <mat-tab label="Homestay">
-          <table class="table table-striped table-hover">
-            <thead style="text-align: center;">
-              <tr>
-              <td>No.</td>
-              <td>Name</td>
-              <td>Total Booking</td>
-              <td>Profit</td>
+    <mat-tab-group class="mb-5">
+      <mat-tab label="Homestay - {{dashboardData.homestayTable.length}}">
+        <table class="table table-striped table-hover">
+          <thead >
+            <tr class="fw-medium fs-6">
+              <td class="text-center">No.</td>
               <td>Image</td>
-            </tr>
-            </thead>
-            <tbody>
-              <tr style="text-align: center;" *ngFor="let data of dashboardData.homestayTable; index as index">
-                <td>{{index + 1}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.totalBooking}}</td>
-                <td>{{data.profit}}</td>
-                <td>m lam image nha</td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-tab>
-        <mat-tab label="Block Homestay">
-          <table class="table table-striped table-hover">
-            <thead style="text-align: center;">
-              <tr>
-              <td>No.</td>
               <td>Name</td>
-              <td>Total Booking</td>
-              <td>Profit</td>
-              <td>Image</td>
+              <td class="text-center">Total Booking</td>
+              <td class="text-center">Profit</td>
+
             </tr>
-            </thead>
-            <tbody>
-              <tr style="text-align: center;" *ngFor="let data of dashboardData.blocTable; index as index">
-                <td>{{index + 1}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.totalBooking}}</td>
-                <td>{{data.profit}}</td>
-                <td>m lam image nha</td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-tab>
-      </mat-tab-group>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of dashboardData.homestayTable| paginate:{
+                id: 'paginationHomestay',
+                itemsPerPage: tableSizeHomestay,
+            currentPage: pageHomestay,
+            totalItems: countHomestay
+            }; index as index">
+              <td class="text-center">{{index + 1}}</td>
+              <td>
+                <img [src]="data.imgUrl" alt="" style="width: 45px; height: 45px" class="rounded" />
+              </td>
+              <td>{{data.name}}</td>
+              <td class="text-center">{{data.totalBooking}}</td>
+              <td class="text-center">{{data.profit}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+        <!-- pagination -->
+        <div class="row w-100">
+          <div class="col-sm-6">
+          </div>
+          <div class="col-sm-6 d-flex justify-content-center">
+            <pagination-controls id="paginationHomestay" previousLabel="Prev" nextLabel="Next"
+              (pageChange)="onTableDataChangeHomestay($event)">
+            </pagination-controls>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Block Homestay - {{dashboardData.blocTable.length}}">
+        <table class="table table-striped table-hover">
+          <thead >
+            <tr class="fw-medium fs-6">
+              <td class="text-center">No.</td>
+              <td>Image</td>
+              <td>Name</td>
+              <td class="text-center">Total Booking</td>
+              <td class="text-center">Profit</td>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr  *ngFor="let data of dashboardData.blocTable| paginate:{
+              id: 'paginationBloc',
+              itemsPerPage: tableSizeBloc,
+          currentPage: pageBloc,
+          totalItems: countBloc
+          }; index as index">
+              <td class="text-center">{{index + 1}}</td>
+              <td>
+                <img [src]="data.imgUrl" alt="" style="width: 45px; height: 45px" class="rounded" />
+              </td>
+              <td>{{data.name}}</td>
+              <td class="text-center">{{data.totalBooking}}</td>
+              <td class="text-center">{{data.profit}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+         <!-- pagination -->
+         <div class="row w-100">
+          <div class="col-sm-6">
+          </div>
+          <div class="col-sm-6 d-flex justify-content-center">
+            <pagination-controls id="paginationBloc" previousLabel="Prev" nextLabel="Next"
+              (pageChange)="onTableDataChangeBloc($event)">
+            </pagination-controls>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

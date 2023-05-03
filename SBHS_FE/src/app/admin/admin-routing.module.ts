@@ -12,6 +12,7 @@ import { BlocHomestayDetailComponent } from './request-bloc-homestay/bloc-homest
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { TestComponent } from '../test/test/test.component';
 import { ChatComponent } from './chat/chat.component';
+import { ProfileComponent } from '../profile/profile.component';
 
 const routes: Routes = [
   {
@@ -73,6 +74,10 @@ const routes: Routes = [
       {
         path: 'Chat',
         component: ChatComponent,
+      },
+      {
+        path: 'Profile',
+        component: ProfileComponent,
       },
     ],
   },
