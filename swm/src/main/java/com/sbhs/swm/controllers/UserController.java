@@ -194,7 +194,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
+    @GetMapping("/commissions")
     @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> getCommissionList() {
         List<LandlordCommission> landlordCommissions = userService.getLandlordCommissionList();
