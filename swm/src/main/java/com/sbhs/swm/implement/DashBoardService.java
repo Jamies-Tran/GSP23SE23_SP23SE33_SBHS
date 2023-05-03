@@ -163,7 +163,7 @@ public class DashBoardService implements IDashBoardService {
                             .getLandlordCommissions()) {
                         totalProfit = totalProfit + c.getCommission();
                     }
-
+                    landlordRecord.setCommission(totalProfit);
                 }
                 if (user.getLandlordProperty().getHomestays() != null) {
                     for (Homestay h : user.getLandlordProperty().getHomestays()) {
@@ -179,7 +179,7 @@ public class DashBoardService implements IDashBoardService {
                         }
                     }
                 }
-                landlordRecord.setCommission(totalProfit);
+
                 landlordRecord.setCreatedDate(user.getCreatedDate());
                 landlordRecord.setImageUrl(user.getAvatarUrl());
                 landlordRecord.setName(user.getUsername());

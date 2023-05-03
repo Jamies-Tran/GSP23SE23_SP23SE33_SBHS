@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class LandlordResponseDto extends BaseResponseDto {
     private Long id;
+    private String avatarUrl;
     private String idCardFrontImageUrl;
     private String idCardBackImageUrl;
     private String status;

@@ -18,6 +18,7 @@ public class BlocHomestayResponseDto extends BaseResponseDto {
     private String name;
     private String address;
     private String cityProvince;
+
     private String businessLicense;
     private String status;
     private Double totalAverageRating;
@@ -29,4 +30,5 @@ public class BlocHomestayResponseDto extends BaseResponseDto {
     private List<PromotionCampaignResponseDto> campaignListResponse;
     private Integer totalBookings;
     private Boolean isPendingBooking;
+    private SwmUserResponseDto landlord;
 }

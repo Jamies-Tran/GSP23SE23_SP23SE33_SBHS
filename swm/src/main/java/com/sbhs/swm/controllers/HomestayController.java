@@ -30,6 +30,7 @@ import com.sbhs.swm.dto.response.FilterAdditionalResponseDto;
 import com.sbhs.swm.dto.response.HomestayResponseDto;
 import com.sbhs.swm.dto.response.PromotionCampaignResponseDto;
 import com.sbhs.swm.dto.response.RatingResponseDto;
+import com.sbhs.swm.dto.response.SwmUserResponseDto;
 import com.sbhs.swm.dto.response.TotalBlocFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromCityProvinceResponseDto;
 import com.sbhs.swm.dto.response.TotalHomestayFromLocationResponseDto;
@@ -225,6 +226,9 @@ public class HomestayController {
         public ResponseEntity<?> getHomestayDetailByName(@RequestParam String name) {
                 Homestay homestay = homestayService.findHomestayByName(name);
                 HomestayResponseDto responseHomestay = modelMapper.map(homestay, HomestayResponseDto.class);
+                SwmUserResponseDto responseLandlord = modelMapper.map(homestay.getLandlord().getUser(),
+                                SwmUserResponseDto.class);
+                responseHomestay.setLandlord(responseLandlord);
                 for (RatingResponseDto ratingResponse : responseHomestay.getRatings()) {
                         for (Rating rating : homestay.getRatings()) {
                                 if (rating.getId() == ratingResponse.getId()) {
@@ -258,6 +262,9 @@ public class HomestayController {
         public ResponseEntity<?> getBlocHomestayDetailByName(@RequestParam String name) {
                 BlocHomestay bloc = homestayService.findBlocHomestayByName(name);
                 BlocHomestayResponseDto responseBloc = modelMapper.map(bloc, BlocHomestayResponseDto.class);
+                SwmUserResponseDto responseUser = modelMapper.map(bloc.getLandlord().getUser(),
+                                SwmUserResponseDto.class);
+                responseBloc.setLandlord(responseUser);
                 for (RatingResponseDto ratingResponse : responseBloc.getRatings()) {
                         for (Rating rating : bloc.getRatings()) {
                                 if (rating.getId() == ratingResponse.getId()) {
