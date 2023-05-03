@@ -8,7 +8,7 @@ public class CityProvinceNameUtil {
         switch (city) {
             case "An Giang":
                 return "AG";
-            case "Bà Rịa-Vũng Tàu":
+            case "Bà Rịa - Vũng Tàu":
                 return "BV";
             case "Bạc Liêu":
                 return "BL";
