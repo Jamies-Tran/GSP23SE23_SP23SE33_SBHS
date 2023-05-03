@@ -34,5 +34,6 @@ public class HomestayResponseDto extends BaseResponseDto {
     private List<RatingResponseDto> ratings;
     private List<HomestayRuleResponseDto> homestayRules;
     private List<PromotionCampaignResponseDto> campaignListResponse;
+    private Integer totalBookings;
     private Boolean isPendingBooking;
 }

@@ -179,7 +179,8 @@ public class HomestayService implements IHomestayService {
 
         SwmUser user = userService.authenticatedUser();
         List<Homestay> homestayList = user.getLandlordProperty().getHomestays();
-        homestayList = homestayList.stream().filter(h -> h.getStatus().equals(filterBy.toUpperCase()))
+        homestayList = homestayList.stream()
+                .filter(h -> h.getStatus().equals(filterBy.toUpperCase()) && h.getBloc() == null)
                 .collect(Collectors.toList());
         PagedListHolder<Homestay> pagedListHolder = new PagedListHolder<>(homestayList);
         pagedListHolder.setPage(page);
@@ -692,6 +693,26 @@ public class HomestayService implements IHomestayService {
         BlocHomestay bloc = this.findBlocHomestayByName(blocName);
 
         return bloc.getRatings().size();
+    }
+
+    @Override
+    public Integer totalBookingHomestay(String homestayName) {
+        Homestay homestay = this.findHomestayByName(homestayName);
+        if (homestay.getBookingHomestays() != null) {
+            return homestay.getBookingHomestays().size();
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Integer totalBookingBloc(String blocName) {
+        BlocHomestay bloc = this.findBlocHomestayByName(blocName);
+        if (bloc.getBookings() != null) {
+            return bloc.getBookings().size();
+        } else {
+            return 0;
+        }
     }
 
 }

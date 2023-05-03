@@ -364,6 +364,7 @@ public class HomestayController {
                                 homestayResponseList.forEach(h -> {
                                         h.setAddress(h.getAddress().split("_")[0]);
                                         h.setNumberOfRating(homestayService.getHomestayNumberOfReview(h.getName()));
+                                        h.setTotalBookings(homestayService.totalBookingHomestay(h.getName()));
                                 });
                                 for (Homestay h : homestays.getPageList()) {
                                         for (HomestayResponseDto hResponse : homestayResponseList) {
@@ -396,6 +397,7 @@ public class HomestayController {
                                 blocResponseList.forEach(b -> {
                                         b.setAddress(b.getAddress().split("_")[0]);
                                         b.setNumberOfRating(homestayService.getBlocHomestayNumberOfReview(b.getName()));
+                                        b.setTotalBookings(homestayService.totalBookingBloc(b.getName()));
                                 });
                                 for (BlocHomestay b : blocs.getPageList()) {
                                         for (BlocHomestayResponseDto bResponse : blocResponseList) {

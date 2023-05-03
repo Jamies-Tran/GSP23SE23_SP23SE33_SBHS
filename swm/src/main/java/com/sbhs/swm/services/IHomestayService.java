@@ -44,6 +44,10 @@ public interface IHomestayService {
 
         public Integer getTotalBlocOnLocation(String location);
 
+        public Integer totalBookingHomestay(String homestayName);
+
+        public Integer totalBookingBloc(String blocName);
+
         public Page<Homestay> getHomestayListOrderByTotalAverageRatingPoint(int page, int size, boolean isNextPage,
                         boolean isPreviousPage);
 

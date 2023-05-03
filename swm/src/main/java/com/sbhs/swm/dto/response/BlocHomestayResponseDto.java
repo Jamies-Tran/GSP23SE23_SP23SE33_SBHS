@@ -27,5 +27,6 @@ public class BlocHomestayResponseDto extends BaseResponseDto {
     private List<HomestayRuleResponseDto> homestayRules;
     private List<RatingResponseDto> ratings;
     private List<PromotionCampaignResponseDto> campaignListResponse;
+    private Integer totalBookings;
     private Boolean isPendingBooking;
 }
