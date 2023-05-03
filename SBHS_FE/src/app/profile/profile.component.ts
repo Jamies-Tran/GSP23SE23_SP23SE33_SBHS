@@ -55,6 +55,7 @@ export class ProfileComponent implements OnInit {
       this.message = error;
       this.openDialogMessage();
     }
+    this.getCommissionList();
 
   }
   openDialogMessage() {
@@ -153,5 +154,28 @@ export class ProfileComponent implements OnInit {
     );
     }
 
+  }
+  comission:any[]=[];
+  getCommissionList(){
+    try {
+      this.http.getCommissionList().subscribe(data =>{
+        if(data){
+          console.log(data);
+          this.comission = data.reverse() ;
+        }
+      },
+      error =>{
+        console.log(error);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  pageCommission: number = 1;
+  countCommission: number = 0;
+  tableSizeCommission: number =10;
+  onTableDataChangeCommission(event: any) {
+    this.pageCommission = event;
+    this.comission;
   }
 }

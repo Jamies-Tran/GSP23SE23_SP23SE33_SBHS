@@ -95,4 +95,19 @@ export class UserService {
   setToken(token: string){
     localStorage.setItem('token',token);
   }
+  // 1 GET
+  // /api/user/commissions getCommissionList
+  public getCommissionList(){
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json ',
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+      }),
+    };
+    const url =
+        `${this.REST_API_SERVER}/api/user/commissions`;
+      return this.httpClient
+        .get<any>(url, this.httpOptions)
+        .pipe(catchError(this.handleError));
+  }
 }
