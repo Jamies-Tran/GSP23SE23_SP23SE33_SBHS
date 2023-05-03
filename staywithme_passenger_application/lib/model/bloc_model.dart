@@ -15,7 +15,8 @@ class BlocHomestayModel {
       this.homestayServices,
       this.homestayRules,
       this.ratings,
-      this.campaigns});
+      this.campaigns,
+      this.totalBookings});
 
   String? name;
   String? address;
@@ -29,6 +30,7 @@ class BlocHomestayModel {
   List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
   List<CampaignModel>? campaigns;
+  int? totalBookings;
 
   factory BlocHomestayModel.fromJson(Map<String, dynamic> json) => BlocHomestayModel(
       name: json["name"],
@@ -58,7 +60,8 @@ class BlocHomestayModel {
       campaigns: json["campaignListResponse"] != null
           ? List<CampaignModel>.from(
               json["campaignListResponse"].map((e) => CampaignModel.fromJson(e)))
-          : <CampaignModel>[]);
+          : <CampaignModel>[],
+      totalBookings: json["totalBookings"]);
 }
 
 class HomestayInBlocModel {

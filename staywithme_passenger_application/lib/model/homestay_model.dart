@@ -19,7 +19,8 @@ class HomestayModel {
       this.homestayServices,
       this.homestayRules,
       this.ratings,
-      this.campaigns});
+      this.campaigns,
+      this.totalBookings});
 
   int? id;
   String? name;
@@ -38,46 +39,43 @@ class HomestayModel {
   List<HomestayRuleModel>? homestayRules;
   List<RatingModel>? ratings;
   List<CampaignModel>? campaigns;
+  int? totalBookings;
 
   factory HomestayModel.fromJson(Map<String, dynamic> json) => HomestayModel(
-        id: json["id"],
-        name: json["name"],
-        price: json["price"],
-        address: json["address"],
-        cityProvince: json["cityProvince"],
-        availableRooms: json["availableRooms"],
-        roomCapacity: json["roomCapacity"],
-        totalAverageRating: json["totalAverageRating"],
-        numberOfRating: json["numberOfRating"],
-        status: json["status"],
-        bloc: json["blocResponse"] != null
-            ? BlocHomestayModel.fromJson(json["blocResponse"])
-            : null,
-        homestayImages: json["homestayImages"] != null
-            ? List<HomestayImageModel>.from(json["homestayImages"]
-                .map((e) => HomestayImageModel.fromJson(e)))
-            : <HomestayImageModel>[],
-        homestayFacilities: json["homestayFacilities"] != null
-            ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
-                .map((e) => HomestayFacilityModel.fromJson(e)))
-            : <HomestayFacilityModel>[],
-        homestayServices: json["homestayServices"] != null
-            ? List<HomestayServiceModel>.from(json["homestayServices"]
-                .map((e) => HomestayServiceModel.fromJson(e)))
-            : <HomestayServiceModel>[],
-        homestayRules: json["homestayRules"] != null
-            ? List<HomestayRuleModel>.from(
-                json["homestayRules"].map((e) => HomestayRuleModel.fromJson(e)))
-            : <HomestayRuleModel>[],
-        ratings: json["ratings"] != null
-            ? List<RatingModel>.from(
-                json["ratings"].map((e) => RatingModel.fromJson(e)))
-            : <RatingModel>[],
-        campaigns: json["campaignListResponse"] != null
-            ? List<CampaignModel>.from(json["campaignListResponse"]
-                .map((e) => CampaignModel.fromJson(e)))
-            : <CampaignModel>[],
-      );
+      id: json["id"],
+      name: json["name"],
+      price: json["price"],
+      address: json["address"],
+      cityProvince: json["cityProvince"],
+      availableRooms: json["availableRooms"],
+      roomCapacity: json["roomCapacity"],
+      totalAverageRating: json["totalAverageRating"],
+      numberOfRating: json["numberOfRating"],
+      status: json["status"],
+      bloc: json["blocResponse"] != null
+          ? BlocHomestayModel.fromJson(json["blocResponse"])
+          : null,
+      homestayImages: json["homestayImages"] != null
+          ? List<HomestayImageModel>.from(
+              json["homestayImages"].map((e) => HomestayImageModel.fromJson(e)))
+          : <HomestayImageModel>[],
+      homestayFacilities: json["homestayFacilities"] != null
+          ? List<HomestayFacilityModel>.from(json["homestayFacilities"]
+              .map((e) => HomestayFacilityModel.fromJson(e)))
+          : <HomestayFacilityModel>[],
+      homestayServices: json["homestayServices"] != null
+          ? List<HomestayServiceModel>.from(json["homestayServices"]
+              .map((e) => HomestayServiceModel.fromJson(e)))
+          : <HomestayServiceModel>[],
+      homestayRules: json["homestayRules"] != null
+          ? List<HomestayRuleModel>.from(
+              json["homestayRules"].map((e) => HomestayRuleModel.fromJson(e)))
+          : <HomestayRuleModel>[],
+      ratings: json["ratings"] != null
+          ? List<RatingModel>.from(json["ratings"].map((e) => RatingModel.fromJson(e)))
+          : <RatingModel>[],
+      campaigns: json["campaignListResponse"] != null ? List<CampaignModel>.from(json["campaignListResponse"].map((e) => CampaignModel.fromJson(e))) : <CampaignModel>[],
+      totalBookings: json["totalBookings"]);
 
   Map<String, dynamic> toJson() => {"name": name, "price": price};
 }

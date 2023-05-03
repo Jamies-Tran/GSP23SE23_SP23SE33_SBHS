@@ -957,7 +957,7 @@ class _SearchHomestayScreenState extends State<SearchHomestayScreen> {
                                     return Column(
                                       children: [
                                         SizedBox(
-                                          height: 600,
+                                          height: 520,
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
