@@ -227,8 +227,7 @@ export class RegisterComponent implements OnInit , AfterViewInit{
 
         localStorage.setItem('message', 'Register Success');
         localStorage.setItem('registerSuccess', 'true');
-        this.message = 'Register Success';
-        this.openDialogSuccess();
+
         this.router.navigate(['/Login'], { relativeTo: this.route });
 
 
@@ -246,17 +245,17 @@ export class RegisterComponent implements OnInit , AfterViewInit{
       data: this.message,
     });
   }
-  openDialogSuccess() {
-    const timeout = 3000;
-    const dialogRef = this.dialog.open(SuccessComponent, {
-      data: this.message,
-    });
-    dialogRef.afterOpened().subscribe(_ => {
-      setTimeout(() => {
-         dialogRef.close();
-      }, timeout)
-    })
-  }
+  // openDialogSuccess() {
+  //   const timeout = 3000;
+  //   const dialogRef = this.dialog.open(SuccessComponent, {
+  //     data: this.message,
+  //   });
+  //   dialogRef.afterOpened().subscribe(_ => {
+  //     setTimeout(() => {
+  //        dialogRef.close();
+  //     }, timeout)
+  //   })
+  // }
 
   // auto complete
   // options :Address[] = [{value: 'Mary'}, {value: 'Shelley'}, {value: 'Mady'}];

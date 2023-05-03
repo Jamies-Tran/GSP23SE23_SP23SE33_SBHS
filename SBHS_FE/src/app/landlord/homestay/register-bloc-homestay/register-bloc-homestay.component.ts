@@ -375,7 +375,7 @@ export class RegisterBlocHomestayComponent implements OnInit, AfterViewInit {
     }
     if (this.serviceFormGroup.controls.airportShuttle.value === true) {
       this.homestayServices.push({
-        name: 'Airport Shuttle',
+        name: 'Airport Transfers',
         price: this.serviceFormGroup.controls.airportShuttlePrice
           .value as unknown as number,
       });

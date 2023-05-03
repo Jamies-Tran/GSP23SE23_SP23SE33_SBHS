@@ -74,7 +74,10 @@
                 itemsPerPage: tableSizeHomestay,
             currentPage: pageHomestay,
             totalItems: countHomestay
-            }; index as index">
+            }; index as index"
+            [style.cursor]="'pointer'" routerLink="../Homestay/HomestayDetail"
+                  (click)="onItemSelector(data.name)"
+                  >
               <td class="text-center">{{index + 1}}</td>
               <td>
                 <img [src]="data.imgUrl" alt="" style="width: 45px; height: 45px" class="rounded" />
@@ -115,7 +118,9 @@
               itemsPerPage: tableSizeBloc,
           currentPage: pageBloc,
           totalItems: countBloc
-          }; index as index">
+          }; index as index"
+          [style.cursor]="'pointer'" routerLink="../BlockHomestay/BlockHomestayDetail"
+                  (click)="onItemSelector(data.name)">
               <td class="text-center">{{index + 1}}</td>
               <td>
                 <img [src]="data.imgUrl" alt="" style="width: 45px; height: 45px" class="rounded" />

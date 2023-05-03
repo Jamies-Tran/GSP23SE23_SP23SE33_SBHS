@@ -75,7 +75,10 @@
                 itemsPerPage: tableSizeLandlord,
             currentPage: pageLandlord,
             totalItems: countLandlord
-            }; index as index">
+            }; index as index"
+            [style.cursor]="'pointer'" routerLink="../RequestAccountLandlord/AccountLandlordDetail"
+                  (click)="onItemSelector(data.name)"
+            >
               <td>{{index + 1}}</td>
               <td><img [src]="data.imageUrl" alt="" style="width: 45px; height: 45px" class="rounded-circle" /></td>
               <td class="text-start  " >{{data.name}}</td>

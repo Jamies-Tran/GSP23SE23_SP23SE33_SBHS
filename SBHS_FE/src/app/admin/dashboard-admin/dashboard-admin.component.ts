@@ -77,6 +77,10 @@ export class DashboardAdminComponent implements OnInit {
     this.dashboardData.passengerTable;
   }
 
+  public onItemSelector(name: string) {
+    sessionStorage.setItem('name', name);
+    localStorage.setItem('createdBy', name);
+  }
 }
 export interface Response {
   totalProfit: number;

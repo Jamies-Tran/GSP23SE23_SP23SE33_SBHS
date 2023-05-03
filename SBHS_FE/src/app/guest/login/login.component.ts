@@ -115,7 +115,6 @@ export class LoginLandlordComponent {
 
   openDialogSuccess() {
     localStorage.setItem('registerSuccess', "");
-
     const timeout = 3000;
     const dialogRef = this.dialog.open(SuccessComponent, {
       data: this.message,

@@ -79,7 +79,10 @@ export class DashboardLandlordComponent implements OnInit {
     this.pageBloc = event;
     this.dashboardData.blocTable;
   }
+  public onItemSelector(name: string) {
+    sessionStorage.setItem('name', name);
 
+  }
 
 }
 export interface Response {
