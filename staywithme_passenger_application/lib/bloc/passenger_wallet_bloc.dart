@@ -14,7 +14,7 @@ class PassengerWalletBloc {
   int? _totalBalance;
   int? _totalDeposit;
   int? _actualBalance;
-  bool? _isPaymentHistory;
+  bool? _isPaymentHistory = true;
   int? _currentDepositIndex = 0;
 
   PassengerWalletState initData(BuildContext context) {

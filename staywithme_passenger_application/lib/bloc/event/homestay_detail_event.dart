@@ -34,3 +34,13 @@ class ViewBlocEvent extends HomestayDetailEvent {
   BuildContext? context;
   String? blocName;
 }
+
+class PreviousHomestayImageEvent extends HomestayDetailEvent {
+  PreviousHomestayImageEvent();
+}
+
+class NextHomestayImageEvent extends HomestayDetailEvent {
+  NextHomestayImageEvent({this.maxImage});
+
+  int? maxImage;
+}

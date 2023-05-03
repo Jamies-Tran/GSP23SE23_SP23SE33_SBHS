@@ -217,6 +217,38 @@ class _BlocDetailScreenState extends State<BlocDetailScreen> {
                                               )
                                             ],
                                           ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.holiday_village,
+                                          color: Colors.amber,
+                                          size: 15,
+                                        ),
+                                        Text(
+                                          "${blocData.homestays!.length} homestay(s)",
+                                          style: const TextStyle(fontSize: 15),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_month,
+                                          color: Colors.amber,
+                                          size: 15,
+                                        ),
+                                        Text(
+                                          "${blocData.createdDate}",
+                                          style: const TextStyle(fontSize: 15),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -315,6 +347,123 @@ class _BlocDetailScreenState extends State<BlocDetailScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15),
                                 ),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              const Text(
+                                "Landlord",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Lobster",
+                                    color: primaryColor),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                width: 300,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: const Border.fromBorderSide(
+                                      BorderSide(
+                                          color: Colors.black, width: 1.0)),
+                                ),
+                                child: Row(children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: FutureBuilder(
+                                      future: imageService.getLandlordImage(
+                                          blocData.landlord!.avatarUrl!),
+                                      builder: (context, imgSnapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.waiting:
+                                            return Container(
+                                              width: 450,
+                                              height: 200,
+                                              color: Colors.white24,
+                                            );
+                                          case ConnectionState.done:
+                                            final imageData = imgSnapshot.data;
+                                            String imageUrl = imageData ??
+                                                "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                            return AdvancedAvatar(
+                                              size: 70,
+                                              image: NetworkImage(imageUrl),
+                                            );
+                                          default:
+                                            break;
+                                        }
+                                        return Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          width: 450,
+                                          height: 200,
+                                          color: Colors.white24,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Text("Name:",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(utf8.decode(blocData
+                                                .landlord!.username!.runes
+                                                .toList()))
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text("Email:",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Flexible(
+                                                child: Text(
+                                              blocData.landlord!.email!,
+                                              overflow: TextOverflow.ellipsis,
+                                            ))
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text("Phone:",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(blocData.landlord!.phone!)
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ]),
                               ),
                               const SizedBox(
                                 height: 30,

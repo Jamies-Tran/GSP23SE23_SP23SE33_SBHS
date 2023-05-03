@@ -6,6 +6,10 @@ abstract class IImageService {
   Future<dynamic> getHomestayImage(String img);
 
   Future<dynamic> getCampaignImage(String img);
+
+  Future<dynamic> getLandlordImage(String img);
+
+  Future<dynamic> getPassengerImage(String img);
 }
 
 class ImageService extends IImageService {
@@ -34,11 +38,35 @@ class ImageService extends IImageService {
     }
   }
 
+
+
   @override
   Future getCampaignImage(String img) async {
     try {
       String url =
           await fireStorage.child("campaign").child(img).getDownloadURL();
+      return url;
+    } on FirebaseException {
+      return null;
+    }
+  }
+  
+  @override
+  Future getLandlordImage(String img) async {
+    try {
+      String url =
+          await fireStorage.child("landlord").child("avatar").child(img).getDownloadURL();
+      return url;
+    } on FirebaseException {
+      return null;
+    }
+  }
+  
+  @override
+  Future getPassengerImage(String img) async {
+    try {
+      String url =
+          await fireStorage.child("passenger_avatar").child(img).getDownloadURL();
       return url;
     } on FirebaseException {
       return null;

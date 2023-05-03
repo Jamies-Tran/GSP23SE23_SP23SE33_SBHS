@@ -1,5 +1,4 @@
 import 'package:staywithme_passenger_application/model/booking_model.dart';
-import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class PassengerModel {
   PassengerModel(
@@ -25,6 +24,7 @@ class PassengerModel {
   String? avatarUrl;
   PassengerPropertyModel? passengerPropertyModel;
 
+
   factory PassengerModel.fromJson(Map<String, dynamic> json) => PassengerModel(
       username: json["username"],
       password: json["password"],
@@ -49,6 +49,24 @@ class PassengerModel {
         "dob": dob,
         "gender": gender
       };
+}
+
+class LandlordModel {
+  LandlordModel({this.username, this.avatarUrl, this.phone, this.email, this.gender});
+
+  String? username;
+  String? avatarUrl;
+  String? phone;
+  String? email;
+  String? gender;
+
+  factory LandlordModel.fromJson(Map<String, dynamic> json) => LandlordModel(
+    username : json["username"],
+    avatarUrl: json["avatarUrl"],
+    phone: json["phone"],
+    email: json["email"],
+    gender: json["gender"]
+  );
 }
 
 class PassengerPropertyModel {
@@ -90,7 +108,9 @@ class PassengerWalletModel {
         ? deposits?.forEach((deposit) {
             for (BookingDepositModel bookingDeposit
                 in deposit.bookingDeposits!) {
-              total = total + bookingDeposit.unpaidAmount!;
+             if(bookingDeposit.status! == "UNPAID") {
+               total = total + bookingDeposit.unpaidAmount!;
+             }
             }
           })
         : total = 0;

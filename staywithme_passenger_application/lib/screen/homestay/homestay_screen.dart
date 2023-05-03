@@ -894,7 +894,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: const Text(
-                              "Top 5 Homestays",
+                              "Recommand Homestays",
                               style: TextStyle(
                                   fontFamily: "Lobster",
                                   fontWeight: FontWeight.bold,
@@ -994,176 +994,248 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                                               opacity: value,
                                                               child: child,
                                                             ),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                FutureBuilder(
-                                                                  future: imageService.getHomestayImage(data
-                                                                      .homestays![
-                                                                          index]
-                                                                      .homestayImages![
-                                                                          0]
-                                                                      .imageUrl!),
-                                                                  builder: (context,
-                                                                      imageSnapshot) {
-                                                                    switch (imageSnapshot
-                                                                        .connectionState) {
-                                                                      case ConnectionState
-                                                                          .waiting:
-                                                                        return Container(
-                                                                          height:
-                                                                              150,
-                                                                          width:
-                                                                              200,
-                                                                          margin:
-                                                                              const EdgeInsets.only(left: 10),
-                                                                          padding:
-                                                                              const EdgeInsets.only(
-                                                                            top:
-                                                                                50,
-                                                                          ),
-                                                                          decoration: const BoxDecoration(
-                                                                              color: Colors.white24,
-                                                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-                                                                        );
-                                                                      case ConnectionState
-                                                                          .done:
-                                                                        String
-                                                                            imageUrl =
-                                                                            imageSnapshot.data ??
-                                                                                "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
-                                                                        return Container(
-                                                                          height:
-                                                                              150,
-                                                                          width:
-                                                                              200,
-                                                                          margin:
-                                                                              const EdgeInsets.only(left: 10),
-                                                                          padding:
-                                                                              const EdgeInsets.only(
-                                                                            top:
-                                                                                50,
-                                                                          ),
-                                                                          decoration: BoxDecoration(
-                                                                              image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.fill),
-                                                                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-                                                                        );
-                                                                      default:
-                                                                        break;
-                                                                    }
-                                                                    return Container(
-                                                                      height:
-                                                                          150,
-                                                                      width:
-                                                                          200,
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              10),
-                                                                      padding:
-                                                                          const EdgeInsets
-                                                                              .only(
-                                                                        top: 50,
-                                                                      ),
-                                                                      decoration: const BoxDecoration(
-                                                                          color: Colors
-                                                                              .white24,
-                                                                          borderRadius: BorderRadius.only(
-                                                                              topLeft: Radius.circular(10),
-                                                                              topRight: Radius.circular(10))),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                                Container(
-                                                                  height: 150,
-                                                                  width: 200,
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      left: 10),
-                                                                  decoration: const BoxDecoration(
-                                                                      borderRadius: BorderRadius.only(
-                                                                          bottomLeft: Radius.circular(
-                                                                              10),
-                                                                          bottomRight: Radius.circular(
-                                                                              10)),
-                                                                      color: Colors
-                                                                          .white),
-                                                                  child:
-                                                                      Container(
-                                                                    padding: const EdgeInsets
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                homestayBloc
+                                                                    .eventController
+                                                                    .sink
+                                                                    .add(ViewHomestayDetailEvent(
+                                                                        context:
+                                                                            context,
+                                                                        homestayName: data
+                                                                            .homestays![index]
+                                                                            .name));
+                                                              },
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  FutureBuilder(
+                                                                    future: imageService.getHomestayImage(data
+                                                                        .homestays![
+                                                                            index]
+                                                                        .homestayImages![
+                                                                            0]
+                                                                        .imageUrl!),
+                                                                    builder:
+                                                                        (context,
+                                                                            imageSnapshot) {
+                                                                      switch (imageSnapshot
+                                                                          .connectionState) {
+                                                                        case ConnectionState
+                                                                            .waiting:
+                                                                          return Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                300,
+                                                                            margin:
+                                                                                const EdgeInsets.only(left: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              top: 50,
+                                                                            ),
+                                                                            decoration:
+                                                                                const BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                          );
+                                                                        case ConnectionState
+                                                                            .done:
+                                                                          String
+                                                                              imageUrl =
+                                                                              imageSnapshot.data ?? "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                                                          return Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                300,
+                                                                            margin:
+                                                                                const EdgeInsets.only(left: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              top: 50,
+                                                                            ),
+                                                                            decoration:
+                                                                                BoxDecoration(image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.fill), borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                          );
+                                                                        default:
+                                                                          break;
+                                                                      }
+                                                                      return Container(
+                                                                        height:
+                                                                            150,
+                                                                        width:
+                                                                            300,
+                                                                        margin: const EdgeInsets.only(
+                                                                            left:
+                                                                                10),
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          top:
+                                                                              50,
+                                                                        ),
+                                                                        decoration: const BoxDecoration(
+                                                                            color:
+                                                                                Colors.white24,
+                                                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  Container(
+                                                                    height: 150,
+                                                                    width: 300,
+                                                                    margin: const EdgeInsets
                                                                             .only(
                                                                         left:
                                                                             10),
-                                                                    child: Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment
-                                                                                .start,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
-                                                                        children: [
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              Text(
-                                                                                utf8.decode(data.homestays![index].name!.runes.toList()),
-                                                                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                                                              ),
-                                                                              // Text(
-                                                                              //   "(${data.homestays![index].availableRooms} rooms)",
-                                                                              //   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                                                              // ),
-                                                                            ],
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                2,
-                                                                          ),
-                                                                          RatingStars(
-                                                                            animationDuration:
-                                                                                const Duration(seconds: 4),
-                                                                            maxValue:
-                                                                                5.0,
-                                                                            starColor:
-                                                                                secondaryColor,
-                                                                            starBuilder: (index, color) =>
-                                                                                Icon(
-                                                                              Icons.star,
-                                                                              color: color,
-                                                                              size: 15,
+                                                                    decoration: const BoxDecoration(
+                                                                        borderRadius: BorderRadius.only(
+                                                                            bottomLeft: Radius.circular(
+                                                                                10),
+                                                                            bottomRight: Radius.circular(
+                                                                                10)),
+                                                                        color: Colors
+                                                                            .white),
+                                                                    child:
+                                                                        Container(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      child: Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment
+                                                                              .start,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            const SizedBox(
+                                                                              height: 10,
                                                                             ),
-                                                                            value:
-                                                                                data.homestays![index].totalAverageRating!,
-                                                                            starOffColor:
-                                                                                Colors.lightBlueAccent,
-                                                                            starCount:
-                                                                                5,
-                                                                            valueLabelVisibility:
-                                                                                false,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Text(
-                                                                              "(${data.homestays![index].numberOfRating} number of reviews)"),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                15,
-                                                                          ),
-                                                                          Text(
-                                                                              "VND: ${currencyFormat.format(data.homestays![index].price)} / day")
-                                                                        ]),
-                                                                  ),
-                                                                )
-                                                              ],
+                                                                            Row(
+                                                                              children: [
+                                                                                Flexible(
+                                                                                  child: Text(
+                                                                                    utf8.decode(data.homestays![index].name!.runes.toList()),
+                                                                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                  ),
+                                                                                ),
+                                                                                // Text(
+                                                                                //   "(${data.homestays![index].availableRooms} rooms)",
+                                                                                //   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                                // ),
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 2,
+                                                                            ),
+                                                                            // RatingStars(
+                                                                            //   animationDuration:
+                                                                            //       const Duration(seconds: 4),
+                                                                            //   maxValue:
+                                                                            //       5.0,
+                                                                            //   starColor:
+                                                                            //       secondaryColor,
+                                                                            //   starBuilder: (index, color) =>
+                                                                            //       Icon(
+                                                                            //     Icons.star,
+                                                                            //     color: color,
+                                                                            //     size: 15,
+                                                                            //   ),
+                                                                            //   value:
+                                                                            //       data.homestays![index].totalAverageRating!,
+                                                                            //   starOffColor:
+                                                                            //       Colors.lightBlueAccent,
+                                                                            //   starCount:
+                                                                            //       5,
+                                                                            //   valueLabelVisibility:
+                                                                            //       false,
+                                                                            // ),
+                                                                            // const SizedBox(
+                                                                            //   height:
+                                                                            //       10,
+                                                                            // ),
+                                                                            // Text(
+                                                                            //     "(${data.homestays![index].numberOfRating} number of reviews)"),
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  flex: 2,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(
+                                                                                        Icons.star,
+                                                                                        color: Colors.amber,
+                                                                                      ),
+                                                                                      Text("${double.parse(data.homestays![index].totalAverageRating!.toStringAsFixed(2))}")
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                Expanded(
+                                                                                  flex: 2,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(
+                                                                                        Icons.assistant_photo,
+                                                                                        color: Colors.amber,
+                                                                                      ),
+                                                                                      Text("${data.homestays![index].totalBookings}")
+                                                                                    ],
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 2,
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  flex: 1,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(Icons.location_on, color: Colors.amber),
+                                                                                      const SizedBox(
+                                                                                        width: 5,
+                                                                                      ),
+                                                                                      Flexible(
+                                                                                        child: Text(
+                                                                                          utf8.decode(data.homestays![index].address!.split(",").first.runes.toList()),
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                        ),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                Expanded(
+                                                                                  flex: 1,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(Icons.location_city, color: Colors.amber),
+                                                                                      const SizedBox(
+                                                                                        width: 5,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        getCityProvinceName(data.homestays![index].cityProvince!, false)!,
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 15,
+                                                                            ),
+                                                                            Text("VND: ${currencyFormat.format(data.homestays![index].price)} / day")
+                                                                          ]),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
                                                           )),
                                             )
@@ -1226,7 +1298,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: const Text(
-                              "Top 5 Blocks",
+                              "Recommand Blocks",
                               style: TextStyle(
                                   fontFamily: "Lobster",
                                   fontWeight: FontWeight.bold,
@@ -1325,175 +1397,216 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                                               opacity: value,
                                                               child: child,
                                                             ),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                FutureBuilder(
-                                                                  future: imageService.getHomestayImage(data
-                                                                      .blocs![
-                                                                          index]
-                                                                      .homestays![
-                                                                          0]
-                                                                      .homestayImages![
-                                                                          0]
-                                                                      .imageUrl!),
-                                                                  builder: (context,
-                                                                      imageSnapshot) {
-                                                                    switch (imageSnapshot
-                                                                        .connectionState) {
-                                                                      case ConnectionState
-                                                                          .waiting:
-                                                                        return Container(
-                                                                          height:
-                                                                              150,
-                                                                          width:
-                                                                              200,
-                                                                          margin:
-                                                                              const EdgeInsets.only(left: 10),
-                                                                          padding:
-                                                                              const EdgeInsets.only(
-                                                                            top:
-                                                                                50,
-                                                                          ),
-                                                                          decoration: const BoxDecoration(
-                                                                              color: Colors.white24,
-                                                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-                                                                        );
-                                                                      case ConnectionState
-                                                                          .done:
-                                                                        String
-                                                                            imageUrl =
-                                                                            imageSnapshot.data ??
-                                                                                'https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg';
-                                                                        return Container(
-                                                                          height:
-                                                                              150,
-                                                                          width:
-                                                                              200,
-                                                                          margin:
-                                                                              const EdgeInsets.only(left: 10),
-                                                                          padding:
-                                                                              const EdgeInsets.only(
-                                                                            top:
-                                                                                50,
-                                                                          ),
-                                                                          decoration: BoxDecoration(
-                                                                              image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.fill),
-                                                                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-                                                                        );
-                                                                      default:
-                                                                        break;
-                                                                    }
-                                                                    return Container(
-                                                                      height:
-                                                                          150,
-                                                                      width:
-                                                                          200,
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              10),
-                                                                      padding:
-                                                                          const EdgeInsets
-                                                                              .only(
-                                                                        top: 50,
-                                                                      ),
-                                                                      decoration: const BoxDecoration(
-                                                                          color: Colors
-                                                                              .white24,
-                                                                          borderRadius: BorderRadius.only(
-                                                                              topLeft: Radius.circular(10),
-                                                                              topRight: Radius.circular(10))),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                                Container(
-                                                                  height: 150,
-                                                                  width: 200,
-                                                                  margin: const EdgeInsets
-                                                                          .only(
-                                                                      left: 10),
-                                                                  decoration: const BoxDecoration(
-                                                                      borderRadius: BorderRadius.only(
-                                                                          bottomLeft: Radius.circular(
-                                                                              10),
-                                                                          bottomRight: Radius.circular(
-                                                                              10)),
-                                                                      color: Colors
-                                                                          .white),
-                                                                  child:
-                                                                      Container(
-                                                                    padding: const EdgeInsets
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                homestayBloc
+                                                                    .eventController
+                                                                    .sink
+                                                                    .add(ViewBlocHomestayDetailEvent(
+                                                                        context:
+                                                                            context,
+                                                                        blocName: data
+                                                                            .blocs![index]
+                                                                            .name));
+                                                              },
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  FutureBuilder(
+                                                                    future: imageService.getHomestayImage(data
+                                                                        .blocs![
+                                                                            index]
+                                                                        .homestays![
+                                                                            0]
+                                                                        .homestayImages![
+                                                                            0]
+                                                                        .imageUrl!),
+                                                                    builder:
+                                                                        (context,
+                                                                            imageSnapshot) {
+                                                                      switch (imageSnapshot
+                                                                          .connectionState) {
+                                                                        case ConnectionState
+                                                                            .waiting:
+                                                                          return Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                300,
+                                                                            margin:
+                                                                                const EdgeInsets.only(left: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              top: 50,
+                                                                            ),
+                                                                            decoration:
+                                                                                const BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                          );
+                                                                        case ConnectionState
+                                                                            .done:
+                                                                          String
+                                                                              imageUrl =
+                                                                              imageSnapshot.data ?? 'https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg';
+                                                                          return Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                300,
+                                                                            margin:
+                                                                                const EdgeInsets.only(left: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              top: 50,
+                                                                            ),
+                                                                            decoration:
+                                                                                BoxDecoration(image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.fill), borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                          );
+                                                                        default:
+                                                                          break;
+                                                                      }
+                                                                      return Container(
+                                                                        height:
+                                                                            150,
+                                                                        width:
+                                                                            300,
+                                                                        margin: const EdgeInsets.only(
+                                                                            left:
+                                                                                10),
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          top:
+                                                                              50,
+                                                                        ),
+                                                                        decoration: const BoxDecoration(
+                                                                            color:
+                                                                                Colors.white24,
+                                                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  Container(
+                                                                    height: 150,
+                                                                    width: 300,
+                                                                    margin: const EdgeInsets
                                                                             .only(
                                                                         left:
                                                                             10),
-                                                                    child: Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment
-                                                                                .start,
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
-                                                                        children: [
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Row(
-                                                                            children: [
-                                                                              Text(
-                                                                                utf8.decode(data.blocs![index].name!.runes.toList()),
-                                                                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                2,
-                                                                          ),
-                                                                          RatingStars(
-                                                                            animationDuration:
-                                                                                const Duration(seconds: 4),
-                                                                            maxValue:
-                                                                                5.0,
-                                                                            starColor:
-                                                                                secondaryColor,
-                                                                            starBuilder: (index, color) =>
-                                                                                Icon(
-                                                                              Icons.star,
-                                                                              color: color,
-                                                                              size: 15,
+                                                                    decoration: const BoxDecoration(
+                                                                        borderRadius: BorderRadius.only(
+                                                                            bottomLeft: Radius.circular(
+                                                                                10),
+                                                                            bottomRight: Radius.circular(
+                                                                                10)),
+                                                                        color: Colors
+                                                                            .white),
+                                                                    child:
+                                                                        Container(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      child: Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment
+                                                                              .start,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            const SizedBox(
+                                                                              height: 10,
                                                                             ),
-                                                                            value:
-                                                                                data.blocs![index].totalAverageRating!,
-                                                                            starOffColor:
-                                                                                Colors.lightBlueAccent,
-                                                                            starCount:
-                                                                                5,
-                                                                            valueLabelVisibility:
-                                                                                false,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                10,
-                                                                          ),
-                                                                          Text(
-                                                                              "(${data.blocs![index].numberOfRating} number of reviews)"),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                15,
-                                                                          ),
-                                                                          Text(
-                                                                              "VND: ${currencyFormat.format(data.blocs![index].homestays![0].price)} ~ ${currencyFormat.format(data.blocs![index].homestays![data.blocs![index].homestays!.length - 1].price)} / day")
-                                                                        ]),
-                                                                  ),
-                                                                )
-                                                              ],
+                                                                            Row(
+                                                                              children: [
+                                                                                Text(
+                                                                                  utf8.decode(data.blocs![index].name!.runes.toList()),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 2,
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  flex: 1,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(Icons.star, color: Colors.yellow),
+                                                                                      const SizedBox(
+                                                                                        width: 5,
+                                                                                      ),
+                                                                                      Text("${double.parse(data.blocs![index].totalAverageRating!.toStringAsFixed(2))} (${data.blocs![index].numberOfRating})")
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                Expanded(
+                                                                                    flex: 1,
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        const Icon(Icons.assistant_photo, color: Colors.amber),
+                                                                                        const SizedBox(
+                                                                                          width: 5,
+                                                                                        ),
+                                                                                        Text("${data.blocs![index].totalBookings}")
+                                                                                      ],
+                                                                                    ))
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 2,
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  flex: 1,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(Icons.location_on, color: Colors.amber),
+                                                                                      const SizedBox(
+                                                                                        width: 5,
+                                                                                      ),
+                                                                                      Flexible(
+                                                                                        child: Text(
+                                                                                          utf8.decode(data.blocs![index].address!.split(",").first.runes.toList()),
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                                Expanded(
+                                                                                  flex: 1,
+                                                                                  child: Row(
+                                                                                    children: [
+                                                                                      const Icon(
+                                                                                        Icons.location_city,
+                                                                                        color: Colors.amber,
+                                                                                      ),
+                                                                                      const SizedBox(
+                                                                                        width: 5,
+                                                                                      ),
+                                                                                      Text(getCityProvinceName(data.blocs![index].cityProvince!, false)!)
+                                                                                    ],
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 15,
+                                                                            ),
+                                                                            Text("VND: ${currencyFormat.format(data.blocs![index].homestays![0].price)} ~ ${currencyFormat.format(data.blocs![index].homestays![data.blocs![index].homestays!.length - 1].price)} / day")
+                                                                          ]),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
                                                           )),
                                             )

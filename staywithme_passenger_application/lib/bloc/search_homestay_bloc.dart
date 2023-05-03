@@ -70,6 +70,8 @@ class SearchHomestayBloc {
           arguments: {"blocName": event.blocName});
     } else if (event is ChooseSortByEvent) {
       _sortBy = event.sortBy;
+    } else if (event is SearchHomestayByStringEvent) {
+      _searchString = event.searchString;
     }
     stateController.sink.add(SearchHomestayState(
         homestayType: _homestayType,

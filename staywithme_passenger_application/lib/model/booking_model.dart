@@ -106,11 +106,13 @@ class BookingDepositModel {
       {this.unpaidAmount,
       this.paidAmount,
       this.depositForHomestay,
+      this.status,
       this.booking});
 
   int? paidAmount;
   int? unpaidAmount;
   String? depositForHomestay;
+  String? status;
   BookingModel? booking;
 
   factory BookingDepositModel.fromJson(Map<String, dynamic> json) =>
@@ -118,12 +120,14 @@ class BookingDepositModel {
           unpaidAmount: json["unpaidAmount"],
           paidAmount: json["paidAmount"],
           depositForHomestay: json["depositForHomestay"],
+          status: json["status"],
           booking: BookingModel.fromJson(json["booking"]));
 
   Map<String, dynamic> toJson() => {
         "unpaidAmount": unpaidAmount,
         "paidAmount": paidAmount,
-        "depositForHomestay": depositForHomestay
+        "depositForHomestay": depositForHomestay,
+        
       };
 }
 

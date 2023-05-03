@@ -86,67 +86,201 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                       children: [
                                         Expanded(
                                           flex: 1,
-                                          child: FutureBuilder(
-                                            future: imageService
-                                                .getHomestayImage(data
-                                                    .homestayImages!
-                                                    .first
-                                                    .imageUrl!),
-                                            builder: (context, imgSnapshot) {
-                                              switch (
-                                                  snapshot.connectionState) {
-                                                case ConnectionState.waiting:
-                                                  return Container(
-                                                    width: 450,
-                                                    height: 200,
-                                                    color: Colors.white24,
-                                                  );
-                                                case ConnectionState.done:
-                                                  final imageData =
-                                                      imgSnapshot.data;
-                                                  String imageUrl = imageData ??
-                                                      "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
-                                                  return Container(
-                                                    width: 450,
-                                                    height: 200,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                imageUrl),
-                                                            fit: BoxFit.fill)),
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 225),
-                                                    child: Opacity(
-                                                      opacity: 0.5,
-                                                      child: Container(
-                                                        color: Colors.black,
-                                                        child: Center(
-                                                          child: Text(
-                                                            "+${data.homestayImages!.length} more",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 25,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              int index = 0;
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                    return AlertDialog(
+                                                      content: SizedBox(
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: 270,
+                                                        child: Column(
+                                                          children: [
+                                                            FutureBuilder(
+                                                              future: imageService
+                                                                  .getHomestayImage(data
+                                                                      .homestayImages![
+                                                                          index]
+                                                                      .imageUrl!),
+                                                              builder: (context,
+                                                                  imgSnapshot) {
+                                                                switch (snapshot
+                                                                    .connectionState) {
+                                                                  case ConnectionState
+                                                                      .waiting:
+                                                                    return Container(
+                                                                      width:
+                                                                          450,
+                                                                      height:
+                                                                          200,
+                                                                      color: Colors
+                                                                          .white24,
+                                                                    );
+                                                                  case ConnectionState
+                                                                      .done:
+                                                                    final imageData =
+                                                                        imgSnapshot
+                                                                            .data;
+                                                                    String
+                                                                        imageUrl =
+                                                                        imageData ??
+                                                                            "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                                                    return Container(
+                                                                      width:
+                                                                          450,
+                                                                      height:
+                                                                          200,
+                                                                      decoration: BoxDecoration(
+                                                                          image: DecorationImage(
+                                                                              image: NetworkImage(imageUrl),
+                                                                              fit: BoxFit.fill)),
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              225),
+                                                                    );
+                                                                  default:
+                                                                    break;
+                                                                }
+                                                                return Container(
+                                                                  margin: const EdgeInsets
+                                                                          .only(
+                                                                      left: 10,
+                                                                      right:
+                                                                          10),
+                                                                  width: 450,
+                                                                  height: 200,
+                                                                  color: Colors
+                                                                      .white24,
+                                                                );
+                                                              },
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                        () {
+                                                                          if (index >=
+                                                                              1) {
+                                                                            index =
+                                                                                index - 1;
+                                                                          }
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    icon:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .arrow_back_ios,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                    )),
+                                                                Text(
+                                                                    "${index + 1} / ${data.homestayImages!.length}"),
+                                                                IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      setState(
+                                                                        () {
+                                                                          index =
+                                                                              index + 1;
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    icon:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .arrow_forward_ios,
+                                                                      color: Colors
+                                                                          .amber,
+                                                                    ))
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
-                                                    ),
-                                                  );
-                                                default:
-                                                  break;
-                                              }
-                                              return Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                width: 450,
-                                                height: 200,
-                                                color: Colors.white24,
+                                                    );
+                                                  },
+                                                ),
                                               );
                                             },
+                                            child: FutureBuilder(
+                                              future: imageService
+                                                  .getHomestayImage(streamSnapshot
+                                                      .data!
+                                                      .currentHomestayImage(
+                                                          data.homestayImages!)
+                                                      .imageUrl!),
+                                              builder: (context, imgSnapshot) {
+                                                switch (
+                                                    snapshot.connectionState) {
+                                                  case ConnectionState.waiting:
+                                                    return Container(
+                                                      width: 450,
+                                                      height: 200,
+                                                      color: Colors.white24,
+                                                    );
+                                                  case ConnectionState.done:
+                                                    final imageData =
+                                                        imgSnapshot.data;
+                                                    String imageUrl = imageData ??
+                                                        "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                                    return Container(
+                                                        width: 450,
+                                                        height: 200,
+                                                        decoration: BoxDecoration(
+                                                            image: DecorationImage(
+                                                                image:
+                                                                    NetworkImage(
+                                                                        imageUrl),
+                                                                fit: BoxFit
+                                                                    .fill)),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 225),
+                                                        child: Opacity(
+                                                            opacity: 0.5,
+                                                            child: Container(
+                                                                color: Colors
+                                                                    .black,
+                                                                child:
+                                                                    const Center(
+                                                                  child: Text(
+                                                                    "View more",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            25,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ))));
+                                                  default:
+                                                    break;
+                                                }
+                                                return Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  width: 450,
+                                                  height: 200,
+                                                  color: Colors.white24,
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -155,7 +289,6 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -197,7 +330,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                               children: [
                                                 const Icon(
                                                   Icons.attach_money,
-                                                  color: Colors.green,
+                                                  color: Colors.amber,
                                                   size: 15,
                                                 ),
                                                 Text(
@@ -207,7 +340,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                       fontSize: 15,
                                                       decoration: TextDecoration
                                                           .lineThrough,
-                                                      color: Colors.red),
+                                                      color: Colors.green),
                                                 )
                                               ],
                                             ),
@@ -232,6 +365,35 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                             )
                                           ],
                                         ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.people,
+                                          color: Colors.amber, size: 15),
+                                      Text(
+                                        "${data.availableRooms! * data.roomCapacity!} - ${data.availableRooms} rooms(${data.roomCapacity} people / room)",
+                                        style: const TextStyle(fontSize: 15),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  !isHomestayInBloc
+                                      ? Row(
+                                          children: [
+                                            const Icon(Icons.calendar_month,
+                                                color: Colors.amber, size: 15),
+                                            Text(
+                                              "${data.createdDate}",
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                            )
+                                          ],
+                                        )
+                                      : const SizedBox(),
                                   const SizedBox(
                                     height: 20,
                                   ),
@@ -346,258 +508,125 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                           ),
                                         )
                                       : const SizedBox(),
-                                  // Container(
-                                  //     padding: const EdgeInsets.only(
-                                  //         left: 10, top: 15, right: 10),
-                                  //     color: Colors.white,
-                                  //     // height:
-                                  //     //     MediaQuery.of(context).size.height,
-                                  //     child: Column(
-                                  //       crossAxisAlignment:
-                                  //           CrossAxisAlignment.start,
-                                  //       children: [
-                                  //         Text(
-                                  //           utf8.decode(
-                                  //               data.name!.runes.toList()),
-                                  //           style: const TextStyle(
-                                  //               fontSize: 25,
-                                  //               fontWeight: FontWeight.bold,
-                                  //               fontFamily: "Lobster",
-                                  //               color: primaryColor),
-                                  //         ),
-                                  //         const SizedBox(
-                                  //           height: 5,
-                                  //         ),
-                                  //         Row(
-                                  //           children: [
-                                  //             const Icon(
-                                  //               Icons.location_on,
-                                  //               color: Colors.amber,
-                                  //               size: 15,
-                                  //             ),
-                                  //             Text(
-                                  //               "${utf8.decode(data.address!.split(",").first.runes.toList())}, ${utf8.decode(data.address!.split(",").last.runes.toList())}",
-                                  //               style: const TextStyle(
-                                  //                   fontSize: 15),
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //         const SizedBox(
-                                  //           height: 10,
-                                  //         ),
-                                  //         Row(
-                                  //           children: [
-                                  //             const Icon(
-                                  //               Icons.attach_money,
-                                  //               color: Colors.green,
-                                  //               size: 15,
-                                  //             ),
-                                  //             Text(
-                                  //               "${currencyFormat.format(data.price)}đ / day",
-                                  //               style: const TextStyle(
-                                  //                   fontSize: 15),
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //         const SizedBox(
-                                  //           height: 20,
-                                  //         ),
-                                  //         Row(
-                                  //           crossAxisAlignment:
-                                  //               CrossAxisAlignment.start,
-                                  //           children: [
-                                  //             Expanded(
-                                  //               flex: 1,
-                                  //               child: TextFormField(
-                                  //                 controller:
-                                  //                     bookingStartDateTextEditingController,
-                                  //                 readOnly: true,
-                                  //                 decoration: InputDecoration(
-                                  //                     hintText:
-                                  //                         "Start date yyyy-MM-dd",
-                                  //                     enabledBorder:
-                                  //                         const OutlineInputBorder(
-                                  //                             borderSide: BorderSide(
-                                  //                                 color:
-                                  //                                     secondaryColor,
-                                  //                                 width:
-                                  //                                     1.0)),
-                                  //                     focusedBorder: OutlineInputBorder(
-                                  //                         borderRadius:
-                                  //                             BorderRadius
-                                  //                                 .circular(
-                                  //                                     20),
-                                  //                         borderSide:
-                                  //                             const BorderSide(
-                                  //                                 color:
-                                  //                                     secondaryColor,
-                                  //                                 width:
-                                  //                                     1.0))),
-                                  //                 onTap: () {
-                                  //                   if (!brownseHomestayFlag) {
-                                  //                     showDatePicker(
-                                  //                             context:
-                                  //                                 context,
-                                  //                             initialDate:
-                                  //                                 DateTime
-                                  //                                     .now(),
-                                  //                             firstDate:
-                                  //                                 DateTime
-                                  //                                     .now(),
-                                  //                             lastDate: DateTime
-                                  //                                     .now()
-                                  //                                 .add(const Duration(
-                                  //                                     days:
-                                  //                                         365)))
-                                  //                         .then((value) {
-                                  //                       bookingStartDateTextEditingController
-                                  //                               .text =
-                                  //                           dateFormat
-                                  //                               .format(
-                                  //                                   value!);
-                                  //                     });
-                                  //                   }
-                                  //                 },
-                                  //               ),
-                                  //             ),
-                                  //             const SizedBox(
-                                  //               width: 5,
-                                  //             ),
-                                  //             Expanded(
-                                  //               flex: 1,
-                                  //               child: TextFormField(
-                                  //                 controller:
-                                  //                     bookingEndDateTextEditingController,
-                                  //                 readOnly: true,
-                                  //                 decoration:
-                                  //                     const InputDecoration(
-                                  //                   hintText:
-                                  //                       "End date yyyy-MM-dd",
-                                  //                   enabledBorder:
-                                  //                       OutlineInputBorder(
-                                  //                           borderSide:
-                                  //                               BorderSide(
-                                  //                                   color:
-                                  //                                       secondaryColor,
-                                  //                                   width:
-                                  //                                       1.0)),
-                                  //                   focusedBorder:
-                                  //                       OutlineInputBorder(
-                                  //                           borderSide:
-                                  //                               BorderSide(
-                                  //                                   color:
-                                  //                                       secondaryColor,
-                                  //                                   width:
-                                  //                                       1.0)),
-                                  //                 ),
-                                  //                 onTap: () {
-                                  //                   if (!brownseHomestayFlag) {
-                                  //                     showDatePicker(
-                                  //                             context:
-                                  //                                 context,
-                                  //                             initialDate: dateFormat
-                                  //                                 .parse(bookingStartDateTextEditingController
-                                  //                                     .text)
-                                  //                                 .add(const Duration(
-                                  //                                     days:
-                                  //                                         1)),
-                                  //                             firstDate: dateFormat
-                                  //                                 .parse(bookingStartDateTextEditingController
-                                  //                                     .text)
-                                  //                                 .add(const Duration(
-                                  //                                     days:
-                                  //                                         1)),
-                                  //                             lastDate: dateFormat
-                                  //                                 .parse(bookingStartDateTextEditingController
-                                  //                                     .text)
-                                  //                                 .add(const Duration(
-                                  //                                     days:
-                                  //                                         365)))
-                                  //                         .then((value) {
-                                  //                       bookingEndDateTextEditingController
-                                  //                               .text =
-                                  //                           dateFormat
-                                  //                               .format(
-                                  //                                   value!);
-                                  //                       homestayDetailBloc
-                                  //                           .eventController
-                                  //                           .sink
-                                  //                           .add(OnCheckValidBookingDateEvent(
-                                  //                               bookingStart:
-                                  //                                   bookingStartDateTextEditingController
-                                  //                                       .text,
-                                  //                               bookingEnd:
-                                  //                                   bookingEndDateTextEditingController
-                                  //                                       .text,
-                                  //                               homestayName:
-                                  //                                   data.name));
-                                  //                     });
-                                  //                   }
-                                  //                 },
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //         streamSnapshot.data!.msg != null
-                                  //             ? Text(
-                                  //                 streamSnapshot.data!.msg!,
-                                  //                 style: TextStyle(
-                                  //                     color: streamSnapshot
-                                  //                         .data!
-                                  //                         .msgFontColor),
-                                  //               )
-                                  //             : const SizedBox(),
-                                  //         const SizedBox(
-                                  //           height: 10,
-                                  //         ),
-                                  //         Center(
-                                  //           child: ElevatedButton(
-                                  //               style: ElevatedButton.styleFrom(
-                                  //                   minimumSize:
-                                  //                       const Size(200, 50),
-                                  //                   maximumSize:
-                                  //                       const Size(200, 50),
-                                  //                   backgroundColor: streamSnapshot
-                                  //                                   .data!
-                                  //                                   .isBookingValid ==
-                                  //                               true ||
-                                  //                           brownseHomestayFlag ==
-                                  //                               true
-                                  //                       ? primaryColor
-                                  //                       : Colors.grey),
-                                  //               onPressed: () {
-                                  //                 if (streamSnapshot.data!
-                                  //                             .isBookingValid ==
-                                  //                         true ||
-                                  //                     brownseHomestayFlag ==
-                                  //                         true) {
-                                  //                   homestayDetailBloc
-                                  //                       .eventController
-                                  //                       .sink
-                                  //                       .add(CreateBookingEvent(
-                                  //                           context:
-                                  //                               context,
-                                  //                           homestay: data,
-                                  //                           bookingStart:
-                                  //                               bookingStartDateTextEditingController
-                                  //                                   .text,
-                                  //                           bookingEnd:
-                                  //                               bookingEndDateTextEditingController
-                                  //                                   .text));
-                                  //                 }
-                                  //               },
-                                  //               child: const Text(
-                                  //                 "Book",
-                                  //                 style: TextStyle(
-                                  //                     fontFamily: "Lobster",
-                                  //                     fontWeight:
-                                  //                         FontWeight.bold),
-                                  //               )),
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //   )
-
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  const Text(
+                                    "Landlord",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Lobster",
+                                        color: primaryColor),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    width: 300,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: const Border.fromBorderSide(
+                                          BorderSide(
+                                              color: Colors.black, width: 1.0)),
+                                    ),
+                                    child: Row(children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: FutureBuilder(
+                                          future: imageService.getLandlordImage(
+                                              data.landlord!.avatarUrl!),
+                                          builder: (context, imgSnapshot) {
+                                            switch (snapshot.connectionState) {
+                                              case ConnectionState.waiting:
+                                                return Container(
+                                                  width: 450,
+                                                  height: 200,
+                                                  color: Colors.white24,
+                                                );
+                                              case ConnectionState.done:
+                                                final imageData =
+                                                    imgSnapshot.data;
+                                                String imageUrl = imageData ??
+                                                    "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                                return AdvancedAvatar(
+                                                  size: 70,
+                                                  image: NetworkImage(imageUrl),
+                                                );
+                                              default:
+                                                break;
+                                            }
+                                            return Container(
+                                              margin: const EdgeInsets.only(
+                                                  left: 10, right: 10),
+                                              width: 450,
+                                              height: 200,
+                                              color: Colors.white24,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text("Name:",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(utf8.decode(data
+                                                    .landlord!.username!.runes
+                                                    .toList()))
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("Email:",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Flexible(
+                                                    child: Text(
+                                                  data.landlord!.email!,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ))
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text("Phone:",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(data.landlord!.phone!)
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ]),
+                                  ),
                                   const SizedBox(
                                     height: 30,
                                   ),
@@ -817,7 +846,7 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                       : Center(
                                           child: Container(
                                             height: 100,
-                                            width: 250,
+                                            width: 300,
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20),
@@ -1324,7 +1353,6 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                           ],
                                         )
                                       : const SizedBox(),
-
                                   !isHomestayInBloc
                                       ? Column(
                                           children: [
@@ -1484,7 +1512,6 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                       },
                                     ),
                                   ),
-
                                   !isHomestayInBloc
                                       ? Column(
                                           children: [

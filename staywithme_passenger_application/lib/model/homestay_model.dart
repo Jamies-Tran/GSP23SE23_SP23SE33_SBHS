@@ -1,5 +1,6 @@
 import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/campaign_model.dart';
+import 'package:staywithme_passenger_application/model/passenger_model.dart';
 
 class HomestayModel {
   HomestayModel(
@@ -8,6 +9,7 @@ class HomestayModel {
       this.price,
       this.address,
       this.cityProvince,
+      this.createdDate,
       this.availableRooms,
       this.roomCapacity,
       this.totalAverageRating,
@@ -20,13 +22,15 @@ class HomestayModel {
       this.homestayRules,
       this.ratings,
       this.campaigns,
-      this.totalBookings});
+      this.totalBookings,
+      this.landlord});
 
   int? id;
   String? name;
   int? price;
   String? address;
   String? cityProvince;
+  String? createdDate;
   int? availableRooms;
   int? roomCapacity;
   double? totalAverageRating;
@@ -40,6 +44,7 @@ class HomestayModel {
   List<RatingModel>? ratings;
   List<CampaignModel>? campaigns;
   int? totalBookings;
+  LandlordModel? landlord;
 
   factory HomestayModel.fromJson(Map<String, dynamic> json) => HomestayModel(
       id: json["id"],
@@ -47,6 +52,7 @@ class HomestayModel {
       price: json["price"],
       address: json["address"],
       cityProvince: json["cityProvince"],
+      createdDate: json["createdDate"],
       availableRooms: json["availableRooms"],
       roomCapacity: json["roomCapacity"],
       totalAverageRating: json["totalAverageRating"],
@@ -75,7 +81,8 @@ class HomestayModel {
           ? List<RatingModel>.from(json["ratings"].map((e) => RatingModel.fromJson(e)))
           : <RatingModel>[],
       campaigns: json["campaignListResponse"] != null ? List<CampaignModel>.from(json["campaignListResponse"].map((e) => CampaignModel.fromJson(e))) : <CampaignModel>[],
-      totalBookings: json["totalBookings"]);
+      totalBookings: json["totalBookings"],
+      landlord: LandlordModel.fromJson(json["landlord"]));
 
   Map<String, dynamic> toJson() => {"name": name, "price": price};
 }

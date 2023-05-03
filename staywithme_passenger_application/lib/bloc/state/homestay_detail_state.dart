@@ -3,11 +3,18 @@ import 'package:staywithme_passenger_application/model/campaign_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 
 class HomestayDetailState {
-  HomestayDetailState({this.msg, this.msgFontColor, this.isBookingValid});
+  HomestayDetailState(
+      {this.msg, this.msgFontColor, this.isBookingValid, this.imgIndex});
 
   String? msg;
   bool? isBookingValid;
   Color? msgFontColor;
+  int? imgIndex;
+
+  HomestayImageModel currentHomestayImage(
+      List<HomestayImageModel> homestayImages) {
+    return homestayImages[imgIndex!];
+  }
 
   double averageRating(List<RatingModel> ratingList, String pointType) {
     double average = 0.0;

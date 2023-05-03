@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:flutter/material.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_detail_event.dart';
 import 'package:staywithme_passenger_application/bloc/state/homestay_detail_state.dart';
@@ -24,9 +23,10 @@ class HomestayDetailBloc {
   String? _msg;
   Color? _msgFontColor;
   bool? _isBookingDateValid;
+  int? _imgIndex = 0;
 
-  HomestayDetailState iniData() =>
-      HomestayDetailState(msg: null, msgFontColor: null, isBookingValid: false);
+  HomestayDetailState iniData() => HomestayDetailState(
+      msg: null, msgFontColor: null, isBookingValid: false, imgIndex: 0);
 
   void dispose() {
     eventController.close();
@@ -148,56 +148,6 @@ class HomestayDetailBloc {
                 ]),
           );
         } else {
-          //   final bookingData = await _bookingService.createBooking(
-          //       HomestayType.homestay.name,
-          //       event.bookingStart!,
-          //       event.bookingEnd!);
-          //   if (bookingData is BookingModel) {
-          //     Navigator.pushNamed(event.context!,
-          //         BookingHomestayScreen.bookingHomestayScreenRoute,
-          //         arguments: {
-          //           "homestay": event.homestay,
-          //           "bookingId": bookingData.id,
-          //           "bookingStart": event.bookingStart,
-          //           "bookingEnd": event.bookingEnd
-          //         });
-          //   } else if (bookingData is ServerExceptionModel) {
-          //     showDialog(
-          //       context: event.context!,
-          //       builder: (context) => AlertDialog(
-          //         title: const Center(child: Text("Notice")),
-          //         content: SizedBox(
-          //             height: 200,
-          //             width: 200,
-          //             child: Text("${bookingData.message}")),
-          //         actions: [
-          //           TextButton(
-          //               onPressed: () {
-          //                 Navigator.pop(context);
-          //               },
-          //               child: const Text("Cancel")),
-          //         ],
-          //       ),
-          //     );
-          //   } else if (bookingData is TimeoutException ||
-          //       bookingData is SocketException) {
-          //     showDialog(
-          //       context: event.context!,
-          //       builder: (context) => AlertDialog(
-          //         title: const Center(child: Text("Notice")),
-          //         content: const SizedBox(
-          //             height: 200, width: 200, child: Text("Network error")),
-          //         actions: [
-          //           TextButton(
-          //               onPressed: () {
-          //                 Navigator.pop(context);
-          //               },
-          //               child: const Text("Cancel")),
-          //         ],
-          //       ),
-          //     );
-          //   }
-          // }
           Navigator.pushNamed(
               event.context!,
               ChooseBookingDateForHomestayScreen
@@ -214,10 +164,19 @@ class HomestayDetailBloc {
       Navigator.pushNamed(
           event.context!, BlocDetailScreen.blocDetailScreenRoute,
           arguments: {"blocName": event.blocName});
+    } else if (event is PreviousHomestayImageEvent) {
+      if (_imgIndex! >= 1) {
+        _imgIndex = _imgIndex! - 1;
+      }
+    } else if (event is NextHomestayImageEvent) {
+      if (_imgIndex! < event.maxImage!) {
+        _imgIndex = _imgIndex! + 1;
+      }
     }
     stateController.sink.add(HomestayDetailState(
         msg: _msg,
         msgFontColor: _msgFontColor,
-        isBookingValid: _isBookingDateValid));
+        isBookingValid: _isBookingDateValid,
+        imgIndex: _imgIndex));
   }
 }

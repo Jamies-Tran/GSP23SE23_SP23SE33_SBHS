@@ -39,3 +39,9 @@ class ChooseSortByEvent extends SearchHomestayEvent {
 
   String? sortBy;
 }
+
+class SearchHomestayByStringEvent extends SearchHomestayEvent {
+  SearchHomestayByStringEvent({this.searchString});
+
+  String? searchString;
+}

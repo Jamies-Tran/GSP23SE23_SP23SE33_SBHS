@@ -285,7 +285,7 @@ class _PassengerWalletScreen extends State<PassengerWalletScreen> {
                                                                   .amount)),
                                                         ),
                                                         const Expanded(
-                                                          flex: 2,
+                                                          flex: 1,
                                                           child: Text(
                                                             "VND",
                                                           ),
@@ -435,6 +435,21 @@ class _PassengerWalletScreen extends State<PassengerWalletScreen> {
                                                             letterSpacing: 1.0),
                                                       ),
                                                     ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Text(
+                                                        "Status",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "Lobster",
+                                                            fontSize: 15,
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            letterSpacing: 1.0),
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -464,7 +479,7 @@ class _PassengerWalletScreen extends State<PassengerWalletScreen> {
                                                           Expanded(
                                                             flex: 2,
                                                             child: Text(
-                                                                "${bookingDeposit.booking!.code}"),
+                                                                "${bookingDeposit.booking!.code}", style: const TextStyle(fontSize: 13),),
                                                           ),
                                                           Expanded(
                                                             flex: 1,
@@ -472,15 +487,18 @@ class _PassengerWalletScreen extends State<PassengerWalletScreen> {
                                                                 currencyFormat.format(
                                                                     bookingDeposit
                                                                         .unpaidAmount),
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .red)),
+                                                                style:  TextStyle(
+                                                                    color: bookingDeposit.status! == "PAID" ? Colors.green : Colors.red, fontSize: 13)),
                                                           ),
                                                           Expanded(
                                                             flex: 1,
                                                             child: Text(currencyFormat
                                                                 .format(bookingDeposit
-                                                                    .paidAmount)),
+                                                                    .paidAmount), style: const TextStyle(fontSize:13),),
+                                                          ),
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Text(bookingDeposit.status!, style:  TextStyle(fontSize: 13, color: bookingDeposit.status! == "PAID" ? Colors.green : Colors.red),),
                                                           ),
                                                         ]);
                                                   },

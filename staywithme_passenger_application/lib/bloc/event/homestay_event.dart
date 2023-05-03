@@ -28,3 +28,17 @@ class OnClickCampaignEvent extends HomestayEvent {
   Position? position;
   String? campaignName;
 }
+
+class ViewHomestayDetailEvent extends HomestayEvent {
+  ViewHomestayDetailEvent({this.context, this.homestayName});
+
+  BuildContext? context;
+  String? homestayName;
+}
+
+class ViewBlocHomestayDetailEvent extends HomestayEvent {
+  ViewBlocHomestayDetailEvent({this.context, this.blocName});
+
+  BuildContext? context;
+  String? blocName;
+}
