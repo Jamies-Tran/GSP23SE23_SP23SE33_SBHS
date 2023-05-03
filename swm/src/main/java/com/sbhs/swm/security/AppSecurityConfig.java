@@ -53,6 +53,6 @@ public class AppSecurityConfig {
         return (web) -> web.ignoring().antMatchers("/swagger-ui.html/**", "/webjars/springfox-swagger-ui/**",
                 "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/swagger-ui.html",
                 "/swagger-ui.html/**", "/api/user/*", "/api/admin/first", "/api/payment/redirect", "/api/map/**",
-                "/api/homestay/user/**", "/api/booking/user/**", "/api/campaign/list");
+                "/api/homestay/user/**", "/api/booking/user/**", "/api/campaign/list", "/templates/*", "/payment-success");
     }
 }

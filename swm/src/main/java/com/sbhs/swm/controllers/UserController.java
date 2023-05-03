@@ -108,35 +108,34 @@ public class UserController {
                     }
                 }
             }
-            if (user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits() != null) {
-                Long unpaidDeposit = 0L;
-                Long userCurrentBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
-                for (Deposit d : user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits()) {
-                    for (BookingDeposit bd : d.getBookingDeposits()) {
-                        if (bd.getStatus().equalsIgnoreCase(DepositStatus.UNPAID.name())) {
-                            unpaidDeposit = unpaidDeposit + bd.getUnpaidAmount();
-                        }
-                    }
-                }
-                userCurrentBalance = userCurrentBalance - unpaidDeposit;
-                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(userCurrentBalance);
-            } else {
-                Long userCurrentBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
-                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(userCurrentBalance);
-            }
+            
 
         }
         user.getRoles().forEach(r -> {
             if (r.getName().equalsIgnoreCase("passenger")) {
                 responseUser
                         .setPassengerProperty(modelMapper.map(user.getPassengerProperty(), PassengerResponseDto.class));
-                Long actualPassengerWalletBalance = userService.getUserActualBalance(r.getName(), user);
-                responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(actualPassengerWalletBalance);
+                        if (user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits() != null) {
+                            Long unpaidDeposit = 0L;
+                            Long userCurrentBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+                            for (Deposit d : user.getPassengerProperty().getBalanceWallet().getPassengerWallet().getDeposits()) {
+                                for (BookingDeposit bd : d.getBookingDeposits()) {
+                                    if (bd.getStatus().equalsIgnoreCase(DepositStatus.UNPAID.name())) {
+                                        unpaidDeposit = unpaidDeposit + bd.getUnpaidAmount();
+                                    }
+                                }
+                            }
+                            userCurrentBalance = userCurrentBalance - unpaidDeposit;
+                            responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(userCurrentBalance);
+                        } else {
+                            Long userCurrentBalance = user.getPassengerProperty().getBalanceWallet().getTotalBalance();
+                            responseUser.getPassengerProperty().getBalanceWallet().setActualBalance(userCurrentBalance);
+                        }
             } else if (r.getName().equalsIgnoreCase("landlord")) {
                 responseUser
                         .setLandlordProperty(modelMapper.map(user.getLandlordProperty(), LandlordResponseDto.class));
-                Long actualLandlordWalletBalance = userService.getUserActualBalance(r.getName(), user);
-                responseUser.getLandlordProperty().getBalanceWallet().setActualBalance(actualLandlordWalletBalance);
+                
+                responseUser.getLandlordProperty().getBalanceWallet().setActualBalance(user.getLandlordProperty().getBalanceWallet().getTotalBalance());
             }
         });
         responseUser.setRoleIds(user.getRoles().stream().map(r -> r.getId()).collect(Collectors.toList()));

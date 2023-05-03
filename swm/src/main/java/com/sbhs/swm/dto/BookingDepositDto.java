@@ -16,4 +16,5 @@ public class BookingDepositDto {
     private Long paidAmount;
     private Long unpaidAmount;
     private String depositForHomestay;
+    private String status;
 }
