@@ -30,6 +30,7 @@ import com.sbhs.swm.models.BalanceWallet;
 import com.sbhs.swm.models.BookingDeposit;
 import com.sbhs.swm.models.Deposit;
 import com.sbhs.swm.models.Landlord;
+import com.sbhs.swm.models.LandlordCommission;
 import com.sbhs.swm.models.LandlordWallet;
 import com.sbhs.swm.models.Passenger;
 import com.sbhs.swm.models.PassengerWallet;
@@ -314,6 +315,12 @@ public class UserService implements IUserService {
             pagedListHolder.previousPage();
         }
         return pagedListHolder;
+    }
+
+    @Override
+    public List<LandlordCommission> getLandlordCommissionList() {
+        SwmUser user = this.authenticatedUser();
+        return user.getLandlordProperty().getBalanceWallet().getLandlordWallet().getLandlordCommissions();
     }
 
 }

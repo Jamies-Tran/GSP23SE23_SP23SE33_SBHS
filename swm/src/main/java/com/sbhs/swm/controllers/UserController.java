@@ -26,6 +26,7 @@ import com.sbhs.swm.dto.request.LoginRequestDto;
 import com.sbhs.swm.dto.request.SwmUserRequestDto;
 import com.sbhs.swm.dto.response.BlocHomestayResponseDto;
 import com.sbhs.swm.dto.response.BookingResponseDto;
+import com.sbhs.swm.dto.response.LandlordCommissionResponseDto;
 import com.sbhs.swm.dto.response.LandlordResponseDto;
 import com.sbhs.swm.dto.response.LoginResponseDto;
 import com.sbhs.swm.dto.response.PassengerResponseDto;
@@ -33,6 +34,7 @@ import com.sbhs.swm.dto.response.SwmUserResponseDto;
 import com.sbhs.swm.models.Booking;
 import com.sbhs.swm.models.BookingDeposit;
 import com.sbhs.swm.models.Deposit;
+import com.sbhs.swm.models.LandlordCommission;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.DepositStatus;
 import com.sbhs.swm.security.JwtConfiguration;
@@ -190,5 +192,15 @@ public class UserController {
     public ResponseEntity<?> passwordModification(@RequestBody String password, @RequestParam String email) {
         userService.changePassword(password, email);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    public ResponseEntity<?> getCommissionList() {
+        List<LandlordCommission> landlordCommissions = userService.getLandlordCommissionList();
+        List<LandlordCommissionResponseDto> responseCommissions = landlordCommissions.stream()
+                .map(c -> modelMapper.map(c, LandlordCommissionResponseDto.class)).collect(Collectors.toList());
+
+        return new ResponseEntity<List<LandlordCommissionResponseDto>>(responseCommissions, HttpStatus.OK);
     }
 }
