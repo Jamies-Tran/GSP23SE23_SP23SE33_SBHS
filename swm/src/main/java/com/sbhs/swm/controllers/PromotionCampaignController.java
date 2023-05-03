@@ -43,7 +43,6 @@ public class PromotionCampaignController {
         }
 
         @GetMapping("/list")
-        @PreAuthorize("hasAnyRole('ROLE_LANDLORD', 'ROLE_PASSENGER')")
         public ResponseEntity<?> getPromotionCampaignListByStatus(String status, int page, int size, boolean isNextPage,
                         boolean isPreviousPage) {
                 PagedListHolder<PromotionCampaign> promotionCampaignPagedList = promotionCampaignService

@@ -363,6 +363,26 @@ public class BookingController {
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
     }
 
+    @PutMapping("/homestay/cancel")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> cancelBookingHomestay(Long bookingId, Long homestayId) {
+        BookingHomestay bookingHomestay = bookingService.cancelBookingHomestay(bookingId, homestayId, false);
+        BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
+                BookingHomestayResponseDto.class);
+
+        return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
+    }
+
+    @PutMapping("/bloc/cancel")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    public ResponseEntity<?> cancelBookingBloc(Long bookingId) {
+        Booking booking = bookingService.cancelBookingBloc(bookingId, false);
+        BookingResponseDto responseBooking = modelMapper.map(booking,
+                BookingResponseDto.class);
+
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
+
     @PutMapping("/homestay/check-out")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> checkOutForHomestay(Long bookingId, Long homestayId) {

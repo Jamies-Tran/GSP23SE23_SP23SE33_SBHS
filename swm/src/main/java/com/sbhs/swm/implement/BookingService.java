@@ -847,8 +847,9 @@ public class BookingService implements IBookingService {
     @Override
     @Transactional
     public BookingHomestay rejectBookingForHomestay(Long bookingId, Long homestayId, String message) {
-        SwmUser user = userService.authenticatedUser();
+
         BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId).get();
+        SwmUser user = bookingHomestay.getHomestay().getLandlord().getUser();
         bookingHomestay.setStatus(BookingStatus.REJECTED.name());
         bookingHomestay.setUpdatedBy(user.getUsername());
         bookingHomestay.setUpdatedDate(dateFormatUtil.formatDateTimeNowToString());
@@ -919,7 +920,6 @@ public class BookingService implements IBookingService {
     @Transactional
     public BookingHomestay checkInForHomestay(Long bookingId, Long homestayId) {
         BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId).get();
-
         bookingHomestay.setStatus(BookingStatus.CHECKEDIN.name());
 
         return bookingHomestay;
@@ -940,12 +940,24 @@ public class BookingService implements IBookingService {
     @Override
     @Transactional
     public BookingHomestay checkOutForHomestay(Long bookingId, Long homestayId) {
-        SwmUser user = userService.authenticatedUser();
+
         BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId).get();
         Landlord landlord = bookingHomestay.getHomestay().getLandlord();
         Booking booking = bookingHomestay.getBooking();
+        SwmUser user = booking.getPassenger().getUser();
+        boolean isBookingFinished = false;
 
         bookingHomestay.setStatus(BookingStatus.CHECKEDOUT.name());
+        for (BookingHomestay bh : bookingHomestay.getBooking().getBookingHomestays()) {
+            if (bh.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name())
+                    || bh.getStatus().equalsIgnoreCase(BookingStatus.CANCELED.name())
+                    || bh.getStatus().equalsIgnoreCase(BookingStatus.REJECTED.name())) {
+                isBookingFinished = true;
+            }
+        }
+        if (isBookingFinished) {
+            bookingHomestay.getBooking().setStatus(BookingStatus.FINISHED.name());
+        }
         if (bookingHomestay.getHomestay().getCampaigns() != null) {
             for (PromotionCampaign p : bookingHomestay.getHomestay().getCampaigns()) {
                 if (p.getStatus().equalsIgnoreCase(PromotionCampaignStatus.PROGRESSING.name())) {
@@ -958,11 +970,7 @@ public class BookingService implements IBookingService {
                 }
             }
         }
-        if (booking.getBookingHomestays().stream()
-                .allMatch(b -> b.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name())
-                        || b.getStatus().equalsIgnoreCase(BookingStatus.REJECTED.name()))) {
-            booking.setStatus(BookingStatus.FINISHED.name());
-        }
+
         if (bookingHomestay.getPaymentMethod().equalsIgnoreCase(PaymentMethod.SWM_WALLET.name())) {
             BookingDeposit bookingDeposit = bookingHomestay.getBooking().getBookingDeposits().stream()
                     .filter(d -> d.getDepositForHomestay().equals(bookingHomestay.getHomestay().getName())).findAny()
@@ -1333,8 +1341,9 @@ public class BookingService implements IBookingService {
     @Override
     @Transactional
     public Booking rejectBookingForBloc(Long bookingId, String message) {
-        SwmUser user = userService.authenticatedUser();
+
         Booking booking = this.findBookingById(bookingId);
+        SwmUser user = booking.getBloc().getLandlord().getUser();
         booking.setStatus(BookingStatus.REJECTED.name());
         for (BookingHomestay b : booking.getBookingHomestays()) {
             b.setStatus(BookingStatus.REJECTED.name());
@@ -1371,6 +1380,78 @@ public class BookingService implements IBookingService {
     public List<Booking> getLandlordBookingBlocList(String blocName, String status) {
         List<Booking> bookings = bookingRepo.findBookingBlocListByBlocNameAndStatus(blocName, status);
         return bookings;
+    }
+
+    @Override
+    @Transactional
+    public BookingHomestay cancelBookingHomestay(Long bookingId, Long homestayId, boolean isMissedCheckinDate) {
+        BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId).get();
+        bookingHomestay.setStatus(BookingStatus.CANCELED.name());
+        boolean isBookingFinished = false;
+        for (BookingHomestay bh : bookingHomestay.getBooking().getBookingHomestays()) {
+            if (bh.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name())
+                    || bh.getStatus().equalsIgnoreCase(BookingStatus.CANCELED.name())
+                    || bh.getStatus().equalsIgnoreCase(BookingStatus.REJECTED.name())) {
+                isBookingFinished = true;
+            }
+        }
+        if (isBookingFinished) {
+            bookingHomestay.getBooking().setStatus(BookingStatus.FINISHED.name());
+        }
+
+        return bookingHomestay;
+    }
+
+    @Override
+    @Transactional
+    public Booking cancelBookingBloc(Long bookingId, boolean isMissedCheckinDate) {
+        Booking booking = this.findBookingById(bookingId);
+        booking.setStatus(BookingStatus.CANCELED.name());
+
+        return booking;
+    }
+
+    @Override
+    @Transactional
+    public void bookingDateHandler() {
+        List<Booking> bookings = bookingRepo.findAll();
+        for (Booking b : bookings) {
+            if (dateFormatUtil.formatGivenDate(b.getBookingFrom()).compareTo(dateFormatUtil.formatDateTimeNow()) == 1) {
+
+                if (b.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name())) {
+                    b.setStatus(BookingStatus.FINISHED.name());
+                    for (BookingHomestay bh : b.getBookingHomestays()) {
+                        if (bh.getStatus().equalsIgnoreCase(BookingStatus.ACCEPTED.name())) {
+                            this.cancelBookingHomestay(bh.getBooking().getId(), bh.getHomestay().getId(), true);
+                        } else if (bh.getStatus().equalsIgnoreCase(BookingStatus.PENDING.name())) {
+                            this.rejectBookingForHomestay(bh.getBooking().getId(), bh.getHomestay().getId(),
+                                    "Homestay won't receive any guest right now");
+                        }
+                    }
+                } else {
+                    if (b.getStatus().equalsIgnoreCase(BookingStatus.ACCEPTED.name())) {
+                        this.cancelBookingBloc(b.getId(), true);
+                    } else if (b.getStatus().equalsIgnoreCase(BookingStatus.PENDING.name())) {
+                        this.rejectBookingForBloc(b.getId(), "Block homestay won't receive any guest right now");
+                    }
+                }
+            }
+            if (dateFormatUtil.formatGivenDate(b.getBookingTo())
+                    .compareTo(dateFormatUtil.formatDateTimeNow()) == 1) {
+                if (b.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name())) {
+                    b.setStatus(BookingStatus.FINISHED.name());
+                    for (BookingHomestay bh : b.getBookingHomestays()) {
+                        if (bh.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDIN.name())) {
+                            this.checkOutForHomestay(bh.getBooking().getId(), bh.getHomestay().getId());
+                        }
+                    }
+                } else {
+                    if (b.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDIN.name())) {
+                        this.checkOutForBloc(b.getId());
+                    }
+                }
+            }
+        }
     }
 
 }

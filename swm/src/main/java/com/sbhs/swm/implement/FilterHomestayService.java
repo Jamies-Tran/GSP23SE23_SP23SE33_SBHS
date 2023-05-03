@@ -11,6 +11,7 @@ import com.sbhs.swm.dto.goong.DistanceResultRows;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayFacility;
 import com.sbhs.swm.models.HomestayService;
+import com.sbhs.swm.models.PromotionCampaign;
 import com.sbhs.swm.repositories.HomestayRepo;
 import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IFilterHomestayService;
@@ -98,6 +99,13 @@ public class FilterHomestayService implements IFilterHomestayService {
             } else if (h.getName().toLowerCase().contains(searchString.toLowerCase())
                     || h.getAddress().toLowerCase().contains(searchString.toLowerCase())) {
                 return true;
+            }
+            if (h.getCampaigns() != null) {
+                for (PromotionCampaign c : h.getCampaigns()) {
+                    if (c.getName().equals(searchString)) {
+                        return true;
+                    }
+                }
             }
             return false;
         }).collect(Collectors.toList());

@@ -1,5 +1,7 @@
 package com.sbhs.swm.implement;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +17,7 @@ import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.HomestayFacility;
 import com.sbhs.swm.models.HomestayService;
-
+import com.sbhs.swm.models.PromotionCampaign;
 import com.sbhs.swm.repositories.BlocHomestayRepo;
 
 import com.sbhs.swm.services.IFilterBlocHomestayService;
@@ -109,6 +111,14 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
         DistanceResultRows distanceResultRows = goongService.getDistanceFromLocation(address, destinations, isGeometry);
         List<DistanceElement> distanceElements = distanceResultRows.getRows().get(0).getElements().stream()
                 .filter(e -> e.getDistance().getValue() <= distance).collect(Collectors.toList());
+        Collections.sort(distanceElements, new Comparator<DistanceElement>() {
+
+            @Override
+            public int compare(DistanceElement d1, DistanceElement d2) {
+                return d1.getDistance().getValue().compareTo(d2.getDistance().getValue());
+            }
+
+        });
         blocs = distanceElements.stream()
                 .map(d -> blocHomestayRepo.findBlocHomestayByAddress(d.getAddress()).get())
                 .collect(Collectors.toList());
@@ -173,6 +183,13 @@ public class FilterBlocHomestayService implements IFilterBlocHomestayService {
                     || b.getName().toLowerCase().contains(searchString)
                     || b.getAddress().toLowerCase().contains(searchString)) {
                 return true;
+            }
+            if (b.getCampaigns() != null) {
+                for (PromotionCampaign c : b.getCampaigns()) {
+                    if (c.getName().equals(searchString)) {
+                        return true;
+                    }
+                }
             }
             return false;
         }).collect(Collectors.toList());

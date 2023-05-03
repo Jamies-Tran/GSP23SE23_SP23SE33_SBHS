@@ -81,4 +81,10 @@ public interface IBookingService {
         Booking acceptBookingForBloc(Long bookingId);
 
         Booking rejectBookingForBloc(Long bookingId, String message);
+
+        BookingHomestay cancelBookingHomestay(Long bookingId, Long homestayId, boolean isMissedCheckinDate);
+
+        Booking cancelBookingBloc(Long bookingId, boolean isMissedCheckinDate);
+
+        void bookingDateHandler();
 }

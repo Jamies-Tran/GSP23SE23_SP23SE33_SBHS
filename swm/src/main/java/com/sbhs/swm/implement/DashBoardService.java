@@ -21,16 +21,13 @@ import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.status.BookingStatus;
 import com.sbhs.swm.models.status.HomestayStatus;
 import com.sbhs.swm.models.status.LandlordStatus;
-import com.sbhs.swm.repositories.HomestayRepo;
+
 import com.sbhs.swm.repositories.UserRepo;
 import com.sbhs.swm.services.IDashBoardService;
 import com.sbhs.swm.services.IUserService;
 
 @Service
 public class DashBoardService implements IDashBoardService {
-
-    @Autowired
-    private HomestayRepo homestayRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -175,9 +172,9 @@ public class DashBoardService implements IDashBoardService {
                         }
                     }
                 }
-                if(user.getLandlordProperty().getBlocHomestays() != null) {
-                    for(BlocHomestay b : user.getLandlordProperty().getBlocHomestays()) {
-                        if(b.getStatus().equalsIgnoreCase(HomestayStatus.ACTIVATING.name())) {
+                if (user.getLandlordProperty().getBlocHomestays() != null) {
+                    for (BlocHomestay b : user.getLandlordProperty().getBlocHomestays()) {
+                        if (b.getStatus().equalsIgnoreCase(HomestayStatus.ACTIVATING.name())) {
                             totalActivatingBloc = totalActivatingBloc + 1;
                         }
                     }
@@ -192,9 +189,9 @@ public class DashBoardService implements IDashBoardService {
             } else if (user.getPassengerProperty() != null) {
                 totalPassenger = totalPassenger + 1;
                 Long totalPassengerBooking = 0L;
-                if(user.getPassengerProperty().getBookings() != null) {
-                    for(Booking b : user.getPassengerProperty().getBookings()) {
-                        if(!b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())) {
+                if (user.getPassengerProperty().getBookings() != null) {
+                    for (Booking b : user.getPassengerProperty().getBookings()) {
+                        if (!b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name())) {
                             totalPassengerBooking = totalPassengerBooking + 1;
                         }
                     }
@@ -214,6 +211,5 @@ public class DashBoardService implements IDashBoardService {
         adminDashboard.setLandlordTable(landlordTable);
         return adminDashboard;
     }
-
 
 }
