@@ -945,14 +945,13 @@ public class BookingService implements IBookingService {
         Landlord landlord = bookingHomestay.getHomestay().getLandlord();
         Booking booking = bookingHomestay.getBooking();
         SwmUser user = booking.getPassenger().getUser();
-        boolean isBookingFinished = false;
+        boolean isBookingFinished = true;
 
         bookingHomestay.setStatus(BookingStatus.CHECKEDOUT.name());
         for (BookingHomestay bh : bookingHomestay.getBooking().getBookingHomestays()) {
-            if (bh.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name())
-                    || bh.getStatus().equalsIgnoreCase(BookingStatus.CANCELED.name())
-                    || bh.getStatus().equalsIgnoreCase(BookingStatus.REJECTED.name())) {
-                isBookingFinished = true;
+            if (bh.getStatus().equalsIgnoreCase(BookingStatus.PENDING.name()) || bh.getStatus()
+                    .equalsIgnoreCase(BookingStatus.CHECKEDIN.name())) {
+                isBookingFinished = false;
             }
         }
         if (isBookingFinished) {
