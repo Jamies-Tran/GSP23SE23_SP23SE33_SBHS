@@ -20,3 +20,11 @@ class OnClickAreaEvent extends HomestayEvent {
   String? cityProvince;
   BuildContext? context;
 }
+
+class OnClickCampaignEvent extends HomestayEvent {
+  OnClickCampaignEvent({this.context, this.position, this.campaignName});
+
+  BuildContext? context;
+  Position? position;
+  String? campaignName;
+}

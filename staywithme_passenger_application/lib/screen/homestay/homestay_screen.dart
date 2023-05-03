@@ -5,11 +5,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:staywithme_passenger_application/bloc/event/homestay_event.dart';
 import 'package:staywithme_passenger_application/bloc/homestay_bloc.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
-import 'package:staywithme_passenger_application/model/bloc_model.dart';
+import 'package:staywithme_passenger_application/model/campaign_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_city_province_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
+import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';
 import 'package:staywithme_passenger_application/service/image_service.dart';
+import 'package:staywithme_passenger_application/service/promotion/campaign_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
@@ -26,6 +28,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
   final userService = locator.get<IUserService>();
   final homestayService = locator.get<IHomestayService>();
   final imageService = locator.get<IImageService>();
+  final campaignService = locator.get<ICampaignService>();
   final homestayBloc = HomestayBloc();
 
   @override
@@ -92,6 +95,313 @@ class _HomestayScreenState extends State<HomestayScreen> {
                 ),
                 const SizedBox(
                   height: 30,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white10),
+                  height: 408,
+                  margin: const EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    children: [
+                      TweenAnimationBuilder(
+                          tween: Tween<double>(begin: 0, end: 1),
+                          duration: const Duration(seconds: 4),
+                          builder: (context, value, child) => Opacity(
+                                opacity: value,
+                                child: child,
+                              ),
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 10),
+                            child: const Text(
+                              "Promotion for you",
+                              style: TextStyle(
+                                  fontFamily: "Lobster",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.lightBlueAccent,
+                                  fontSize: 30),
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      FutureBuilder(
+                        future: campaignService.getCampaignListByStatus(
+                            "PROGRESSING", 0, 2000, true, true),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return SizedBox(
+                                height: 150,
+                                width: MediaQuery.of(context).size.width,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) =>
+                                      TweenAnimationBuilder(
+                                    tween: Tween<double>(
+                                      begin: 0,
+                                      end: 1,
+                                    ),
+                                    duration: const Duration(seconds: 1),
+                                    builder: (context, value, child) => Opacity(
+                                      opacity: value,
+                                      child: child,
+                                    ),
+                                    child: TweenAnimationBuilder(
+                                      tween: Tween<double>(begin: 1, end: 0),
+                                      duration: const Duration(seconds: 3),
+                                      builder: (context, value, child) =>
+                                          Opacity(
+                                        opacity: value,
+                                        child: child,
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white10,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        height: 200,
+                                        width: 200,
+                                        margin: const EdgeInsets.only(left: 10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            case ConnectionState.done:
+                              if (snapshot.hasData) {
+                                final data = snapshot.data;
+                                if (data is CampaignListPagingModel) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      data.campaigns!.isNotEmpty
+                                          ? SizedBox(
+                                              height: 350,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.campaigns!.length > 5
+                                                          ? 5
+                                                          : data.campaigns!
+                                                              .length,
+                                                  itemBuilder:
+                                                      (context, index) =>
+                                                          TweenAnimationBuilder(
+                                                            tween:
+                                                                Tween<double>(
+                                                                    begin: 0,
+                                                                    end: 1),
+                                                            duration:
+                                                                const Duration(
+                                                                    seconds: 4),
+                                                            builder: (context,
+                                                                    value,
+                                                                    child) =>
+                                                                Opacity(
+                                                              opacity: value,
+                                                              child: child,
+                                                            ),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () => homestayBloc
+                                                                  .eventController
+                                                                  .sink
+                                                                  .add(OnClickCampaignEvent(
+                                                                      context:
+                                                                          context,
+                                                                      campaignName: utf8.decode(data
+                                                                          .campaigns![
+                                                                              index]
+                                                                          .name!
+                                                                          .runes
+                                                                          .toList()),
+                                                                      position:
+                                                                          widget
+                                                                              .position)),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  FutureBuilder(
+                                                                    future: imageService.getCampaignImage(data
+                                                                        .campaigns![
+                                                                            index]
+                                                                        .thumbnailUrl!),
+                                                                    builder:
+                                                                        (context,
+                                                                            imageSnapshot) {
+                                                                      switch (imageSnapshot
+                                                                          .connectionState) {
+                                                                        case ConnectionState
+                                                                            .waiting:
+                                                                          return Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                200,
+                                                                            margin:
+                                                                                const EdgeInsets.only(left: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              top: 50,
+                                                                            ),
+                                                                            decoration:
+                                                                                const BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                          );
+                                                                        case ConnectionState
+                                                                            .done:
+                                                                          String
+                                                                              imageUrl =
+                                                                              imageSnapshot.data ?? "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                                                          return Container(
+                                                                            height:
+                                                                                150,
+                                                                            width:
+                                                                                200,
+                                                                            margin:
+                                                                                const EdgeInsets.only(left: 10),
+                                                                            padding:
+                                                                                const EdgeInsets.only(
+                                                                              top: 50,
+                                                                            ),
+                                                                            decoration:
+                                                                                BoxDecoration(image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.fill), borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                          );
+                                                                        default:
+                                                                          break;
+                                                                      }
+                                                                      return Container(
+                                                                        height:
+                                                                            100,
+                                                                        width:
+                                                                            200,
+                                                                        margin: const EdgeInsets.only(
+                                                                            left:
+                                                                                10),
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          top:
+                                                                              50,
+                                                                        ),
+                                                                        decoration: const BoxDecoration(
+                                                                            color:
+                                                                                Colors.white24,
+                                                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  Container(
+                                                                    height: 100,
+                                                                    width: 200,
+                                                                    margin: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10),
+                                                                    decoration: const BoxDecoration(
+                                                                        borderRadius: BorderRadius.only(
+                                                                            bottomLeft: Radius.circular(
+                                                                                10),
+                                                                            bottomRight: Radius.circular(
+                                                                                10)),
+                                                                        color: Colors
+                                                                            .white),
+                                                                    child:
+                                                                        Container(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      child: Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment
+                                                                              .start,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            const SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Text(
+                                                                                  utf8.decode(data.campaigns![index].name!.runes.toList()),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                                ),
+                                                                                // Text(
+                                                                                //   "(${data.homestays![index].availableRooms} rooms)",
+                                                                                //   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                                                                // ),
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 2,
+                                                                            ),
+                                                                            Text("Discount ${data.campaigns![index].discountPercentage}%"),
+                                                                            const SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                            Text("${dateFormat.parseUTC(data.campaigns![index].endDate!).difference(dateFormat.parse(DateTime.now().toString())).inDays} days left"),
+                                                                            const SizedBox(
+                                                                              height: 15,
+                                                                            ),
+                                                                          ]),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          )),
+                                            )
+                                          : SizedBox(
+                                              height: 150,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: TweenAnimationBuilder(
+                                                tween: Tween<double>(
+                                                    begin: 0, end: 1),
+                                                duration:
+                                                    const Duration(seconds: 4),
+                                                builder:
+                                                    (context, value, child) =>
+                                                        Opacity(
+                                                  opacity: value,
+                                                  child: child,
+                                                ),
+                                                child: const Center(
+                                                  child: Text(
+                                                    "We don't have any bloc homestay right now",
+                                                    style: TextStyle(
+                                                        fontFamily: "Lobster"),
+                                                  ),
+                                                ),
+                                              )),
+                                    ],
+                                  );
+                                }
+                              }
+                              break;
+                            default:
+                              break;
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -343,7 +653,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: const Text(
-                              "Where can you find bloc of homestay",
+                              "Where can you find block of homestay",
                               style: TextStyle(
                                   fontFamily: "Lobster",
                                   fontWeight: FontWeight.bold,
@@ -543,7 +853,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                                                 ),
                                                 child: const Center(
                                                   child: Text(
-                                                    "We don't have any bloc homestay right now",
+                                                    "We don't have any block homestay right now",
                                                     style: TextStyle(
                                                         fontFamily: "Lobster"),
                                                   ),
@@ -584,7 +894,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: const Text(
-                              "Recommand homestay for holiday",
+                              "Top 5 Homestays",
                               style: TextStyle(
                                   fontFamily: "Lobster",
                                   fontWeight: FontWeight.bold,
@@ -596,9 +906,14 @@ class _HomestayScreenState extends State<HomestayScreen> {
                         height: 20,
                       ),
                       FutureBuilder(
-                        future: homestayService
-                            .getHomestayListOrderByTotalAverageRating(
-                                0, 5, true, true),
+                        future: homestayService.getHomestayByFilter(
+                          SearchFilterModel(homestayType: "Homestay"),
+                          0,
+                          5,
+                          false,
+                          false,
+                          sortBy: "Rating",
+                        ),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.waiting:
@@ -911,7 +1226,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: const Text(
-                              "Best place for big party, greate choice for family picnic",
+                              "Top 5 Blocks",
                               style: TextStyle(
                                   fontFamily: "Lobster",
                                   fontWeight: FontWeight.bold,
@@ -923,9 +1238,14 @@ class _HomestayScreenState extends State<HomestayScreen> {
                         height: 20,
                       ),
                       FutureBuilder(
-                        future: homestayService
-                            .getBlocListOrderByTotalAverageRating(
-                                0, 5, true, true),
+                        future: homestayService.getHomestayByFilter(
+                          SearchFilterModel(homestayType: "BLOC"),
+                          0,
+                          5,
+                          false,
+                          false,
+                          sortBy: "Rating",
+                        ),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.waiting:
@@ -970,7 +1290,7 @@ class _HomestayScreenState extends State<HomestayScreen> {
                             case ConnectionState.done:
                               if (snapshot.hasData) {
                                 final data = snapshot.data;
-                                if (data is BlocHomestayListPagingModel) {
+                                if (data is HomestayListPagingModel) {
                                   return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

@@ -50,11 +50,10 @@ class CampaignService extends ICampaignService {
     final uri = Uri.parse(
         "$campaignListUrl?status=$status&page=$page&size=$size&isNextPage=$isNextPage&isPreviousPage=$isPreviousPage");
     try {
-      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
-      final accessToken = userLoginInfo["accessToken"];
+      // final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
+      // final accessToken = userLoginInfo["accessToken"];
       final response = await client.get(uri, headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer $accessToken"
+        "content-type": "application/json"
       }).timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 200) {
         CampaignListPagingModel campaignListPaging =

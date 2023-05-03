@@ -26,6 +26,14 @@ class HomestayBloc {
             "homestayType": event.homestayType,
             "searchString": event.cityProvince
           });
+    } else if (event is OnClickCampaignEvent) {
+      Navigator.pushNamed(
+          event.context!, SearchHomestayScreen.searchHomestayScreenRoute,
+          arguments: {
+            "position": event.position,
+            "homestayType": "homestay",
+            "searchString": event.campaignName
+          });
     }
   }
 }
