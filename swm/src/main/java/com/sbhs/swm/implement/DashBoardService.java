@@ -153,6 +153,7 @@ public class DashBoardService implements IDashBoardService {
         List<SwmUser> userList = userRepo.findAll();
         for (SwmUser user : userList) {
             if (user.getLandlordProperty() != null) {
+                Long totalLandlordProfit = 0L;
                 LandlordRecord landlordRecord = new LandlordRecord();
                 if (user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATING.name())) {
                     totalLandlord = totalLandlord + 1;
@@ -162,8 +163,9 @@ public class DashBoardService implements IDashBoardService {
                     for (LandlordCommission c : user.getLandlordProperty().getBalanceWallet().getLandlordWallet()
                             .getLandlordCommissions()) {
                         totalProfit = totalProfit + c.getCommission();
+                        totalLandlordProfit = totalLandlordProfit + c.getCommission();
                     }
-                    landlordRecord.setCommission(totalProfit);
+                    landlordRecord.setCommission(totalLandlordProfit);
                 }
                 if (user.getLandlordProperty().getHomestays() != null) {
                     for (Homestay h : user.getLandlordProperty().getHomestays()) {
