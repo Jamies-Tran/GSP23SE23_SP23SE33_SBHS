@@ -463,6 +463,16 @@ public class BookingService implements IBookingService {
         booking.setStatus(BookingStatus.PENDING.name());
         booking.getBookingHomestays().forEach(b -> b.setStatus(BookingStatus.PENDING.name()));
 
+        if (booking.getPromotions() != null) {
+            Long totalDiscountPrice = 0L;
+            for (Promotion p : booking.getPromotions()) {
+                totalDiscountPrice = totalDiscountPrice
+                        + (booking.getTotalBookingPrice() * p.getDiscountAmount() / 100);
+            }
+            Long totalBookingPrice = booking.getTotalBookingPrice() - totalDiscountPrice;
+            booking.setTotalBookingPrice(totalBookingPrice);
+            booking.getPromotions().forEach(p -> p.setStatus(PromotionStatus.USED.name()));
+        }
         return booking;
     }
 

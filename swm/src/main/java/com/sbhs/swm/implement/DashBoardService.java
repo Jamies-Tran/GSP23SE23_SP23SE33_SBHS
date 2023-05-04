@@ -145,8 +145,7 @@ public class DashBoardService implements IDashBoardService {
         Long totalProfit = 0L;
         Long totalLandlord = 0L;
         Long totalPassenger = 0L;
-        Long totalActivatingHomestay = 0L;
-        Long totalActivatingBloc = 0L;
+
         List<LandlordRecord> landlordTable = new ArrayList<>();
         List<PassengerRecord> passengerTable = new ArrayList<>();
 
@@ -154,6 +153,8 @@ public class DashBoardService implements IDashBoardService {
         for (SwmUser user : userList) {
             if (user.getLandlordProperty() != null) {
                 Long totalLandlordProfit = 0L;
+                Long totalActivatingHomestay = 0L;
+                Long totalActivatingBloc = 0L;
                 LandlordRecord landlordRecord = new LandlordRecord();
                 if (user.getLandlordProperty().getStatus().equalsIgnoreCase(LandlordStatus.ACTIVATING.name())) {
                     totalLandlord = totalLandlord + 1;
