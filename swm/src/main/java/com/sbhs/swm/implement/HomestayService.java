@@ -86,7 +86,7 @@ public class HomestayService implements IHomestayService {
         List<String> splittedAddress = new LinkedList<String>(List.of(homestay.getAddress().split(",")));
         String city = splittedAddress.get(homestay.getAddress().split(",").length - 1);
         homestay.setCityProvince(
-                cityProvinceNameUtil.shortenCityName(city.trim()));
+                cityProvinceNameUtil.shortenCityName(city.replaceAll("\\s+", "")));
         splittedAddress.remove(city);
         StringBuilder addressBuilder = new StringBuilder();
         for (int addressIndex = 0; addressIndex < splittedAddress.size(); addressIndex++) {
@@ -129,7 +129,7 @@ public class HomestayService implements IHomestayService {
         List<String> splittedAddress = new LinkedList<String>(List.of(blocHomestay.getAddress().split(",")));
         String city = splittedAddress.get(blocHomestay.getAddress().split(",").length - 1);
         blocHomestay.setCityProvince(
-                cityProvinceNameUtil.shortenCityName(city.trim()));
+                cityProvinceNameUtil.shortenCityName(city.replaceAll("\\s+", "")));
         splittedAddress.remove(city);
         StringBuilder addressBuilder = new StringBuilder();
         for (int addressIndex = 0; addressIndex < splittedAddress.size(); addressIndex++) {

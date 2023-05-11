@@ -6,131 +6,131 @@ import org.springframework.context.annotation.Configuration;
 public class CityProvinceNameUtil {
     public String shortenCityName(String city) {
         switch (city) {
-            case "An Giang":
+            case "AnGiang":
                 return "AG";
-            case "Bà Rịa - Vũng Tàu":
+            case "BàRịa-VũngTàu":
                 return "BV";
-            case "Bạc Liêu":
+            case "BạcLiêu":
                 return "BL";
-            case "Bắc Giang":
+            case "BắcGiang":
                 return "BG";
-            case "Bắc Kạn":
+            case "BắcKạn":
                 return "BK";
-            case "Bắc Ninh":
+            case "BắcNinh":
                 return "BN";
-            case "Bến Tre":
+            case "BếnTre":
                 return "BT";
-            case "Bình Dương":
+            case "BìnhDương":
                 return "BD";
-            case "Bình Định":
+            case "BìnhĐịnh":
                 return "BĐ";
-            case "Bình Phước":
+            case "BìnhPhước":
                 return "BP";
-            case "Cà Mau":
+            case "CàMau":
                 return "CM";
-            case "Cao Bằng":
+            case "CaoBằng":
                 return "CB";
-            case "Cần Thơ":
+            case "CầnThơ":
                 return "CT";
-            case "Đà Nẵng":
+            case "ĐàNẵng":
                 return "DNa";
-            case "Đắk lắk":
+            case "Đắklắk":
                 return "DL";
-            case "Đắk Nông":
+            case "ĐắkNông":
                 return "ĐNo";
-            case "Điện Biên":
+            case "ĐiệnBiên":
                 return "DB";
-            case "Đồng Nai":
+            case "ĐồngNai":
                 return "DN";
-            case "Đồng Tháp":
+            case "ĐồngTháp":
                 return "DT";
-            case "Hà Nam":
+            case "HàNam":
                 return "HNa";
-            case "Hà Giang":
+            case "HàGiang":
                 return "HG";
-            case "Hà Tĩnh":
+            case "HàTĩnh":
                 return "HT";
-            case "Hải Dương":
+            case "HảiDương":
                 return "HD";
-            case "Hải Phòng":
+            case "HảiPhòng":
                 return "HP";
-            case "Hậu Giang":
+            case "HậuGiang":
                 return "HGi";
-            case "Hòa Bình":
+            case "HòaBình":
                 return "HB";
-            case "Hưng Yên":
+            case "HưngYên":
                 return "HY";
-            case "Khánh Hòa":
+            case "KhánhHòa":
                 return "KH";
-            case "Kiên Giang":
+            case "KiênGiang":
                 return "KG";
-            case "Kon Tum":
+            case "KonTum":
                 return "KT";
-            case "Lai Châu":
+            case "LaiChâu":
                 return "LC";
-            case "Lạng Sơn":
+            case "LạngSơn":
                 return "LS";
-            case "Lào Cai":
+            case "LàoCai":
                 return "LCa";
-            case "Hồ Chí Minh":
+            case "HồChíMinh":
                 return "SG";
-            case "Gia Lai":
+            case "GiaLai":
                 return "GL";
-            case "Lâm Đồng":
+            case "LâmĐồng":
                 return "LD";
-            case "Long An":
+            case "LongAn":
                 return "LA";
-            case "Nam Định":
+            case "NamĐịnh":
                 return "ND";
-            case "Nghệ An":
+            case "NghệAn":
                 return "NA";
-            case "Ninh Bình":
+            case "NinhBình":
                 return "NB";
-            case "Ninh Thuận":
+            case "NinhThuận":
                 return "NT";
-            case "Phú Thọ":
+            case "PhúThọ":
                 return "PT";
-            case "Phú Yên":
+            case "PhúYên":
                 return "PY";
-            case "Quảng Bình":
+            case "QuảngBình":
                 return "QB";
-            case "Quảng Nam":
+            case "QuảngNam":
                 return "QNa";
-            case "Quảng Ngãi":
+            case "QuảngNgãi":
                 return "QNg";
-            case "Quảng Ninh":
+            case "QuảngNinh":
                 return "QN";
-            case "Quảng Trị":
+            case "QuảngTrị":
                 return "QT";
-            case "Sóc Trăng":
+            case "SócTrăng":
                 return "ST";
-            case "Sơn La":
+            case "SơnLa":
                 return "SL";
-            case "Tây Ninh":
+            case "TâyNinh":
                 return "TN";
-            case "Thái Bình":
+            case "TháiBình":
                 return "TB";
-            case "Thái Nguyên":
+            case "TháiNguyên":
                 return "TNg";
-            case "Thanh Hóa":
+            case "ThanhHóa":
                 return "TH";
-            case "Thừa Thiên Huế":
+            case "ThừaThiênHuế":
                 return "TTH";
-            case "Tiền Giang":
+            case "TiềnGiang":
                 return "TG";
-            case "Trà Vinh":
+            case "TràVinh":
                 return "TV";
-            case "Tuyên Quang":
+            case "TuyênQuang":
                 return "TQ";
-            case "Vĩnh Long":
+            case "VĩnhLong":
                 return "VL";
-            case "Vĩnh Phúc":
+            case "VĩnhPhúc":
                 return "VP";
-            case "Yên Bái":
+            case "YênBái":
                 return "YB";
-            case "Hà Nội":
+            case "HàNội":
                 return "HN";
-            case "Bình Thuận":
+            case "BìnhThuận":
                 return "BTh";
             default:
                 return null;

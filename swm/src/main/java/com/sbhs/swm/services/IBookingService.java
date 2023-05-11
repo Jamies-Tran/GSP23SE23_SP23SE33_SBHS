@@ -87,4 +87,6 @@ public interface IBookingService {
         Booking cancelBookingBloc(Long bookingId, boolean isMissedCheckinDate);
 
         void bookingDateHandler();
+
+        Booking getBookingByCode(String code);
 }

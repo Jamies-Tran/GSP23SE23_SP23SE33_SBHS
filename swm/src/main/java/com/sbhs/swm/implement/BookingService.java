@@ -1397,6 +1397,7 @@ public class BookingService implements IBookingService {
         BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId).get();
         bookingHomestay.setStatus(BookingStatus.CANCELED.name());
         boolean isBookingFinished = false;
+
         for (BookingHomestay bh : bookingHomestay.getBooking().getBookingHomestays()) {
             if (bh.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDOUT.name())
                     || bh.getStatus().equalsIgnoreCase(BookingStatus.CANCELED.name())
@@ -1446,7 +1447,7 @@ public class BookingService implements IBookingService {
                 }
             }
             if (dateFormatUtil.formatGivenDate(b.getBookingTo())
-                    .compareTo(dateFormatUtil.formatDateTimeNow()) == 1) {
+                    .compareTo(dateFormatUtil.formatDateTimeNow()) == -1) {
                 if (b.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name())) {
                     b.setStatus(BookingStatus.FINISHED.name());
                     for (BookingHomestay bh : b.getBookingHomestays()) {
@@ -1461,6 +1462,37 @@ public class BookingService implements IBookingService {
                 }
             }
         }
+    }
+
+    @Override
+    public Booking getBookingByCode(String code) {
+        SwmUser user = userService.authenticatedUser();
+        Booking booking = bookingRepo.findBookingByCode(code)
+                .orElseThrow(() -> new NotFoundException("Booking not found"));
+        if (booking.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name())) {
+            List<BookingHomestay> userHomestay = new ArrayList<>();
+            for (BookingHomestay bh : booking.getBookingHomestays()) {
+                if (user.getLandlordProperty().getHomestays().contains(bh.getHomestay())) {
+                    userHomestay.add(bh);
+                }
+            }
+            if (userHomestay.size() > 0) {
+                List<BookingHomestayService> bookingHomestayServices = new ArrayList<>();
+                for (BookingHomestayService bs : booking.getBookingHomestayServices()) {
+                    for (BookingHomestay bh : userHomestay) {
+                        if (bs.getHomestayService().getHomestay().getName() == bh.getHomestay().getName()) {
+                            bookingHomestayServices.add(bs);
+                        }
+                    }
+                }
+                booking.setBookingHomestayServices(bookingHomestayServices);
+                booking.setBookingHomestays(userHomestay);
+
+            } else {
+                throw new NotFoundException("Booking not found");
+            }
+        }
+        return booking;
     }
 
 }

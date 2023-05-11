@@ -294,33 +294,14 @@ public class BookingController {
         return new ResponseEntity<BookingHomestayResponseDto>(responseBookingHomestay, HttpStatus.OK);
     }
 
-    // @GetMapping("/homestay-list")
-    // @PreAuthorize("hasRole(ROLE_LANDLORD)")
-    // public ResponseEntity<?> getBookingByHomestayNameAndStatus(String
-    // homestayName, String status) {
-    // List<Booking> bookings =
-    // bookingService.findBookingsByHomestayNameAndStatus(status, homestayName);
-    // List<BookingResponseDto> responseBookingList = bookings.stream()
-    // .map(b -> modelMapper.map(b,
-    // BookingResponseDto.class)).collect(Collectors.toList());
+    @GetMapping("/code")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
+    public ResponseEntity<?> getLandlordBooking(String bookingCode) {
+        Booking booking = bookingService.getBookingByCode(bookingCode);
+        BookingResponseDto responseBooking = modelMapper.map(booking, BookingResponseDto.class);
 
-    // return new ResponseEntity<List<BookingResponseDto>>(responseBookingList,
-    // HttpStatus.OK);
-
-    // }
-
-    // @GetMapping("/user-list")
-    // @PreAuthorize("hasRole('ROLE_PASSENGER')")
-    // public ResponseEntity<?> getBookingByUsernameAndStatus(String status) {
-    // List<Booking> bookings =
-    // bookingService.findBookingsByUsernameAndStatus(status);
-    // List<BookingResponseDto> responseBookingList = bookings.stream()
-    // .map(b -> modelMapper.map(b,
-    // BookingResponseDto.class)).collect(Collectors.toList());
-
-    // return new ResponseEntity<List<BookingResponseDto>>(responseBookingList,
-    // HttpStatus.OK);
-    // }
+        return new ResponseEntity<BookingResponseDto>(responseBooking, HttpStatus.OK);
+    }
 
     @DeleteMapping("/booking-homestay")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
