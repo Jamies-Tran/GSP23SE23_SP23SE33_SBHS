@@ -41,8 +41,6 @@ import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.type.HomestayType;
 import com.sbhs.swm.services.IBookingService;
 
-import io.swagger.annotations.Authorization;
-
 @RestController
 @RequestMapping("/api/booking")
 public class BookingController {
@@ -237,7 +235,7 @@ public class BookingController {
     }
 
     @PutMapping("/homestay/accept")
-    @Authorization("hasRole('ROLE_LANDLORD')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> acceptBookingForHomestay(Long bookingId, Long homestayId) {
         BookingHomestay bookingHomestay = bookingService.acceptBookingForHomestay(bookingId, homestayId);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
@@ -248,7 +246,7 @@ public class BookingController {
     }
 
     @PutMapping("/homestay/reject")
-    @Authorization("hasRole('ROLE_LANDLORD')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> rejectBookingForHomestay(Long bookingId, Long homestayId, @RequestBody String message) {
         BookingHomestay bookingHomestay = bookingService.rejectBookingForHomestay(bookingId, homestayId, message);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
@@ -259,7 +257,7 @@ public class BookingController {
     }
 
     @PutMapping("/bloc/accept")
-    @Authorization("hasRole('ROLE_LANDLORD')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> acceptBookingForBloc(Long bookingId) {
         Booking booking = bookingService.acceptBookingForBloc(bookingId);
         BlocHomestayResponseDto bloc = modelMapper.map(booking.getBloc(), BlocHomestayResponseDto.class);
@@ -271,7 +269,7 @@ public class BookingController {
     }
 
     @PutMapping("/bloc/reject")
-    @Authorization("hasRole('ROLE_LANDLORD')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> rejectBookingForBloc(Long bookingId, @RequestBody String message) {
         Booking booking = bookingService.rejectBookingForBloc(bookingId, message);
         BlocHomestayResponseDto bloc = modelMapper.map(booking.getBloc(), BlocHomestayResponseDto.class);
@@ -284,7 +282,7 @@ public class BookingController {
     }
 
     @PutMapping("/homestay/payment-method")
-    @Authorization("hasRole('ROLE_PASSENGER')")
+    @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> updateBookingHomestayPaymentMethod(Long bookingId, Long homestayId, String paymentMethod) {
         BookingHomestay bookingHomestay = bookingService.updateBookingHomestayPaymentMethod(bookingId, homestayId,
                 paymentMethod);
@@ -335,7 +333,7 @@ public class BookingController {
     }
 
     @PutMapping("/homestay/check-in")
-    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> checkInForHomestay(Long bookingId, Long homestayId) {
         BookingHomestay bookingHomestay = bookingService.checkInForHomestay(bookingId, homestayId);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
@@ -365,7 +363,7 @@ public class BookingController {
     }
 
     @PutMapping("/homestay/check-out")
-    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> checkOutForHomestay(Long bookingId, Long homestayId) {
         BookingHomestay bookingHomestay = bookingService.checkOutForHomestay(bookingId, homestayId);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
@@ -375,7 +373,7 @@ public class BookingController {
     }
 
     @PutMapping("/bloc/check-in")
-    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> checkInForBloc(Long bookingId) {
         Booking booking = bookingService.checkInForBloc(bookingId);
         BookingResponseDto responseBooking = modelMapper.map(booking,
@@ -390,7 +388,7 @@ public class BookingController {
     }
 
     @PutMapping("/bloc/check-out")
-    @PreAuthorize("hasRole('ROLE_PASSENGER')")
+    @PreAuthorize("hasRole('ROLE_LANDLORD')")
     public ResponseEntity<?> checkOutForBloc(Long bookingId) {
         Booking booking = bookingService.checkOutForBloc(bookingId);
         BookingResponseDto responseBooking = modelMapper.map(booking,
