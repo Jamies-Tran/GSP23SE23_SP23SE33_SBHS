@@ -69,13 +69,14 @@ class AuthenticateService extends IAuthenticateService {
           .timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 200) {
         final loginModel = LoginModel.fromJson(json.decode(response.body));
-        // _firebaseService.saveLoginInfo(loginModel).then((value) async =>
-        //     await _authByGoogleService
-        //         .informLoginToFireAuth(loginModel.email!));
-        await SharedPreferencesService.saveUserLoginInfo(
-            loginModel.username!, loginModel.email!, loginModel.token!);
+        if (loginModel.roles!.contains("PASSENGER")) {
+          await SharedPreferencesService.saveUserLoginInfo(
+              loginModel.username!, loginModel.email!, loginModel.token!);
 
-        return loginModel;
+          return loginModel;
+        } else {
+          return Exception();
+        }
       } else if (response.statusCode == 401) {
         final exceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));
@@ -98,16 +99,20 @@ class AuthenticateService extends IAuthenticateService {
       }).timeout(Duration(seconds: connectionTimeOut));
       if (response.statusCode == 200) {
         LoginModel loginModel = LoginModel.fromJson(json.decode(response.body));
-        final authenticateByGoogleData = await _authByGoogleService
-            .authenticateByGoogle(googleSignInAccount);
-        if (authenticateByGoogleData is TimeoutException ||
-            authenticateByGoogleData is SocketException) {
-          return authenticateByGoogleData;
+        if (loginModel.roles!.contains("PASSENGER")) {
+          final authenticateByGoogleData = await _authByGoogleService
+              .authenticateByGoogle(googleSignInAccount);
+          if (authenticateByGoogleData is TimeoutException ||
+              authenticateByGoogleData is SocketException) {
+            return authenticateByGoogleData;
+          } else {
+            await SharedPreferencesService.saveUserLoginInfo(
+                loginModel.username!, loginModel.email!, loginModel.token!);
+          }
+          return loginModel;
         } else {
-          await SharedPreferencesService.saveUserLoginInfo(
-              loginModel.username!, loginModel.email!, loginModel.token!);
+          return Exception();
         }
-        return loginModel;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

@@ -9,6 +9,8 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/bloc_detail_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 import 'package:staywithme_passenger_application/service/user/rating_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
@@ -138,6 +140,14 @@ class RatingHomestayBloc {
               "viewDetail": _viewDetail
             });
       }
+    } else if (event is ViewHomestayDetailEvent) {
+      Navigator.pushNamed(
+          event.context!, HomestayDetailScreen.homestayDetailScreenRoute,
+          arguments: {"homestayName": event.homestayName});
+    } else if (event is ViewBlocHomestayDetailEvent) {
+      Navigator.pushNamed(
+          event.context!, BlocDetailScreen.blocDetailScreenRoute,
+          arguments: {"blocName": event.blocName});
     }
 
     stateController.sink.add(RatingHomestayState(

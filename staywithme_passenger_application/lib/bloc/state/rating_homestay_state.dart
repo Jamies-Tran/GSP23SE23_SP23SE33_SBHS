@@ -1,3 +1,4 @@
+import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
@@ -43,38 +44,22 @@ class RatingHomestayState {
   }
 
   Future<List<HomestayModel>> getSimilarHomestayList() async {
-    String address = homestayType == "homestay"
-        ? bookingHomestay!.homestay!.address!
-        : booking!.bloc!.address!;
-    double totalAverageRating = homestayType == "homestay"
-        ? bookingHomestay!.homestay!.totalAverageRating!
-        : booking!.bloc!.totalAverageRating!;
-    FilterByAddress filterByAddress =
-        FilterByAddress(address: address, distance: 5000, isGeometry: true);
-    FilterByRatingRange filterByRatingRange = FilterByRatingRange(
-      lowest: totalAverageRating,
-      highest: totalAverageRating != 5 ? 5 : totalAverageRating,
-    );
-    int totalReservation = 5;
-    FilterByBookingDate filterByBookingDate = FilterByBookingDate(
-        start: booking!.bookingFrom!,
-        end: booking!.bookingTo!,
-        totalReservation: totalReservation);
-    FilterOptionModel? filterOptionModel = FilterOptionModel(
-        filterByAddress: filterByAddress,
-        filterByRatingRange: filterByRatingRange,
-        filterByBookingDateRange: filterByBookingDate);
     SearchFilterModel searchFilter = SearchFilterModel(
-        filterOption: filterOptionModel, homestayType: homestayType);
+        filterOption: FilterOptionModel(), homestayType: "homestay");
     HomestayListPagingModel homestayList = await _homestayService
-        .getHomestayByFilter(searchFilter, 0, 5, false, false);
-    if (homestayList.homestays!.isEmpty) {
-      filterOptionModel = null;
-      searchFilter = SearchFilterModel(
-          filterOption: filterOptionModel, homestayType: homestayType);
-      homestayList = await _homestayService.getHomestayByFilter(
-          searchFilter, 0, 5, false, false);
-    }
+        .getHomestayByFilter(searchFilter, 0, 2000, false, false,
+            sortBy: "Rating");
+
     return homestayList.homestays!;
+  }
+
+  Future<List<BlocHomestayModel>> getSimilarBlocHomestayList() async {
+    SearchFilterModel searchFilter = SearchFilterModel(
+        filterOption: FilterOptionModel(), homestayType: homestayType);
+    HomestayListPagingModel homestayList = await _homestayService
+        .getHomestayByFilter(searchFilter, 0, 2000, false, false,
+            sortBy: "Rating");
+
+    return homestayList.blocs!;
   }
 }

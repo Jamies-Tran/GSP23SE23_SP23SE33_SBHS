@@ -439,6 +439,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                           },
                                                                         );
                                                                       } else if (data
+                                                                          is Exception) {
+                                                                        return Column(
+                                                                          children: [
+                                                                            const Text(
+                                                                              "Invalid account",
+                                                                              style: TextStyle(fontFamily: "Lobster", color: Colors.black),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 2,
+                                                                            ),
+                                                                            TextButton(
+                                                                                onPressed: () => Navigator.pop(context),
+                                                                                child: const Text(
+                                                                                  "Back",
+                                                                                  style: TextStyle(color: Colors.green),
+                                                                                ))
+                                                                          ],
+                                                                        );
+                                                                      } else if (data
                                                                           is ServerExceptionModel) {
                                                                         loginBloc.eventController.sink.add(LogInFailEvent(
                                                                             context:

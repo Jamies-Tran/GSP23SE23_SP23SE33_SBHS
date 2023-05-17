@@ -434,37 +434,6 @@ class _PassengerInfoManagementScreenState
                                                         .width /
                                                     1.5,
                                                 50)),
-                                        onPressed: () {},
-                                        child: const Text(
-                                          "Promotions",
-                                          style:
-                                              TextStyle(fontFamily: "Lobster"),
-                                        )),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
-                                                side: BorderSide(
-                                                    width: 1.0,
-                                                    color: Colors.black45)),
-                                            backgroundColor: Colors.white,
-                                            foregroundColor: Colors.black45,
-                                            maximumSize: Size(
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    1.5,
-                                                50),
-                                            minimumSize: Size(
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    1.5,
-                                                50)),
                                         onPressed: () {
                                           infoManagementBloc
                                               .eventController.sink

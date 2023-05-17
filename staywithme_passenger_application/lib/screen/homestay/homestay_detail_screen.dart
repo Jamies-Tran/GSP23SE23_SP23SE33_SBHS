@@ -917,19 +917,24 @@ class _HomestayDetailScreenState extends State<HomestayDetailScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(
-                                                            utf8.decode(data
-                                                                .bloc!
-                                                                .name!
-                                                                .runes
-                                                                .toList()),
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 25,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            )),
+                                                        Flexible(
+                                                          child: Text(
+                                                              utf8.decode(data
+                                                                  .bloc!
+                                                                  .name!
+                                                                  .runes
+                                                                  .toList()),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 25,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              )),
+                                                        ),
                                                         const SizedBox(
                                                           height: 10,
                                                         ),

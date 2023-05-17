@@ -14,6 +14,7 @@ import 'package:staywithme_passenger_application/screen/authenticate/register_sc
 import 'package:staywithme_passenger_application/screen/authenticate/send_mail_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/authentication/auth_service.dart';
+import 'package:staywithme_passenger_application/service/authentication/google_auth_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class LoginBloc {
@@ -21,6 +22,7 @@ class LoginBloc {
   final stateController = StreamController<LoginState>();
 
   final _authService = locator.get<IAuthenticateService>();
+  final _authByGoogleService = locator.get<IAuthenticateByGoogleService>();
 
   bool _isShowPassword = true;
 
@@ -109,6 +111,14 @@ class LoginBloc {
             "message": "Network error",
             "startingIndex": 1
           });
+        } else if (value is Exception) {
+          _authByGoogleService.signOut().then((value) =>
+              Navigator.pushReplacementNamed(
+                  event.context!, MainScreen.mainScreenRoute, arguments: {
+                "isExceptionOccured": true,
+                "message": "Invalid account",
+                "startingIndex": 1
+              }));
         } else {
           Navigator.pushNamed(event.context!, MainScreen.mainScreenRoute,
               arguments: {

@@ -39,3 +39,15 @@ class BackToBookingScreen extends RatingHomestayEvent {
 
   BuildContext? context;
 }
+
+class ViewHomestayDetailEvent extends RatingHomestayEvent {
+  ViewHomestayDetailEvent({this.context, this.homestayName});
+  BuildContext? context;
+  String? homestayName;
+}
+
+class ViewBlocHomestayDetailEvent extends RatingHomestayEvent {
+  ViewBlocHomestayDetailEvent({this.context, this.blocName});
+  BuildContext? context;
+  String? blocName;
+}
