@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,4 +45,10 @@ public class Rating extends BaseModel {
 
     @ManyToOne
     private @Setter Passenger passenger;
+
+    @OneToOne
+    private @Setter BookingHomestay bookingHomestay;
+
+    @OneToOne
+    private @Setter Booking booking;
 }

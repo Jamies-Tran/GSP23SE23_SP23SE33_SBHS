@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 import com.sbhs.swm.models.status.BookingStatus;
 
@@ -44,4 +45,8 @@ public class BookingHomestay extends BaseModel {
 
     @Column
     private @Setter String status = BookingStatus.SAVED.name();
+
+    @OneToOne
+    @JoinColumn(name = "rating_id", referencedColumnName = "id")
+    private @Setter Rating rating;
 }

@@ -26,6 +26,6 @@ public class BookingResponseDto {
     private BookingInviteCodeResponseDto inviteCode;
     private List<BookingHomestayResponseDto> bookingHomestays;
     private List<BookingServiceResponseDto> bookingHomestayServices;
-
     private List<PromotionDto> promotions;
+    private RatingResponseDto rating;
 }

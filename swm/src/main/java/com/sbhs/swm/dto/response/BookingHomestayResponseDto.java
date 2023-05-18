@@ -20,5 +20,5 @@ public class BookingHomestayResponseDto {
     private String paymentMethod;
     private HomestayResponseDto homestay;
     private BookingDepositDto bookingDeposit;
-
+    private RatingResponseDto rating;
 }

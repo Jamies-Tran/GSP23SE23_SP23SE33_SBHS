@@ -66,7 +66,7 @@ public class BookingController {
     @GetMapping("/booking-homestay")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<?> getBookingHomestayByHomestayId(Long homestayId) {
-        BookingHomestay bookingHomestay = bookingService.getBookingHomestayByHomestayId(homestayId);
+        BookingHomestay bookingHomestay = bookingService.getSavedBookingHomestayByHomestayId(homestayId);
         BookingHomestayResponseDto responseBookingHomestay = modelMapper.map(bookingHomestay,
                 BookingHomestayResponseDto.class);
 

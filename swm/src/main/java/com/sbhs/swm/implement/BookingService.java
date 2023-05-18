@@ -576,7 +576,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public BookingHomestay getBookingHomestayByHomestayId(Long homestayId) {
+    public BookingHomestay getSavedBookingHomestayByHomestayId(Long homestayId) {
         SwmUser user = userService.authenticatedUser();
         if (user.getPassengerProperty().getBookings().stream()
                 .filter(b -> b.getStatus().equalsIgnoreCase(BookingStatus.SAVED.name()))
@@ -1170,9 +1170,9 @@ public class BookingService implements IBookingService {
     @Override
     @Transactional
     public Booking checkOutForBloc(Long bookingId) {
-        SwmUser user = userService.authenticatedUser();
-        Booking booking = this.findBookingById(bookingId);
 
+        Booking booking = this.findBookingById(bookingId);
+        SwmUser user = booking.getPassenger().getUser();
         Landlord landlord = booking.getBloc().getLandlord();
         if (dateFormatUtil.formatGivenDate(booking.getBookingFrom()).compareTo(dateFormatUtil.formatDateTimeNow()) == 0
                 || dateFormatUtil
@@ -1182,7 +1182,7 @@ public class BookingService implements IBookingService {
                 booking.setStatus(BookingStatus.CHECKEDOUT.name());
                 booking.getBookingHomestays().forEach(b -> b.setStatus(BookingStatus.CHECKEDOUT.name()));
             } else if (dateFormatUtil.formatGivenDate(booking.getBookingTo())
-                    .compareTo(dateFormatUtil.formatDateTimeNow()) == -1) {
+                    .compareTo(dateFormatUtil.formatDateTimeNow()) == 1) {
                 int remainDays = dateFormatUtil.differenceInDays(dateFormatUtil.formatDateTimeNowToString(),
                         booking.getBookingTo()) - 1;
                 Long totalRemainHomestayPrice = 0L;
@@ -1534,21 +1534,7 @@ public class BookingService implements IBookingService {
                     }
                 }
             }
-            // if (dateFormatUtil.formatGivenDate(b.getBookingTo())
-            // .compareTo(dateFormatUtil.formatDateTimeNow()) == -1) {
-            // if (b.getHomestayType().equalsIgnoreCase(HomestayType.HOMESTAY.name())) {
-            // b.setStatus(BookingStatus.FINISHED.name());
-            // for (BookingHomestay bh : b.getBookingHomestays()) {
-            // if (bh.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDIN.name())) {
-            // this.checkOutForHomestay(bh.getBooking().getId(), bh.getHomestay().getId());
-            // }
-            // }
-            // } else {
-            // if (b.getStatus().equalsIgnoreCase(BookingStatus.CHECKEDIN.name())) {
-            // this.checkOutForBloc(b.getId());
-            // }
-            // }
-            // }
+
         }
     }
 
@@ -1581,6 +1567,14 @@ public class BookingService implements IBookingService {
             }
         }
         return booking;
+    }
+
+    @Override
+    public BookingHomestay getBookingHomestayByHomestayIdAndBookingId(Long bookingId, Long homestayId) {
+        BookingHomestay bookingHomestay = bookingHomestayRepo.findBookingHomestayById(bookingId, homestayId)
+                .orElseThrow(() -> new NotFoundException("Can't find booking homestay"));
+
+        return bookingHomestay;
     }
 
 }

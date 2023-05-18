@@ -50,7 +50,9 @@ public interface IBookingService {
 
         Booking submitBookingForBlocByPassenger(Long bookingId, String paymentMethod);
 
-        BookingHomestay getBookingHomestayByHomestayId(Long homestayId);
+        BookingHomestay getSavedBookingHomestayByHomestayId(Long homestayId);
+
+        BookingHomestay getBookingHomestayByHomestayIdAndBookingId(Long bookingId, Long homestayId);
 
         PagedListHolder<Booking> filterPassengerBooking(FilterBookingRequestDto filterBookingRequest,
                         int page, int size, boolean isNextPage, boolean isPreviousPage);

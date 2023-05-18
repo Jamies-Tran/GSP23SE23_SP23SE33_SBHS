@@ -70,4 +70,7 @@ public class Booking extends BaseModel {
     @OneToMany(mappedBy = "booking")
     private @Setter List<Promotion> promotions;
 
+    @OneToOne
+    @JoinColumn(name = "rating_id", referencedColumnName = "id")
+    private @Setter Rating rating;
 }

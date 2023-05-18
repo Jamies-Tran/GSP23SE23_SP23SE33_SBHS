@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sbhs.swm.dto.request.RatingRequestDto;
 import com.sbhs.swm.models.BlocHomestay;
+import com.sbhs.swm.models.Booking;
+import com.sbhs.swm.models.BookingHomestay;
 import com.sbhs.swm.models.Homestay;
 import com.sbhs.swm.models.Rating;
 import com.sbhs.swm.models.SwmUser;
 import com.sbhs.swm.models.type.HomestayType;
 import com.sbhs.swm.repositories.RatingRepo;
-import com.sbhs.swm.services.IHomestayService;
+import com.sbhs.swm.services.IBookingService;
 import com.sbhs.swm.services.IRatingService;
 import com.sbhs.swm.services.IUserService;
 
@@ -25,8 +27,11 @@ public class RatingService implements IRatingService {
     @Autowired
     private IUserService userService;
 
+    // @Autowired
+    // private IHomestayService homestayService;
+
     @Autowired
-    private IHomestayService homestayService;
+    private IBookingService bookingService;
 
     @Override
     public double calculateHomestayTotalAveragePoint(String name, String homestayType) {
@@ -53,7 +58,9 @@ public class RatingService implements IRatingService {
         double averagePoint = (ratingRequest.getSecurityPoint() + ratingRequest.getServicePoint()
                 + ratingRequest.getLocationPoint()) / 3;
         SwmUser user = userService.authenticatedUser();
-        Homestay homestay = homestayService.findHomestayByName(ratingRequest.getHomestayName());
+        BookingHomestay bookingHomestay = bookingService.getBookingHomestayByHomestayIdAndBookingId(
+                ratingRequest.getBookingId(), ratingRequest.getHomestayId());
+        Homestay homestay = bookingHomestay.getHomestay();
         Rating rating = new Rating();
         rating.setAveragePoint(averagePoint);
         rating.setSecurityPoint(ratingRequest.getSecurityPoint());
@@ -64,11 +71,13 @@ public class RatingService implements IRatingService {
         }
         rating.setPassenger(user.getPassengerProperty());
         rating.setHomestay(homestay);
+        rating.setBookingHomestay(bookingHomestay);
         user.getPassengerProperty().setRatings(List.of(rating));
         homestay.setRatings(List.of(rating));
+        bookingHomestay.setRating(rating);
         Rating savedRating = ratingRepo.save(rating);
         homestay.setTotalAverageRating(
-                this.calculateHomestayTotalAveragePoint(ratingRequest.getHomestayName(), HomestayType.HOMESTAY.name()));
+                this.calculateHomestayTotalAveragePoint(homestay.getName(), HomestayType.HOMESTAY.name()));
         return savedRating;
     }
 
@@ -78,7 +87,8 @@ public class RatingService implements IRatingService {
         double averagePoint = (ratingRequest.getSecurityPoint() + ratingRequest.getServicePoint()
                 + ratingRequest.getLocationPoint()) / 3;
         SwmUser user = userService.authenticatedUser();
-        BlocHomestay bloc = homestayService.findBlocHomestayByName(ratingRequest.getHomestayName());
+        Booking booking = bookingService.findBookingById(ratingRequest.getBookingId());
+        BlocHomestay bloc = booking.getBloc();
         Rating rating = new Rating();
         rating.setAveragePoint(averagePoint);
         rating.setSecurityPoint(ratingRequest.getSecurityPoint());
@@ -89,11 +99,13 @@ public class RatingService implements IRatingService {
         }
         rating.setPassenger(user.getPassengerProperty());
         rating.setBloc(bloc);
+        rating.setBooking(booking);
         user.getPassengerProperty().setRatings(List.of(rating));
         bloc.setRatings(List.of(rating));
+        booking.setRating(rating);
         Rating savedRating = ratingRepo.save(rating);
         bloc.setTotalAverageRating(
-                this.calculateHomestayTotalAveragePoint(ratingRequest.getHomestayName(), HomestayType.BLOC.name()));
+                this.calculateHomestayTotalAveragePoint(bloc.getName(), HomestayType.BLOC.name()));
         return savedRating;
     }
 

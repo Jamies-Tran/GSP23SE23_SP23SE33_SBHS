@@ -14,5 +14,6 @@ public class RatingRequestDto {
     private Double servicePoint;
     private Double locationPoint;
     private String comment;
-    private String homestayName;
+    private Long homestayId;
+    private Long bookingId;
 }
