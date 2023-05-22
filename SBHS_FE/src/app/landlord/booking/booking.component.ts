@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageComponent } from 'src/app/pop-up/message/message.component';
 import { SuccessComponent } from 'src/app/pop-up/success/success.component';
+import { BookingService } from 'src/app/services/booking.service';
 import { HomestayService } from 'src/app/services/homestay.service';
 import { ImageService } from 'src/app/services/image.service';
 
@@ -12,7 +13,8 @@ import { ImageService } from 'src/app/services/image.service';
 })
 export class BookingComponent implements OnInit {
   constructor(
-    private http: HomestayService,
+    private httpHomestay: HomestayService,
+    private httpBooking: BookingService,
     public dialog: MatDialog,
     private image: ImageService
   ) {}
@@ -50,29 +52,31 @@ export class BookingComponent implements OnInit {
   getBookingHomestay() {
     this.valuesHomestay = [];
     try {
-      this.http.getHomestayByLandlord('ACTIVATING').subscribe(async (data) => {
-        console.log('data:', data['homestays']);
-        for (let i of data['homestays']) {
-          var imgUrl;
-          if (i.isPendingBooking) {
-            await this.image
-              .getImage('homestay/' + i.homestayImages[0].imageUrl)
-              .then((url) => {
-                imgUrl = url;
-                this.valuesHomestay.push({
-                  imgURL: imgUrl,
-                  name: i.name,
-                  id: i.id,
-                  status: i.status,
-                  isPendingBooking: i.isPendingBooking,
+      this.httpHomestay
+        .getHomestayByLandlord('ACTIVATING')
+        .subscribe(async (data) => {
+          console.log('data:', data['homestays']);
+          for (let i of data['homestays']) {
+            var imgUrl;
+            if (i.isPendingBooking) {
+              await this.image
+                .getImage('homestay/' + i.homestayImages[0].imageUrl)
+                .then((url) => {
+                  imgUrl = url;
+                  this.valuesHomestay.push({
+                    imgURL: imgUrl,
+                    name: i.name,
+                    id: i.id,
+                    status: i.status,
+                    isPendingBooking: i.isPendingBooking,
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
                 });
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+            }
           }
-        }
-      });
+        });
     } catch (error) {
       this.message = error as string;
       this.openDialogMessage();
@@ -82,7 +86,7 @@ export class BookingComponent implements OnInit {
 
   getBookingBloc() {
     this.valuesBloc = [];
-    this.http.getBlocByLandlord('ACTIVATING').subscribe({
+    this.httpHomestay.getBlocByLandlord('ACTIVATING').subscribe({
       next: async (data) => {
         console.log('data:', data['blocs']);
         for (let i of data['blocs']) {

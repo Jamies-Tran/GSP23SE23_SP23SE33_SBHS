@@ -2,24 +2,24 @@
   <div class="container pt-5 mb-3">
     <div class="container-fluid">
       <div class="header">
-        <h1>Booking</h1>
+        <h1>Booking </h1>
       </div>
       <div class="row">
         <div class="col  ">
           <div class="body card mb-4">
             <mat-tab-group>
               <!-- Hometsay -->
-              <mat-tab >
+              <mat-tab>
                 <ng-template mat-tab-label>
-                  <span  [matBadgeHidden]="valuesHomestay.length == 0" matBadge="!" matBadgePosition="after" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small">Homestay</span>
+                  <span [matBadgeHidden]="valuesHomestay.length == 0" matBadge="!" matBadgePosition="after"
+                    matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small">Homestay</span>
                 </ng-template>
-
                 <table class="table  table-hover mt-2" style="height:60vh">
                   <thead class="table-light">
                     <tr class="fw-5">
                       <th>ID</th>
                       <th>Name</th>
-                      <th class="text-center  ">Booking</th>
+                      <th class="text-center">Booking</th>
                       <th>View</th>
                     </tr>
                   </thead>
@@ -97,9 +97,10 @@
                 </div>
               </mat-tab>
               <!-- Block -hometsay -->
-              <mat-tab >
+              <mat-tab>
                 <ng-template mat-tab-label>
-                  <span  [matBadgeHidden]="valuesBloc.length == 0" matBadge="!" matBadgePosition="after" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small">Block-Homestay</span>
+                  <span [matBadgeHidden]="valuesBloc.length == 0" matBadge="!" matBadgePosition="after"
+                    matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small">Block-Homestay</span>
                 </ng-template>
 
                 <table class="table  table-hover mt-2" style="height:60vh">
@@ -129,7 +130,7 @@
                       </td>
                       <td [style.cursor]="'pointer'" routerLink="../BlockHomestay/BlockHomestayDetail"
                         (click)="onItemSelector(post.id, post.name)" class="text-center">
-                        <span  *ngIf="post.isPendingBooking" class="text-danger fs-5" >!</span>
+                        <span *ngIf="post.isPendingBooking" class="text-danger fs-5">!</span>
                       </td>
 
                       <td class="pt-0">

@@ -48,6 +48,7 @@ import { PromotionDetailComponent } from './promotion/promotion-detail/promotion
 import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MY_DATE_FORMATS } from '../app.module';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { MY_DATE_FORMATS } from '../app.module';
     PromotionOverviewComponent,
     PromotionDetailComponent,
     PromotionCreateComponent,
+    BookingHistoryComponent,
 
   ],
   imports: [

@@ -16,6 +16,7 @@ import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landl
 import { PromotionDetailComponent } from './promotion/promotion-detail/promotion-detail.component';
 import { PromotionOverviewComponent } from './promotion/promotion-overview/promotion-overview.component';
 import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
 
 
 const routes: Routes = [
@@ -92,6 +93,10 @@ const routes: Routes = [
       {
         path: 'Booking',
         component: BookingComponent,
+      },
+      {
+        path: 'BookingHistory',
+        component: BookingHistoryComponent,
       },
       {
         path: 'Promotion',

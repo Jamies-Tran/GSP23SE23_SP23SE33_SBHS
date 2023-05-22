@@ -184,4 +184,7 @@ export class HomestayDetailComponent implements OnInit {
       }, 4000);
     });
   }
+  checkin(){}
+
+  checkout(){}
 }
