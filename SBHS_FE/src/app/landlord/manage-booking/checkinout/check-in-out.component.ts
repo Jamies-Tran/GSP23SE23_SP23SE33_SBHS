@@ -9,11 +9,11 @@ import { Observable } from 'rxjs';
 import { BookingComponent } from 'src/app/pop-up/booking/booking.component';
 
 @Component({
-  selector: 'app-booking-history',
-  templateUrl: './booking-history.component.html',
-  styleUrls: ['./booking-history.component.scss'],
+  selector: 'app-check-in-out',
+  templateUrl: './check-in-out.component.html',
+  styleUrls: ['./check-in-out.component.scss'],
 })
-export class BookingHistoryComponent implements OnInit {
+export class CheckInOutComponent implements OnInit {
   constructor(
     private httpHomestay: HomestayService,
     private httpBooking: BookingService,

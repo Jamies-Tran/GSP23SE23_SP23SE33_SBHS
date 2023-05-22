@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BookingHistoryComponent } from './booking-history.component';
+import { CheckInOutComponent } from './check-in-out.component';
 
 describe('BookingHistoryComponent', () => {
-  let component: BookingHistoryComponent;
-  let fixture: ComponentFixture<BookingHistoryComponent>;
+  let component: CheckInOutComponent;
+  let fixture: ComponentFixture<CheckInOutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookingHistoryComponent ]
+      declarations: [ CheckInOutComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BookingHistoryComponent);
+    fixture = TestBed.createComponent(CheckInOutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

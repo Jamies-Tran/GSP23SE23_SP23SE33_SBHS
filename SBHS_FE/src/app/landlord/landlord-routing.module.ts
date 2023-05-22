@@ -11,12 +11,13 @@ import { AuthGuard } from '../auth.guard';
 import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-detail.component';
 import { BlocHomestayDetailComponent } from './homestay/bloc-homestay-detail/bloc-homestay-detail.component';
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
-import { BookingComponent } from './booking/booking.component';
+import { BookingComponent } from './manage-booking/booking/booking.component';
 import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landlord.component';
 import { PromotionDetailComponent } from './promotion/promotion-detail/promotion-detail.component';
 import { PromotionOverviewComponent } from './promotion/promotion-overview/promotion-overview.component';
 import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
-import { BookingHistoryComponent } from './booking-history/booking-history.component';
+import { CheckInOutComponent } from './manage-booking/checkinout/check-in-out.component';
+import { HistoryBookingComponent } from './manage-booking/history-booking/history-booking.component';
 
 
 const routes: Routes = [
@@ -92,11 +93,20 @@ const routes: Routes = [
       },
       {
         path: 'Booking',
-        component: BookingComponent,
-      },
-      {
-        path: 'BookingHistory',
-        component: BookingHistoryComponent,
+        children: [
+          {
+            path: 'BookingList',
+            component: BookingComponent,
+          },
+          {
+            path: 'CheckInOut',
+            component: CheckInOutComponent,
+          },
+          {
+            path: 'BookingHistory',
+            component: HistoryBookingComponent,
+          },
+        ],
       },
       {
         path: 'Promotion',

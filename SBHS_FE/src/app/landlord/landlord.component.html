@@ -56,8 +56,6 @@
                             Homestay</span>
                         </mat-panel-title>
                       </mat-expansion-panel-header>
-
-
                       <ng-template matExpansionPanelContent>
                         <mat-nav-list class="p-0">
                           <mat-list-item class="sidenav-nav-link w-100 p-0"
@@ -84,11 +82,7 @@
                           </mat-list-item>
                         </mat-nav-list>
                       </ng-template>
-
                     </mat-expansion-panel>
-
-
-
                   </mat-accordion>
 
                   <!-- Block Homestay -->
@@ -102,7 +96,6 @@
                           [style.margin-right]="!isExpanded ? '0!important' : ''"
                           [style.margin-left]="!isExpanded ? '8px!important' : ''"
                           [style.text-align]="!isExpanded ? 'center!important' : ''">
-
                           <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
                             [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
                             holiday_village
@@ -142,18 +135,67 @@
                   </mat-accordion>
 
                   <!-- items -->
-                  <!-- Homestay -->
-                  <mat-list-item class="sidenav-nav-link w-100 p-0"
-                    [style.text-align]="!isExpanded ? 'center' : 'unset'" routerLink="Booking"
-                    routerLinkActive="active">
-                    <mat-icon class="sidenav-link-icon text-dark" matListItemIcon
-                      [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''"><span
-                        class="material-symbols-outlined">
-                        <span class="material-symbols-outlined"> calendar_month </span>
-                      </span></mat-icon>
-                    <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Booking</span>
-                  </mat-list-item>
 
+
+                  <!-- Booking -->
+                  <mat-accordion multi class="sidenav-nav-link">
+                    <mat-expansion-panel class="bg-transparent shadow-none my-0"
+                      [hideToggle]="!isExpanded ? 'true' :'false'">
+                      <mat-expansion-panel-header class="ps-0" style="height: 56px ;"
+                        [style.padding]="!isExpanded ? '0!important' : ''"
+                        [class.active]="router.url.includes('/Booking')">
+                        <mat-panel-title [style.display]="!isExpanded ? 'flex!important' : ''"
+                          [style.margin-right]="!isExpanded ? '0!important' : ''"
+                          [style.margin-left]="!isExpanded ? '8px!important' : ''"
+                          [style.text-align]="!isExpanded ? 'center!important' : ''">
+                          <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                            [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
+                            calendar_month
+                          </mat-icon>
+                          <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Manage
+                            Booking</span>
+
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <ng-template matExpansionPanelContent>
+                        <mat-nav-list class="p-0">
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="Booking/BookingList" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              list_alt
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Booking List
+                            </span>
+                          </mat-list-item>
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="Booking/CheckInOut" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              check_in_out
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>Check-in/Check-out
+                            </span>
+                          </mat-list-item>
+                          <mat-list-item class="sidenav-nav-link w-100 p-0"
+                            [style.text-align]="!isExpanded ? 'center' : 'unset'"
+                            routerLink="Booking/BookingHistory" routerLinkActive="active">
+                            <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
+                              [style.margin]="!isExpanded ? '0!important' : ''"
+                              [style.width]="!isExpanded ? '100%' : ''">
+                              history
+                            </mat-icon>
+                            <span class="sidenav-link-text w-100" *ngIf="isExpanded" matListItemTitle>History Booking
+                            </span>
+                          </mat-list-item>
+                        </mat-nav-list>
+                      </ng-template>
+                    </mat-expansion-panel>
+                  </mat-accordion>
 
 
                   <!-- Promotion -->
@@ -167,7 +209,6 @@
                           [style.margin-right]="!isExpanded ? '0!important' : ''"
                           [style.margin-left]="!isExpanded ? '8px!important' : ''"
                           [style.text-align]="!isExpanded ? 'center!important' : ''">
-
                           <mat-icon class="sidenav-link-icon text-dark " matListItemIcon
                             [style.margin]="!isExpanded ? '0!important' : ''" [style.width]="!isExpanded ? '100%' : ''">
                             percent
@@ -204,22 +245,14 @@
                       </ng-template>
                     </mat-expansion-panel>
                   </mat-accordion>
-
-
-
                 </mat-nav-list>
               </div>
-
             </div>
           </div>
         </div>
       </section>
     </mat-sidenav>
-
     <mat-sidenav-content>
-
-
-
       <section class="vh-100 ">
         <div class="container-fluid">
           <div class="row">
@@ -230,7 +263,6 @@
                   <button mat-icon-button
                     (click)="mobileQuery.matches ? snav.toggle() : isExpanded = !isExpanded "><mat-icon>menu</mat-icon></button>
                   <div class=""></div>
-
                   <div>
                     <div class="row user ">
                       <div class="col icon text-center align-items-center ">

@@ -41,14 +41,15 @@ import { HomestayDetailComponent } from './homestay/homestay-detail/homestay-det
 import {MatGridListModule} from '@angular/material/grid-list';
 import { BlocHomestayComponent } from './bloc-homestay/bloc-homestay.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { BookingComponent } from './booking/booking.component';
+import { BookingComponent } from './manage-booking/booking/booking.component';
 import { DashboardLandlordComponent } from './dashboard-landlord/dashboard-landlord.component';
 import { PromotionOverviewComponent } from './promotion/promotion-overview/promotion-overview.component';
 import { PromotionDetailComponent } from './promotion/promotion-detail/promotion-detail.component';
 import { PromotionCreateComponent } from './promotion/promotion-create/promotion-create.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MY_DATE_FORMATS } from '../app.module';
-import { BookingHistoryComponent } from './booking-history/booking-history.component';
+import { CheckInOutComponent } from './manage-booking/checkinout/check-in-out.component';
+import { HistoryBookingComponent } from './manage-booking/history-booking/history-booking.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { BookingHistoryComponent } from './booking-history/booking-history.compo
     PromotionOverviewComponent,
     PromotionDetailComponent,
     PromotionCreateComponent,
-    BookingHistoryComponent,
+    CheckInOutComponent,
+    HistoryBookingComponent,
 
   ],
   imports: [
