@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:staywithme_passenger_application/bloc/event/passenger_wallet_event.dart';
-import 'package:staywithme_passenger_application/bloc/event/payment_history_event.dart';
 import 'package:staywithme_passenger_application/bloc/passenger_wallet_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/passenger_wallet_state.dart';
 
@@ -479,7 +478,12 @@ class _PassengerWalletScreen extends State<PassengerWalletScreen> {
                                                           Expanded(
                                                             flex: 2,
                                                             child: Text(
-                                                                "${bookingDeposit.booking!.code}", style: const TextStyle(fontSize: 13),),
+                                                              "${bookingDeposit.booking!.code}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          13),
+                                                            ),
                                                           ),
                                                           Expanded(
                                                             flex: 1,
@@ -487,18 +491,43 @@ class _PassengerWalletScreen extends State<PassengerWalletScreen> {
                                                                 currencyFormat.format(
                                                                     bookingDeposit
                                                                         .unpaidAmount),
-                                                                style:  TextStyle(
-                                                                    color: bookingDeposit.status! == "PAID" ? Colors.green : Colors.red, fontSize: 13)),
+                                                                style: TextStyle(
+                                                                    color: bookingDeposit.status! ==
+                                                                            "PAID"
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red,
+                                                                    fontSize:
+                                                                        13)),
                                                           ),
                                                           Expanded(
                                                             flex: 1,
-                                                            child: Text(currencyFormat
-                                                                .format(bookingDeposit
-                                                                    .paidAmount), style: const TextStyle(fontSize:13),),
+                                                            child: Text(
+                                                              currencyFormat.format(
+                                                                  bookingDeposit
+                                                                      .paidAmount),
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          13),
+                                                            ),
                                                           ),
                                                           Expanded(
                                                             flex: 1,
-                                                            child: Text(bookingDeposit.status!, style:  TextStyle(fontSize: 13, color: bookingDeposit.status! == "PAID" ? Colors.green : Colors.red),),
+                                                            child: Text(
+                                                              bookingDeposit
+                                                                  .status!,
+                                                              style: TextStyle(
+                                                                  fontSize: 13,
+                                                                  color: bookingDeposit
+                                                                              .status! ==
+                                                                          "PAID"
+                                                                      ? Colors
+                                                                          .green
+                                                                      : Colors
+                                                                          .red),
+                                                            ),
                                                           ),
                                                         ]);
                                                   },

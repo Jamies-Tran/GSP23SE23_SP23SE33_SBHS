@@ -123,37 +123,29 @@ class CopyInviteCodeEvent extends BookingListEvent {
   String? inviteCode;
 }
 
-class CheckInForHomestayEvent extends BookingListEvent {
-  CheckInForHomestayEvent({this.context, this.homestayId});
-
-  BuildContext? context;
-  int? homestayId;
-}
-
-class CheckOutForHomestayEvent extends BookingListEvent {
-  CheckOutForHomestayEvent({this.context, this.homestayId});
-
-  BuildContext? context;
-  int? homestayId;
-}
-
-class CheckInForBlocEvent extends BookingListEvent {
-  CheckInForBlocEvent({this.context});
-
-  BuildContext? context;
-}
-
-class CheckOutForBlocEvent extends BookingListEvent {
-  CheckOutForBlocEvent({this.context, this.bookingHomestay});
-
-  BuildContext? context;
-  BookingHomestayModel? bookingHomestay;
-}
-
 class UpdatePaymentMethodEvent extends BookingListEvent {
   UpdatePaymentMethodEvent({this.context, this.homestayId, this.paymentMethod});
 
   BuildContext? context;
   int? homestayId;
   PaymentMethod? paymentMethod;
+}
+
+class BackwardBookingHistoryEvent extends BookingListEvent {
+  BackwardBookingHistoryEvent({this.context});
+
+  BuildContext? context;
+}
+
+class FowardRatingForHomestayScreenEvent extends BookingListEvent {
+  FowardRatingForHomestayScreenEvent({this.context, this.bookingHomestay});
+
+  BuildContext? context;
+  BookingHomestayModel? bookingHomestay;
+}
+
+class FowardRatingForBlockScreenEvent extends BookingListEvent {
+  FowardRatingForBlockScreenEvent({this.context});
+
+  BuildContext? context;
 }

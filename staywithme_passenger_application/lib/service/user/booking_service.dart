@@ -51,14 +51,6 @@ abstract class IBookingService {
 
   Future<dynamic> applyBookingInviteCode(String inviteCode);
 
-  Future<dynamic> checkInForHomestay(int bookingId, int homestayId);
-
-  Future<dynamic> checkInForBloc(int bookingId);
-
-  Future<dynamic> checkOutForHomestay(int bookingId, int homestayId);
-
-  Future<dynamic> checkOutForBloc(int bookingId);
-
   Future<dynamic> updatePaymentMethod(
       int bookingId, int homestayId, String paymentMethod);
 }
@@ -537,116 +529,6 @@ class BookingService extends IBookingService {
         BookingInviteModel bookingInviteModel =
             BookingInviteModel.fromJson(json.decode(response.body));
         return bookingInviteModel;
-      } else {
-        ServerExceptionModel serverExceptionModel =
-            ServerExceptionModel.fromJson(json.decode(response.body));
-        return serverExceptionModel;
-      }
-    } on TimeoutException catch (e) {
-      return e;
-    } on SocketException catch (e) {
-      return e;
-    }
-  }
-
-  @override
-  Future checkInForBloc(int bookingId) async {
-    final client = http.Client();
-    final uri = Uri.parse("$blocCheckInUrl?bookingId=$bookingId");
-    try {
-      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
-      final accessToken = userLoginInfo["accessToken"];
-      final response = await client.put(uri, headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer $accessToken"
-      });
-      if (response.statusCode == 200) {
-        BookingModel booking =
-            BookingModel.fromJson(json.decode(response.body));
-        return booking;
-      } else {
-        ServerExceptionModel serverExceptionModel =
-            ServerExceptionModel.fromJson(json.decode(response.body));
-        return serverExceptionModel;
-      }
-    } on TimeoutException catch (e) {
-      return e;
-    } on SocketException catch (e) {
-      return e;
-    }
-  }
-
-  @override
-  Future checkInForHomestay(int bookingId, int homestayId) async {
-    final client = http.Client();
-    final uri = Uri.parse(
-        "$homestayCheckInUrl?bookingId=$bookingId&homestayId=$homestayId");
-    try {
-      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
-      final accessToken = userLoginInfo["accessToken"];
-      final response = await client.put(uri, headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer $accessToken"
-      });
-      if (response.statusCode == 200) {
-        BookingHomestayModel booking =
-            BookingHomestayModel.fromJson(json.decode(response.body));
-        return booking;
-      } else {
-        ServerExceptionModel serverExceptionModel =
-            ServerExceptionModel.fromJson(json.decode(response.body));
-        return serverExceptionModel;
-      }
-    } on TimeoutException catch (e) {
-      return e;
-    } on SocketException catch (e) {
-      return e;
-    }
-  }
-
-  @override
-  Future checkOutForBloc(int bookingId) async {
-    final client = http.Client();
-    final uri = Uri.parse("$blocCheckOutUrl?bookingId=$bookingId");
-    try {
-      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
-      final accessToken = userLoginInfo["accessToken"];
-      final response = await client.put(uri, headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer $accessToken"
-      });
-      if (response.statusCode == 200) {
-        BookingModel booking =
-            BookingModel.fromJson(json.decode(response.body));
-        return booking;
-      } else {
-        ServerExceptionModel serverExceptionModel =
-            ServerExceptionModel.fromJson(json.decode(response.body));
-        return serverExceptionModel;
-      }
-    } on TimeoutException catch (e) {
-      return e;
-    } on SocketException catch (e) {
-      return e;
-    }
-  }
-
-  @override
-  Future checkOutForHomestay(int bookingId, int homestayId) async {
-    final client = http.Client();
-    final uri = Uri.parse(
-        "$homestayCheckOutUrl?bookingId=$bookingId&homestayId=$homestayId");
-    try {
-      final userLoginInfo = await SharedPreferencesService.getUserLoginInfo();
-      final accessToken = userLoginInfo["accessToken"];
-      final response = await client.put(uri, headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer $accessToken"
-      });
-      if (response.statusCode == 200) {
-        BookingHomestayModel booking =
-            BookingHomestayModel.fromJson(json.decode(response.body));
-        return booking;
       } else {
         ServerExceptionModel serverExceptionModel =
             ServerExceptionModel.fromJson(json.decode(response.body));

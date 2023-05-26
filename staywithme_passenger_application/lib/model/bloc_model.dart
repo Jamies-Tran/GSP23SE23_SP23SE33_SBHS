@@ -5,7 +5,8 @@ import 'package:staywithme_passenger_application/model/passenger_model.dart';
 
 class BlocHomestayModel {
   BlocHomestayModel(
-      {this.name,
+      {this.id,
+      this.name,
       this.address,
       this.cityProvince,
       this.createdDate,
@@ -21,10 +22,10 @@ class BlocHomestayModel {
       this.totalBookings,
       this.landlord});
 
+  int? id;
   String? name;
   String? address;
   String? cityProvince;
-
   String? createdDate;
   String? status;
   double? totalAverageRating;
@@ -39,6 +40,7 @@ class BlocHomestayModel {
   LandlordModel? landlord;
 
   factory BlocHomestayModel.fromJson(Map<String, dynamic> json) => BlocHomestayModel(
+      id: json["id"],
       name: json["name"],
       address: json["address"],
       cityProvince: json["cityProvince"],

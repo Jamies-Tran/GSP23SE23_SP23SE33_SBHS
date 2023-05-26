@@ -14,7 +14,6 @@ import 'package:staywithme_passenger_application/service/image_service.dart';
 import 'package:staywithme_passenger_application/service/promotion/campaign_service.dart';
 import 'package:staywithme_passenger_application/service/user/user_service.dart';
 import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 
 class HomestayScreen extends StatefulWidget {
   const HomestayScreen({super.key, this.position});

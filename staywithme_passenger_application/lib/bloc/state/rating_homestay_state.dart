@@ -32,11 +32,13 @@ class RatingHomestayState {
   final _homestayService = locator.get<IHomestayService>();
 
   RatingModel ratingModel() {
-    String homestayName = homestayType == "homestay"
-        ? bookingHomestay!.homestay!.name!
-        : booking!.bloc!.name!;
     return RatingModel(
-        homestayName: homestayName,
+        homestayId: homestayType == "homestay"
+            ? bookingHomestay!.homestay!.id
+            : booking!.bloc!.id,
+        bookingId: homestayType == "homestay"
+            ? bookingHomestay!.bookingHomestayId!.bookingId
+            : booking!.id,
         securityPoint: securityPoint,
         servicePoint: servicePoint,
         locationPoint: locationPoint,

@@ -216,14 +216,8 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 20),
-              duration: const Duration(seconds: 3),
-              builder: (context, value, child) => SizedBox(
-                height: value,
-                child: child,
-              ),
-              child: const SizedBox(),
+            const SizedBox(
+              height: 20,
             ),
             TweenAnimationBuilder(
               tween: Tween<double>(begin: 0, end: 1),
@@ -240,14 +234,8 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                     color: primaryColor),
               ),
             ),
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 20),
-              duration: const Duration(seconds: 3),
-              builder: (context, value, child) => SizedBox(
-                height: value,
-                child: child,
-              ),
-              child: const SizedBox(),
+            const SizedBox(
+              height: 20,
             ),
             SizedBox(
               height: 500,
@@ -275,125 +263,116 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                                 OnChooseHomestayEvent(
                                     bookingBloc: bookingBloc));
                           },
-                          child: TweenAnimationBuilder(
-                            tween: Tween<double>(begin: 0, end: 10),
-                            duration: const Duration(seconds: 2),
-                            builder: (context, value, child) => Container(
-                              margin: EdgeInsets.only(bottom: value),
-                              child: child,
-                            ),
-                            child: Container(
-                              // margin: const EdgeInsets.only(bottom: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
-                                  color: snapshot.data!.isHomestaySelected(
-                                          homestays[index].name!)
-                                      ? primaryColor
-                                      : Colors.grey),
-                              child: Row(children: [
-                                FutureBuilder(
-                                  future: imageService.getHomestayImage(
-                                      homestays[index]
-                                          .homestayImages!
-                                          .first
-                                          .imageUrl!),
-                                  builder: (context, snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.waiting:
-                                        return const AdvancedAvatar(
-                                          child: SizedBox(),
-                                        );
-                                      case ConnectionState.done:
-                                        final imageUrl = snapshot.data ??
-                                            "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
-                                        return AdvancedAvatar(
-                                          image: NetworkImage(imageUrl),
-                                        );
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                                bottom: 10, left: 5, right: 5),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(20)),
+                                color: snapshot.data!.isHomestaySelected(
+                                        homestays[index].name!)
+                                    ? primaryColor
+                                    : Colors.grey),
+                            child: Row(children: [
+                              FutureBuilder(
+                                future: imageService.getHomestayImage(
+                                    homestays[index]
+                                        .homestayImages!
+                                        .first
+                                        .imageUrl!),
+                                builder: (context, snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.waiting:
+                                      return const AdvancedAvatar(
+                                        child: SizedBox(),
+                                      );
+                                    case ConnectionState.done:
+                                      final imageUrl = snapshot.data ??
+                                          "https://i.ytimg.com/vi/0jDUx3jOBfU/mqdefault.jpg";
+                                      return AdvancedAvatar(
+                                        image: NetworkImage(imageUrl),
+                                      );
 
-                                      default:
-                                        break;
-                                    }
-                                    return const SizedBox();
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Name: ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      utf8.decode(homestays[index]
-                                          .name!
-                                          .runes
-                                          .toList()),
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "Price: ",
-                                      style: TextStyle(
-                                          fontFamily: "Lobster",
-                                          fontWeight: FontWeight.bold,
-                                          color: snapshot.data!
-                                                  .isHomestaySelected(
-                                                      homestays[index].name!)
-                                              ? Colors.white
-                                              : primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    snapshot.data!.onCampaign()
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                currencyFormat.format(
-                                                    homestays[index].price),
-                                                style: const TextStyle(
-                                                    fontFamily: "Lobster",
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                    color: Colors.red),
-                                              ),
-                                              Text(
-                                                currencyFormat.format(snapshot
-                                                    .data!
-                                                    .newHomestayInBlocPrice(
-                                                        homestays[index])),
-                                                style: const TextStyle(
-                                                    fontFamily: "Lobster"),
-                                              )
-                                            ],
-                                          )
-                                        : Text(
-                                            currencyFormat.format(snapshot.data!
-                                                .newHomestayInBlocPrice(
-                                                    homestays[index])),
-                                            style: const TextStyle(
-                                                fontFamily: "Lobster"),
-                                          )
-                                  ],
-                                )
-                              ]),
-                            ),
+                                    default:
+                                      break;
+                                  }
+                                  return const SizedBox();
+                                },
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Name: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    utf8.decode(
+                                        homestays[index].name!.runes.toList()),
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Price: ",
+                                    style: TextStyle(
+                                        fontFamily: "Lobster",
+                                        fontWeight: FontWeight.bold,
+                                        color: snapshot.data!
+                                                .isHomestaySelected(
+                                                    homestays[index].name!)
+                                            ? Colors.white
+                                            : primaryColor),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  snapshot.data!.onCampaign()
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              currencyFormat.format(
+                                                  homestays[index].price),
+                                              style: const TextStyle(
+                                                  fontFamily: "Lobster",
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  color: Colors.red),
+                                            ),
+                                            Text(
+                                              currencyFormat.format(snapshot
+                                                  .data!
+                                                  .newHomestayInBlocPrice(
+                                                      homestays[index])),
+                                              style: const TextStyle(
+                                                  fontFamily: "Lobster"),
+                                            )
+                                          ],
+                                        )
+                                      : Text(
+                                          currencyFormat.format(snapshot.data!
+                                              .newHomestayInBlocPrice(
+                                                  homestays[index])),
+                                          style: const TextStyle(
+                                              fontFamily: "Lobster"),
+                                        )
+                                ],
+                              )
+                            ]),
                           ),
                         ),
                         snapshot.data!
@@ -430,14 +409,8 @@ class _ChooseHomestayScreenState extends State<ChooseHomestayScreen> {
                 },
               ),
             ),
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 20),
-              duration: const Duration(seconds: 2),
-              builder: (context, value, child) => SizedBox(
-                height: value,
-                child: child,
-              ),
-              child: const SizedBox(),
+            const SizedBox(
+              height: 20,
             ),
             TweenAnimationBuilder(
               tween: Tween<double>(begin: 0, end: 1),
@@ -551,14 +524,8 @@ class _ChooseBlocServiceScreenState extends State<ChooseBlocServiceScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 20),
-              duration: const Duration(seconds: 3),
-              builder: (context, value, child) => SizedBox(
-                height: value,
-                child: child,
-              ),
-              child: const SizedBox(),
+            const SizedBox(
+              height: 20,
             ),
             TweenAnimationBuilder(
               tween: Tween<double>(begin: 0, end: 1),
@@ -575,16 +542,8 @@ class _ChooseBlocServiceScreenState extends State<ChooseBlocServiceScreen> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 20),
-              duration: const Duration(seconds: 3),
-              builder: (context, value, child) => SizedBox(
-                height: value,
-                child: child,
-              ),
-              child: const SizedBox(
-                height: 20,
-              ),
+            const SizedBox(
+              height: 20,
             ),
             SizedBox(
               height: 450,
@@ -605,59 +564,51 @@ class _ChooseBlocServiceScreenState extends State<ChooseBlocServiceScreen> {
                         opacity: value,
                         child: child,
                       ),
-                      child: TweenAnimationBuilder(
-                        tween: Tween<double>(begin: 0, end: 10),
-                        duration: const Duration(seconds: 3),
-                        builder: (context, value, child) => Container(
-                          margin: EdgeInsets.only(bottom: value),
-                          child: child,
-                        ),
-                        child: Container(
-                          height: 100,
-                          // margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                              color: snapshot.data!.isHomestayServiceSelected(
-                                      widget.blocServiceList![index].name!)
-                                  ? primaryColor
-                                  : Colors.grey),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.blocServiceList![index].name!,
-                                style: const TextStyle(
-                                    fontFamily: "Lobster",
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                width: 100,
-                              ),
-                              Row(
-                                children: [
-                                  const Text(
-                                    "Price(VND):",
-                                    style: TextStyle(
-                                        fontFamily: "Lobster",
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    currencyFormat.format(
-                                        widget.blocServiceList![index].price),
-                                    style:
-                                        const TextStyle(fontFamily: "Lobster"),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+                      child: Container(
+                        height: 100,
+                        margin: const EdgeInsets.only(
+                            bottom: 10, left: 5, right: 5),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
+                            color: snapshot.data!.isHomestayServiceSelected(
+                                    widget.blocServiceList![index].name!)
+                                ? primaryColor
+                                : Colors.grey),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.blocServiceList![index].name!,
+                              style: const TextStyle(
+                                  fontFamily: "Lobster",
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              width: 100,
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  "Price(VND):",
+                                  style: TextStyle(
+                                      fontFamily: "Lobster",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  currencyFormat.format(
+                                      widget.blocServiceList![index].price),
+                                  style: const TextStyle(fontFamily: "Lobster"),
+                                )
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -793,14 +744,8 @@ class _ViewBlocHomestayFacilityScreenState
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0, end: 20),
-                duration: const Duration(seconds: 3),
-                builder: (context, value, child) => SizedBox(
-                  height: value,
-                  child: child,
-                ),
-                child: const SizedBox(),
+              const SizedBox(
+                height: 20,
               ),
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0, end: 1),
@@ -817,14 +762,8 @@ class _ViewBlocHomestayFacilityScreenState
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0, end: 20),
-                duration: const Duration(seconds: 3),
-                builder: (context, value, child) => SizedBox(
-                  height: 20,
-                  child: child,
-                ),
-                child: const SizedBox(),
+              const SizedBox(
+                height: 20,
               ),
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0, end: 1),
@@ -873,14 +812,8 @@ class _ViewBlocHomestayFacilityScreenState
                   ],
                 ),
               ),
-              TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0, end: 10),
-                duration: const Duration(seconds: 3),
-                builder: (context, value, child) => SizedBox(
-                  height: value,
-                  child: child,
-                ),
-                child: const SizedBox(),
+              const SizedBox(
+                height: 10,
               ),
               SizedBox(
                 height: 500,
@@ -902,56 +835,45 @@ class _ViewBlocHomestayFacilityScreenState
                           opacity: value,
                           child: child,
                         ),
-                        child: TweenAnimationBuilder(
-                          tween: Tween<double>(begin: 0, end: 10),
-                          duration: const Duration(seconds: 3),
-                          builder: (context, value, child) => Container(
-                            margin: EdgeInsets.only(bottom: value),
-                            child: child,
-                          ),
-                          child: Container(
-                            height: 100,
-                            // margin: const EdgeInsets.only(bottom: 10),
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                color: Colors.white,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      blurRadius: 2.0,
-                                      blurStyle: BlurStyle.outer,
-                                      offset: Offset(1.0, 1.0)),
-                                ]),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    facilityList![index].name!,
-                                    style: const TextStyle(
-                                        fontFamily: "Lobster",
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(
-                                    width: 100,
-                                  ),
-                                  Text(
-                                    "Quanity: ${facilityList[index].quantity}",
-                                    style: const TextStyle(
-                                        fontFamily: "Lobster",
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ]),
-                          ),
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.only(
+                              left: 5, right: 5, bottom: 10),
+                          decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              color: Colors.white,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    blurRadius: 0.5,
+                                    blurStyle: BlurStyle.outer,
+                                    offset: Offset(1.0, 1.0)),
+                              ]),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  facilityList![index].name!,
+                                  style: const TextStyle(
+                                      fontFamily: "Lobster",
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 100,
+                                ),
+                                Text(
+                                  "Quanity: ${facilityList[index].quantity}",
+                                  style: const TextStyle(
+                                      fontFamily: "Lobster",
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ]),
                         ),
                       );
                     }),
               ),
-              TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0, end: 20),
-                duration: const Duration(seconds: 3),
-                builder: (context, value, child) =>
-                    SizedBox(height: value, child: child),
-                child: const SizedBox(),
+              const SizedBox(
+                height: 20,
               ),
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0, end: 1),
@@ -1030,14 +952,8 @@ class _ViewBlocHomestayRuleScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0, end: 20),
-          duration: const Duration(seconds: 3),
-          builder: (context, value, child) => SizedBox(
-            height: value,
-            child: child,
-          ),
-          child: const SizedBox(),
+        const SizedBox(
+          height: 20,
         ),
         TweenAnimationBuilder(
           tween: Tween<double>(begin: 0, end: 1),
@@ -1052,14 +968,8 @@ class _ViewBlocHomestayRuleScreenState
                 fontSize: 25, fontWeight: FontWeight.bold, color: primaryColor),
           ),
         ),
-        TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0, end: 20),
-          duration: const Duration(seconds: 3),
-          builder: (context, value, child) => SizedBox(
-            height: value,
-            child: child,
-          ),
-          child: const SizedBox(),
+        const SizedBox(
+          height: 20,
         ),
         SizedBox(
           height: 500,
@@ -1076,60 +986,45 @@ class _ViewBlocHomestayRuleScreenState
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Colors.white),
-                child: TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 10),
-                  duration: const Duration(seconds: 3),
-                  builder: (context, value, child) => Container(
-                    margin: EdgeInsets.only(bottom: value, left: 10, right: 10),
-                    child: child,
-                  ),
-                  child: Container(
-                    height: 50,
-                    // margin:
-                    //     const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: Colors.white,
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              blurRadius: 2.0,
-                              blurStyle: BlurStyle.outer,
-                              offset: Offset(1.0, 1.0)),
-                        ]),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "${index + 1}",
-                            style: const TextStyle(
-                                fontFamily: "Lobster",
-                                fontWeight: FontWeight.bold,
-                                color: primaryColor),
-                          ),
-                          const SizedBox(
-                            width: 100,
-                          ),
-                          Text(
-                            widget.bloc!.homestayRules![index].description!,
-                            style: const TextStyle(
-                                fontFamily: "Lobster",
-                                fontWeight: FontWeight.bold),
-                          )
-                        ]),
-                  ),
+                child: Container(
+                  height: 100,
+                  margin: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.white,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            blurRadius: 0.5,
+                            blurStyle: BlurStyle.outer,
+                            offset: Offset(1.0, 1.0)),
+                      ]),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${index + 1}",
+                          style: const TextStyle(
+                              fontFamily: "Lobster",
+                              fontWeight: FontWeight.bold,
+                              color: primaryColor),
+                        ),
+                        const SizedBox(
+                          width: 100,
+                        ),
+                        Text(
+                          widget.bloc!.homestayRules![index].description!,
+                          style: const TextStyle(
+                              fontFamily: "Lobster",
+                              fontWeight: FontWeight.bold),
+                        )
+                      ]),
                 ),
               ),
             ),
           ),
         ),
-        TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0, end: 20),
-          duration: const Duration(seconds: 3),
-          builder: (context, value, child) => SizedBox(
-            height: value,
-            child: child,
-          ),
-          child: const SizedBox(),
+        const SizedBox(
+          height: 20,
         ),
         TweenAnimationBuilder(
           tween: Tween<double>(begin: 0, end: 1),
@@ -1218,36 +1113,8 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 20),
-                  duration: const Duration(seconds: 3),
-                  builder: (context, value, child) => SizedBox(
-                    height: value,
-                    child: child,
-                  ),
-                  child: const SizedBox(),
-                ),
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 1),
-                  duration: const Duration(seconds: 2),
-                  builder: (context, value, child) =>
-                      Opacity(opacity: value, child: child),
-                  child: const Text(
-                    "Overview Your Block Booking",
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 20),
-                  duration: const Duration(seconds: 3),
-                  builder: (context, value, child) => SizedBox(
-                    height: value,
-                    child: child,
-                  ),
-                  child: const SizedBox(),
+                const SizedBox(
+                  height: 20,
                 ),
                 TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 1),
@@ -1272,7 +1139,8 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                color: primaryColor,
+                                letterSpacing: 1.0),
                           ),
                           const SizedBox(
                             height: 15,
@@ -1412,14 +1280,8 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                         ]),
                   ),
                 ),
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 15),
-                  duration: const Duration(seconds: 3),
-                  builder: (context, value, child) => SizedBox(
-                    height: value,
-                    child: child,
-                  ),
-                  child: const SizedBox(),
+                const SizedBox(
+                  height: 15,
                 ),
                 TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 1),
@@ -1442,7 +1304,8 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                             style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black)),
+                                color: primaryColor,
+                                letterSpacing: 1.0)),
                         const SizedBox(
                           height: 15,
                         ),
@@ -1459,36 +1322,28 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                                             .data!.blocServiceList!.length,
                                         itemBuilder: (context, index) =>
                                             Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 5),
+                                          margin: const EdgeInsets.only(
+                                              bottom: 5, left: 50, right: 50),
                                           child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  utf8.decode(snapshot
-                                                      .data!
-                                                      .blocServiceList![index]
-                                                      .name!
-                                                      .runes
-                                                      .toList()),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    utf8.decode(snapshot
+                                                        .data!
+                                                        .blocServiceList![index]
+                                                        .name!
+                                                        .runes
+                                                        .toList()),
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
-                                                const SizedBox(
-                                                  width: 100,
-                                                ),
-                                                TweenAnimationBuilder(
-                                                  tween: Tween<double>(
-                                                      begin: 0, end: 1),
-                                                  duration: const Duration(
-                                                      seconds: 3),
-                                                  builder:
-                                                      (context, value, child) =>
-                                                          Opacity(
-                                                              opacity: value,
-                                                              child: child),
+                                                Expanded(
+                                                  flex: 1,
                                                   child: Text(
                                                     "Price(VND): ${currencyFormat.format(snapshot.data!.blocServiceList![index].price)}",
                                                     style: const TextStyle(
@@ -1551,85 +1406,13 @@ class _OverviewBlocBookingScreenState extends State<OverviewBlocBookingScreen> {
                     ),
                   ),
                 ),
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 5),
-                  duration: const Duration(seconds: 3),
-                  builder: (context, value, child) => SizedBox(
-                    height: value,
-                    child: child,
-                  ),
-                  child: const SizedBox(),
+                const SizedBox(
+                  height: 60,
                 ),
                 Column(
                   children: [
-                    // TweenAnimationBuilder(
-                    //   tween: Tween<double>(begin: 0, end: 1),
-                    //   duration: const Duration(seconds: 2),
-                    //   builder: (context, value, child) =>
-                    //       Opacity(opacity: value, child: child),
-                    //   child: const Text(
-                    //     "Choose payment method: ",
-                    //     style: TextStyle(fontWeight: FontWeight.bold),
-                    //   ),
-                    // ),
-                    // TweenAnimationBuilder(
-                    //   tween: Tween<double>(begin: 0, end: 10),
-                    //   duration: const Duration(seconds: 3),
-                    //   builder: (context, value, child) => SizedBox(
-                    //     height: value,
-                    //     child: child,
-                    //   ),
-                    //   child: const SizedBox(),
-                    // ),
-                    // TweenAnimationBuilder(
-                    //   tween: Tween<double>(begin: 0, end: 1),
-                    //   duration: const Duration(seconds: 2),
-                    //   builder: (context, value, child) =>
-                    //       Opacity(opacity: value, child: child),
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(
-                    //         flex: 1,
-                    //         child: ListTile(
-                    //           title: const Text("SWM Wallet"),
-                    //           leading: Radio<BlocPaymentMethod>(
-                    //             value: BlocPaymentMethod.swm_wallet,
-                    //             groupValue: snapshot.data!.paymentMethod!,
-                    //             onChanged: (value) => overviewBookingBloc
-                    //                 .eventController.sink
-                    //                 .add(ChooseBlocPaymentMethodEvent(
-                    //                     paymentMethod: value)),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       const SizedBox(
-                    //         width: 10,
-                    //       ),
-                    //       Expanded(
-                    //         flex: 1,
-                    //         child: ListTile(
-                    //           title: const Text("Cash"),
-                    //           leading: Radio<BlocPaymentMethod>(
-                    //             value: BlocPaymentMethod.cash,
-                    //             groupValue: snapshot.data!.paymentMethod!,
-                    //             onChanged: (value) => overviewBookingBloc
-                    //                 .eventController.sink
-                    //                 .add(ChooseBlocPaymentMethodEvent(
-                    //                     paymentMethod: value)),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    TweenAnimationBuilder(
-                      tween: Tween<double>(begin: 0, end: 5),
-                      duration: const Duration(seconds: 3),
-                      builder: (context, value, child) => SizedBox(
-                        height: value,
-                        child: child,
-                      ),
-                      child: const SizedBox(),
+                    const SizedBox(
+                      height: 5,
                     ),
                     TweenAnimationBuilder(
                       tween: Tween<double>(begin: 0, end: 1),

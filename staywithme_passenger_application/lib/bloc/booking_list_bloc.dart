@@ -12,8 +12,10 @@ import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
+import 'package:staywithme_passenger_application/screen/booking/booking_history_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/booking_list_screen.dart';
 import 'package:staywithme_passenger_application/screen/booking/promotion_screen.dart';
+import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
 import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
@@ -277,13 +279,7 @@ class BookingListBloc {
         case null:
           break;
       }
-      // Navigator.pushReplacementNamed(
-      //     event.context!, ProcessBookingScreen.processBookingScreenRoute,
-      //     arguments: {
-      //       "bookingId": _booking!.id,
-      //       "homestayType": _homestayType,
-      //       "paymentMethod": paymentMethod
-      //     });
+
       Navigator.pushReplacementNamed(
           event.context!, PromotionScreen.promotionScreenRoute,
           arguments: {
@@ -354,163 +350,26 @@ class BookingListBloc {
     } else if (event is CopyInviteCodeEvent) {
       await Clipboard.setData(ClipboardData(text: event.inviteCode));
       _isCopied = true;
-    } else if (event is CheckInForHomestayEvent) {
-      final checkInData = await bookingService.checkInForHomestay(
-          _booking!.id!, event.homestayId!);
-      if (checkInData is BookingHomestayModel) {
-        Navigator.pushReplacementNamed(
-            event.context!, BookingLoadingScreen.bookingLoadingScreen,
-            arguments: {
-              "bookingId": _booking!.id,
-              "homestayType": _homestayType,
-              "viewDetail": _viewDetail
-            });
-      } else if (checkInData is ServerExceptionModel) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => AlertDialog(
-            title: const Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text(checkInData.message!),
-            ),
-          ),
-        );
-      } else if (checkInData is SocketException ||
-          checkInData is TimeoutException) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => const AlertDialog(
-            title: Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text("Can't connect to server"),
-            ),
-          ),
-        );
-      }
-    } else if (event is CheckOutForHomestayEvent) {
-      final checkOutData = await bookingService.checkOutForHomestay(
-          _booking!.id!, event.homestayId!);
-      if (checkOutData is BookingHomestayModel) {
-        Navigator.pushReplacementNamed(
-            event.context!, RatingHomestayScreen.ratingHomestayScreenRoute,
-            arguments: {
-              "booking": _booking,
-              "bookingHomestay": checkOutData,
-              "viewDetail": _viewDetail,
-              "homestayType": _homestayType
-            });
-      } else if (checkOutData is ServerExceptionModel) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => AlertDialog(
-            title: const Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text(checkOutData.message!),
-            ),
-          ),
-        );
-      } else if (checkOutData is SocketException ||
-          checkOutData is TimeoutException) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => const AlertDialog(
-            title: Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text("Can't connect to server"),
-            ),
-          ),
-        );
-      }
-    } else if (event is CheckOutForBlocEvent) {
-      final checkOutData = await bookingService.checkOutForBloc(_booking!.id!);
-      if (checkOutData is BookingModel) {
-        Navigator.pushReplacementNamed(
-            event.context!, RatingHomestayScreen.ratingHomestayScreenRoute,
-            arguments: {
-              "booking": checkOutData,
-              "homestayType": _homestayType,
-              "blocBookingValidation": _blocBookingValidation,
-              "viewDetail": _viewDetail
-            });
-      } else if (checkOutData is ServerExceptionModel) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => AlertDialog(
-            title: const Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text(checkOutData.message!),
-            ),
-          ),
-        );
-      } else if (checkOutData is SocketException ||
-          checkOutData is TimeoutException) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => const AlertDialog(
-            title: Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text("Can't connect to server"),
-            ),
-          ),
-        );
-      }
-    } else if (event is CheckInForBlocEvent) {
-      final checkInData = await bookingService.checkInForBloc(_booking!.id!);
-      if (checkInData is BookingModel) {
-        Navigator.pushReplacementNamed(
-            event.context!, BookingLoadingScreen.bookingLoadingScreen,
-            arguments: {
-              "bookingId": _booking!.id,
-              "homestayType": _homestayType,
-              "blocBookingValidation": _blocBookingValidation,
-              "viewDetail": _viewDetail
-            });
-      } else if (checkInData is ServerExceptionModel) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => AlertDialog(
-            title: const Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text(checkInData.message!),
-            ),
-          ),
-        );
-      } else if (checkInData is SocketException ||
-          checkInData is TimeoutException) {
-        showDialog(
-          context: event.context!,
-          builder: (context) => const AlertDialog(
-            title: Center(
-              child: Text("Error"),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Text("Can't connect to server"),
-            ),
-          ),
-        );
-      }
+    } else if (event is BackwardBookingHistoryEvent) {
+      Navigator.pushReplacementNamed(
+          event.context!, BookingHistoryScreen.bookingHistoryScreenRoute);
+    } else if (event is FowardRatingForHomestayScreenEvent) {
+      Navigator.pushNamed(
+          event.context!, RatingHomestayScreen.ratingHomestayScreenRoute,
+          arguments: {
+            "bookingHomestay": event.bookingHomestay,
+            "homestayType": HomestayType.homestay.name,
+            "viewDetail": _viewDetail
+          });
+    } else if (event is FowardRatingForBlockScreenEvent) {
+      Navigator.pushNamed(
+          event.context!, RatingHomestayScreen.ratingHomestayScreenRoute,
+          arguments: {
+            "booking": _booking,
+            "homestayType": HomestayType.bloc.name,
+            "viewDetail": _viewDetail,
+            "blocBookingValidation": _blocBookingValidation
+          });
     }
 
     stateController.sink.add(BookingListState(

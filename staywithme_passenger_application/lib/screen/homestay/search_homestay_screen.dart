@@ -10,7 +10,6 @@ import 'package:staywithme_passenger_application/bloc/select_next_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/search_homestay_state.dart';
 import 'package:staywithme_passenger_application/bloc/state/select_next_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
-import 'package:staywithme_passenger_application/model/campaign_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
 import 'package:staywithme_passenger_application/model/search_filter_model.dart';
 import 'package:staywithme_passenger_application/service/homestay/homestay_service.dart';

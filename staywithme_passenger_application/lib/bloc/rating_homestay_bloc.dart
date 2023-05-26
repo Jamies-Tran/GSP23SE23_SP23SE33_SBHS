@@ -126,7 +126,7 @@ class RatingHomestayBloc {
         Navigator.pushReplacementNamed(
             event.context!, BookingLoadingScreen.bookingLoadingScreen,
             arguments: {
-              "bookingId": _booking!.id,
+              "bookingId": _bookingHomestay!.bookingHomestayId!.bookingId,
               "homestayType": _homestayType,
               "viewDetail": _viewDetail
             });

@@ -46,17 +46,17 @@ class BookingBlocModel {
 }
 
 class BookingHomestayModel {
-  BookingHomestayModel({
-    this.bookingHomestayId,
-    this.paymentMethod,
-    this.totalBookingPrice,
-    this.totalServicePrice,
-    this.totalReservation,
-    this.status,
-    this.homestayName,
-    this.homestayServiceList,
-    this.homestay,
-  });
+  BookingHomestayModel(
+      {this.bookingHomestayId,
+      this.paymentMethod,
+      this.totalBookingPrice,
+      this.totalServicePrice,
+      this.totalReservation,
+      this.status,
+      this.homestayName,
+      this.homestayServiceList,
+      this.homestay,
+      this.rating});
 
   BookingHomestayIdModel? bookingHomestayId;
   String? paymentMethod;
@@ -65,20 +65,22 @@ class BookingHomestayModel {
   int? totalReservation;
   String? status;
   String? homestayName;
-
   List<String>? homestayServiceList;
   HomestayModel? homestay;
+  RatingModel? rating;
 
   factory BookingHomestayModel.fromJson(Map<String, dynamic> json) =>
       BookingHomestayModel(
-        bookingHomestayId:
-            BookingHomestayIdModel.fromJson(json["bookingHomestayId"]),
-        paymentMethod: json["paymentMethod"],
-        totalBookingPrice: json["totalBookingPrice"],
-        totalReservation: json["totalReservation"],
-        status: json["status"],
-        homestay: HomestayModel.fromJson(json["homestay"]),
-      );
+          bookingHomestayId:
+              BookingHomestayIdModel.fromJson(json["bookingHomestayId"]),
+          paymentMethod: json["paymentMethod"],
+          totalBookingPrice: json["totalBookingPrice"],
+          totalReservation: json["totalReservation"],
+          status: json["status"],
+          homestay: HomestayModel.fromJson(json["homestay"]),
+          rating: json["rating"] != null
+              ? RatingModel.fromJson(json["rating"])
+              : null);
 
   Map<String, dynamic> toJson() => {
         "paymentMethod": paymentMethod,
@@ -127,7 +129,6 @@ class BookingDepositModel {
         "unpaidAmount": unpaidAmount,
         "paidAmount": paidAmount,
         "depositForHomestay": depositForHomestay,
-        
       };
 }
 
@@ -146,20 +147,20 @@ class DepositModel {
 }
 
 class BookingModel {
-  BookingModel({
-    this.id,
-    this.code,
-    this.bookingFrom,
-    this.bookingTo,
-    this.homestayType,
-    this.totalBookingPrice,
-    this.totalBookingDeposit,
-    this.status,
-    this.bloc,
-    this.inviteCode,
-    this.bookingHomestays,
-    this.bookingHomestayServices,
-  });
+  BookingModel(
+      {this.id,
+      this.code,
+      this.bookingFrom,
+      this.bookingTo,
+      this.homestayType,
+      this.totalBookingPrice,
+      this.totalBookingDeposit,
+      this.status,
+      this.bloc,
+      this.inviteCode,
+      this.bookingHomestays,
+      this.bookingHomestayServices,
+      this.rating});
 
   int? id;
   String? code;
@@ -173,30 +174,30 @@ class BookingModel {
   BookingInviteModel? inviteCode;
   List<BookingHomestayModel>? bookingHomestays;
   List<BookingServiceModel>? bookingHomestayServices;
-  // List<BookingDepositModel>? bookingDeposits;
+  RatingModel? rating;
 
   factory BookingModel.fromJson(Map<String, dynamic> json) => BookingModel(
-        id: json["id"],
-        code: json["code"],
-        bookingFrom: json["bookingFrom"],
-        bookingTo: json["bookingTo"],
-        homestayType: json["homestayType"],
-        totalBookingPrice: json["totalBookingPrice"],
-        totalBookingDeposit: json["totalBookingDeposit"],
-        status: json["status"],
-        bloc: json["blocResponse"] != null
-            ? BlocHomestayModel.fromJson(json["blocResponse"])
-            : null,
-        inviteCode: json["inviteCode"] != null
-            ? BookingInviteModel.fromJson(json["inviteCode"])
-            : null,
-        bookingHomestays: List<BookingHomestayModel>.from(
-            json["bookingHomestays"]
-                .map((e) => BookingHomestayModel.fromJson(e))),
-        bookingHomestayServices: List<BookingServiceModel>.from(
-            json["bookingHomestayServices"]
-                .map((e) => BookingServiceModel.fromJson(e))),
-      );
+      id: json["id"],
+      code: json["code"],
+      bookingFrom: json["bookingFrom"],
+      bookingTo: json["bookingTo"],
+      homestayType: json["homestayType"],
+      totalBookingPrice: json["totalBookingPrice"],
+      totalBookingDeposit: json["totalBookingDeposit"],
+      status: json["status"],
+      bloc: json["blocResponse"] != null
+          ? BlocHomestayModel.fromJson(json["blocResponse"])
+          : null,
+      inviteCode: json["inviteCode"] != null
+          ? BookingInviteModel.fromJson(json["inviteCode"])
+          : null,
+      bookingHomestays: List<BookingHomestayModel>.from(json["bookingHomestays"]
+          .map((e) => BookingHomestayModel.fromJson(e))),
+      bookingHomestayServices: List<BookingServiceModel>.from(
+          json["bookingHomestayServices"]
+              .map((e) => BookingServiceModel.fromJson(e))),
+      rating:
+          json["rating"] != null ? RatingModel.fromJson(json["rating"]) : null);
 
   Map<String, dynamic> toJson() => {
         "id": id,

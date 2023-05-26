@@ -9,14 +9,12 @@ import 'package:staywithme_passenger_application/screen/booking/choose_booking_d
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/service/share_preference/share_preference.dart';
-import 'package:staywithme_passenger_application/service/user/booking_service.dart';
-import 'package:staywithme_passenger_application/service_locator/service_locator.dart';
 
 class BlocHomestayDetailBloc {
   final eventController = StreamController<BlocHomestayDetailEvent>();
   final stateController = StreamController<BlocHomestayDetailState>();
 
-  final _bookingService = locator.get<IBookingService>();
+  // final _bookingService = locator.get<IBookingService>();
   final _firebaseAuth = FirebaseAuth.instance;
 
   BlocBookingDateValidationModel? _blocBookingDateValidation;

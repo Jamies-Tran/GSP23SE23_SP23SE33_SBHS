@@ -129,7 +129,8 @@ class RatingModel {
       {this.servicePoint,
       this.locationPoint,
       this.securityPoint,
-      this.homestayName,
+      this.homestayId,
+      this.bookingId,
       this.comment,
       this.username,
       this.avatar});
@@ -137,16 +138,16 @@ class RatingModel {
   double? servicePoint;
   double? locationPoint;
   double? securityPoint;
-  String? homestayName;
   String? comment;
   String? username;
   String? avatar;
+  int? homestayId;
+  int? bookingId;
 
   factory RatingModel.fromJson(Map<String, dynamic> json) => RatingModel(
       servicePoint: json["servicePoint"],
       locationPoint: json["locationPoint"],
       securityPoint: json["securityPoint"],
-      homestayName: json["homestayName"],
       comment: json["comment"],
       avatar: json["avatar"],
       username: json["username"]);
@@ -155,7 +156,8 @@ class RatingModel {
         "securityPoint": securityPoint,
         "servicePoint": servicePoint,
         "locationPoint": locationPoint,
-        "homestayName": homestayName,
+        "homestayId": homestayId,
+        "bookingId": bookingId,
         "comment": comment
       };
 }

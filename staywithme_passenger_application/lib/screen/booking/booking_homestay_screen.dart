@@ -747,14 +747,8 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                         ]),
                   ),
                 ),
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 50),
-                  duration: const Duration(seconds: 1),
-                  builder: (context, value, child) => SizedBox(
-                    height: value,
-                    child: child,
-                  ),
-                  child: const SizedBox(),
+                const SizedBox(
+                  height: 15,
                 ),
                 TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 1),
@@ -804,78 +798,45 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                                     itemCount: snapshot
                                         .data!.homestayServiceList!.length,
                                     itemBuilder: (context, index) => Container(
-                                      margin: const EdgeInsets.only(bottom: 5),
-                                      child: TweenAnimationBuilder(
-                                        tween: Tween<double>(begin: 0, end: 1),
-                                        duration: Duration(seconds: index + 1),
-                                        builder: (context, value, child) =>
-                                            Opacity(
-                                                opacity: value, child: child),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              TweenAnimationBuilder(
-                                                tween: Tween<double>(
-                                                    begin: 0, end: 1),
-                                                duration:
-                                                    const Duration(seconds: 3),
-                                                builder:
-                                                    (context, value, child) =>
-                                                        Opacity(
-                                                  opacity: value,
-                                                  child: child,
-                                                ),
-                                                child: Text(
-                                                  utf8.decode(snapshot
-                                                      .data!
-                                                      .homestayServiceList![
-                                                          index]
-                                                      .name!
-                                                      .runes
-                                                      .toList()),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
+                                      margin: const EdgeInsets.only(
+                                          bottom: 5, left: 50, right: 50),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                utf8.decode(snapshot
+                                                    .data!
+                                                    .homestayServiceList![index]
+                                                    .name!
+                                                    .runes
+                                                    .toList()),
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              const SizedBox(
-                                                width: 100,
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                "Price(VND): ${currencyFormat.format(snapshot.data!.homestayServiceList![index].price)}",
+                                                style: const TextStyle(
+                                                    fontFamily: "Lobster",
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              TweenAnimationBuilder(
-                                                tween: Tween<double>(
-                                                    begin: 0, end: 1),
-                                                duration:
-                                                    const Duration(seconds: 3),
-                                                builder:
-                                                    (context, value, child) =>
-                                                        Opacity(
-                                                            opacity: value,
-                                                            child: child),
-                                                child: Text(
-                                                  "Price(VND): ${currencyFormat.format(snapshot.data!.homestayServiceList![index].price)}",
-                                                  style: const TextStyle(
-                                                      fontFamily: "Lobster",
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              )
-                                            ]),
-                                      ),
+                                            )
+                                          ]),
                                     ),
                                   ),
                                 )
-                              : TweenAnimationBuilder(
-                                  tween: Tween<double>(begin: 0, end: 1),
-                                  duration: const Duration(seconds: 2),
-                                  builder: (context, value, child) =>
-                                      Opacity(opacity: value, child: child),
-                                  child: const Center(
-                                      child: SizedBox(
-                                          height: 100,
-                                          child: Text(
-                                              "You haven't choose any service"))),
-                                ),
+                              : const Center(
+                                  child: SizedBox(
+                                      height: 100,
+                                      child: Text(
+                                          "You haven't choose any service"))),
                           const SizedBox(
                             height: 10,
                           ),
@@ -995,13 +956,7 @@ class _OverviewBookingScreenState extends State<OverviewBookingScreen> {
                     )
                   ],
                 ),
-                TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: 20),
-                  duration: const Duration(seconds: 1),
-                  builder: (context, value, child) =>
-                      SizedBox(height: value, child: child),
-                  child: const SizedBox(),
-                ),
+                const SizedBox(height: 20),
                 TweenAnimationBuilder(
                   tween: Tween<double>(begin: 0, end: 1),
                   duration: const Duration(seconds: 1),

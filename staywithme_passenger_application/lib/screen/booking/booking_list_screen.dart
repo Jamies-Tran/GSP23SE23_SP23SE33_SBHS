@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:staywithme_passenger_application/bloc/booking_list_bloc.dart';
@@ -17,7 +16,6 @@ import 'package:staywithme_passenger_application/bloc/show_homestays_bloc.dart';
 import 'package:staywithme_passenger_application/bloc/state/booking_list_state.dart';
 import 'package:staywithme_passenger_application/bloc/state/show_homestays_state.dart';
 import 'package:staywithme_passenger_application/global_variable.dart';
-import 'package:staywithme_passenger_application/model/bloc_model.dart';
 import 'package:staywithme_passenger_application/model/booking_model.dart';
 import 'package:staywithme_passenger_application/model/exc_model.dart';
 import 'package:staywithme_passenger_application/model/homestay_model.dart';
@@ -568,6 +566,192 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                           ],
                                         )
                                       : const SizedBox(),
+                                  streamSnapshot.data!.homestayType == "bloc"
+                                      ? Column(
+                                          children: [
+                                            Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                margin: const EdgeInsets.only(
+                                                    left: 10, right: 10),
+                                                padding: const EdgeInsets.only(
+                                                    top: 5, bottom: 5),
+                                                decoration: const BoxDecoration(
+                                                    color: Colors.white),
+                                                child:
+                                                    streamSnapshot
+                                                                    .data!
+                                                                    .booking!
+                                                                    .status ==
+                                                                "CANCELED" ||
+                                                            streamSnapshot
+                                                                    .data!
+                                                                    .booking!
+                                                                    .status ==
+                                                                "REJECTED"
+                                                        ? Row(
+                                                            children: const [
+                                                              Icon(Icons.cancel,
+                                                                  color: Colors
+                                                                      .red,
+                                                                  size: 15),
+                                                              Text("Canceled",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .red,
+                                                                      fontSize:
+                                                                          15))
+                                                            ],
+                                                          )
+                                                        : Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Column(
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .pending_actions,
+                                                                      color: streamSnapshot.data!.booking!.status ==
+                                                                              "PENDING"
+                                                                          ? Colors
+                                                                              .amber
+                                                                          : streamSnapshot.data!.booking!.status == "ACCEPTED" || streamSnapshot.data!.booking!.status == "CHECKEDIN" || streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                              ? Colors.green
+                                                                              : Colors.grey,
+                                                                      size: 20),
+                                                                  Text(
+                                                                      "Pending",
+                                                                      style: TextStyle(
+                                                                          color: streamSnapshot.data!.booking!.status == "PENDING"
+                                                                              ? Colors.amber
+                                                                              : streamSnapshot.data!.booking!.status == "ACCEPTED" || streamSnapshot.data!.booking!.status == "CHECKEDIN" || streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                                  ? Colors.green
+                                                                                  : Colors.grey,
+                                                                          fontSize: 15,
+                                                                          fontWeight: FontWeight.bold))
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              const Icon(
+                                                                  Icons
+                                                                      .arrow_forward_ios,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  size: 15),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              Column(
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .check_circle,
+                                                                      color: streamSnapshot.data!.booking!.status ==
+                                                                              "ACCEPTED"
+                                                                          ? Colors
+                                                                              .amber
+                                                                          : streamSnapshot.data!.booking!.status == "CHECKEDIN" || streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                              ? Colors.green
+                                                                              : Colors.grey,
+                                                                      size: 20),
+                                                                  Text(
+                                                                      "Accepted",
+                                                                      style: TextStyle(
+                                                                          color: streamSnapshot.data!.booking!.status == "ACCEPTED"
+                                                                              ? Colors.amber
+                                                                              : streamSnapshot.data!.booking!.status == "CHECKEDIN" || streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                                  ? Colors.green
+                                                                                  : Colors.grey,
+                                                                          fontSize: 15,
+                                                                          fontWeight: FontWeight.bold)),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              const Icon(
+                                                                  Icons
+                                                                      .arrow_forward_ios,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  size: 15),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              Column(
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .login,
+                                                                      color: streamSnapshot.data!.booking!.status ==
+                                                                              "CHECKEDIN"
+                                                                          ? Colors
+                                                                              .amber
+                                                                          : streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                              ? Colors.green
+                                                                              : streamSnapshot.data!.booking!.status == "CANCLED" || streamSnapshot.data!.booking!.status == "REJECTED"
+                                                                                  ? Colors.red
+                                                                                  : Colors.grey,
+                                                                      size: 20),
+                                                                  Text(
+                                                                      "Check-in",
+                                                                      style: TextStyle(
+                                                                          color: streamSnapshot.data!.booking!.status == "CHECKEDIN"
+                                                                              ? Colors.amber
+                                                                              : streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                                  ? Colors.green
+                                                                                  : streamSnapshot.data!.booking!.status == "CANCLED" || streamSnapshot.data!.booking!.status == "REJECTED"
+                                                                                      ? Colors.red
+                                                                                      : Colors.grey,
+                                                                          fontSize: 15,
+                                                                          fontWeight: FontWeight.bold)),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              const Icon(
+                                                                  Icons
+                                                                      .arrow_forward_ios,
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  size: 15),
+                                                              const SizedBox(
+                                                                  width: 5),
+                                                              Column(
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .logout,
+                                                                      color: streamSnapshot.data!.booking!.status ==
+                                                                              "CHECKEDOUT"
+                                                                          ? Colors
+                                                                              .green
+                                                                          : Colors
+                                                                              .grey,
+                                                                      size: 20),
+                                                                  Text(
+                                                                      "Check-out",
+                                                                      style: TextStyle(
+                                                                          color: streamSnapshot.data!.booking!.status == "CHECKEDOUT"
+                                                                              ? Colors
+                                                                                  .green
+                                                                              : Colors
+                                                                                  .grey,
+                                                                          fontSize:
+                                                                              15,
+                                                                          fontWeight:
+                                                                              FontWeight.bold)),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          )),
+                                            const SizedBox(
+                                              height: 10,
+                                            )
+                                          ],
+                                        )
+                                      : const SizedBox(),
                                   SizedBox(
                                     height: 400,
                                     child:
@@ -711,45 +895,115 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                                           height:
                                                                               10,
                                                                         ),
-                                                                        Row(
-                                                                          children: [
-                                                                            Expanded(
-                                                                              flex: 1,
-                                                                              child: Row(
+                                                                        streamSnapshot.data!.homestayType ==
+                                                                                "homestay"
+                                                                            ? Column(
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                                 children: [
-                                                                                  const Text("Status: ", style: TextStyle(fontSize: 12)),
-                                                                                  Text(streamSnapshot.data!.booking!.bookingHomestays![index].status!,
-                                                                                      style: TextStyle(
-                                                                                          color: streamSnapshot.data!.booking!.bookingHomestays![index].status! == "PENDING"
-                                                                                              ? Colors.amber
-                                                                                              : streamSnapshot.data!.booking!.bookingHomestays![index].status! == "ACCEPTED"
-                                                                                                  ? Colors.green
-                                                                                                  : streamSnapshot.data!.booking!.bookingHomestays![index].status! == "CHECKEDIN"
-                                                                                                      ? Colors.greenAccent
-                                                                                                      : Colors.grey,
-                                                                                          fontSize: 12,
-                                                                                          fontWeight: FontWeight.bold)),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            streamSnapshot.data!.homestayType == "homestay"
-                                                                                ? Expanded(
-                                                                                    flex: 1,
-                                                                                    child: Row(
-                                                                                      children: [
-                                                                                        const Text("Payment: ", style: TextStyle(fontSize: 12)),
-                                                                                        Text(streamSnapshot.data!.booking!.bookingHomestays![index].paymentMethod!,
-                                                                                            style: const TextStyle(
-                                                                                              fontSize: 10,
-                                                                                              fontWeight: FontWeight.bold,
-                                                                                              color: Colors.green,
-                                                                                            ))
-                                                                                      ],
-                                                                                    ),
+                                                                                  streamSnapshot.data!.booking!.bookingHomestays![index].status == "CANCELED" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "REJECTED"
+                                                                                      ? Row(
+                                                                                          children: const [
+                                                                                            Icon(Icons.cancel, color: Colors.red, size: 15),
+                                                                                            Text("Canceled", style: TextStyle(color: Colors.red, fontSize: 15))
+                                                                                          ],
+                                                                                        )
+                                                                                      : Row(
+                                                                                          children: [
+                                                                                            Column(
+                                                                                              children: [
+                                                                                                Icon(Icons.pending_actions,
+                                                                                                    color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "PENDING"
+                                                                                                        ? Colors.amber
+                                                                                                        : streamSnapshot.data!.booking!.bookingHomestays![index].status == "ACCEPTED" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDIN" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT"
+                                                                                                            ? Colors.green
+                                                                                                            : Colors.grey,
+                                                                                                    size: 10),
+                                                                                                Text("Pending",
+                                                                                                    style: TextStyle(
+                                                                                                        color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "PENDING"
+                                                                                                            ? Colors.amber
+                                                                                                            : streamSnapshot.data!.booking!.bookingHomestays![index].status == "ACCEPTED" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDIN" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT"
+                                                                                                                ? Colors.green
+                                                                                                                : Colors.grey,
+                                                                                                        fontSize: 10))
+                                                                                              ],
+                                                                                            ),
+                                                                                            const SizedBox(width: 5),
+                                                                                            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 10),
+                                                                                            const SizedBox(width: 5),
+                                                                                            Column(
+                                                                                              children: [
+                                                                                                Icon(Icons.check_circle,
+                                                                                                    color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "ACCEPTED"
+                                                                                                        ? Colors.amber
+                                                                                                        : streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDIN" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT"
+                                                                                                            ? Colors.green
+                                                                                                            : Colors.grey,
+                                                                                                    size: 10),
+                                                                                                Text("Accepted",
+                                                                                                    style: TextStyle(
+                                                                                                        color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "ACCEPTED"
+                                                                                                            ? Colors.amber
+                                                                                                            : streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDIN" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT"
+                                                                                                                ? Colors.green
+                                                                                                                : Colors.grey,
+                                                                                                        fontSize: 10)),
+                                                                                              ],
+                                                                                            ),
+                                                                                            const SizedBox(width: 5),
+                                                                                            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 10),
+                                                                                            const SizedBox(width: 5),
+                                                                                            Column(
+                                                                                              children: [
+                                                                                                Icon(Icons.login,
+                                                                                                    color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDIN"
+                                                                                                        ? Colors.amber
+                                                                                                        : streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT"
+                                                                                                            ? Colors.green
+                                                                                                            : streamSnapshot.data!.booking!.bookingHomestays![index].status == "CANCLED" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "REJECTED"
+                                                                                                                ? Colors.red
+                                                                                                                : Colors.grey,
+                                                                                                    size: 10),
+                                                                                                Text("Check-in",
+                                                                                                    style: TextStyle(
+                                                                                                        color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDIN"
+                                                                                                            ? Colors.amber
+                                                                                                            : streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT"
+                                                                                                                ? Colors.green
+                                                                                                                : streamSnapshot.data!.booking!.bookingHomestays![index].status == "CANCLED" || streamSnapshot.data!.booking!.bookingHomestays![index].status == "REJECTED"
+                                                                                                                    ? Colors.red
+                                                                                                                    : Colors.grey,
+                                                                                                        fontSize: 10)),
+                                                                                              ],
+                                                                                            ),
+                                                                                            const SizedBox(width: 5),
+                                                                                            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 10),
+                                                                                            const SizedBox(width: 5),
+                                                                                            Column(
+                                                                                              children: [
+                                                                                                Icon(Icons.logout, color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT" ? Colors.green : Colors.grey, size: 10),
+                                                                                                Text("Check-out", style: TextStyle(color: streamSnapshot.data!.booking!.bookingHomestays![index].status == "CHECKEDOUT" ? Colors.green : Colors.grey, fontSize: 10)),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                  const SizedBox(
+                                                                                    height: 10,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      const Text("Payment: ", style: TextStyle(fontSize: 12)),
+                                                                                      Text(streamSnapshot.data!.booking!.bookingHomestays![index].paymentMethod!,
+                                                                                          style: const TextStyle(
+                                                                                            fontSize: 10,
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.green,
+                                                                                          ))
+                                                                                    ],
                                                                                   )
-                                                                                : const SizedBox(),
-                                                                          ],
-                                                                        ),
+                                                                                ],
+                                                                              )
+                                                                            : const SizedBox(),
                                                                         const SizedBox(
                                                                           height:
                                                                               5,
@@ -1001,175 +1255,69 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                                                 ],
                                                                               )))
                                                                       : const SizedBox(),
-                                                                  streamSnapshot.data!.viewDetail! &&
-                                                                          streamSnapshot
+                                                                  Expanded(
+                                                                    flex: 1,
+                                                                    child: ElevatedButton(
+                                                                        style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
+                                                                        onPressed: () {
+                                                                          bookingListBloc
+                                                                              .eventController
+                                                                              .sink
+                                                                              .add(ViewHomestayDetailScreenEvent(context: context, homestayName: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.name));
+                                                                        },
+                                                                        child: Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: const [
+                                                                            Icon(
+                                                                              Icons.remove_red_eye,
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 10,
+                                                                            ),
+                                                                            Text(
+                                                                              "View",
+                                                                              style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                                                                            ),
+                                                                          ],
+                                                                        )),
+                                                                  ),
+                                                                  streamSnapshot
                                                                               .data!
-                                                                              .isHost! &&
-                                                                          streamSnapshot.data!.homestayType! ==
+                                                                              .viewDetail! &&
+                                                                          streamSnapshot.data!.homestayType ==
                                                                               "homestay" &&
-                                                                          streamSnapshot.data!.booking!.bookingHomestays![index].status! ==
-                                                                              "ACCEPTED"
+                                                                          streamSnapshot.data!.booking!.bookingHomestays![index].status ==
+                                                                              "CHECKEDOUT"
                                                                       ? Expanded(
                                                                           flex:
                                                                               1,
                                                                           child: ElevatedButton(
-                                                                              style: ElevatedButton.styleFrom(backgroundColor: streamSnapshot.data!.isCheckInDate()! ? Colors.greenAccent : Colors.grey, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
+                                                                              style: ElevatedButton.styleFrom(backgroundColor: streamSnapshot.data!.booking!.bookingHomestays![index].rating == null ? secondaryColor : Colors.grey, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
                                                                               onPressed: () {
-                                                                                if (streamSnapshot.data!.isCheckInDate()!) {
-                                                                                  showDialog(
-                                                                                    context: context,
-                                                                                    builder: (context) => AlertDialog(
-                                                                                      backgroundColor: primaryColor,
-                                                                                      content: SizedBox(
-                                                                                        height: 90,
-                                                                                        width: 100,
-                                                                                        child: Column(children: [
-                                                                                          const Text("Do you want to check-in?", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                                                                                          const SizedBox(
-                                                                                            height: 15,
-                                                                                          ),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Expanded(
-                                                                                                flex: 1,
-                                                                                                child: ElevatedButton(
-                                                                                                    style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-                                                                                                    onPressed: () {
-                                                                                                      Navigator.pop(context);
-                                                                                                    },
-                                                                                                    child: const Text("Later", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold))),
-                                                                                              ),
-                                                                                              const SizedBox(
-                                                                                                width: 5,
-                                                                                              ),
-                                                                                              Expanded(
-                                                                                                flex: 2,
-                                                                                                child: ElevatedButton(
-                                                                                                    style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent),
-                                                                                                    onPressed: () {
-                                                                                                      bookingListBloc.eventController.sink.add(CheckInForHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
-                                                                                                    },
-                                                                                                    child: const Text("Let's check-in", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold))),
-                                                                                              ),
-                                                                                            ],
-                                                                                          )
-                                                                                        ]),
-                                                                                      ),
-                                                                                    ),
-                                                                                  );
+                                                                                if (streamSnapshot.data!.booking!.bookingHomestays![index].rating == null) {
+                                                                                  bookingListBloc.eventController.sink.add(FowardRatingForHomestayScreenEvent(context: context, bookingHomestay: streamSnapshot.data!.booking!.bookingHomestays![index]));
                                                                                 }
                                                                               },
                                                                               child: Row(
                                                                                 mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: const [
-                                                                                  Icon(
-                                                                                    Icons.check_box,
+                                                                                children: [
+                                                                                  const Icon(
+                                                                                    Icons.rate_review,
                                                                                     color: Colors.white,
                                                                                   ),
-                                                                                  SizedBox(
+                                                                                  const SizedBox(
                                                                                     width: 10,
                                                                                   ),
                                                                                   Text(
-                                                                                    "Check-in",
-                                                                                    style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
+                                                                                    streamSnapshot.data!.booking!.bookingHomestays![index].rating == null ? "Rating" : "Rated",
+                                                                                    style: const TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
                                                                                   ),
                                                                                 ],
                                                                               )),
                                                                         )
-                                                                      : streamSnapshot.data!.viewDetail! &&
-                                                                              streamSnapshot.data!.homestayType! == "homestay" &&
-                                                                              streamSnapshot.data!.booking!.bookingHomestays![index].status! == "CHECKEDIN"
-                                                                          ? Expanded(
-                                                                              flex: 2,
-                                                                              child: ElevatedButton(
-                                                                                  style: ElevatedButton.styleFrom(backgroundColor: streamSnapshot.data!.isCheckoutDate()! ? Colors.greenAccent : Colors.grey, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
-                                                                                  onPressed: () {
-                                                                                    // if (streamSnapshot.data!.isCheckoutDate()!) {
-                                                                                    //   bookingListBloc.eventController.sink.add(CheckOutForHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
-                                                                                    // }
-                                                                                    showDialog(
-                                                                                      context: context,
-                                                                                      builder: (context) => AlertDialog(
-                                                                                        backgroundColor: primaryColor,
-                                                                                        content: SizedBox(
-                                                                                          height: 90,
-                                                                                          width: 100,
-                                                                                          child: Column(children: [
-                                                                                            const Text("Do you want to check-out?", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                                                                                            const SizedBox(
-                                                                                              height: 15,
-                                                                                            ),
-                                                                                            Row(
-                                                                                              children: [
-                                                                                                Expanded(
-                                                                                                  flex: 1,
-                                                                                                  child: ElevatedButton(
-                                                                                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-                                                                                                      onPressed: () {
-                                                                                                        Navigator.pop(context);
-                                                                                                      },
-                                                                                                      child: const Text("Later", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold))),
-                                                                                                ),
-                                                                                                const SizedBox(
-                                                                                                  width: 5,
-                                                                                                ),
-                                                                                                Expanded(
-                                                                                                  flex: 2,
-                                                                                                  child: ElevatedButton(
-                                                                                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent),
-                                                                                                      onPressed: () {
-                                                                                                        bookingListBloc.eventController.sink.add(CheckOutForHomestayEvent(context: context, homestayId: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.id));
-                                                                                                      },
-                                                                                                      child: const Text("Let's check-out", style: TextStyle(fontFamily: "Lobster", fontWeight: FontWeight.bold))),
-                                                                                                ),
-                                                                                              ],
-                                                                                            )
-                                                                                          ]),
-                                                                                        ),
-                                                                                      ),
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: const [
-                                                                                      Icon(
-                                                                                        Icons.remove_red_eye,
-                                                                                        color: Colors.white,
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        width: 10,
-                                                                                      ),
-                                                                                      Text(
-                                                                                        "Check-out",
-                                                                                        style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
-                                                                                      ),
-                                                                                    ],
-                                                                                  )),
-                                                                            )
-                                                                          : Expanded(
-                                                                              flex: 1,
-                                                                              child: ElevatedButton(
-                                                                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent, maximumSize: const Size(150, 50), minimumSize: const Size(150, 50)),
-                                                                                  onPressed: () {
-                                                                                    bookingListBloc.eventController.sink.add(ViewHomestayDetailScreenEvent(context: context, homestayName: streamSnapshot.data!.booking!.bookingHomestays![index].homestay!.name));
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: const [
-                                                                                      Icon(
-                                                                                        Icons.remove_red_eye,
-                                                                                        color: Colors.white,
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        width: 10,
-                                                                                      ),
-                                                                                      Text(
-                                                                                        "View",
-                                                                                        style: TextStyle(fontSize: 15, fontFamily: "Lobster", fontWeight: FontWeight.bold),
-                                                                                      ),
-                                                                                    ],
-                                                                                  )),
-                                                                            ),
+                                                                      : const SizedBox(),
                                                                 ],
                                                               ),
                                                             ),
@@ -2333,212 +2481,76 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                       color: Colors.white),
                                 ),
                               )
-                            : streamSnapshot.data!.viewDetail! &&
-                                    streamSnapshot.data!.homestayType! ==
-                                        "bloc" &&
-                                    streamSnapshot.data!.booking!.status! ==
-                                        "ACCEPTED"
+                            : streamSnapshot.data!.homestayType == "bloc" &&
+                                    streamSnapshot.data!.booking!.status ==
+                                        "CHECKEDOUT"
                                 ? ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: streamSnapshot.data!
-                                                .isCheckInDate()!
-                                            ? Colors.green
+                                        backgroundColor: streamSnapshot
+                                                    .data!.booking!.rating ==
+                                                null
+                                            ? secondaryColor
                                             : Colors.grey,
                                         minimumSize: const Size(200, 50),
                                         maximumSize: const Size(200, 50)),
                                     onPressed: () {
-                                      if (streamSnapshot.data!
-                                          .isCheckInDate()!) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                              content: SizedBox(
-                                                  height: 90,
-                                                  width: 100,
-                                                  child: Column(
-                                                    children: [
-                                                      const Text(
-                                                          "Do you want to check-in?",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Colors
-                                                                  .black)),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                              flex: 1,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                      style: ElevatedButton.styleFrom(
-                                                                          backgroundColor: Colors
-                                                                              .amber),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child: const Text(
-                                                                          "Later",
-                                                                          style: TextStyle(
-                                                                              fontFamily: "Lobster",
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Colors.white)))),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Expanded(
-                                                              flex: 2,
-                                                              child:
-                                                                  ElevatedButton(
-                                                                      style: ElevatedButton.styleFrom(
-                                                                          backgroundColor: Colors
-                                                                              .green),
-                                                                      onPressed:
-                                                                          () {
-                                                                        bookingListBloc
-                                                                            .eventController
-                                                                            .sink
-                                                                            .add(CheckInForBlocEvent(context: context));
-                                                                      },
-                                                                      child: const Text(
-                                                                          "Let's check-in",
-                                                                          style: TextStyle(
-                                                                              fontFamily: "Lobster",
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Colors.white))))
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ))),
-                                        );
+                                      if (streamSnapshot
+                                              .data!.booking!.rating ==
+                                          null) {
+                                        bookingListBloc.eventController.sink
+                                            .add(
+                                                FowardRatingForBlockScreenEvent(
+                                                    context: context));
                                       }
                                     },
-                                    child: const Text(
-                                      "Check-in",
-                                      style: TextStyle(
-                                          fontFamily: "Lobster",
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(Icons.rate_review,
+                                            color: Colors.white),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          streamSnapshot
+                                                      .data!.booking!.rating ==
+                                                  null
+                                              ? "Rating"
+                                              : "Rated",
+                                          style: const TextStyle(
+                                              fontFamily: "Lobster",
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                      ],
                                     ),
                                   )
-                                : streamSnapshot.data!.viewDetail! &&
-                                        streamSnapshot.data!.booking!.status! ==
-                                            "CHECKEDIN"
-                                    ? ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: streamSnapshot
-                                                    .data!
-                                                    .isCheckoutDate()!
-                                                ? Colors.green
-                                                : Colors.grey,
-                                            minimumSize: const Size(200, 50),
-                                            maximumSize: const Size(200, 50)),
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                                content: SizedBox(
-                                                    height: 90,
-                                                    width: 100,
-                                                    child: Column(
-                                                      children: [
-                                                        const Text(
-                                                            "Do you want to check-out?",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black)),
-                                                        const SizedBox(
-                                                          height: 15,
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                                flex: 1,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            backgroundColor: Colors
-                                                                                .amber),
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        child: const Text(
-                                                                            "Later",
-                                                                            style: TextStyle(
-                                                                                fontFamily: "Lobster",
-                                                                                fontWeight: FontWeight.bold,
-                                                                                color: Colors.white)))),
-                                                            const SizedBox(
-                                                                width: 5),
-                                                            Expanded(
-                                                                flex: 2,
-                                                                child:
-                                                                    ElevatedButton(
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            backgroundColor: Colors
-                                                                                .green),
-                                                                        onPressed:
-                                                                            () {
-                                                                          bookingListBloc
-                                                                              .eventController
-                                                                              .sink
-                                                                              .add(CheckOutForBlocEvent(context: context));
-                                                                        },
-                                                                        child: const Text(
-                                                                            "Let's check-out",
-                                                                            style: TextStyle(
-                                                                                fontFamily: "Lobster",
-                                                                                fontWeight: FontWeight.bold,
-                                                                                color: Colors.white))))
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ))),
-                                          );
-
-                                          // if (streamSnapshot.data!
-                                          //     .isCheckoutDate()!) {
-                                          //   bookingListBloc.eventController.sink
-                                          //       .add(CheckOutForBlocEvent(
-                                          //           context: context));
-                                          // }
-                                        },
-                                        child: const Text(
-                                          "Check-out",
-                                          style: TextStyle(
-                                              fontFamily: "Lobster",
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      )
-                                    : ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green,
-                                            minimumSize: const Size(200, 50),
-                                            maximumSize: const Size(200, 50)),
-                                        onPressed: () {
-                                          if (streamSnapshot.data!
-                                              .isCheckoutDate()!) {
-                                            Navigator.pop(context);
-                                          }
-                                        },
-                                        child: const Text(
-                                          "Back",
-                                          style: TextStyle(
-                                              fontFamily: "Lobster",
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      )
+                                : const SizedBox(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            if (streamSnapshot.data!.viewDetail!) {
+                              bookingListBloc.eventController.sink.add(
+                                  BackwardBookingHistoryEvent(
+                                      context: context));
+                            }
+                          },
+                          child: Text(
+                            streamSnapshot.data!.viewDetail!
+                                ? "Back"
+                                : "Dismiss",
+                            style: const TextStyle(
+                                fontFamily: "Lobster",
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                       ]),
                 )),
           );
