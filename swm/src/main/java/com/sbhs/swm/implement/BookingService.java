@@ -1005,8 +1005,7 @@ public class BookingService implements IBookingService {
                 Long totalRemainBookingPrice = booking.getTotalBookingPrice() - (totalRemainHomestayPrice
                         + totalRemainServicePrice);
                 Long totalRemainBookingHomestayPrice = bookingHomestay.getTotalBookingPrice()
-                        - (totalRemainHomestayPrice
-                                + totalRemainServicePrice);
+                        - totalRemainHomestayPrice;
                 bookingHomestay.setTotalBookingPrice(totalRemainBookingHomestayPrice);
                 booking.setTotalBookingPrice(totalRemainBookingPrice);
                 if (bookingHomestay.getPaymentMethod().equalsIgnoreCase(PaymentMethod.SWM_WALLET.name())) {
