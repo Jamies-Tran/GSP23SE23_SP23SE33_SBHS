@@ -1001,7 +1001,7 @@ public class BookingService implements IBookingService {
                     }
                 }
 
-                totalRemainServicePrice = totalRemainServicePrice * remainDays;
+                // totalRemainServicePrice = totalRemainServicePrice * remainDays;
                 Long totalRemainBookingPrice = booking.getTotalBookingPrice() - (totalRemainHomestayPrice
                         + totalRemainServicePrice);
                 Long totalRemainBookingHomestayPrice = bookingHomestay.getTotalBookingPrice()
@@ -1202,7 +1202,7 @@ public class BookingService implements IBookingService {
                     }
                 }
 
-                totalRemainServicePrice = totalRemainServicePrice * remainDays;
+                // totalRemainServicePrice = totalRemainServicePrice * remainDays;
                 totalRemainHomestayPrice = totalRemainHomestayPrice * remainDays;
                 Long totalRemainBookingPrice = (booking.getTotalBookingPrice() - (totalRemainHomestayPrice
                         + totalRemainServicePrice));
