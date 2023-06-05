@@ -1749,14 +1749,20 @@ class _BookingListScreenState extends State<BookingListScreen> {
                                                   const SizedBox(
                                                     width: 5,
                                                   ),
-                                                  Text(
-                                                      streamSnapshot.data!
-                                                          .selectedHomestay()!
-                                                          .name!,
-                                                      style: const TextStyle(
-                                                          fontFamily: "Lobster",
-                                                          fontWeight:
-                                                              FontWeight.bold)),
+                                                  Flexible(
+                                                    child: Text(
+                                                        streamSnapshot.data!
+                                                            .selectedHomestay()!
+                                                            .name!,
+                                                        style: const TextStyle(
+                                                            fontFamily:
+                                                                "Lobster",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                  ),
                                                   const SizedBox(
                                                     width: 5,
                                                   ),
@@ -2535,6 +2541,12 @@ class _BookingListScreenState extends State<BookingListScreen> {
                             if (streamSnapshot.data!.viewDetail!) {
                               bookingListBloc.eventController.sink.add(
                                   BackwardBookingHistoryEvent(
+                                      context: context));
+                            } else {
+                              bookingListBloc.eventController.sink.add(
+                                  DismissBookingEvent(
+                                      bookingId:
+                                          streamSnapshot.data!.booking!.id!,
                                       context: context));
                             }
                           },

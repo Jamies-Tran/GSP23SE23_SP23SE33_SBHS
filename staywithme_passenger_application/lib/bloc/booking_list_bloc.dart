@@ -18,6 +18,7 @@ import 'package:staywithme_passenger_application/screen/booking/promotion_screen
 import 'package:staywithme_passenger_application/screen/homestay/filter_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/homestay_detail_screen.dart';
 import 'package:staywithme_passenger_application/screen/homestay/search_homestay_screen.dart';
+import 'package:staywithme_passenger_application/screen/main_screen.dart';
 import 'package:staywithme_passenger_application/screen/rating/rating_screen.dart';
 
 import 'package:staywithme_passenger_application/service/user/booking_service.dart';
@@ -370,6 +371,60 @@ class BookingListBloc {
             "viewDetail": _viewDetail,
             "blocBookingValidation": _blocBookingValidation
           });
+    } else if (event is DismissBookingEvent) {
+      showDialog(
+        context: event.context,
+        builder: (context) => AlertDialog(
+          title: const Center(child: Text("Notice")),
+          content: SizedBox(
+              height: 100,
+              child: Column(
+                children: [
+                  const Text("Do you want to delete booking?"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("No",
+                                style: TextStyle(
+                                    fontFamily: "Lobster",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white))),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green),
+                            onPressed: () {
+                              bookingService
+                                  .deleteBooking(event.bookingId)
+                                  .then((value) =>
+                                      Navigator.pushReplacementNamed(
+                                          context, MainScreen.mainScreenRoute,
+                                          arguments: {"startingIndex": 0}));
+                            },
+                            child: const Text("Yes",
+                                style: TextStyle(
+                                    fontFamily: "Lobster",
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white))),
+                      ),
+                    ],
+                  )
+                ],
+              )),
+        ),
+      );
     }
 
     stateController.sink.add(BookingListState(

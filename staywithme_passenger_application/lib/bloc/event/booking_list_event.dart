@@ -149,3 +149,10 @@ class FowardRatingForBlockScreenEvent extends BookingListEvent {
 
   BuildContext? context;
 }
+
+class DismissBookingEvent extends BookingListEvent {
+  DismissBookingEvent({required this.bookingId, required this.context});
+
+  int bookingId;
+  BuildContext context;
+}
